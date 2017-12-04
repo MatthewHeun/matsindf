@@ -76,20 +76,40 @@ context("matrix --> rowcolval")
 ###########################################################
 
 test_that("mat_to_rowcolval works as expected", {
+  # This is the matrix we expect to obtain.
+  expected_mat <- matrix(c(11, 12,
+                           0,  22),
+                         nrow = 2, ncol = 2, byrow = TRUE,
+                         dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
+    setrowtype("Products") %>% setcoltype("Industries")
 
+  # This is the data frame that we'll use the construct the matrix
+  data <- data.frame(rows = c( "p1",  "p1", "p2"),
+                     cols = c( "i1",  "i2", "i2"),
+                     vals = c(  11  ,  12,   22 ),
+                     rt = c("Products", "Products", "Products"),
+                     ct = c("Industries", "Industries", "Industries")) %>%
+    mutate(
+      rows = as.character(rows),
+      cols = as.character(cols),
+      rt = as.character(rt),
+      ct = as.character(ct)
+    ) %>%
+    set_rownames(NULL)
 
-data <- data.frame(Country  = c("GH", "GH", "GH"),
-                   rows = c( "c1",  "c1", "c2"),
-                   cols = c( "i1",  "i2", "i2"),
-                   rt = c("Commodities", "Commodities", "Commodities"),
-                   ct = c("Industries", "Industries", "Industries"),
-                   vals = c(  11  ,  12,   22 ))
-#' data
-#' A <- data %>%
-#'   rowcolval_to_mat(rownames = "rows", colnames = "cols",
-#'                     rowtype = "rt",    coltype = "ct", values = "vals")
-#' A
-#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
+  # Construct the matrix that we'll convert later to a data frame.
+  A <- data %>%
+    rowcolval_to_mat(rownames = "rows", colnames = "cols",
+                     rowtype = "rt",    coltype = "ct", values = "vals")
+  expect_equal(A, expected_mat_with_types)
+
+  # Veryfy that we can convert the matrix to a data frame.
+  expect_equal(mat_to_rowcolval(A,
+                                rownames = "rows", colnames = "cols",
+                                rowtype = "rt", coltype = "ct",
+                                values = "vals",
+                                drop = 0),
+               data)
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 #' # This also works for single values
 #' mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")

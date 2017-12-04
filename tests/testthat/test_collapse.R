@@ -5,14 +5,18 @@
 # and tests containing the string "(" don't work as expectged.
 
 library(dplyr)
+library(tidyr)
 library(magrittr)
+library(tibble)
+library(lazyeval)
+library(byname)
 library(testthat)
 
 ###########################################################
 context("Collapse")
 ###########################################################
 
-testthat("collapse_to_matrices works as expected", {
+test_that("collapse_to_matrices works as expected", {
   ptype <- "Products"
   itype <- "Industries"
   tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),

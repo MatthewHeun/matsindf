@@ -13,10 +13,10 @@ library(byname)
 library(testthat)
 
 ###########################################################
-context("row, col, val --> matrix")
+context("rowcolval --> matrix")
 ###########################################################
 
-testthat("rowcolval_to_mat works as expected", {
+test_that("rowcolval_to_mat works as expected", {
   # Establish some matrices that we expect to see.
   expected_mat <- matrix(c(11, 12,
                            0,  22),
@@ -48,27 +48,34 @@ testthat("rowcolval_to_mat works as expected", {
   expect_equal(C, expected_mat_with_types)
 
   # Also works for single values if both the rownames and colnames columns contain NA
-  #' data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
-  #'   rowtype = c(NA), coltype = c(NA), vals = c(2))
-  #' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
-  #'   rowtype = "rowtype", coltype = "coltype")
-  #' data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
-  #' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals")
-  #' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
-  #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
-  #'                                        ct = c("Industries", "Industries", "Industries")))
-  #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols", values = "vals", rowtype = "rt", coltype = "ct")}
+  rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
+                           rowtype = c(NA), coltype = c(NA), vals = c(2))
+  D <- rowcolval2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+                                       rowtype = "rowtype", coltype = "coltype")
+  expect_equal(D, 2)
 
+  # Try without rowtype or coltype columns in the data frame.
+  rowcolval3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
+  E <- rowcolval3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals")
+  expect_equal(E, 2)
+
+  # Fails when rowtype or coltype not all same. In rowcolval4, column rt is not all same.
+  rowcolval4 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Industries", "Products"),
+                                              ct = c("Industries", "Industries", "Industries")))
+  expect_error(rowcolval_to_mat(rowcolval4,
+                                rownames = "rows", colnames = "cols",
+                                values = "vals",
+                                rowtype = "rt", coltype = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
 })
 
 
 
 
 ###########################################################
-context("matrix --> row, col, val")
+context("matrix --> rowcolval")
 ###########################################################
 
-testthat("mat_to_rowcolval works as expected", {
+test_that("mat_to_rowcolval works as expected", {
 
 
 data <- data.frame(Country  = c("GH", "GH", "GH"),

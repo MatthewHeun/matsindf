@@ -101,18 +101,38 @@ test_that("mat_to_rowcolval works as expected", {
   A <- data %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols",
                      rowtype = "rt",    coltype = "ct", values = "vals")
-  expect_equal(A, expected_mat_with_types)
+  expect_equal(A, expected_mat)
 
   # Veryfy that we can convert the matrix to a data frame.
   expect_equal(mat_to_rowcolval(A,
                                 rownames = "rows", colnames = "cols",
                                 rowtype = "rt", coltype = "ct",
                                 values = "vals",
-                                drop = 0),
+                                drop = 0) %>%
+                 set_rownames(NULL),
                data)
-#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
-#' # This also works for single values
-#' mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
-#' mat_to_rowcolval(0, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 
+  # Verify that drop works correctly.
+  expect_equal(
+    mat_to_rowcolval(A,
+                     rownames = "rows", colnames = "cols",
+                     rowtype = "rt", coltype = "ct",
+                     values = "vals",
+                     drop = 0) %>%
+      rownames() %>% as.numeric(),
+    # Rownames are 1, 3, 4, because row 2 (p2, i1) has an entry of 0.
+    c(1, 3, 4))
+
+  # This also works for single values
+  expect_equal(mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals"),
+               data.frame(rows = NA, cols = NA, vals = 2, rt = NA, ct = NA)
+  )
+  # For a 0 value when we drop 0's, we get a zero-length data frame
+  B <- mat_to_rowcolval(0,
+                        rownames = "rows", colnames = "cols",
+                        rowtype = "rt", coltype = "ct",
+                        values = "vals",
+                        drop = 0)
+  expect_equal(B %>% nrow(), 0)
+  expect_equal(names(B), c("rows", "cols", "vals", "rt", "ct"))
 })

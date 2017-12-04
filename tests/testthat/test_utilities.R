@@ -1,0 +1,91 @@
+# Contains tests for the matsindf package.
+
+# Need to put dplyr before testthat.
+# If not, the "matches" function in dplyr overrides the "matches" function in testthat,
+# and tests containing the string "(" don't work as expectged.
+
+library(dplyr)
+library(magrittr)
+library(lazyeval)
+library(tidyr)
+library(tibble)
+library(byname)
+library(testthat)
+
+###########################################################
+context("row, col, val --> matrix")
+###########################################################
+
+testthat("rowcolval_to_mat works as expected", {
+  # Establish some matrices that we expect to see.
+  expected_mat <- matrix(c(11, 12,
+                           0,  22),
+                         nrow = 2, ncol = 2, byrow = TRUE,
+                         dimnames = list(c("p1", "p2"), c("i1", "i2")))
+  expected_mat_with_types <- expected_mat %>%
+    setrowtype("Products") %>% setcoltype("Industries")
+
+  # Create a data frame that can be converted to a matrix.
+  rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
+                          rows = c( "p1",  "p1", "p2"),
+                          cols = c( "i1",  "i2", "i2"),
+                          vals = c(  11  ,  12,   22 ))
+  A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", values = "vals")
+  expect_equal(A, expected_mat)
+  expect_null(rowtype(A)) # rowtype has not been set
+  expect_null(coltype(A)) # coltype has not been set
+
+  # Provide single row and column types to be applied to all entries.
+  B <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", values = "vals",
+                        rowtype  = "Products", coltype  = "Industries")
+  expect_equal(B, expected_mat_with_types)
+
+  # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
+  C <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                          ct = c("Industries", "Industries", "Industries"))) %>%
+    rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+                     rowtype = "rt", coltype = "ct")
+  expect_equal(C, expected_mat_with_types)
+
+  # Also works for single values if both the rownames and colnames columns contain NA
+  #' data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
+  #'   rowtype = c(NA), coltype = c(NA), vals = c(2))
+  #' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+  #'   rowtype = "rowtype", coltype = "coltype")
+  #' data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
+  #' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals")
+  #' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
+  #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
+  #'                                        ct = c("Industries", "Industries", "Industries")))
+  #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols", values = "vals", rowtype = "rt", coltype = "ct")}
+
+})
+
+
+
+
+###########################################################
+context("matrix --> row, col, val")
+###########################################################
+
+testthat("mat_to_rowcolval works as expected", {
+
+
+data <- data.frame(Country  = c("GH", "GH", "GH"),
+                   rows = c( "c1",  "c1", "c2"),
+                   cols = c( "i1",  "i2", "i2"),
+                   rt = c("Commodities", "Commodities", "Commodities"),
+                   ct = c("Industries", "Industries", "Industries"),
+                   vals = c(  11  ,  12,   22 ))
+#' data
+#' A <- data %>%
+#'   rowcolval_to_mat(rownames = "rows", colnames = "cols",
+#'                     rowtype = "rt",    coltype = "ct", values = "vals")
+#' A
+#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
+#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+#' # This also works for single values
+#' mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
+#' mat_to_rowcolval(0, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+
+})

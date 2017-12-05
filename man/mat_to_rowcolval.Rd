@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{mat_to_rowcolval}
 \alias{mat_to_rowcolval}
-\title{Convert an IO-style matrix to a data frame with rows, columns, and values.}
+\title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
 mat_to_rowcolval(.matrix, rownames, colnames, rowtype, coltype, values,
   drop = NA)
@@ -28,8 +28,10 @@ If \code{NA}, no values are dropped from output.}
 a data frame with rows, columns, and values
 }
 \description{
-This function "unwraps" an IO-style matrix into a tidy-style data frame with factors for
-row names, column names, row types, column types, and values
+This function "unwraps" a matrix into a tidy data frame with
+a values column and
+factors for row names, column names, row types, and column types.
+Optionally, values can be dropped.
 }
 \examples{
 data <- data.frame(Country  = c("GH", "GH", "GH"),

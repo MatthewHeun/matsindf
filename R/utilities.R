@@ -1,7 +1,9 @@
-#' Convert an IO-style matrix to a data frame with rows, columns, and values.
+#' Convert a matrix to a data frame with rows, columns, and values.
 #'
-#' This function "unwraps" an IO-style matrix into a tidy-style data frame with factors for
-#' row names, column names, row types, column types, and values
+#' This function "unwraps" a matrix into a tidy data frame with
+#' a values column and
+#' factors for row names, column names, row types, and column types.
+#' Optionally, values can be dropped.
 #'
 #' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
 #' @param rownames a string for the name of the output column containing row names
@@ -60,25 +62,27 @@ mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, valu
   }
   return(out)
 }
+
 #' Convert a tidy data frame into a matrix with named rows and columns
 #'
-#' The resulting matrix is a data frame.
 #' Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
 #' are silently dropped.
-#' \code{rowtypes} and \code{coltypes} are added as attribute \code{rowcoltypes} to the resulting matrix.
+#' \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
+#' (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
+#' The resulting matrix is a (under the hood) a data frame.
 #' If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
 #' it is assumed that this is a single value, not a matrix,
-#' in which the value in the \code{values} column is returned.
+#' in which case the value in the \code{values} column is returned.
 #'
 #' @param .data a tidy data frame containing columns for row names, column names, and values
 #' @param rownames the name of the column in \code{.data} containing row names (a string)
 #' @param colnames the name of the column in \code{.data} containing column names (a string)
 #' @param values the name of the column in \code{.data} containing values with which to fill the matrix (a string)
-#' @param fill the value for missing entries in the resulting matrix
+#' @param fill the value for missing entries in the resulting matrix (default is \code{0})
 #' @param rowtype an optional string identifying the types of information found in rows of the matrix to be constructed
 #' @param coltype an optional string identifying the types of information found in columns of the matrix to be constructed
 #'
-#' @return a matrix with named rows and columns
+#' @return a matrix with named rows and columns and, optionally, row and column types
 #' @export
 #'
 #' @examples

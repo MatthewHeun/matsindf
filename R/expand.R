@@ -1,32 +1,32 @@
-#' Expands a "tidy" data frame with IO-style matrices to a "tidy" data frame with each matrix entry as an observation
+#' Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation
 #'
-#' A data frame with IO-style matrices contains matrices with names \code{matnames}
+#' A data frame with \code{\link{matsindf}}-style matrices contains matrices with names \code{matnames}
 #' in the column specified by \code{matvals}).
 #' An IO-style matrix has named rows and columns.
-#' In addition, IO-style matrices have "types" for row and column information, such as "Commodities", "Industries",
+#' In addition, \code{\link{matsindf}}-style matrices have "types" for row and column information, such as "Commodities", "Industries",
 #' "Products", or "Machines".
 #'
 #' Names for output columns are specified in the \code{rownames}, \code{colnames},
 #' \code{rowtypes}, and \code{coltypes}, arguments.
-#' The entries of the IO-style matrices are stored in an output column named \code{values}.
+#' The entries of the \code{\link{matsindf}}-style matrices are stored in an output column named \code{values}.
 #'
-#' @param    .data the data frame containing IO-style matrices
-#' @param matnames a string holding the name of the column in \code{.data} containing matrix names
-#' @param  matvals a string holding the name of the column in \code{.data} containing IO-style matrices or constants.
+#' @param    .data the data frame containing \code{\link{matsindf}}-style matrices
+#' @param matnames name of the column in \code{.data} containing matrix names (a string)
+#' @param  matvals name of the column in \code{.data} containing IO-style matrices or constants (a string),
 #' This will also be the name of the column containing matrix entries in the output data frame.
-#' @param rownames a string holding the name for the output column of row names
-#' @param colnames a string holding the name for the output column of column names
-#' @param rowtypes a string holding the name for the output column of row types
-#' @param coltypes a string holding the name for the output column of column types
-#' @param     drop if specified, the value to be dropped from output.
+#' @param rownames name for the output column of row names (a string)
+#' @param colnames name for the output column of column names (a string)
+#' @param rowtypes name for the output column of row types (a string)
+#' @param coltypes name for the output column of column types (a string)
+#' @param     drop if specified, the value to be dropped from output,
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
 #'
-#' @return a tidy data frame containing unwrapped IO-style matrices
+#' @return a tidy data frame containing expanded \code{\link{matsindf}}-style matrices
 #' @export
 #'
 #' @examples
-#' ctype <- "Commodities"
+#' ptype <- "Products"
 #' itype <- "Industries"
 #' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
 #'                   Year    = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),

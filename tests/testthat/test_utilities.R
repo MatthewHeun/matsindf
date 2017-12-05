@@ -13,7 +13,7 @@ library(byname)
 library(testthat)
 
 ###########################################################
-context("rowcolval --> matrix")
+context("utilities")
 ###########################################################
 
 test_that("rowcolval_to_mat works as expected", {
@@ -68,12 +68,6 @@ test_that("rowcolval_to_mat works as expected", {
                                 rowtype = "rt", coltype = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
 })
 
-
-
-
-###########################################################
-context("matrix --> rowcolval")
-###########################################################
 
 test_that("mat_to_rowcolval works as expected", {
   # This is the matrix we expect to obtain.

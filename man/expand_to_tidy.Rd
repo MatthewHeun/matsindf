@@ -2,45 +2,45 @@
 % Please edit documentation in R/expand.R
 \name{expand_to_tidy}
 \alias{expand_to_tidy}
-\title{Expands a "tidy" data frame with IO-style matrices to a "tidy" data frame with each matrix entry as an observation}
+\title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
 expand_to_tidy(.data, matnames, matvals, rownames, colnames, rowtypes, coltypes,
   drop = NA)
 }
 \arguments{
-\item{.data}{the data frame containing IO-style matrices}
+\item{.data}{the data frame containing \code{\link{matsindf}}-style matrices}
 
-\item{matnames}{a string holding the name of the column in \code{.data} containing matrix names}
+\item{matnames}{name of the column in \code{.data} containing matrix names (a string)}
 
-\item{matvals}{a string holding the name of the column in \code{.data} containing IO-style matrices or constants.
+\item{matvals}{name of the column in \code{.data} containing IO-style matrices or constants (a string),
 This will also be the name of the column containing matrix entries in the output data frame.}
 
-\item{rownames}{a string holding the name for the output column of row names}
+\item{rownames}{name for the output column of row names (a string)}
 
-\item{colnames}{a string holding the name for the output column of column names}
+\item{colnames}{name for the output column of column names (a string)}
 
-\item{rowtypes}{a string holding the name for the output column of row types}
+\item{rowtypes}{name for the output column of row types (a string)}
 
-\item{coltypes}{a string holding the name for the output column of column types}
+\item{coltypes}{name for the output column of column types (a string)}
 
-\item{drop}{if specified, the value to be dropped from output.
+\item{drop}{if specified, the value to be dropped from output,
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 If \code{NA}, no values are dropped from output.}
 }
 \value{
-a tidy data frame containing unwrapped IO-style matrices
+a tidy data frame containing expanded \code{\link{matsindf}}-style matrices
 }
 \description{
-A data frame with IO-style matrices contains matrices with names \code{matnames}
+A data frame with \code{\link{matsindf}}-style matrices contains matrices with names \code{matnames}
 in the column specified by \code{matvals}).
 An IO-style matrix has named rows and columns.
-In addition, IO-style matrices have "types" for row and column information, such as "Commodities", "Industries",
+In addition, \code{\link{matsindf}}-style matrices have "types" for row and column information, such as "Commodities", "Industries",
 "Products", or "Machines".
 }
 \details{
 Names for output columns are specified in the \code{rownames}, \code{colnames},
 \code{rowtypes}, and \code{coltypes}, arguments.
-The entries of the IO-style matrices are stored in an output column named \code{values}.
+The entries of the \code{\link{matsindf}}-style matrices are stored in an output column named \code{values}.
 }
 \examples{
 ctype <- "Commodities"

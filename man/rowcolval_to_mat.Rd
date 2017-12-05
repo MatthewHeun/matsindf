@@ -20,19 +20,20 @@ rowcolval_to_mat(.data, rownames, colnames, values, rowtype = NULL,
 
 \item{coltype}{an optional string identifying the types of information found in columns of the matrix to be constructed}
 
-\item{fill}{the value for missing entries in the resulting matrix}
+\item{fill}{the value for missing entries in the resulting matrix (default is \code{0})}
 }
 \value{
-a matrix with named rows and columns
+a matrix with named rows and columns and, optionally, row and column types
 }
 \description{
-The resulting matrix is a data frame.
 Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
 are silently dropped.
-\code{rowtypes} and \code{coltypes} are added as attribute \code{rowcoltypes} to the resulting matrix.
+\code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
+(via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
+The resulting matrix is a (under the hood) a data frame.
 If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
 it is assumed that this is a single value, not a matrix,
-in which the value in the \code{values} column is returned.
+in which case the value in the \code{values} column is returned.
 }
 \examples{
 data <- data.frame(Country  = c("GH", "GH", "GH"),

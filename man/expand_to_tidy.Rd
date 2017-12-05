@@ -43,7 +43,7 @@ Names for output columns are specified in the \code{rownames}, \code{colnames},
 The entries of the \code{\link{matsindf}}-style matrices are stored in an output column named \code{values}.
 }
 \examples{
-ctype <- "Commodities"
+ptype <- "Products"
 itype <- "Industries"
 tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
                   Year    = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),

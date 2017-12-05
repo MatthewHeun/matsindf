@@ -94,5 +94,4 @@ test_that("expand_to_tidy works as expected", {
   expect_error((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
                "subscript out of bounds")
   expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
-
 })

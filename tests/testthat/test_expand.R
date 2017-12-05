@@ -58,6 +58,9 @@ test_that("expand_to_tidy works as expected", {
   expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]], 0)
   expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
 
+  expect_equal((A %>% filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
+  expect_equal((A %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
+
   # For this second set of tests, drop 0 values.
   B <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
                       rownames = "rows", colnames = "cols",
@@ -94,4 +97,8 @@ test_that("expand_to_tidy works as expected", {
   expect_error((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
                "subscript out of bounds")
   expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
+
+  expect_equal((B %>% filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
+  expect_equal((B %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
+
 })

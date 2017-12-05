@@ -12,6 +12,4 @@ LazyData: true
 RoxygenNote: 6.0.1
 Imports:
     dplyr,
-    magrittr,
-    OpenMx,
-    parallel
+    magrittr

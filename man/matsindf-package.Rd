@@ -10,23 +10,24 @@
 }
 \details{
 
-The DESCRIPTION file:
+# The DESCRIPTION file:
 \packageDESCRIPTION{matsindf}
 \packageIndices{matsindf}
-~~ An overview of how to use the package, including the most important functions ~~
 }
 \author{
 \packageAuthor{matsindf}
-
 Maintainer: \packageMaintainer{matsindf}
 }
 \references{
-~~ Literature or other references for background information ~~
 }
-\keyword{ package
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation directory ~~
+\keyword{
 }
 \seealso{
+The
+\code{\link[matsindf:matsindf-package]{matsindf}}
+package works well with the
+\code{\link[byname:byname-package]{byname}}
+package.
 }
 \examples{
 }

@@ -150,13 +150,7 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
   singles <- .data %>%
-
-    #
-    # TODO Remove reliance on deprecated filter_ function
-    #
-    filter_(interp(~ is.na(r) & is.na(c),
-                   r = as.name(rownames),
-                   c = as.name(colnames)))
+    filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
 
   if (nrow(singles) == 1){
     return(.data[[values]][[1]])

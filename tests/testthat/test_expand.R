@@ -10,6 +10,7 @@ library(magrittr)
 library(tibble)
 library(lazyeval)
 library(byname)
+library(rlang)
 library(testthat)
 
 ###########################################################

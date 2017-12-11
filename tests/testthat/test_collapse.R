@@ -62,3 +62,4 @@ test_that("collapse_to_matrices works as expected", {
   # Check that US Y turned out OK
   expect_equal((mats %>% filter(Country == "US", matrix == "Y"))$vals[[1]], A)
 })
+

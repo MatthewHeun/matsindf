@@ -66,20 +66,19 @@ collapse_to_matrices <- function(.data, matnames, rownames, colnames, rowtypes, 
   if (any(c(rownames, rowtypes, colnames, coltypes, values) %in% groups(.data))){
     cant_group <- c(rownames, rowtypes, colnames, coltypes, values)
     violator <- which(cant_group %in% groups(.data))
-    stop(paste(cant_group[[violator]], "is an illegal grouping variable in argument .data in spread_to_matrices."))
+    stop(paste(cant_group[[violator]], "is an illegal grouping variable in argument .data in collapse_to_matrices."))
   }
   .data %>%
     # We want to add grouping on the rowtypes and coltypes columns.
     # Doing so both
     # (a) ensures that rowtype and coltype are all same for each matrix and
     # (b) preserves rowtype and coltype in columns.
-    group_by_(.dots = c(rowtypes, coltypes), add = TRUE) %>%
+    group_by(!!rowtypes, !!coltypes, add = TRUE) %>%
     dplyr::do(
       # Convert .data to matrices
-      .temp_matrices_col = rowcolval_to_mat(., rownames = rownames, colnames = colnames, values = values,
-                                            rowtype = rowtypes, coltype = coltypes)
+      !!values := rowcolval_to_mat(., rownames = rownames, colnames = colnames, values = values,
+                                   rowtype = rowtypes, coltype = coltypes)
     ) %>%
-    rename_(.dots = setNames(".temp_matrices_col", values)) %>%
-    select_(.dots = c(groups(.data), values)) %>% # Eliminate rowtypes and coltypes from output
+    select(!!!group_vars(.data), !!values) %>%
     data.frame(check.names = FALSE)
 }

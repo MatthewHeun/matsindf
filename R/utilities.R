@@ -42,7 +42,7 @@ mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, valu
       setcoltype(coltype(.matrix)) %>%
       data.frame(check.names = FALSE) %>%
       rownames_to_column(var = rownames) %>%
-      gather_(key_col = colnames, value_col = values, gather_cols = colnames(.matrix))
+      gather(key = !!colnames, value = !!values, !!!colnames(.matrix))
     if (! is.null(rowtype(.matrix))){
       out[[rowtype]] <- rowtype(.matrix)
     }
@@ -150,7 +150,9 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
   singles <- .data %>%
-    filter_(interp(~ is.na(r) & is.na(c), r = as.name(rownames), c = as.name(colnames)))
+    filter_(interp(~ is.na(r) & is.na(c),
+                   r = as.name(rownames),
+                   c = as.name(colnames)))
   if (nrow(singles) == 1){
     return(.data[[values]][[1]])
   }
@@ -159,7 +161,7 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
   .data %>%
-    select_(.dots = c(rownames, colnames, values)) %>%
+    select(!!rownames, !!colnames, !!values) %>%
     # It is possible to have rows with the same Industry in .data,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
@@ -169,7 +171,7 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
     # with same rownames and colnames into one.
     group_by_(.dots = c(rownames, colnames)) %>%
     summarise_(.dots = list(interp(~sum(var), var = as.name(values))) %>% set_names(values)) %>%
-    spread_(key_col = colnames, value_col = values, fill = fill) %>%
+    spread(key = !!colnames, value = !!values, fill = fill) %>%
     remove_rownames %>%
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns
     column_to_rownames(var = rownames) %>%

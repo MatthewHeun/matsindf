@@ -169,12 +169,7 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
     group_by_at(c(rownames, colnames)) %>%
-
-    #
-    # TODO: Remove reliance on deprecated summarise_ function
-    #
-    summarise_(.dots = list(interp(~sum(var), var = as.name(values))) %>% set_names(values)) %>%
-
+    summarise(!!values := sum(!!as.name(values))) %>%
     spread(key = !!colnames, value = !!values, fill = fill) %>%
     remove_rownames %>%
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns

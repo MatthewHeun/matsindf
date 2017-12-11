@@ -50,7 +50,7 @@
 expand_to_tidy <- function(.data, matnames, matvals, rownames, colnames, rowtypes, coltypes, drop = NA){
   .data %>%
     # group by everything except matvals column so that "do" will act as desired
-    group_by_(.dots = setdiff(colnames(.data), matvals)) %>%
+    group_by_at(setdiff(colnames(.data), matvals)) %>%
     dplyr::do(
       # Convert .data to row, col, val format
       mat_to_rowcolval(.[[matvals]][[1]], rownames = rownames, colnames = colnames,

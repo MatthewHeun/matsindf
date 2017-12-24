@@ -45,25 +45,37 @@
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#' library(dplyr)
+#' library(tidyr)
 #' ptype <- "Products"
 #' itype <- "Industries"
-#' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
-#'                   Year    = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
-#'                   matrix  = c(   "U",   "U",   "E",   "E",   "E",   "V",   "V",   "U",   "U",   "E",   "E", "eta", "eta"),
-#'                   row     = c( "c 1", "c 2", "c 1", "c 2", "c 2", "i 1", "i 2", "c 1", "c 1", "c 1", "c 2", NA, NA),
-#'                   col     = c( "i 1", "i 2", "i 1", "i 2", "i 3", "c 1", "c 2", "i 1", "i 2", "i 1", "i 2", NA, NA),
-#'                   rowtype = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
-#'                   coltype = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
-#'                   vals  = c(   11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3)
+#' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
+#'                                 "US",  "US",  "US",  "US", "GH", "US"),
+#'                   Year    = c(  1971,  1971,  1971,  1971,  1971,  1971,  1971,
+#'                                 1980,  1980,  1980,  1980, 1971, 1980),
+#'                   matrix  = c(   "U",   "U",   "E",   "E",   "E",   "V",   "V",
+#'                                  "U",   "U",   "E",   "E", "eta", "eta"),
+#'                   row     = c( "c 1", "c 2", "c 1", "c 2", "c 2", "i 1", "i 2",
+#'                                "c 1", "c 1", "c 1", "c 2", NA, NA),
+#'                   col     = c( "i 1", "i 2", "i 1", "i 2", "i 3", "c 1", "c 2",
+#'                                "i 1", "i 2", "i 1", "i 2", NA, NA),
+#'                   rowtype = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
+#'                                ptype, ptype, ptype, ptype, NA, NA),
+#'                   coltype = c( itype, itype, itype, itype, itype, ptype, ptype,
+#'                                itype, itype, itype, itype, NA, NA),
+#'                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
+#'                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 #' ) %>% group_by(Country, Year, matrix)
-#' mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
-#'                                                              rowtypes = "rowtype", coltypes = "coltype",
-#'                                                              values = "vals")
+#' mats <- collapse_to_matrices(tidy, matnames = "matrix",
+#'                              rownames = "row", colnames = "col",
+#'                              rowtypes = "rowtype", coltypes = "coltype",
+#'                              values = "vals")
 #' mats %>% spread(key = matrix, value = vals)
 collapse_to_matrices <- function(.data, matnames, rownames, colnames, rowtypes, coltypes, values){
   # Ensure that none of rownames, rowtypes, colnames, coltypes, or values is a group variable.
   # These can't be in the group variables.  If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(rownames, rowtypes, colnames, coltypes, values) %in% groups(.data))){
+  if (any(c(rownames, rowtypes, colnames, coltypes, values) %in% groups(.data))) {
     cant_group <- c(rownames, rowtypes, colnames, coltypes, values)
     violator <- which(cant_group %in% groups(.data))
     stop(paste(cant_group[[violator]], "is an illegal grouping variable in argument .data in collapse_to_matrices."))

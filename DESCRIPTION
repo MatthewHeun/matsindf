@@ -14,5 +14,5 @@ RoxygenNote: 6.0.1
 Imports:
     rlang,
     dplyr,
-    magrittr
-    
+    magrittr,
+    tibble

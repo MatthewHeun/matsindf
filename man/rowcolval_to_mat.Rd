@@ -62,5 +62,6 @@ data3 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "val
 # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
 data4 <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
                                        ct = c("Industries", "Industries", "Industries")))
-\dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols", values = "vals", rowtype = "rt", coltype = "ct")}
+\dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
+                          values = "vals", rowtype = "rt", coltype = "ct")}
 }

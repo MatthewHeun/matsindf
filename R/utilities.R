@@ -30,26 +30,30 @@
 #'   rowcolval_to_mat(rownames = "rows", colnames = "cols",
 #'                     rowtype = "rt",    coltype = "ct", values = "vals")
 #' A
-#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
-#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct", values = "vals")
+#' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 #' # This also works for single values
-#' mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals")
-#' mat_to_rowcolval(0, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+#' mat_to_rowcolval(2, rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct", values = "vals")
+#' mat_to_rowcolval(0, rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, values, drop = NA){
-  if (is.matrix(.matrix)){
+  if (is.matrix(.matrix)) {
     out <- .matrix %>%
       setrowtype(rowtype(.matrix)) %>%
       setcoltype(coltype(.matrix)) %>%
       data.frame(check.names = FALSE) %>%
       rownames_to_column(var = rownames) %>%
       gather(key = !!colnames, value = !!values, !!!colnames(.matrix))
-    if (! is.null(rowtype(.matrix))){
+    if (!is.null(rowtype(.matrix))) {
       out[[rowtype]] <- rowtype(.matrix)
     }
-    if (! is.null(coltype(.matrix))){
+    if (!is.null(coltype(.matrix))) {
       out[[coltype]] <- coltype(.matrix)
     }
-  } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1){
+  } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
     out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA)
     names(out) <- c(rownames, colnames, values, rowtype, coltype)
@@ -57,7 +61,7 @@ mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, valu
     stop(paste("Unknown type of .matrix in mat_to_rowcolval", .matrix,
                "of class", class(.matrix), "and length", length(.matrix)))
   }
-  if (!is.na(drop)){
+  if (!is.na(drop)) {
     out <- out[out[[values]] != drop, ]
   }
   return(out)
@@ -112,16 +116,17 @@ mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, valu
 #' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
-#' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols", values = "vals", rowtype = "rt", coltype = "ct")}
+#' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
+#'                           values = "vals", rowtype = "rt", coltype = "ct")}
 rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, coltype = NULL, fill = 0){
-  if (! is.null(rowtype)){
+  if (!is.null(rowtype)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (rowtype %in% colnames(.data)){
+    if (rowtype %in% colnames(.data)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (! any(is.na(.data[[rowtype]]))){
+      if (!any(is.na(.data[[rowtype]]))) {
         # Check if all entries in the rowtype column are the same
         rt <- .data[[rowtype]]
-        if (any(rt != rt[[1]])){
+        if (any(rt != rt[[1]])) {
           # All values in the rowtype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", rowtype, "(rowtype) were same as first entry:", rt[[1]]))
         }
@@ -152,7 +157,7 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
   singles <- .data %>%
     filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
 
-  if (nrow(singles) == 1){
+  if (nrow(singles) == 1) {
     return(.data[[values]][[1]])
   }
 

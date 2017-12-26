@@ -42,12 +42,32 @@
 #'                 data in the \code{values} column.
 #'
 #' @return a data frame with matrices in columns
+#'
 #' @export
+#'
+#' @importFrom byname setrowtype
+#' @importFrom byname setcoltype
+#' @importFrom dplyr filter
+#' @importFrom dplyr groups
+#' @importFrom dplyr group_by
+#' @importFrom dplyr group_by_at
+#' @importFrom dplyr group_vars
+#' @importFrom dplyr select
+#' @importFrom dplyr summarise
+#' @importFrom dplyr ungroup
+#' @importFrom magrittr %>%
+#' @importFrom rlang :=
+#' @importFrom tibble column_to_rownames
+#' @importFrom tibble remove_rownames
+#' @importFrom tibble rownames_to_column
+#' @importFrom tidyr gather
+#' @importFrom tidyr spread
 #'
 #' @examples
 #' library(magrittr)
 #' library(dplyr)
 #' library(tidyr)
+#' library(tibble)
 #' ptype <- "Products"
 #' itype <- "Industries"
 #' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
@@ -88,7 +108,7 @@ collapse_to_matrices <- function(.data, matnames, rownames, colnames, rowtypes, 
     group_by(!!rowtypes, !!coltypes, add = TRUE) %>%
     dplyr::do(
       # Convert .data to matrices
-      !!values := rowcolval_to_mat(., rownames = rownames, colnames = colnames, values = values,
+      !!values := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, values = values,
                                    rowtype = rowtypes, coltype = coltypes)
     ) %>%
     select(!!!group_vars(.data), !!values) %>%

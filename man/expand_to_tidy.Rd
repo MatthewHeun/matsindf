@@ -43,6 +43,9 @@ Names for output columns are specified in the \code{rownames}, \code{colnames},
 The entries of the \code{\link{matsindf}}-style matrices are stored in an output column named \code{values}.
 }
 \examples{
+library(magrittr)
+library(dplyr)
+library(byname)
 ptype <- "Products"
 itype <- "Industries"
 tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",

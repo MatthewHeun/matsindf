@@ -62,6 +62,7 @@ See the example.
 library(magrittr)
 library(dplyr)
 library(tidyr)
+library(tibble)
 ptype <- "Products"
 itype <- "Industries"
 tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",

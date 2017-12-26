@@ -19,6 +19,8 @@
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#' library(byname)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c1",  "c1", "c2"),
 #'                    cols = c( "i1",  "i2", "i2"),
@@ -90,6 +92,9 @@ mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, valu
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#' library(byname)
+#' library(dplyr)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c 1",  "c 1", "c 2"),
 #'                    cols = c( "i 1",  "i 2", "i 2"),
@@ -136,14 +141,14 @@ rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, 
     }
   }
 
-  if (! is.null(coltype)){
+  if (! is.null(coltype)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (coltype %in% colnames(.data)){
+    if (coltype %in% colnames(.data)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (! any(is.na(.data[[coltype]]))){
+      if (! any(is.na(.data[[coltype]]))) {
         # Check if all entries in the rowtype column are the same
         ct <- .data[[coltype]]
-        if (any(ct != ct[[1]])){
+        if (any(ct != ct[[1]])) {
           # All values in the coltype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", coltype, "(coltype) were same as first entry:", ct[[1]]))
         }

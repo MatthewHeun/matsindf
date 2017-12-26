@@ -26,6 +26,9 @@
 #' @export
 #'
 #' @examples
+#' library(magrittr)
+#' library(dplyr)
+#' library(byname)
 #' ptype <- "Products"
 #' itype <- "Industries"
 #' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
@@ -61,7 +64,7 @@ expand_to_tidy <- function(.data, matnames, matvals, rownames, colnames, rowtype
     group_by_at(setdiff(colnames(.data), matvals)) %>%
     dplyr::do(
       # Convert .data to row, col, val format
-      mat_to_rowcolval(.[[matvals]][[1]], rownames = rownames, colnames = colnames,
+      mat_to_rowcolval(.data[[matvals]][[1]], rownames = rownames, colnames = colnames,
                        rowtype = rowtypes, coltype = coltypes,
                        values = matvals, drop = drop)
     ) %>%

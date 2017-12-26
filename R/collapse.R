@@ -96,9 +96,11 @@ collapse_to_matrices <- function(.data, matnames, rownames, colnames, rowtypes, 
   # Ensure that none of rownames, rowtypes, colnames, coltypes, or values is a group variable.
   # These can't be in the group variables.  If they were, we wouldn't be able to summarise them into the matrices.
   if (any(c(rownames, rowtypes, colnames, coltypes, values) %in% groups(.data))) {
-    cant_group <- c(rownames, rowtypes, colnames, coltypes, values)
+    cant_group <- c(rownames, colnames, rowtypes, coltypes, values)
     violator <- which(cant_group %in% groups(.data))
-    stop(paste(cant_group[[violator]], "is an illegal grouping variable in argument .data in collapse_to_matrices."))
+    stop(paste(cant_group[[violator]], " are grouping variables.",
+               "Cannot group on rownames, colnames,",
+               "rowtypes, coltypes, or values in argument .data of collapse_to_matrices."))
   }
   .data %>%
     # We want to add grouping on the rowtypes and coltypes columns.

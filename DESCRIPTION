@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Matthew Kuperus Heun
 Maintainer: Matthew Kuperus Heun <matthew.heun@me.com>
 Description: Provides functions to collapse a tidy data frame into matrices in a data frame
-    and exapnd a data frame of matrices into a tidy data frame.
+    and expand a data frame of matrices into a tidy data frame.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -13,6 +13,44 @@ library(byname)
 library(testthat)
 
 ###########################################################
+context("small example")
+###########################################################
+
+test_that("small example works as expected", {
+  tidy <- data.frame(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                     row = c("i1", "i1", "i2", "i1", "i2"),
+                     col = c("p1", "p2", "p2", "p1", "p2"),
+                     vals = c(1, 2, 3, 4, 5)) %>%
+    mutate(
+      rowtype = "Industries",
+      coltype  = "Products"
+    ) %>%
+    group_by(matrix)
+  mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = "rowtype", coltypes = "coltype")
+  # Test for V1
+  expect_equal(mats$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
+                                            dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%
+    setrowtype("Industries") %>% setcoltype("Products"))
+  # Test for V2
+  expect_equal(mats$vals[[2]], matrix(c(4, 0, 0, 5), nrow = 2, ncol = 2, byrow = TRUE,
+                                      dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%
+                 setrowtype("Industries") %>% setcoltype("Products"))
+  # Now expand everything back out, just for good measure
+  tidy2 <- mats %>%
+    expand_to_tidy(matnames = "matrix", matvals = "vals",
+                   rownames = "row", colnames = "col",
+                   rowtypes = "rowtype", coltypes = "coltype", drop = 0) %>%
+    mutate(
+      # The original tidy data frame had factors
+      row = as.factor(row),
+      col = as.factor(col)
+    )
+  expect_equal(tidy2, tidy)
+})
+
+###########################################################
 context("collapse")
 ###########################################################
 
@@ -28,9 +66,9 @@ test_that("collapse_to_matrices works as expected", {
                      coltype = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
                      vals  = c(   11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3)
   ) %>% group_by(Country, Year, matrix)
-  mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
-                               rowtypes = "rowtype", coltypes = "coltype",
-                               values = "vals")
+  mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = "rowtype", coltypes = "coltype")
 
   A <- matrix(c(11, 0,
                 0, 22),

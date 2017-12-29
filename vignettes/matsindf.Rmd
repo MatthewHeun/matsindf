@@ -2,6 +2,8 @@
 title: "<tt>matsindf</tt> Vignette"
 author: "Matthew Kuperus Heun"
 date: "`r Sys.Date()`"
+header-includes:
+   - \usepackage{amsmath}
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{matsindf Vignette}
@@ -15,9 +17,21 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(dplyr)
+library(tidyr)
 library(tibble)
+library(byname)
 library(matsindf)
 ```
+
+<!-- Establish some helpful LaTeX shortcuts for equations -->
+\newcommand{\transpose}[1]{#1^\mathrm{T}}
+\newcommand{\inverse}[1]{#1^{\textnormal{-}1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\newcommand{\colvec}[1]{\mathbf{#1}}
+\newcommand{\rowvec}[1]{\transpose{\colvec{#1}}}
+\newcommand{\inversetranspose}[1]{\transpose{\left( \inverse{\mat{#1}} \right)}}
+\newcommand{\transposeinverse}[1]{\inverse{\left( \transpose{\mat{#1}} \right)}}
+\newcommand{\hatinv}[1]{\inverse{\widehat{#1}}}
 
 
 ## Introduction
@@ -212,60 +226,68 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
 ```
 
 With the metadata now in place, 
-the tidy data frame can be collapsed to a matsindf data frame.
-<tt>collapse_to_matrices</tt> relies on grouping to form matrices.
+<tt>UKEnergy2000_with_metadata</tt> can be collapsed to a matsindf data frame
+with the <tt>collapse_to_matrices</tt> of <tt>matsindf</tt>.
+Much like the <tt>summarise</tt> function in the <tt>dplyr</tt> package,
+<tt>collapse_to_matrices</tt> relies on grouping to indicate which 
+rows of the tidy data frame belong in which matrices.
 The usual approach is to <tt>group_by</tt> 
 the <tt>matnames</tt> column and any other columns to be preserved in the output,
 in this case, <tt>Country</tt> and <tt>Year</tt>.
 
 ```{r}
-Energy <- UKEnergy2000_with_metadata %>% 
+EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, UVY) %>% 
   collapse_to_matrices(matnames = "UVY", 
                        rownames = "rownames", colnames = "colnames", 
                        rowtypes = "rowtypes", coltypes = "coltypes", 
                        values = "E.ktoe") %>% 
   rename(matrix.name = UVY, matrix = E.ktoe)
-glimpse(Energy)
-# 
+
+# The remaining columns are Country, Year, matrix.name, and matrix
+glimpse(EnergyMats_2000)
+
 # To access one of the matrices, try one of these approaches:
-# 
-# The U matrix
-(Energy %>% filter(matrix.name == "U"))[["matrix"]]
+(EnergyMats_2000 %>% filter(matrix.name == "U"))[["matrix"]] # The U matrix
 
-# The V matrix
-Energy$matrix[[2]]
+EnergyMats_2000$matrix[[2]] # The V matrix
 
-# The Y matrix
-Energy$matrix[[3]]
+EnergyMats_2000$matrix[[3]] # The Y matrix
 ```
-
-The result is a <tt>matsindf</tt> data frame.
-
-
-
-information
-that specifies row and column names and 
-row and column types. 
-
-
-
-requires information 
-
-
-
-
-
-A tidy data frame can be *collapse*d to a <tt>matsindf</tt>
-data frame if suitable metadata colums are present. 
-
-
 
 To show the power of <tt>matsindf</tt> with <tt>tidyverse</tt> functional programming,
 we add some noise to the data to create a second <tt>Year</tt> and another <tt>Country</tt>.
+Energy balance is verified by 
 
+$$\mat{W} = \transpose{\mat{V}} - \mat{U},$$
+and
 
+$$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
+But energy balance fails for matrices where noise was added
 
+```{r}
+# Create rows for a fictitious country "AB"
+Energy <- EnergyMats_2000 %>% 
+  rbind(EnergyMats_2000 %>% mutate(Country = "AB")) %>% 
+  spread(key = Year, value = matrix) %>% 
+  # Add a column of multipliers to add noise.
+  mutate(
+    mult = runif(nrow(.), min = 0.9, max = 1.1),
+    `2001` = elementproduct_byname(mult, `2000`),
+    mult = NULL
+  ) %>% 
+  gather(key = Year, value = matrix, `2000`, `2001`) %>% 
+  spread(key = matrix.name, value = matrix) %>% 
+  # Check energy balance
+  mutate(
+    W = difference_byname(transpose_byname(V), U),
+    y = rowsums_byname(Y),
+    # Need to set column name and type on y so it can be subtracted from row sums of W
+    err = difference_byname(rowsums_byname(W), 
+                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry"))
+  )
+Energy %>% select(Year, Country, err) %>% arrange(Year)
+```
 
 
 

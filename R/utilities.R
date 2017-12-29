@@ -6,11 +6,11 @@
 #' Optionally, values can be dropped.
 #'
 #' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
+#' @param   values a string for the name of the output column containing values
 #' @param rownames a string for the name of the output column containing row names
 #' @param colnames a string for the name of the output column containing column names
 #' @param  rowtype a string for the name of the output column containing row types
 #' @param  coltype a string for the name of the output column containing column types
-#' @param   values a string for the name of the output column containing values
 #' @param     drop if specified, the value to be dropped from output.
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
@@ -37,11 +37,13 @@
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 #' # This also works for single values
-#' mat_to_rowcolval(2, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", values = "vals")
-#' mat_to_rowcolval(0, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
-mat_to_rowcolval <- function(.matrix, rownames, colnames, rowtype, coltype, values, drop = NA){
+#' mat_to_rowcolval(2, values = "vals",
+#'                  rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct")
+#' mat_to_rowcolval(0, values = "vals",
+#'                  rownames = "rows", colnames = "cols",
+#'                  rowtype = "rt", coltype = "ct", drop = 0)
+mat_to_rowcolval <- function(.matrix, values, rownames, colnames, rowtype, coltype, drop = NA){
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
       setrowtype(rowtype(.matrix)) %>%

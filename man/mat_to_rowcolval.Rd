@@ -4,11 +4,13 @@
 \alias{mat_to_rowcolval}
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
-mat_to_rowcolval(.matrix, rownames, colnames, rowtype, coltype, values,
+mat_to_rowcolval(.matrix, values, rownames, colnames, rowtype, coltype,
   drop = NA)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}
+
+\item{values}{a string for the name of the output column containing values}
 
 \item{rownames}{a string for the name of the output column containing row names}
 
@@ -17,8 +19,6 @@ mat_to_rowcolval(.matrix, rownames, colnames, rowtype, coltype, values,
 \item{rowtype}{a string for the name of the output column containing row types}
 
 \item{coltype}{a string for the name of the output column containing column types}
-
-\item{values}{a string for the name of the output column containing values}
 
 \item{drop}{if specified, the value to be dropped from output.
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
@@ -52,8 +52,10 @@ mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
 mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
 # This also works for single values
-mat_to_rowcolval(2, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", values = "vals")
-mat_to_rowcolval(0, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+mat_to_rowcolval(2, values = "vals",
+                 rownames = "rows", colnames = "cols",
+                 rowtype = "rt", coltype = "ct")
+mat_to_rowcolval(0, values = "vals",
+                 rownames = "rows", colnames = "cols",
+                 rowtype = "rt", coltype = "ct", drop = 0)
 }

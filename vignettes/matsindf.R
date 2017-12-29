@@ -6,6 +6,7 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(tidyr)
 library(tibble)
+library(ggplot2)
 library(byname)
 library(matsindf)
 
@@ -26,8 +27,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
       # Identify any places where our logic is faulty.
       TRUE ~ NA_character_
     ),
-    # Columns for rownames, colnames, rowtypes, and coltypes 
-    # use the matrix name column (UVY) as their key,
+    # The rownames, colnames, rowtypes, and coltypes columns
+    # are constructed using 
+    # the matrix name column (UVY) as a key,
     # together with the knowledge that
     # U is Product by Industry, 
     # V is Industry by Product, and 
@@ -87,25 +89,73 @@ EnergyMats_2000$matrix[[2]] # The V matrix
 EnergyMats_2000$matrix[[3]] # The Y matrix
 
 ## ------------------------------------------------------------------------
-# Create rows for a fictitious country "AB"
 Energy <- EnergyMats_2000 %>% 
+  # Create rows for a fictitious country "AB".
+  # Although these rows are same as the "GB" rows,
+  # they serve to illustrate functional programming with matsindf.
   rbind(EnergyMats_2000 %>% mutate(Country = "AB")) %>% 
   spread(key = Year, value = matrix) %>% 
-  # Add a column of multipliers to add noise.
   mutate(
-    mult = runif(nrow(.), min = 0.9, max = 1.1),
-    `2001` = elementproduct_byname(mult, `2000`),
-    mult = NULL
+    `2001` = `2000`
   ) %>% 
   gather(key = Year, value = matrix, `2000`, `2001`) %>% 
-  spread(key = matrix.name, value = matrix) %>% 
-  # Check energy balance
+  # Now spread to put each matrix in a column.
+  spread(key = matrix.name, value = matrix)
+
+glimpse(Energy)
+
+## ------------------------------------------------------------------------
+Check <- Energy %>% 
   mutate(
     W = difference_byname(transpose_byname(V), U),
     y = rowsums_byname(Y),
-    # Need to set column name and type on y so it can be subtracted from row sums of W
+    # Need to change column name and type on y so it can be subtracted from row sums of W
     err = difference_byname(rowsums_byname(W), 
-                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry"))
+                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry")),
+    EBalOK = iszero_byname(err)
   )
-Energy %>% select(Year, Country, err) %>% arrange(Year)
+Check %>% select(Country, Year, EBalOK)
+
+## ------------------------------------------------------------------------
+Etas <- Energy %>% 
+  mutate(
+    g = rowsums_byname(V),
+    eta = transpose_byname(U) %>% rowsums_byname() %>% 
+      hatize_byname() %>% invert_byname() %>% 
+      matrixproduct_byname(g) %>% 
+      setcolnames_byname("eta") %>% setcoltype("Efficiency")
+  ) %>% 
+  select(Country, Year, eta)
+
+Etas$eta[[1]]
+
+## ------------------------------------------------------------------------
+etas_forgraphing <- Etas %>% 
+  gather(key = matrix.names, value = matrix, eta) %>% 
+  expand_to_tidy(matnames = "matrix.names", matvals = "matrix", 
+                 rownames = "Industry", colnames = "etas", 
+                 rowtypes = "rowtype", coltypes = "Efficiencies") %>% 
+  mutate(
+    # Eliminate columns we no longer need.
+    matrix.names = NULL,
+    etas = NULL, 
+    rowtype = NULL, 
+    Efficiencies = NULL
+  ) %>% 
+  rename(
+    eta = matrix
+  )
+
+etas_forgraphing %>% filter(Country == "GB", Year == 2000)
+
+## ------------------------------------------------------------------------
+etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
+  ggplot(mapping = aes_string(x = "Industry", y = "eta", fill = "Industry", colour = "Industry")) + 
+  geom_bar(stat = "identity") +
+  labs(x = NULL, y = expression(eta), fill = NULL) + 
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  scale_fill_manual(values = rep("white", nrow(etas_forgraphing))) +
+  scale_colour_manual(values = rep("gray20", nrow(etas_forgraphing))) + 
+  guides(fill = FALSE, colour = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.4, hjust = 1))
 

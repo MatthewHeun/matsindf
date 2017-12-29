@@ -14,13 +14,14 @@ Depends: R (>= 2.10)
 Imports:
     byname,
     dplyr,
+    ggplot2,
     magrittr,
     rlang,
     tibble,
     tidyr
 Suggests:
-    testthat,
     knitr, 
-    rmarkdown
+    rmarkdown,
+    testthat
 VignetteBuilder: 
     knitr

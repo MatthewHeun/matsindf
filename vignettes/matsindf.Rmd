@@ -7,8 +7,29 @@ header-includes:
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{matsindf Vignette}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+references:
+- id: heun2017
+  title: A physical supply-use table framework for energy analysis on the energy conversion chain
+  author:
+  - family: Heun
+    given: Matthew
+  - family: Owen
+    given: Anne
+  - family: Brockway
+    given: Paul
+  container-title: Sustainability Research Institute Papers
+  volume: 111
+  URL: 'http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf'
+  publisher: University of Leeds, School of Earth and Environment, Sustainability Research Institute
+  page: 
+  type: article-journal
+  issued:
+    year: 2017
+    month: 13 November
 ---
 
 ```{r setup, include = FALSE}
@@ -19,13 +40,14 @@ knitr::opts_chunk$set(
 library(dplyr)
 library(tidyr)
 library(tibble)
+library(ggplot2)
 library(byname)
 library(matsindf)
 ```
 
 <!-- Establish some helpful LaTeX shortcuts for equations -->
 \newcommand{\transpose}[1]{#1^\mathrm{T}}
-\newcommand{\inverse}[1]{#1^{\textnormal{-}1}}
+\newcommand{\inverse}[1]{#1^{\mathrm{-}1}}
 \newcommand{\mat}[1]{\mathbf{#1}}
 \newcommand{\colvec}[1]{\mathbf{#1}}
 \newcommand{\rowvec}[1]{\transpose{\colvec{#1}}}
@@ -38,14 +60,17 @@ library(matsindf)
 
 Matrices are important mathematical objects, 
 and they often describe networks of flows among nodes. 
-Examples of flows and nodes are
+Examples of systems containing flows and nodes include
 
-* nutrients and organisms,
-* materials and industries, and
-* money and economic sectors.
+| System type   | Flows      | Nodes
+|:--------------|:-----------|:---------
+| Ecological    | nutrients  | organisms
+| Manufacturing | materials  | factories
+| Economic      | money      | economic sectors
 
-Matrices provide automatic organization of network-wide calculations,
-thereby simplifying the work of analysts who study entire networks.
+The power of matrices lies in their ability 
+to organize network-wide calculations,
+thereby simplifying the work of analysts who study entire systems.
 
 But [wouldn't it be nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) ...
 
@@ -75,7 +100,7 @@ The first and third items are made possible by the <tt>byname</tt> package.
 The middle item 
 (an easy way to create data frames
 whose entries are not numbers but entire matrices)
-is why <tt>matsindf</tt> exists.
+is the reason <tt>matsindf</tt> exists.
 
 
 ## <tt>matsindf</tt>
@@ -83,59 +108,53 @@ is why <tt>matsindf</tt> exists.
 The <tt>matsindf</tt> package provides functions to convert 
 a suitably-formatted 
 [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
-data frame into a data frame containing columns of matrices.
+data frame into a data frame containing a column of matrices.
 When <tt>matsindf</tt> functions are used 
 in conjunction with the <tt>byname</tt> package, 
 analysts can wield the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
 [<tt>tidyverse</tt>](http://www.tidyverse.org) 
-functional programming.
+functional programming simultaneously.
 This vignette demonstrates the use of these packages
 and suggests a workflow to accomplish
 sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
 
-## Example data
+## Data: <tt>UKEnergy2000</tt>
 
 To demonstrate the use of <tt>matsindf</tt> functions,
-consider flows of energy from the environment,
+consider a network of energy flows from the environment,
 through transformation and distribution processes, and, ultimately,
 to final demand.
 Such energy flow networks are called energy conversion chains (ECCs), and
-this example is an approximation to a portion of the UK's ECC circa 2000.
+this example is based on an approximation to a portion of the UK's ECC circa 2000.
 (Note that these data are to be used for demonstration purposes only and
 have been rounded to 1--2 significant digits.)
-This example first appeared in Figures 3 and 4 of the paper:
-
-> M.K. Heun, A. Owen, and P.E. Brockway.
-> [A physical supply-use table framework for energy analysis 
-> on the energy conversion 
-> chain](http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf).
-> Sustainability Research Institute Paper 111,
-> University of Leeds, School of Earth and Environment,
-> Sustainability Research Institute,
-> Leeds, England,
-> 13 November 2017.
+These example data first appeared in Figures 3 and 4 
+of Heun, Owen, and Brockway [-@heun2017].
 
 ```{r}
 head(UKEnergy2000)
 ```
 
-<tt>Country</tt> and <tt>Year</tt> contain single values, 
-<tt>GB</tt> and <tt>2000</tt>, respectively.
+<tt>Country</tt> and <tt>Year</tt> contain only one value each, 
+<tt>GB</tt> and <tt>2000</tt> respectively.
 Following conventions from the [International Energy Agency](http://www.iea.org)'s 
 [energy balance tables](http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/), 
 
-* <tt>Ledger.side</tt> indicates <tt>Supply</tt> and <tt>Consumption</tt>;
+* <tt>Ledger.side</tt> indicates <tt>Supply</tt> or <tt>Consumption</tt>;
 * <tt>Flow.aggregation.point</tt> indicates how data are to be aggregated;
 * <tt>Flow</tt> indicates the industry, machine, or economic sector for this flow;
-* <tt>Product</tt> indicates the energy carrier in this flow; and 
-* <tt>E.ktoe</tt> gives the magnitude of the flow 
-in units of [kilotons of oil equivalent](https://www.iea.org/statistics/resources/unitconverter/)
+* <tt>Product</tt> indicates the energy carrier for this flow; and 
+* <tt>E.ktoe</tt> gives the magnitude of this flow 
+in [units](https://www.iea.org/statistics/resources/unitconverter/) of kilotons of oil equivalent
 (ktoe).
 
-The remainder of this vignette demonstrates an analysis conducted with the
-<tt>UKEnergy2000</tt> data frame. 
+Each flow is its own observation in the <tt>UKEnergy2000</tt> data frame,
+making it [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
+
+The remainder of this vignette demonstrates an analysis conducted using the
+<tt>UKEnergy2000</tt> data frame as a basis. 
 It:
 
 * shows how to *collapse* the data into appropriate matrices stored in columns of a data frame,
@@ -160,14 +179,15 @@ So the first task is to prepare for *collapse* by adding metadata columns.
 
 <tt>collapse_to_matrices</tt> needs the following information:
 
-| metadata                        | <tt>collapse_to_matrices</tt> argument
-|--------------------------------:|---------------------
-| Column of matrix names          | <tt>matnames</tt>
-| Column of matrix row names      | <tt>rownames</tt>
-| Column of matrix column name    | <tt>colnames</tt>
-| Column of matrix row types      | <tt>rowtypes</tt>
-| Column of matrix column types   | <tt>coltypes</tt>
-| Column of matrix entries        | <tt>values</tt>
+| argument to <tt>collapse_to_matrices</tt>   | identifies
+|--------------------------------------------:|:--------------------------------
+| <tt>matnames</tt>                           | Column of matrix names          
+| <tt>rownames</tt>                           | Column of matrix row names      
+| <tt>colnames</tt>                           | Column of matrix column name    
+| <tt>rowtypes</tt>                           | Column of matrix row types      
+| <tt>coltypes</tt>                           | Column of matrix column types   
+| <tt>values</tt>                             | Column of matrix entries        
+
 
 ```{r}
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
@@ -183,8 +203,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
       # Identify any places where our logic is faulty.
       TRUE ~ NA_character_
     ),
-    # Columns for rownames, colnames, rowtypes, and coltypes 
-    # use the matrix name column (UVY) as their key,
+    # The rownames, colnames, rowtypes, and coltypes columns
+    # are constructed using 
+    # the matrix name column (UVY) as a key,
     # together with the knowledge that
     # U is Product by Industry, 
     # V is Industry by Product, and 
@@ -225,15 +246,18 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
   )
 ```
 
+
+### Collapse
+
 With the metadata now in place, 
-<tt>UKEnergy2000_with_metadata</tt> can be collapsed to a matsindf data frame
-with the <tt>collapse_to_matrices</tt> of <tt>matsindf</tt>.
-Much like the <tt>summarise</tt> function in the <tt>dplyr</tt> package,
+<tt>UKEnergy2000_with_metadata</tt> can be collapsed to a <tt>matsindf</tt> data frame
+with the <tt>collapse_to_matrices</tt> function.
+Much like <tt>dplyr::summarise</tt>,
 <tt>collapse_to_matrices</tt> relies on grouping to indicate which 
 rows of the tidy data frame belong in which matrices.
-The usual approach is to <tt>group_by</tt> 
+The usual approach is to <tt>tidyr::group_by</tt> 
 the <tt>matnames</tt> column and any other columns to be preserved in the output,
-in this case, <tt>Country</tt> and <tt>Year</tt>.
+in this case <tt>Country</tt> and <tt>Year</tt>.
 
 ```{r}
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
@@ -255,80 +279,192 @@ EnergyMats_2000$matrix[[2]] # The V matrix
 EnergyMats_2000$matrix[[3]] # The Y matrix
 ```
 
-To show the power of <tt>matsindf</tt> with <tt>tidyverse</tt> functional programming,
-we add some noise to the data to create a second <tt>Year</tt> and another <tt>Country</tt>.
-Energy balance is verified by 
 
-$$\mat{W} = \transpose{\mat{V}} - \mat{U},$$
-and
+### Duplicate (for purposes of illustration)
 
-$$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
-But energy balance fails for matrices where noise was added
+Larger studies will include data for multiple countries and years. 
+The ECC data from UK in year <tt>2000</tt> can be duplicated 
+for <tt>2001</tt> and 
+for a fictitious country <tt>AB</tt>.
+Although the data are unchanged, 
+they serve to illustrate the
+functional programming aspects 
+of the <tt>matsindf</tt> and <tt>byname </tt> packages.
 
 ```{r}
-# Create rows for a fictitious country "AB"
 Energy <- EnergyMats_2000 %>% 
+  # Create rows for a fictitious country "AB".
+  # Although these rows are same as the "GB" rows,
+  # they serve to illustrate functional programming with matsindf.
   rbind(EnergyMats_2000 %>% mutate(Country = "AB")) %>% 
   spread(key = Year, value = matrix) %>% 
-  # Add a column of multipliers to add noise.
   mutate(
-    mult = runif(nrow(.), min = 0.9, max = 1.1),
-    `2001` = elementproduct_byname(mult, `2000`),
-    mult = NULL
+    `2001` = `2000`
   ) %>% 
   gather(key = Year, value = matrix, `2000`, `2001`) %>% 
-  spread(key = matrix.name, value = matrix) %>% 
-  # Check energy balance
-  mutate(
-    W = difference_byname(transpose_byname(V), U),
-    y = rowsums_byname(Y),
-    # Need to set column name and type on y so it can be subtracted from row sums of W
-    err = difference_byname(rowsums_byname(W), 
-                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry"))
-  )
-Energy %>% select(Year, Country, err) %>% arrange(Year)
+  # Now spread to put each matrix in a column.
+  spread(key = matrix.name, value = matrix)
+
+glimpse(Energy)
 ```
 
 
+### Verify data
+
+For ECC analyses, energy balance is verified by 
+
+$$\mat{W} = \transpose{\mat{V}} - \mat{U},$$
+
+and
+
+$$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
+
+```{r}
+Check <- Energy %>% 
+  mutate(
+    W = difference_byname(transpose_byname(V), U),
+    y = rowsums_byname(Y),
+    # Need to change column name and type on y so it can be subtracted from row sums of W
+    err = difference_byname(rowsums_byname(W), 
+                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry")),
+    EBalOK = iszero_byname(err)
+  )
+Check %>% select(Country, Year, EBalOK)
+```
+
+Seeing that energy is balanced across all ECCs, 
+we proceed to other analyses.
 
 
+### Efficiencies
+
+To illustrate the power of <tt>byname</tt> in the context of <tt>matsindf</tt>,
+consider the calulation of the efficiency of every industry in the ECC as a column vector.
+(See Equation 11 of Heun, Owen, and Brockway [-@heun2017].)
+
+$$\colvec{g} = \mat{V}\colvec{i}$$
+$$\colvec{\eta} = \hatinv{\transpose{\mat{U}} \colvec{i}} \colvec{g}$$
 
 
+```{r}
+Etas <- Energy %>% 
+  mutate(
+    g = rowsums_byname(V),
+    eta = transpose_byname(U) %>% rowsums_byname() %>% 
+      hatize_byname() %>% invert_byname() %>% 
+      matrixproduct_byname(g) %>% 
+      setcolnames_byname("eta") %>% setcoltype("Efficiency")
+  ) %>% 
+  select(Country, Year, eta)
+
+Etas$eta[[1]]
+```
+
+Note that only a few lines of code are required to perform the same matrix
+operations on every combintaion of <tt>Country</tt> and <tt>Year</tt>.
+In fact, the same code works to calculate the efficiency of 
+any number of industries in any number of countries and years!
 
 
+### Expand
+
+Plotting values from a <tt>matsindf</tt> data frame
+can be accomplished by *expand*ing the matrices back out to a tidy data frame.
+*Expand*ing is the reverse of *collapse*-ing, and 
+the following information must be supplied to the 
+<tt>expand_to_tidy</tt> function:
+
+| argument to <tt>expand_to_tidy</tt>         | identifies
+|--------------------------------------------:|:--------------------------------
+| <tt>matnames</tt>                           | Name of the input column of matrix names          
+| <tt>matvals</tt>                            | Name of the input column of matrices to be expanded
+| <tt>rownames</tt>                           | Name of the output column of matrix row names      
+| <tt>colnames</tt>                           | Name of the output column of matrix column name    
+| <tt>rowtypes</tt>                           | Name of the output column of matrix row types      
+| <tt>coltypes</tt>                           | Name of the output column of matrix column types   
+| <tt>drop</tt>                               | The value to be dropped from output
+
+Prior to <tt>expand</tt>ing, it is usually 
+necessary to <tt>gather</tt> columns of matrices.
+
+```{r}
+etas_forgraphing <- Etas %>% 
+  gather(key = matrix.names, value = matrix, eta) %>% 
+  expand_to_tidy(matnames = "matrix.names", matvals = "matrix", 
+                 rownames = "Industry", colnames = "etas", 
+                 rowtypes = "rowtype", coltypes = "Efficiencies") %>% 
+  mutate(
+    # Eliminate columns we no longer need.
+    matrix.names = NULL,
+    etas = NULL, 
+    rowtype = NULL, 
+    Efficiencies = NULL
+  ) %>% 
+  rename(
+    eta = matrix
+  )
+
+etas_forgraphing %>% filter(Country == "GB", Year == 2000)
+```
+
+<tt>etas_df</tt> is a data frame of efficiencies, 
+one for each Country, Year, and Industry, 
+in a format that is amenable to plotting
+with tools such as [ggplot](http://ggplot2.tidyverse.org).
+
+
+### Report
+
+The following code creates a bar graph of results for the UK in 2000:
+
+```{r}
+etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
+  ggplot(mapping = aes_string(x = "Industry", y = "eta", fill = "Industry", colour = "Industry")) + 
+  geom_bar(stat = "identity") +
+  labs(x = NULL, y = expression(eta), fill = NULL) + 
+  scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
+  scale_fill_manual(values = rep("white", nrow(etas_forgraphing))) +
+  scale_colour_manual(values = rep("gray20", nrow(etas_forgraphing))) + 
+  guides(fill = FALSE, colour = FALSE) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.4, hjust = 1))
+```
+
+
+## Conclusion
+
+This vignette demonstrated the use of the <tt>matsindf</tt> and <tt>byname</tt> packages
+and suggested a workflow to accomplish
+sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
+
+The workflow is as follows:
+
+* Clean data into tidy data frame with columns for matrix name, 
+row name, column name, row type, column type, and element value,
+similar to <tt>UKEnergy2000</tt> above.
+* Use <tt>collapse_to_matrices</tt>
+to create a data frame of matrices with columns for matrix names and 
+matrices themselves,
+similar to <tt>EnergyMats_2000</tt> above.
+* <tt>tidyr::spread</tt> the matrices to obtain a data frame with columns for each matrix,
+similar to <tt>Energy</tt> above.
+* Perform matrix algebra operations on the columns of matrices
+using <tt>byname</tt> functions in a manner similar to the process of generating
+the <tt>Etas</tt> data frame above.
+* <tt>tidyr::gather</tt> the columns to obtain a tidy data frame of matrices.
+* Use <tt>expand_to_tidy</tt> to create a tidy data frame of matrix elements,
+similar to <tt>etas_forgraphing</tt> above.
+* Perform other manipulations of the data.
+* Plot and report results.
 
 Data frames of matrices, 
 such as those created by <tt>matsindf</tt>,
 are like magic spreadsheets 
 in which single cells contain entire matrices.
+With this data structure, 
+analysts can wield the power of both 
+[matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
+[<tt>tidyverse</tt>](http://www.tidyverse.org) 
+functional programming simultaneously.
 
 
-
-A suggested analysis workflow is as follows:
-
-* Munge data into tidy data frame with columns for matrix name, 
-row name, column name, row type, column type, and element value,
-similar to <tt>tidy</tt> above.
-* Use <tt>matsindf::collapse_to_matrices</tt>
-to create a data frame of matrices with columns for matrix names and 
-matrices themselves,
-similar to <tt>mats</tt> above.
-* <tt>tidyr::spread</tt> the matrices to obtain a data frame with columns for each matrix,
-similar to <tt>results</tt> above.
-* Perform matrix algebra operations on the columns of matrices
-using <tt>byname</tt> functions.
-* <tt>tidyr::gather</tt> the columns to obtain a tidy data frame of matrices.
-* Use <tt>matsindf::expand_to_tidy</tt> to create a tidy data frame of matrix elements.
-* <tt>tidyr::spread</tt> the data as necessary.
-* Graph or perform other manipulations of the data.
-
-
-
-
-
-... if cells of a magic spreadsheet could contain entire matrices?
-If that were possible, 
-matrix algebra operations could be performed with simple formulas
-such as <tt>=A3 + A4</tt>,
-where <tt>A3</tt> and <tt>A4</tt> are cells that contain matrices.
-
+## References

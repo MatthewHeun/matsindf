@@ -169,6 +169,7 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
       # Identify any places where our logic is faulty.
       TRUE ~ NA_character_
     ),
+    # Add a columnm for matrix row names
     rownames = case_when(
       # The U matrix is Product by Industry.
       UVY == "U" ~ Product,
@@ -176,8 +177,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
       UVY == "V" ~ Flow,
       # The Y matrix is Product by Sector.
       UVY == "Y" ~ Product,
-      TRUE ~ NA_integer_
+      TRUE ~ NA_character_
     ), 
+    # Add a column for matrix column names
     colnames = case_when(
       # The U matrix is Product by Industry.
       UVY == "U" ~ Flow,
@@ -185,7 +187,7 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
       UVY == "V" ~ Product,
       # The Y matrix is Product by Sector.
       UVY == "Y" ~ Flow,
-      TRUE ~ NA_integer_
+      TRUE ~ NA_character_
     )
   )
 ```

@@ -17,14 +17,95 @@ knitr::opts_chunk$set(
 ```
 
 
+## Introduction
+
+Matrices often describe networks of flows among nodes. 
+Examples of flows and nodes are
+
+* nutrients and organisms,
+* materials and industries, and
+* money and economic sectors.
+
+Matrices provide automatic organization of network-wide calculations,
+thereby simplifying the work of analysts who study entire networks.
+
+But [wouldn't it be nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) ...
+
+* ... if matrix algebra functions in <tt>R</tt> and other languages
+respected names 
+of matrix rows and columns (<tt>dimnames</tt> in <tt>R</tt>)?
+If that were possible,
+analysts would be freed from the task of aligning rows and columns of 
+operand matrices passed to matrix algebra functions.
+* ... if there were an easy way to create data frames
+whose entries are not numbers but entire matrices?
+If that were possible, 
+matrix algebra operations could be performed on columns
+of similar matrices.
+* ... if matrix algebra could be conducted within data frames using 
+[<tt>dplyr</tt>](http://dplyr.tidyverse.org),
+[<tt>tidyr</tt>](http://tidyr.tidyverse.org), 
+and other
+[<tt>tidyverse</tt>](http://www.tidyverse.org)
+functions?
+If that were possible, 
+analysts could combine the power of matrix mathematics
+with the simplicity of <tt>tidyverse</tt>
+functional programming.
+
+
+## <tt>matsindf</tt> is the answer!
+
+The <tt>matsindf</tt> package provides functions to convert 
+a suitably-formatted tidy data frame into a data frame containing columns of matrices.
+When <tt>matsindf</tt> functions are used 
+in conjunction with the <tt>byname</tt> package, 
+analysts can wield the power of both matrix mathematics
+and <tt>tidyverse</tt> functional programming.
+This vignette demonstrates the use of these packages
+and suggests a workflow to accomplish
+sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
+
+
+## An example
+
+To demonstrate the use of <tt>matsindf</tt> functions,
+consider an example of energy flows from the environment,
+through transformation processes, and, ultimately,
+to final demand.
+Such energy flow networks are called energy conversion chains (ECCs), and
+the example ECC is based on a portion of the UK's ECC in 2000.
+(Note that this is a partial ECC, and 
+energy data have been rounded to 1--2 significant figures.)
+The example is shown in Figures 3 and 4 of the paper:
+
+> M.K. Heun, A. Owen, and P.E. Brockway.
+> [A physical supply-use table framework for energy analysis 
+> on the energy conversion 
+> chain](http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf).
+> Sustainability Research Institute Paper 111,
+> University of Leeds, School of Earth and Environment,
+> Sustainability Research Institute,
+> Leeds, England,
+> 13 November 2017.
+
+To begin, ...
+
+
+
+## Suggested workflow
+
+
+
+
+
+
 Data frames of matrices, 
 such as those created by <tt>matsindf</tt>,
 are like magic spreadsheets 
 in which single cells contain entire matrices.
 
 
-
-## Suggested workflow
 
 A suggested analysis workflow is as follows:
 
@@ -43,4 +124,14 @@ using <tt>byname</tt> functions.
 * Use <tt>matsindf::expand_to_tidy</tt> to create a tidy data frame of matrix elements.
 * <tt>tidyr::spread</tt> the data as necessary.
 * Graph or perform other manipulations of the data.
+
+
+
+
+
+... if cells of a magic spreadsheet could contain entire matrices?
+If that were possible, 
+matrix algebra operations could be performed with simple formulas
+such as <tt>=A3 + A4</tt>,
+where <tt>A3</tt> and <tt>A4</tt> are cells that contain matrices.
 

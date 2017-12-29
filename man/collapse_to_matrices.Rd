@@ -4,13 +4,17 @@
 \alias{collapse_to_matrices}
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
-collapse_to_matrices(.data, matnames, rownames, colnames, rowtypes, coltypes,
-  values)
+collapse_to_matrices(.data, matnames, values, rownames, colnames, rowtypes,
+  coltypes)
 }
 \arguments{
 \item{.data}{the "tidy" data frame}
 
 \item{matnames}{a string identifying the column in \code{.data} containing matrix names for matrices to be created}
+
+\item{values}{a string identifying the column in \code{.data} containing values to be inserted into the matrices to be created.
+This will also be the name of the column in the output containing matrices formed from the
+data in the \code{values} column.}
 
 \item{rownames}{a string identifying the column in \code{.data} containing row names for matrices to be created}
 
@@ -19,10 +23,6 @@ collapse_to_matrices(.data, matnames, rownames, colnames, rowtypes, coltypes,
 \item{rowtypes}{a string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created}
 
 \item{coltypes}{a string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created}
-
-\item{values}{a string identifying the column in \code{.data} containing values to be inserted into the matrices to be created.
-This will also be the name of the column in the output containing matrices formed from the
-data in the \code{values} column.}
 }
 \value{
 a data frame with matrices in columns
@@ -82,9 +82,8 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 ) \%>\% group_by(Country, Year, matrix)
-mats <- collapse_to_matrices(tidy, matnames = "matrix",
+mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
                              rownames = "row", colnames = "col",
-                             rowtypes = "rowtype", coltypes = "coltype",
-                             values = "vals")
+                             rowtypes = "rowtype", coltypes = "coltype")
 mats \%>\% spread(key = matrix, value = vals)
 }

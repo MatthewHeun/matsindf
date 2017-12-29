@@ -87,15 +87,14 @@
 #'                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
 #'                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 #' ) %>% group_by(Country, Year, matrix)
-#' mats <- collapse_to_matrices(tidy, matnames = "matrix",
+#' mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
 #'                              rownames = "row", colnames = "col",
-#'                              rowtypes = "rowtype", coltypes = "coltype",
-#'                              values = "vals")
+#'                              rowtypes = "rowtype", coltypes = "coltype")
 #' mats %>% spread(key = matrix, value = vals)
-collapse_to_matrices <- function(.data, matnames, rownames, colnames, rowtypes, coltypes, values){
+collapse_to_matrices <- function(.data, matnames, values, rownames, colnames, rowtypes, coltypes){
   # Ensure that none of rownames, rowtypes, colnames, coltypes, or values is a group variable.
   # These can't be in the group variables.  If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(rownames, rowtypes, colnames, coltypes, values) %in% groups(.data))) {
+  if (any(c(values, rownames, rowtypes, colnames, coltypes) %in% groups(.data))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, values)
     violator <- which(cant_group %in% groups(.data))
     stop(paste(cant_group[[violator]], " are grouping variables.",

@@ -139,7 +139,7 @@ head(UKEnergy2000)
 
 <tt>Country</tt> and <tt>Year</tt> contain only one value each, 
 <tt>GB</tt> and <tt>2000</tt> respectively.
-Following conventions from the [International Energy Agency](http://www.iea.org)'s 
+Following conventions of the [International Energy Agency](http://www.iea.org)'s 
 [energy balance tables](http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/), 
 
 * <tt>Ledger.side</tt> indicates <tt>Supply</tt> or <tt>Consumption</tt>;
@@ -157,8 +157,9 @@ The remainder of this vignette demonstrates an analysis conducted using the
 <tt>UKEnergy2000</tt> data frame as a basis. 
 It:
 
-* shows how to *collapse* the data into appropriate matrices stored in columns of a data frame,
-* demonstrates manipulation of the matrices with <tt>byname</tt> functions,
+* shows how to *collapse* and spread 
+the data into appropriate matrices stored in columns of a data frame,
+* demonstrates analyzing the matrices with <tt>byname</tt> functions,
 * illustrates *expand*ing the matrices back into a tidy data frame, and
 * uses [<tt>ggplot</tt>](http://ggplot2.tidyverse.org) to graph the results.
 
@@ -171,23 +172,30 @@ The <tt>EnergyUK2000</tt> data frame is similar to
 "cleaned" data from an external source: 
 there are no missing entries, and 
 it is [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
-But the data are not organized as matrices.
+But the data are not organized as matrices,
+and additional metadata is needed.
 
 The <tt>collapse_to_matrices</tt> function converts a tidy data frame into a 
-<tt>matsindf</tt> data frame using using appropriate metadata columns. 
+<tt>matsindf</tt> data frame using using information within the data frame itself.
 So the first task is to prepare for *collapse* by adding metadata columns.
 
 <tt>collapse_to_matrices</tt> needs the following information:
 
 | argument to <tt>collapse_to_matrices</tt>   | identifies
 |--------------------------------------------:|:--------------------------------
-| <tt>matnames</tt>                           | Column of matrix names          
-| <tt>rownames</tt>                           | Column of matrix row names      
-| <tt>colnames</tt>                           | Column of matrix column name    
-| <tt>rowtypes</tt>                           | Column of matrix row types      
-| <tt>coltypes</tt>                           | Column of matrix column types   
-| <tt>values</tt>                             | Column of matrix entries        
+| <tt>matnames</tt>                           | Input column of matrix names          
+| <tt>values</tt>                             | Input column of matrix entries        
+| <tt>rownames</tt>                           | Input column of matrix row names      
+| <tt>colnames</tt>                           | Input column of matrix column name    
+| <tt>rowtypes</tt>                           | Input column of matrix row types      
+| <tt>coltypes</tt>                           | Input column of matrix column types   
 
+The following code gives the approach to adding metadata,
+appropriate for this application, 
+relying on <tt>Ledger.side</tt>, the sign of <tt>E.ktoe</tt>,
+and knowledge about the rows and columns for each matrix.
+Each application will have its own algorithm for identifying 
+row names, column names, row types, and column types.
 
 ```{r}
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
@@ -251,7 +259,7 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
 
 With the metadata now in place, 
 <tt>UKEnergy2000_with_metadata</tt> can be collapsed to a <tt>matsindf</tt> data frame
-with the <tt>collapse_to_matrices</tt> function.
+by the <tt>collapse_to_matrices</tt> function.
 Much like <tt>dplyr::summarise</tt>,
 <tt>collapse_to_matrices</tt> relies on grouping to indicate which 
 rows of the tidy data frame belong in which matrices.
@@ -262,10 +270,9 @@ in this case <tt>Country</tt> and <tt>Year</tt>.
 ```{r}
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, UVY) %>% 
-  collapse_to_matrices(matnames = "UVY", 
+  collapse_to_matrices(matnames = "UVY", values = "E.ktoe",
                        rownames = "rownames", colnames = "colnames", 
-                       rowtypes = "rowtypes", coltypes = "coltypes", 
-                       values = "E.ktoe") %>% 
+                       rowtypes = "rowtypes", coltypes = "coltypes") %>% 
   rename(matrix.name = UVY, matrix = E.ktoe)
 
 # The remaining columns are Country, Year, matrix.name, and matrix
@@ -338,7 +345,7 @@ we proceed to other analyses.
 
 ### Efficiencies
 
-To illustrate the power of <tt>byname</tt> in the context of <tt>matsindf</tt>,
+To illustrate the power of <tt>byname</tt> functions in the context of <tt>matsindf</tt>,
 consider the calulation of the efficiency of every industry in the ECC as a column vector.
 (See Equation 11 of Heun, Owen, and Brockway [-@heun2017].)
 
@@ -360,9 +367,9 @@ Etas <- Energy %>%
 Etas$eta[[1]]
 ```
 
-Note that only a few lines of code are required to perform the same matrix
-operations on every combintaion of <tt>Country</tt> and <tt>Year</tt>.
-In fact, the same code works to calculate the efficiency of 
+Note that only a few lines of code are required to perform the same series of 
+matrix operations on every combintaion of <tt>Country</tt> and <tt>Year</tt>.
+In fact, the same code will to calculate the efficiency of 
 any number of industries in any number of countries and years!
 
 
@@ -382,7 +389,7 @@ the following information must be supplied to the
 | <tt>colnames</tt>                           | Name of the output column of matrix column name    
 | <tt>rowtypes</tt>                           | Name of the output column of matrix row types      
 | <tt>coltypes</tt>                           | Name of the output column of matrix column types   
-| <tt>drop</tt>                               | The value to be dropped from output
+| <tt>drop</tt>                               | A value to be dropped from output (often 0)
 
 Prior to <tt>expand</tt>ing, it is usually 
 necessary to <tt>gather</tt> columns of matrices.
@@ -404,6 +411,7 @@ etas_forgraphing <- Etas %>%
     eta = matrix
   )
 
+# Compare to Figure 8 of Heun, Owen, and Brockway (2017)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 ```
 
@@ -419,7 +427,8 @@ The following code creates a bar graph of results for the UK in 2000:
 
 ```{r}
 etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
-  ggplot(mapping = aes_string(x = "Industry", y = "eta", fill = "Industry", colour = "Industry")) + 
+  ggplot(mapping = aes_string(x = "Industry", y = "eta", 
+                              fill = "Industry", colour = "Industry")) + 
   geom_bar(stat = "identity") +
   labs(x = NULL, y = expression(eta), fill = NULL) + 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
@@ -447,6 +456,7 @@ matrices themselves,
 similar to <tt>EnergyMats_2000</tt> above.
 * <tt>tidyr::spread</tt> the matrices to obtain a data frame with columns for each matrix,
 similar to <tt>Energy</tt> above.
+* Validate the data, similar to <tt>Check</tt> above.
 * Perform matrix algebra operations on the columns of matrices
 using <tt>byname</tt> functions in a manner similar to the process of generating
 the <tt>Etas</tt> data frame above.
@@ -454,7 +464,7 @@ the <tt>Etas</tt> data frame above.
 * Use <tt>expand_to_tidy</tt> to create a tidy data frame of matrix elements,
 similar to <tt>etas_forgraphing</tt> above.
 * Perform other manipulations of the data.
-* Plot and report results.
+* Plot and report results as demonstrated by the graph above.
 
 Data frames of matrices, 
 such as those created by <tt>matsindf</tt>,

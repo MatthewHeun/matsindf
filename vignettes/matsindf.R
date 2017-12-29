@@ -72,10 +72,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
 ## ------------------------------------------------------------------------
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, UVY) %>% 
-  collapse_to_matrices(matnames = "UVY", 
+  collapse_to_matrices(matnames = "UVY", values = "E.ktoe",
                        rownames = "rownames", colnames = "colnames", 
-                       rowtypes = "rowtypes", coltypes = "coltypes", 
-                       values = "E.ktoe") %>% 
+                       rowtypes = "rowtypes", coltypes = "coltypes") %>% 
   rename(matrix.name = UVY, matrix = E.ktoe)
 
 # The remaining columns are Country, Year, matrix.name, and matrix
@@ -146,11 +145,13 @@ etas_forgraphing <- Etas %>%
     eta = matrix
   )
 
+# Compare to Figure 8 of Heun, Owen, and Brockway (2017)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 
 ## ------------------------------------------------------------------------
 etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
-  ggplot(mapping = aes_string(x = "Industry", y = "eta", fill = "Industry", colour = "Industry")) + 
+  ggplot(mapping = aes_string(x = "Industry", y = "eta", 
+                              fill = "Industry", colour = "Industry")) + 
   geom_bar(stat = "identity") +
   labs(x = NULL, y = expression(eta), fill = NULL) + 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +

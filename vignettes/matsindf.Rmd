@@ -16,12 +16,14 @@ knitr::opts_chunk$set(
 )
 library(dplyr)
 library(tibble)
+library(matsindf)
 ```
 
 
 ## Introduction
 
-Matrices often describe networks of flows among nodes. 
+Matrices are important mathematical objects, 
+and they often describe networks of flows among nodes. 
 Examples of flows and nodes are
 
 * nutrients and organisms,
@@ -42,7 +44,7 @@ operand matrices passed to matrix algebra functions.
 * ... if there were an easy way to create data frames
 whose entries are not numbers but entire matrices?
 If that were possible, 
-matrix algebra operations could be performed on columns
+matrix algebra could be performed on columns
 of similar matrices.
 * ... if matrix algebra could be conducted within data frames using 
 [<tt>dplyr</tt>](http://dplyr.tidyverse.org),
@@ -51,35 +53,45 @@ and other
 [<tt>tidyverse</tt>](http://www.tidyverse.org)
 functions?
 If that were possible, 
-analysts could combine the power of matrix mathematics
-with the simplicity of <tt>tidyverse</tt>
-functional programming.
+analysts could combine the powers of matrix mathematics and
+<tt>tidyverse</tt> functional programming.
+
+The first and third items are made possible by the <tt>byname</tt> package.
+(See <tt>vignette("byname")</tt>.)
+The middle item 
+(an easy way to create data frames
+whose entries are not numbers but entire matrices)
+is why <tt>matsindf</tt> exists.
 
 
-## <tt>matsindf</tt> is the answer!
+## <tt>matsindf</tt>
 
 The <tt>matsindf</tt> package provides functions to convert 
-a suitably-formatted tidy data frame into a data frame containing columns of matrices.
+a suitably-formatted 
+[tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
+data frame into a data frame containing columns of matrices.
 When <tt>matsindf</tt> functions are used 
 in conjunction with the <tt>byname</tt> package, 
-analysts can wield the power of both matrix mathematics
-and <tt>tidyverse</tt> functional programming.
+analysts can wield the power of both 
+[matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
+[<tt>tidyverse</tt>](http://www.tidyverse.org) 
+functional programming.
 This vignette demonstrates the use of these packages
 and suggests a workflow to accomplish
 sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
 
-## An example
+## Example data
 
 To demonstrate the use of <tt>matsindf</tt> functions,
-consider an example of energy flows from the environment,
-through transformation processes, and, ultimately,
+consider flows of energy from the environment,
+through transformation and distribution processes, and, ultimately,
 to final demand.
 Such energy flow networks are called energy conversion chains (ECCs), and
-the example ECC is based on a portion of the UK's ECC in 2000.
-(Note that this is a partial ECC, and 
-energy data have been rounded to 1--2 significant figures.)
-The example is shown in Figures 3 and 4 of the paper:
+this example is an approximation to a portion of the UK's ECC circa 2000.
+(Note that these data are to be used for demonstration purposes only and
+have been rounded to 1--2 significant digits.)
+This example first appeared in Figures 3 and 4 of the paper:
 
 > M.K. Heun, A. Owen, and P.E. Brockway.
 > [A physical supply-use table framework for energy analysis 
@@ -91,15 +103,119 @@ The example is shown in Figures 3 and 4 of the paper:
 > Leeds, England,
 > 13 November 2017.
 
-The <tt>matsindf::UKEnergy2000</tt> data frame contains the following data:
-
 ```{r}
-head(matsindf::UKEnergy2000)
+head(UKEnergy2000)
 ```
 
+<tt>Country</tt> and <tt>Year</tt> contain single values, 
+<tt>GB</tt> and <tt>2000</tt>, respectively.
+Following conventions from the [International Energy Agency](http://www.iea.org)'s 
+[energy balance tables](http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/), 
+
+* <tt>Ledger.side</tt> indicates <tt>Supply</tt> and <tt>Consumption</tt>;
+* <tt>Flow.aggregation.point</tt> indicates how data are to be aggregated;
+* <tt>Flow</tt> indicates the industry, machine, or economic sector for this flow;
+* <tt>Product</tt> indicates the energy carrier in this flow; and 
+* <tt>E.ktoe</tt> gives the magnitude of the flow 
+in units of [kilotons of oil equivalent](https://www.iea.org/statistics/resources/unitconverter/)
+(ktoe).
+
+The remainder of this vignette demonstrates an analysis conducted with the
+<tt>UKEnergy2000</tt> data frame. 
+It:
+
+* shows how to *collapse* the data into appropriate matrices stored in columns of a data frame,
+* demonstrates manipulation of the matrices with <tt>byname</tt> functions,
+* illustrates *expand*ing the matrices back into a tidy data frame, and
+* uses [<tt>ggplot</tt>](http://ggplot2.tidyverse.org) to graph the results.
 
 
 ## Suggested workflow
+
+### Prepare for *collapse*
+
+The <tt>EnergyUK2000</tt> data frame is similar to 
+"cleaned" data from an external source: 
+there are no missing entries, and 
+it is [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
+But the data are not organized as matrices.
+
+The <tt>collapse_to_matrices</tt> function converts a tidy data frame into a 
+<tt>matsindf</tt> data frame using using appropriate metadata columns. 
+So the first task is to prepare for *collapse* by adding metadata columns.
+
+<tt>collapse_to_matrices</tt> needs the following information:
+
+| metadata                        | <tt>collapse_to_matrices</tt> argument
+|--------------------------------:|---------------------
+| Column of matrix names          | <tt>matnames</tt>
+| Column of matrix row names      | <tt>rownames</tt>
+| Column of matrix column name    | <tt>colnames</tt>
+| Column of matrix row types      | <tt>rowtypes</tt>
+| Column of matrix column types   | <tt>coltypes</tt>
+| Column of matrix entries        | <tt>values</tt>
+
+```{r}
+UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
+  mutate(
+    # Add a column that indicates the matrix in which this entry belongs.
+    UVY = case_when(
+      # All negative values on the Supply side of the ledger belong in the use (U) matrix.
+      Ledger.side == "Supply" & E.ktoe <= 0 ~ "U",
+      # All positive values on the Supply side of the ledger belong in the make (V) matrix.
+      Ledger.side == "Supply" & E.ktoe > 0 ~ "V",
+      # All Consumption items belong in the final demand (Y) matrix.
+      Ledger.side == "Consumption" ~ "Y", 
+      # Identify any places where our logic is faulty.
+      TRUE ~ NA_character_
+    ),
+    rownames = case_when(
+      # The U matrix is Product by Industry.
+      UVY == "U" ~ Product,
+      # The V matrix is Industry by Product.
+      UVY == "V" ~ Flow,
+      # The Y matrix is Product by Sector.
+      UVY == "Y" ~ Product,
+      TRUE ~ NA_integer_
+    ), 
+    colnames = case_when(
+      # The U matrix is Product by Industry.
+      UVY == "U" ~ Flow,
+      # The V matrix is Industry by Product.
+      UVY == "V" ~ Product,
+      # The Y matrix is Product by Sector.
+      UVY == "Y" ~ Flow,
+      TRUE ~ NA_integer_
+    )
+  )
+```
+
+
+information
+that specifies row and column names and 
+row and column types. 
+
+
+
+requires information 
+
+
+
+
+
+A tidy data frame can be *collapse*d to a <tt>matsindf</tt>
+data frame if suitable metadata colums are present. 
+
+
+
+To show the power of <tt>matsindf</tt> with <tt>tidyverse</tt> functional programming,
+we add some noise to the data to create a second <tt>Year</tt> and another <tt>Country</tt>.
+
+
+
+
+
+
 
 
 

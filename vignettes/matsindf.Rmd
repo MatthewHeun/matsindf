@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(dplyr)
+library(tibble)
 ```
 
 
@@ -89,7 +91,11 @@ The example is shown in Figures 3 and 4 of the paper:
 > Leeds, England,
 > 13 November 2017.
 
-To begin, ...
+The <tt>matsindf::UKEnergy2000</tt> data frame contains the following data:
+
+```{r}
+head(matsindf::UKEnergy2000)
+```
 
 
 

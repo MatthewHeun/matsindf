@@ -60,7 +60,7 @@ library(matsindf)
 
 Matrices are important mathematical objects, 
 and they often describe networks of flows among nodes. 
-Examples of systems containing flows and nodes include
+Examples of systems containing flows and nodes include:
 
 | System type   | Flows      | Nodes
 |:--------------|:-----------|:---------
@@ -79,7 +79,7 @@ respected names
 of matrix rows and columns (<tt>dimnames</tt> in <tt>R</tt>)?
 If that were possible,
 analysts would be freed from the task of aligning rows and columns of 
-operand matrices passed to matrix algebra functions.
+operands (matrices) passed to matrix algebra functions.
 * ... if there were an easy way to create data frames
 whose entries are not numbers but entire matrices?
 If that were possible, 
@@ -150,7 +150,9 @@ Following conventions of the [International Energy Agency](http://www.iea.org)'s
 in [units](https://www.iea.org/statistics/resources/unitconverter/) of kilotons of oil equivalent
 (ktoe).
 
-Each flow is its own observation in the <tt>UKEnergy2000</tt> data frame,
+Each flow is its own observation 
+(its own row)
+in the <tt>UKEnergy2000</tt> data frame,
 making it [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
 
 The remainder of this vignette demonstrates an analysis conducted using the
@@ -183,12 +185,12 @@ So the first task is to prepare for *collapse* by adding metadata columns.
 
 | argument to <tt>collapse_to_matrices</tt>   | identifies
 |--------------------------------------------:|:--------------------------------
-| <tt>matnames</tt>                           | Input column of matrix names          
-| <tt>values</tt>                             | Input column of matrix entries        
-| <tt>rownames</tt>                           | Input column of matrix row names      
-| <tt>colnames</tt>                           | Input column of matrix column name    
-| <tt>rowtypes</tt>                           | Input column of matrix row types      
-| <tt>coltypes</tt>                           | Input column of matrix column types   
+| <tt>matnames</tt>                           | Name of the input column of matrix names          
+| <tt>values</tt>                             | Name of the input column of matrix entries        
+| <tt>rownames</tt>                           | Name of the input column of matrix row names      
+| <tt>colnames</tt>                           | Name of the input column of matrix column name    
+| <tt>rowtypes</tt>                           | Name of the input column of matrix row types      
+| <tt>coltypes</tt>                           | Name of the input column of matrix column types   
 
 The following code gives the approach to adding metadata,
 appropriate for this application, 
@@ -213,11 +215,11 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     ),
     # The rownames, colnames, rowtypes, and coltypes columns
     # are constructed using 
-    # the matrix name column (UVY) as a key,
+    # the matrix name column (in this case, UVY) as a key,
     # together with the knowledge that
-    # U is Product by Industry, 
-    # V is Industry by Product, and 
-    # Y is Product by (final demand) Sector.
+    # U is a Product by Industry matrix, 
+    # V is a Industry by Product matrix, and 
+    # Y is a Product by (final demand) Sector matrix.
     rownames = case_when(
       UVY == "U" ~ Product,
       UVY == "V" ~ Flow,
@@ -262,7 +264,7 @@ With the metadata now in place,
 by the <tt>collapse_to_matrices</tt> function.
 Much like <tt>dplyr::summarise</tt>,
 <tt>collapse_to_matrices</tt> relies on grouping to indicate which 
-rows of the tidy data frame belong in which matrices.
+rows of the tidy data frame belong to which matrices.
 The usual approach is to <tt>tidyr::group_by</tt> 
 the <tt>matnames</tt> column and any other columns to be preserved in the output,
 in this case <tt>Country</tt> and <tt>Year</tt>.
@@ -318,13 +320,21 @@ glimpse(Energy)
 
 ### Verify data
 
-For ECC analyses, energy balance is verified by 
+An important step in any analysis is data verfication.
+For an ECC analysis, it is important to verify that energy is conserved
+(in balance) 
+across all industries.
+Equations 1 and 2 in Heun, Owen, and Brockway [-@heun2017]
+show that energy balance is verified by 
 
 $$\mat{W} = \transpose{\mat{V}} - \mat{U},$$
 
 and
 
 $$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
+
+Energy balance verification can be implemented with <tt>byname</tt> functions
+and tidyverse functional programming:
 
 ```{r}
 Check <- Energy %>% 
@@ -339,17 +349,25 @@ Check <- Energy %>%
 Check %>% select(Country, Year, EBalOK)
 ```
 
-Seeing that energy is balanced across all ECCs, 
-we proceed to other analyses.
+This example demonstrates that energy balance can be verified for *all* combinations
+of Country and Year with a few lines of code.
+In fact, the exact same code can be applied to the <tt>Energy</tt> data frame, 
+regardless of the number of rows in it.
+
+Secure in the knowledge that energy is conserved across all ECCs
+in the <tt>Energy</tt> data frame, 
+other analyses can proceed.
 
 
 ### Efficiencies
 
-To illustrate the power of <tt>byname</tt> functions in the context of <tt>matsindf</tt>,
-consider the calulation of the efficiency of every industry in the ECC as a column vector.
-(See Equation 11 of Heun, Owen, and Brockway [-@heun2017].)
+To further illustrate the power of <tt>byname</tt> functions 
+in the context of <tt>matsindf</tt>,
+consider the calulation of the efficiency of every industry in the ECC as column vector $\eta$ 
+as shown by Equation 11 of Heun, Owen, and Brockway [-@heun2017].
 
 $$\colvec{g} = \mat{V}\colvec{i}$$
+
 $$\colvec{\eta} = \hatinv{\transpose{\mat{U}} \colvec{i}} \colvec{g}$$
 
 
@@ -376,7 +394,9 @@ any number of industries in any number of countries and years!
 ### Expand
 
 Plotting values from a <tt>matsindf</tt> data frame
-can be accomplished by *expand*ing the matrices back out to a tidy data frame.
+can be accomplished by *expand*ing the matrices 
+of the <tt>matsindf</tt> data frame (<tt>Etas</tt>)
+back out to a tidy data frame.
 *Expand*ing is the reverse of *collapse*-ing, and 
 the following information must be supplied to the 
 <tt>expand_to_tidy</tt> function:
@@ -389,7 +409,7 @@ the following information must be supplied to the
 | <tt>colnames</tt>                           | Name of the output column of matrix column name    
 | <tt>rowtypes</tt>                           | Name of the output column of matrix row types      
 | <tt>coltypes</tt>                           | Name of the output column of matrix column types   
-| <tt>drop</tt>                               | A value to be dropped from output (often 0)
+| <tt>drop</tt>                               | An optional value to be dropped from output (often 0)
 
 Prior to <tt>expand</tt>ing, it is usually 
 necessary to <tt>gather</tt> columns of matrices.
@@ -415,7 +435,7 @@ etas_forgraphing <- Etas %>%
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 ```
 
-<tt>etas_df</tt> is a data frame of efficiencies, 
+<tt>etas_forgraphing</tt> is a data frame of efficiencies, 
 one for each Country, Year, and Industry, 
 in a format that is amenable to plotting
 with tools such as [ggplot](http://ggplot2.tidyverse.org).
@@ -423,17 +443,19 @@ with tools such as [ggplot](http://ggplot2.tidyverse.org).
 
 ### Report
 
-The following code creates a bar graph of results for the UK in 2000:
+The following code creates a bar graph of efficiency results for the UK in 2000:
 
 ```{r}
-etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
+etas_UK_2000 <- etas_forgraphing %>% filter(Country == "GB", Year == 2000) 
+
+etas_UK_2000 %>% 
   ggplot(mapping = aes_string(x = "Industry", y = "eta", 
                               fill = "Industry", colour = "Industry")) + 
   geom_bar(stat = "identity") +
-  labs(x = NULL, y = expression(eta), fill = NULL) + 
+  labs(x = NULL, y = expression(eta[UK*","*2000]), fill = NULL) + 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
-  scale_fill_manual(values = rep("white", nrow(etas_forgraphing))) +
-  scale_colour_manual(values = rep("gray20", nrow(etas_forgraphing))) + 
+  scale_fill_manual(values = rep("white", nrow(etas_UK_2000))) +
+  scale_colour_manual(values = rep("gray20", nrow(etas_UK_2000))) + 
   guides(fill = FALSE, colour = FALSE) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.4, hjust = 1))
 ```
@@ -447,8 +469,10 @@ sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
 The workflow is as follows:
 
-* Clean data into tidy data frame with columns for matrix name, 
-row name, column name, row type, column type, and element value,
+* Clean data into tidy data frame with columns for
+matrix name, element value,
+row name, column name, 
+row type, and column type,
 similar to <tt>UKEnergy2000</tt> above.
 * Use <tt>collapse_to_matrices</tt>
 to create a data frame of matrices with columns for matrix names and 

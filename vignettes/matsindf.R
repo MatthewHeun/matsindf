@@ -29,11 +29,11 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     ),
     # The rownames, colnames, rowtypes, and coltypes columns
     # are constructed using 
-    # the matrix name column (UVY) as a key,
+    # the matrix name column (in this case, UVY) as a key,
     # together with the knowledge that
-    # U is Product by Industry, 
-    # V is Industry by Product, and 
-    # Y is Product by (final demand) Sector.
+    # U is a Product by Industry matrix, 
+    # V is a Industry by Product matrix, and 
+    # Y is a Product by (final demand) Sector matrix.
     rownames = case_when(
       UVY == "U" ~ Product,
       UVY == "V" ~ Flow,
@@ -149,14 +149,16 @@ etas_forgraphing <- Etas %>%
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 
 ## ------------------------------------------------------------------------
-etas_forgraphing %>% filter(Country == "GB", Year == 2000) %>% 
+etas_UK_2000 <- etas_forgraphing %>% filter(Country == "GB", Year == 2000) 
+
+etas_UK_2000 %>% 
   ggplot(mapping = aes_string(x = "Industry", y = "eta", 
                               fill = "Industry", colour = "Industry")) + 
   geom_bar(stat = "identity") +
-  labs(x = NULL, y = expression(eta), fill = NULL) + 
+  labs(x = NULL, y = expression(eta[UK*","*2000]), fill = NULL) + 
   scale_y_continuous(breaks = seq(0, 1, by = 0.2)) +
-  scale_fill_manual(values = rep("white", nrow(etas_forgraphing))) +
-  scale_colour_manual(values = rep("gray20", nrow(etas_forgraphing))) + 
+  scale_fill_manual(values = rep("white", nrow(etas_UK_2000))) +
+  scale_colour_manual(values = rep("gray20", nrow(etas_UK_2000))) + 
   guides(fill = FALSE, colour = FALSE) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.4, hjust = 1))
 

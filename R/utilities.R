@@ -125,7 +125,7 @@ mat_to_rowcolval <- function(.matrix, values, rownames, colnames, rowtype, colty
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
 #'                           values = "vals", rowtype = "rt", coltype = "ct")}
-rowcolval_to_mat <- function(.data, rownames, colnames, values, rowtype = NULL, coltype = NULL, fill = 0){
+rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
   if (!is.null(rowtype)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .data
     if (rowtype %in% colnames(.data)) {

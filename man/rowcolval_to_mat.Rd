@@ -4,17 +4,17 @@
 \alias{rowcolval_to_mat}
 \title{Convert a tidy data frame into a matrix with named rows and columns}
 \usage{
-rowcolval_to_mat(.data, rownames, colnames, values, rowtype = NULL,
+rowcolval_to_mat(.data, values, rownames, colnames, rowtype = NULL,
   coltype = NULL, fill = 0)
 }
 \arguments{
 \item{.data}{a tidy data frame containing columns for row names, column names, and values}
 
+\item{values}{the name of the column in \code{.data} containing values with which to fill the matrix (a string)}
+
 \item{rownames}{the name of the column in \code{.data} containing row names (a string)}
 
 \item{colnames}{the name of the column in \code{.data} containing column names (a string)}
-
-\item{values}{the name of the column in \code{.data} containing values with which to fill the matrix (a string)}
 
 \item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed}
 

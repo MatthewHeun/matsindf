@@ -60,7 +60,7 @@ library(matsindf)
 
 Matrices are important mathematical objects, 
 and they often describe networks of flows among nodes. 
-Examples of systems containing flows and nodes include:
+Example networks are given in the following table.
 
 | System type   | Flows      | Nodes
 |:--------------|:-----------|:---------
@@ -72,49 +72,39 @@ The power of matrices lies in their ability
 to organize network-wide calculations,
 thereby simplifying the work of analysts who study entire systems.
 
-But [wouldn't it be nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) ...
-
-* ... if matrix algebra functions in <tt>R</tt> and other languages
-respected names 
-of matrix rows and columns (<tt>dimnames</tt> in <tt>R</tt>)?
-If that were possible,
-analysts would be freed from the task of aligning rows and columns of 
-operands (matrices) passed to matrix algebra functions.
-* ... if there were an easy way to create data frames
-whose entries are not numbers but entire matrices?
+But [wouldn't it be nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) 
+if there were an easy way to create data frames
+whose entries were not numbers but entire matrices?
 If that were possible, 
 matrix algebra could be performed on columns
 of similar matrices.
-* ... if matrix algebra could be conducted within data frames using 
+
+That's the reason for <tt>matsindf</tt>.
+It provides functions to convert 
+a suitably-formatted 
+[tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
+data frame into a data frame containing a column of matrices.
+
+Furthermore, <tt>byname</tt> is a sister package that ...
+
+* ... provides matrix algebra functions that respect names of matrix rows and columns
+(<tt>dimnames</tt> in <tt>R</tt>)
+to free the analyst from the task of aligning rows and columns of 
+operands (matrices) passed to matrix algebra functions and
+* ... allows matrix algebra to be conducted within data frames using 
 [<tt>dplyr</tt>](http://dplyr.tidyverse.org),
 [<tt>tidyr</tt>](http://tidyr.tidyverse.org), 
 and other
 [<tt>tidyverse</tt>](http://www.tidyverse.org)
-functions?
-If that were possible, 
-analysts could combine the powers of matrix mathematics and
-<tt>tidyverse</tt> functional programming.
+functions.
 
-The first and third items are made possible by the <tt>byname</tt> package.
-(See <tt>vignette("byname")</tt>.)
-The middle item 
-(an easy way to create data frames
-whose entries are not numbers but entire matrices)
-is the reason <tt>matsindf</tt> exists.
-
-
-## <tt>matsindf</tt>
-
-The <tt>matsindf</tt> package provides functions to convert 
-a suitably-formatted 
-[tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
-data frame into a data frame containing a column of matrices.
-When <tt>matsindf</tt> functions are used 
-in conjunction with the <tt>byname</tt> package, 
-analysts can wield the power of both 
-[matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
+When used together, <tt>matsindf</tt> and <tt>byname</tt>
+allow analysts to wield the power of both 
+[matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics))
+and 
 [<tt>tidyverse</tt>](http://www.tidyverse.org) 
 functional programming simultaneously.
+
 This vignette demonstrates the use of these packages
 and suggests a workflow to accomplish
 sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
@@ -144,7 +134,7 @@ Following conventions of the [International Energy Agency](http://www.iea.org)'s
 
 * <tt>Ledger.side</tt> indicates <tt>Supply</tt> or <tt>Consumption</tt>;
 * <tt>Flow.aggregation.point</tt> indicates how data are to be aggregated;
-* <tt>Flow</tt> indicates the industry, machine, or economic sector for this flow;
+* <tt>Flow</tt> indicates the industry, machine, or final demand sector for this flow;
 * <tt>Product</tt> indicates the energy carrier for this flow; and 
 * <tt>E.ktoe</tt> gives the magnitude of this flow 
 in [units](https://www.iea.org/statistics/resources/unitconverter/) of kilotons of oil equivalent
@@ -178,7 +168,7 @@ But the data are not organized as matrices,
 and additional metadata is needed.
 
 The <tt>collapse_to_matrices</tt> function converts a tidy data frame into a 
-<tt>matsindf</tt> data frame using using information within the data frame itself.
+<tt>matsindf</tt> data frame using using information within the tidy data frame.
 So the first task is to prepare for *collapse* by adding metadata columns.
 
 <tt>collapse_to_matrices</tt> needs the following information:
@@ -196,8 +186,9 @@ The following code gives the approach to adding metadata,
 appropriate for this application, 
 relying on <tt>Ledger.side</tt>, the sign of <tt>E.ktoe</tt>,
 and knowledge about the rows and columns for each matrix.
-Each application will have its own algorithm for identifying 
-row names, column names, row types, and column types.
+Each type of network will have its own algorithm for identifying 
+row names, column names, row types, and column types
+in a tidy data frame.
 
 ```{r}
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
@@ -217,9 +208,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     # are constructed using 
     # the matrix name column (in this case, UVY) as a key,
     # together with the knowledge that
-    # U is a Product by Industry matrix, 
-    # V is a Industry by Product matrix, and 
-    # Y is a Product by (final demand) Sector matrix.
+    # U is a Product-by-Industry matrix, 
+    # V is a Industry-by-Product matrix, and 
+    # Y is a Product-by-Final-Demand-Sector matrix.
     rownames = case_when(
       UVY == "U" ~ Product,
       UVY == "V" ~ Flow,
@@ -296,9 +287,9 @@ The ECC data from UK in year <tt>2000</tt> can be duplicated
 for <tt>2001</tt> and 
 for a fictitious country <tt>AB</tt>.
 Although the data are unchanged, 
-they serve to illustrate the
+the additional rows serve to illustrate the
 functional programming aspects 
-of the <tt>matsindf</tt> and <tt>byname </tt> packages.
+of the <tt>matsindf</tt> and <tt>byname</tt> packages.
 
 ```{r}
 Energy <- EnergyMats_2000 %>% 
@@ -322,7 +313,7 @@ glimpse(Energy)
 
 An important step in any analysis is data verfication.
 For an ECC analysis, it is important to verify that energy is conserved
-(in balance) 
+(i.e., energy is in balance) 
 across all industries.
 Equations 1 and 2 in Heun, Owen, and Brockway [-@heun2017]
 show that energy balance is verified by 
@@ -334,19 +325,20 @@ and
 $$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
 
 Energy balance verification can be implemented with <tt>byname</tt> functions
-and tidyverse functional programming:
+and <tt>tidyverse</tt> functional programming:
 
 ```{r}
 Check <- Energy %>% 
   mutate(
     W = difference_byname(transpose_byname(V), U),
-    y = rowsums_byname(Y),
     # Need to change column name and type on y so it can be subtracted from row sums of W
     err = difference_byname(rowsums_byname(W), 
-                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry")),
+                            rowsums_byname(Y) %>% 
+                              setcolnames_byname("Industry") %>% setcoltype("Industry")),
     EBalOK = iszero_byname(err)
   )
 Check %>% select(Country, Year, EBalOK)
+all(Check$EBalOK %>% as.logical())
 ```
 
 This example demonstrates that energy balance can be verified for *all* combinations
@@ -395,7 +387,7 @@ any number of industries in any number of countries and years!
 
 Plotting values from a <tt>matsindf</tt> data frame
 can be accomplished by *expand*ing the matrices 
-of the <tt>matsindf</tt> data frame (<tt>Etas</tt>)
+of the <tt>matsindf</tt> data frame (in this example, <tt>Etas</tt>)
 back out to a tidy data frame.
 *Expand*ing is the reverse of *collapse*-ing, and 
 the following information must be supplied to the 
@@ -438,7 +430,7 @@ etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 <tt>etas_forgraphing</tt> is a data frame of efficiencies, 
 one for each Country, Year, and Industry, 
 in a format that is amenable to plotting
-with tools such as [ggplot](http://ggplot2.tidyverse.org).
+with packages such as [ggplot](http://ggplot2.tidyverse.org).
 
 
 ### Report
@@ -469,7 +461,7 @@ sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
 The workflow is as follows:
 
-* Clean data into tidy data frame with columns for
+* Clean data into a tidy data frame with columns for
 matrix name, element value,
 row name, column name, 
 row type, and column type,
@@ -487,7 +479,6 @@ the <tt>Etas</tt> data frame above.
 * <tt>tidyr::gather</tt> the columns to obtain a tidy data frame of matrices.
 * Use <tt>expand_to_tidy</tt> to create a tidy data frame of matrix elements,
 similar to <tt>etas_forgraphing</tt> above.
-* Perform other manipulations of the data.
 * Plot and report results as demonstrated by the graph above.
 
 Data frames of matrices, 

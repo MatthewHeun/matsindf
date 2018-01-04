@@ -31,9 +31,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     # are constructed using 
     # the matrix name column (in this case, UVY) as a key,
     # together with the knowledge that
-    # U is a Product by Industry matrix, 
-    # V is a Industry by Product matrix, and 
-    # Y is a Product by (final demand) Sector matrix.
+    # U is a Product-by-Industry matrix, 
+    # V is a Industry-by-Product matrix, and 
+    # Y is a Product-by-Final-Demand-Sector matrix.
     rownames = case_when(
       UVY == "U" ~ Product,
       UVY == "V" ~ Flow,
@@ -107,13 +107,14 @@ glimpse(Energy)
 Check <- Energy %>% 
   mutate(
     W = difference_byname(transpose_byname(V), U),
-    y = rowsums_byname(Y),
     # Need to change column name and type on y so it can be subtracted from row sums of W
     err = difference_byname(rowsums_byname(W), 
-                            y %>% setcolnames_byname("Industry") %>% setcoltype("Industry")),
+                            rowsums_byname(Y) %>% 
+                              setcolnames_byname("Industry") %>% setcoltype("Industry")),
     EBalOK = iszero_byname(err)
   )
 Check %>% select(Country, Year, EBalOK)
+all(Check$EBalOK %>% as.logical())
 
 ## ------------------------------------------------------------------------
 Etas <- Energy %>% 

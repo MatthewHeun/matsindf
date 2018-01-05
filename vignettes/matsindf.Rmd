@@ -99,11 +99,11 @@ and other
 functions.
 
 When used together, <tt>matsindf</tt> and <tt>byname</tt>
-allow analysts to wield the power of both 
+allow analysts to wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics))
 and 
 [<tt>tidyverse</tt>](http://www.tidyverse.org) 
-functional programming simultaneously.
+functional programming.
 
 This vignette demonstrates the use of these packages
 and suggests a workflow to accomplish
@@ -461,7 +461,7 @@ sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
 The workflow is as follows:
 
-* Clean data into a tidy data frame with columns for
+* Munge data into a tidy data frame with columns for
 matrix name, element value,
 row name, column name, 
 row type, and column type,
@@ -486,10 +486,10 @@ such as those created by <tt>matsindf</tt>,
 are like magic spreadsheets 
 in which single cells contain entire matrices.
 With this data structure, 
-analysts can wield the power of both 
+analysts can wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
 [<tt>tidyverse</tt>](http://www.tidyverse.org) 
-functional programming simultaneously.
+functional programming.
 
 
 ## References

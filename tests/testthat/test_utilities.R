@@ -130,3 +130,27 @@ test_that("mat_to_rowcolval works as expected", {
   expect_equal(B %>% nrow(), 0)
   expect_equal(names(B), c("rows", "cols", "vals", "rt", "ct"))
 })
+
+
+test_that("add_matnames works as expected", {
+  UKEnergy2000_withUVY <- UKEnergy2000 %>% add_matnames()
+  # We have saved a previous result for the add_matnames function with the following code:
+  # UKEnergy2000_with_UVY <- UKEnergy2000 %>% add_matnames()
+  # saveRDS(UKEnergy2000_with_UVY, file = "tests/UKEnergy2000_with_UVY.rds")
+  # Load it for comparison.
+  expected_with_UVY <- readRDS("UKEnergy2000_with_UVY.rds")
+  expect_equal(UKEnergy2000_withUVY, expected_with_UVY)
+})
+
+
+test_that("add_row_col_meta works as expected", {
+  UKEnergy2000_with_metadata <- UKEnergy2000 %>% add_matnames() %>% add_row_col_meta()
+  # We have saved a previous result for the add_row_col_meta function with the following code:
+  # UKEnergy2000_with_metadata <- UKEnergy2000_with_UVY %>% add_row_col_meta()
+  # saveRDS(UKEnergy2000_with_metadata, file = "tests/UKEnergy2000_with_metadata.rds")
+  # Load it for comparison.
+  expected_with_metadata <- readRDS("UKEnergy2000_with_metadata.rds")
+  expect_equal(UKEnergy2000_with_metadata, expected_with_metadata)
+})
+
+

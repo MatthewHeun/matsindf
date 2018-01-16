@@ -48,6 +48,21 @@ test_that("small example works as expected", {
       col = as.factor(col)
     )
   expect_equal(tidy2, tidy)
+
+  # Try the test when we are missing the rowtype and coltype columns
+  tidy_trimmed <- tidy %>%
+    mutate(
+      rowtype = NULL,
+      coltype = NULL
+    )
+  mats_trimmed <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+                                       rownames = "row", colnames = "col")
+  # Test for V1
+  expect_equal(mats_trimmed$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
+                                              dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+  # Test for V2
+  expect_equal(mats_trimmed$vals[[2]], matrix(c(4, 0, 0, 5), nrow = 2, ncol = 2, byrow = TRUE,
+                                              dimnames = list(c("i1", "i2"), c("p1", "p2"))))
 })
 
 ###########################################################

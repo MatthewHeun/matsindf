@@ -4,8 +4,8 @@
 \alias{collapse_to_matrices}
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
-collapse_to_matrices(.data, matnames, values, rownames, colnames, rowtypes,
-  coltypes)
+collapse_to_matrices(.data, matnames, values, rownames, colnames,
+  rowtypes = NULL, coltypes = NULL)
 }
 \arguments{
 \item{.data}{the "tidy" data frame}

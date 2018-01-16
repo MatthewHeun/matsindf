@@ -212,11 +212,9 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
 #' @importFrom dplyr mutate
 #' @importFrom dplyr case_when
 #'
-#' @export
-#'
 #' @examples
-#' add_matnames(UKEnergy2000)
-add_matnames <- function(.data,
+#' matsindf:::add_UKEnergy2000_matnames(UKEnergy2000)
+add_UKEnergy2000_matnames <- function(.data,
                          # Input columns
                          ledger_side_colname = "Ledger.side",
                          energy_colname = "E.ktoe",
@@ -277,21 +275,21 @@ add_matnames <- function(.data,
 #'         \code{rowname_colname}, \code{colname_colname},
 #'         \code{rowtype_colname}, and \code{coltype_colname}.
 #'
-#' @export
-#'
 #' @examples
 #' library(magrittr)
-#' UKEnergy2000 %>% add_matnames() %>% add_row_col_meta()
-add_row_col_meta <- function(.data,
-                             # Input column containing matrix names
-                             matname_colname = "matname",
-                             U_name = "U", V_name = "V", Y_name = "Y",
-                             product_colname = "Product", flow_colname = "Flow",
-                             industry_type = "Industry", product_type = "Product",
-                             sector_type = "Sector",
-                             # Output columns
-                             rowname_colname = "rowname", colname_colname = "colname",
-                             rowtype_colname = "rowtype", coltype_colname = "coltype"){
+#' UKEnergy2000 %>%
+#'   matsindf:::add_UKEnergy2000_matnames(.) %>%
+#'   matsindf:::add_UKEnergy2000_row_col_meta(.)
+add_UKEnergy2000_row_col_meta <- function(.data,
+                                          # Input column containing matrix names
+                                          matname_colname = "matname",
+                                          U_name = "U", V_name = "V", Y_name = "Y",
+                                          product_colname = "Product", flow_colname = "Flow",
+                                          industry_type = "Industry", product_type = "Product",
+                                          sector_type = "Sector",
+                                          # Output columns
+                                          rowname_colname = "rowname", colname_colname = "colname",
+                                          rowtype_colname = "rowtype", coltype_colname = "coltype"){
   .data %>%
     mutate(
       !!as.name(rowname_colname) := case_when(

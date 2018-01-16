@@ -1,7 +1,7 @@
 Package: matsindf
 Type: Package
 Title: Work with matrices in data frames
-Version: 0.1.0
+Version: 0.2
 Author: Matthew Kuperus Heun
 Maintainer: Matthew Kuperus Heun <matthew.heun@me.com>
 Description: Provides functions to collapse a tidy data frame into matrices in a data frame

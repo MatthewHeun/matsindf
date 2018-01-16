@@ -91,22 +91,37 @@
 #'                              rownames = "row", colnames = "col",
 #'                              rowtypes = "rowtype", coltypes = "coltype")
 #' mats %>% spread(key = matrix, value = vals)
-collapse_to_matrices <- function(.data, matnames, values, rownames, colnames, rowtypes, coltypes){
-  # Ensure that none of rownames, rowtypes, colnames, coltypes, or values is a group variable.
-  # These can't be in the group variables.  If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(values, rownames, rowtypes, colnames, coltypes) %in% groups(.data))) {
+collapse_to_matrices <- function(.data, matnames, values, rownames, colnames,
+                                 rowtypes = NULL, coltypes = NULL){
+  # Ensure that none of rownames, colnames, or values is a group variable.
+  # These can't be in the group variables.
+  # If they were, we wouldn't be able to summarise them into the matrices.
+  if (any(c(values, rownames, colnames, rowtypes, coltypes) %in% groups(.data))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, values)
     violator <- which(cant_group %in% groups(.data))
     stop(paste(cant_group[[violator]], " are grouping variables.",
                "Cannot group on rownames, colnames,",
                "rowtypes, coltypes, or values in argument .data of collapse_to_matrices."))
   }
+  # Ensure that not only one of rowtypes or coltypes is non-NULL.
+  if (xor(is.null(rowtypes), is.null(coltypes))) {
+    # xor is TRUE when is.null(rowtypes) is different from is.null(coltypes).
+    # When is.null(rowtypes) is different from is.null(coltypes),
+    # this is almost surely an error.
+    # Why would anyone set rowtype but not coltype, or vice versa.
+    # Identify this error.
+    stop(paste("One of rowtypes or coltypes was non-NULL while the other was NULL.",
+               "Both need to be NULL or both need to be non-NULL in collapse_to_matrices."))
+  }
+  # If we get here, both rowtypes and coltypes have been changed from default (NULL) or
+  # both rowtypes and coltypes have not been changed from default (NULL).
+  # Thus, we need to test only for the one of them being non-NULL.
   .data %>%
-    # We want to add grouping on the rowtypes and coltypes columns.
-    # Doing so both
-    # (a) ensures that rowtype and coltype are all same for each matrix and
-    # (b) preserves rowtype and coltype in columns.
-    group_by(!!rowtypes, !!coltypes, add = TRUE) %>%
+    {if (!is.null(rowtypes)) {
+      group_by(.data, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
+    } else {
+      .data
+    } } %>%
     dplyr::do(
       # Convert .data to matrices
       !!values := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, values = values,

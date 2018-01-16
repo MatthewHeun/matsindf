@@ -31,6 +31,7 @@ test_that("rowcolval_to_mat works as expected", {
                           cols = c( "i1",  "i2", "i2"),
                           vals = c(  11  ,  12,   22 ))
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", values = "vals")
+  expect_equal(class(A), "matrix")
   expect_equal(A, expected_mat)
   expect_null(rowtype(A)) # rowtype has not been set
   expect_null(coltype(A)) # coltype has not been set
@@ -133,8 +134,9 @@ test_that("mat_to_rowcolval works as expected", {
 
 
 test_that("add_matnames works as expected", {
-  UKEnergy2000_withUVY <- UKEnergy2000 %>% add_matnames()
-  # We have saved a previous result for the add_matnames function with the following code:
+  UKEnergy2000_withUVY <- UKEnergy2000 %>% matsindf:::add_UKEnergy2000_matnames(.)
+  # We have saved a previous result for the add_UKEnergy2000_matnames function
+  # with the following code:
   # UKEnergy2000_with_UVY <- UKEnergy2000 %>% add_matnames()
   # saveRDS(UKEnergy2000_with_UVY, file = "tests/UKEnergy2000_with_UVY.rds")
   # Load it for comparison.
@@ -144,7 +146,9 @@ test_that("add_matnames works as expected", {
 
 
 test_that("add_row_col_meta works as expected", {
-  UKEnergy2000_with_metadata <- UKEnergy2000 %>% add_matnames() %>% add_row_col_meta()
+  UKEnergy2000_with_metadata <- UKEnergy2000 %>%
+    matsindf:::add_UKEnergy2000_matnames(.) %>%
+    matsindf:::add_UKEnergy2000_row_col_meta(.)
   # We have saved a previous result for the add_row_col_meta function with the following code:
   # UKEnergy2000_with_metadata <- UKEnergy2000_with_UVY %>% add_row_col_meta()
   # saveRDS(UKEnergy2000_with_metadata, file = "tests/UKEnergy2000_with_metadata.rds")

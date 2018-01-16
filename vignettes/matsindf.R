@@ -16,9 +16,9 @@ head(UKEnergy2000, 2)
 ## ------------------------------------------------------------------------
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
   # Add a column indicating the matrix in which this entry belongs (U, V, or Y).
-  add_matnames() %>% 
+  matsindf:::add_UKEnergy2000_matnames(.) %>% 
   # Add columns for row names, column names, row types, and column types.
-  add_row_col_meta() %>% 
+  matsindf:::add_UKEnergy2000_row_col_meta(.) %>% 
   mutate(
     # Eliminate columns we no longer need
     Ledger.side = NULL,
@@ -51,11 +51,12 @@ EnergyMats_2000$matrix[[3]] # The Y matrix
 ## ------------------------------------------------------------------------
 Energy <- EnergyMats_2000 %>% 
   # Create rows for a fictitious country "AB".
-  # Although these rows are same as the "GB" rows,
+  # Although the rows for "AB" are same as the "GB" rows,
   # they serve to illustrate functional programming with matsindf.
   rbind(EnergyMats_2000 %>% mutate(Country = "AB")) %>% 
   spread(key = Year, value = matrix) %>% 
   mutate(
+    # Create a column for a second year (2001).
     `2001` = `2000`
   ) %>% 
   gather(key = Year, value = matrix, `2000`, `2001`) %>% 

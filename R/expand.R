@@ -16,8 +16,8 @@
 #' This will also be the name of the column containing matrix entries in the output data frame.
 #' @param rownames name for the output column of row names (a string)
 #' @param colnames name for the output column of column names (a string)
-#' @param rowtypes name for the output column of row types (a string)
-#' @param coltypes name for the output column of column types (a string)
+#' @param rowtypes optional name for the output column of row types (a string)
+#' @param coltypes optional name for the output column of column types (a string)
 #' @param     drop if specified, the value to be dropped from output,
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.

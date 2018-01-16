@@ -179,8 +179,8 @@ So the first task is to prepare for *collapse* by adding metadata columns.
 | <tt>values</tt>                             | Name of the input column of matrix entries        
 | <tt>rownames</tt>                           | Name of the input column of matrix row names      
 | <tt>colnames</tt>                           | Name of the input column of matrix column name    
-| <tt>rowtypes</tt>                           | Name of the input column of matrix row types      
-| <tt>coltypes</tt>                           | Name of the input column of matrix column types   
+| <tt>rowtypes</tt>                           | Optional name of the input column of matrix row types      
+| <tt>coltypes</tt>                           | Optional name of the input column of matrix column types   
 
 The following code gives the approach to adding metadata,
 appropriate for this application, 
@@ -361,9 +361,9 @@ the following information must be supplied to the
 | <tt>matvals</tt>                            | Name of the input column of matrices to be expanded
 | <tt>rownames</tt>                           | Name of the output column of matrix row names      
 | <tt>colnames</tt>                           | Name of the output column of matrix column name    
-| <tt>rowtypes</tt>                           | Name of the output column of matrix row types      
-| <tt>coltypes</tt>                           | Name of the output column of matrix column types   
-| <tt>drop</tt>                               | An optional value to be dropped from output (often 0)
+| <tt>rowtypes</tt>                           | Optional name of the output column of matrix row types      
+| <tt>coltypes</tt>                           | Optional name of the output column of matrix column types   
+| <tt>drop</tt>                               | Optional value to be dropped from output (often 0)
 
 Prior to <tt>expand</tt>ing, it is usually 
 necessary to <tt>gather</tt> columns of matrices.

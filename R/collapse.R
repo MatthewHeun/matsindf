@@ -35,8 +35,8 @@
 #' @param matnames a string identifying the column in \code{.data} containing matrix names for matrices to be created
 #' @param rownames a string identifying the column in \code{.data} containing row names for matrices to be created
 #' @param colnames a string identifying the column in \code{.data} containing column names for matrices to be created
-#' @param rowtypes a string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created
-#' @param coltypes a string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created
+#' @param rowtypes optional string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created
+#' @param coltypes optional string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created
 #' @param   values a string identifying the column in \code{.data} containing values to be inserted into the matrices to be created.
 #'                 This will also be the name of the column in the output containing matrices formed from the
 #'                 data in the \code{values} column.

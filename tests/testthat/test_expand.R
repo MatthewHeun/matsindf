@@ -103,3 +103,24 @@ test_that("expand_to_tidy works as expected", {
   expect_equal((B %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
 
 })
+
+
+test_that("expand_to_tidy works as expected without rowtype, coltype", {
+  m1 <- matrix(c(1,2,3,4), nrow = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  m2 <- m1*10
+  df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)))
+  class(df$m) <- class(df$m)[-match("AsIs", class(df$m))]
+  tidy <- expand_to_tidy(df, matnames = "matrix", , matvals = "m", rownames = "row", colnames = "col") %>%
+    as.data.frame()
+  expected_df <- data.frame(
+    matnames = c(rep("m1", 4), rep("m2", 4)),
+    row = rep(c("r1", "r2"), 4),
+    col = c(rep("c1", 2), rep("c2", 2)),
+    m = c(1, 3, 2, 4, 10, 30, 20, 40)
+  ) %>%
+    mutate(
+      row = as.character(row),
+      col = as.character(col)
+    )
+  expect_equal(tidy, expected_df)
+})

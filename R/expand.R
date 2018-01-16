@@ -58,7 +58,10 @@
 #' expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
 #'                      rownames = "rows", colnames = "cols",
 #'                      rowtypes = "rt",   coltypes = "ct", drop = 0)
-expand_to_tidy <- function(.data, matnames, matvals, rownames, colnames, rowtypes, coltypes, drop = NA){
+expand_to_tidy <- function(.data, matnames, matvals,
+                           rownames, colnames,
+                           rowtypes = NULL, coltypes = NULL,
+                           drop = NA){
   .data %>%
     # group by everything except matvals column so that "do" will act as desired
     group_by_at(setdiff(colnames(.data), matvals)) %>%

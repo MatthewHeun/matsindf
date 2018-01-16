@@ -1,6 +1,6 @@
 #' Convert a matrix to a data frame with rows, columns, and values.
 #'
-#' This function "unwraps" a matrix into a tidy data frame with
+#' This function "expands" a matrix into a tidy data frame with
 #' a values column and
 #' factors for row names, column names, row types, and column types.
 #' Optionally, values can be dropped.
@@ -43,11 +43,14 @@
 #' mat_to_rowcolval(0, values = "vals",
 #'                  rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct", drop = 0)
-mat_to_rowcolval <- function(.matrix, values, rownames, colnames, rowtype, coltype, drop = NA){
+mat_to_rowcolval <- function(.matrix, values,
+                             rownames, colnames,
+                             rowtype = NULL, coltype = NULL,
+                             drop = NA){
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
-      setrowtype(rowtype(.matrix)) %>%
-      setcoltype(coltype(.matrix)) %>%
+      # setrowtype(rowtype(.matrix)) %>%
+      # setcoltype(coltype(.matrix)) %>%
       data.frame(check.names = FALSE) %>%
       rownames_to_column(var = rownames) %>%
       gather(key = !!colnames, value = !!values, !!!colnames(.matrix))
@@ -71,7 +74,7 @@ mat_to_rowcolval <- function(.matrix, values, rownames, colnames, rowtype, colty
   return(out)
 }
 
-#' Convert a tidy data frame into a matrix with named rows and columns
+#' Collapse a tidy data frame into a matrix with named rows and columns
 #'
 #' Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
 #' are silently dropped.

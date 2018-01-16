@@ -4,8 +4,8 @@
 \alias{mat_to_rowcolval}
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
-mat_to_rowcolval(.matrix, values, rownames, colnames, rowtype, coltype,
-  drop = NA)
+mat_to_rowcolval(.matrix, values, rownames, colnames, rowtype = NULL,
+  coltype = NULL, drop = NA)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}
@@ -28,7 +28,7 @@ If \code{NA}, no values are dropped from output.}
 a data frame with rows, columns, and values
 }
 \description{
-This function "unwraps" a matrix into a tidy data frame with
+This function "expands" a matrix into a tidy data frame with
 a values column and
 factors for row names, column names, row types, and column types.
 Optionally, values can be dropped.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{rowcolval_to_mat}
 \alias{rowcolval_to_mat}
-\title{Convert a tidy data frame into a matrix with named rows and columns}
+\title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
 rowcolval_to_mat(.data, values, rownames, colnames, rowtype = NULL,
   coltype = NULL, fill = 0)

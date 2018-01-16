@@ -16,7 +16,7 @@ library(testthat)
 context("utilities")
 ###########################################################
 
-test_that("rowcolval_to_mat works as expected", {
+test_that("rowcolval_to_mat (collapse) works as expected", {
   # Establish some matrices that we expect to see.
   expected_mat <- matrix(c(11, 12,
                            0,  22),
@@ -70,7 +70,7 @@ test_that("rowcolval_to_mat works as expected", {
 })
 
 
-test_that("mat_to_rowcolval works as expected", {
+test_that("mat_to_rowcolval (expand) works as expected", {
   # This is the matrix we expect to obtain.
   expected_mat <- matrix(c(11, 12,
                            0,  22),
@@ -107,6 +107,16 @@ test_that("mat_to_rowcolval works as expected", {
                  set_rownames(NULL),
                data)
 
+  # Try when rowtype and coltype are not specified.
+  A_trimmed <- A %>% setrowtype(NULL) %>% setcoltype(NULL)
+  expect_equal(mat_to_rowcolval(A_trimmed,
+                                rownames = "rows", colnames = "cols",
+                                values = "vals",
+                                drop = 0) %>%
+                 set_rownames(1:nrow(.)),
+               data %>% mutate(rt = NULL, ct = NULL))
+
+
   # Verify that drop works correctly.
   expect_equal(
     mat_to_rowcolval(A,
@@ -130,10 +140,11 @@ test_that("mat_to_rowcolval works as expected", {
                         drop = 0)
   expect_equal(B %>% nrow(), 0)
   expect_equal(names(B), c("rows", "cols", "vals", "rt", "ct"))
+
 })
 
 
-test_that("add_matnames works as expected", {
+test_that("add_UKEnergy2000_matnames works as expected", {
   UKEnergy2000_withUVY <- UKEnergy2000 %>% matsindf:::add_UKEnergy2000_matnames(.)
   # We have saved a previous result for the add_UKEnergy2000_matnames function
   # with the following code:
@@ -145,7 +156,7 @@ test_that("add_matnames works as expected", {
 })
 
 
-test_that("add_row_col_meta works as expected", {
+test_that("add_UKEnergy2000_row_col_meta works as expected", {
   UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     matsindf:::add_UKEnergy2000_matnames(.) %>%
     matsindf:::add_UKEnergy2000_row_col_meta(.)

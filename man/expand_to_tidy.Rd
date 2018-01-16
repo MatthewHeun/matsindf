@@ -4,8 +4,8 @@
 \alias{expand_to_tidy}
 \title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
-expand_to_tidy(.data, matnames, matvals, rownames, colnames, rowtypes, coltypes,
-  drop = NA)
+expand_to_tidy(.data, matnames, matvals, rownames, colnames, rowtypes = NULL,
+  coltypes = NULL, drop = NA)
 }
 \arguments{
 \item{.data}{the data frame containing \code{\link{matsindf}}-style matrices}

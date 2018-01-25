@@ -19,9 +19,9 @@ This will also be the name of the column containing matrix entries in the output
 
 \item{colnames}{name for the output column of column names (a string)}
 
-\item{rowtypes}{name for the output column of row types (a string)}
+\item{rowtypes}{optional name for the output column of row types (a string)}
 
-\item{coltypes}{name for the output column of column types (a string)}
+\item{coltypes}{optional name for the output column of column types (a string)}
 
 \item{drop}{if specified, the value to be dropped from output,
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.

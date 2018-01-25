@@ -20,9 +20,9 @@ data in the \code{values} column.}
 
 \item{colnames}{a string identifying the column in \code{.data} containing column names for matrices to be created}
 
-\item{rowtypes}{a string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created}
+\item{rowtypes}{optional string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created}
 
-\item{coltypes}{a string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created}
+\item{coltypes}{optional string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created}
 }
 \value{
 a data frame with matrices in columns

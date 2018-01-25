@@ -29,6 +29,8 @@ test_that("small example works as expected", {
   mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtype", coltypes = "coltype")
+  # Check that groups are discarded.
+  expect_equal(length(group_vars(mats)), 0)
   # Test for V1
   expect_equal(mats$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
                                             dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%
@@ -84,7 +86,6 @@ test_that("collapse_to_matrices works as expected", {
   mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtype", coltypes = "coltype")
-
   A <- matrix(c(11, 0,
                 0, 22),
               nrow = 2, ncol = 2, byrow = TRUE,
@@ -114,5 +115,7 @@ test_that("collapse_to_matrices works as expected", {
                  setrowtype("Products") %>% setcoltype("Industries"))
   # Check that US Y turned out OK
   expect_equal((mats %>% filter(Country == "US", matrix == "Y"))$vals[[1]], A)
+  # Check that groups are discarded.
+  expect_equal(length(group_vars(mats)), 0)
 })
 

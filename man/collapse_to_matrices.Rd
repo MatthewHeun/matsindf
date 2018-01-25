@@ -55,8 +55,11 @@ Note that execution is halted if any of
 \code{rownames}, \code{rowtypes}, \code{colnames}, \code{coltypes}, or \code{values} is a grouping variable.
 \code{rowtypes} and \code{coltypes} should be the same for all rows of the same matrix;
 execution is halted if that is not the case.
-\code{\link{spread}}ing the output by \code{matnames} may be necessary before calculations are done on the matrics.
+\code{\link{spread}}ing the output by \code{matnames} may be necessary before calculations are done on the matrices.
 See the example.
+}
+\details{
+Groups are not preserved on output.
 }
 \examples{
 library(magrittr)

@@ -31,6 +31,8 @@
 #' \code{\link{spread}}ing the output by \code{matnames} may be necessary before calculations are done on the matrices.
 #' See the example.
 #'
+#' Groups are not preserved on output.
+#'
 #' @param .data the "tidy" data frame
 #' @param matnames a string identifying the column in \code{.data} containing matrix names for matrices to be created
 #' @param rownames a string identifying the column in \code{.data} containing row names for matrices to be created

@@ -341,7 +341,7 @@ Etas$eta[[1]]
 
 Note that only a few lines of code are required to perform the same series of 
 matrix operations on every combintaion of <tt>Country</tt> and <tt>Year</tt>.
-In fact, the same code will to calculate the efficiency of 
+In fact, the same code will be used to calculate the efficiency of 
 any number of industries in any number of countries and years!
 
 

@@ -33,17 +33,17 @@ including columns for
 matrix names, row names, column names, row types, column types, and values (entries in matrices).
 These column names are specified as strings by the \code{matnames}, \code{rownames}, \code{colnames},
 \code{rowtypes}, \code{coltypes}, and \code{values} arguments to \link{collapse_to_matrices}, respectively.
-An \code{\link{matsindf}}-style matrix has named rows and columns.
-In addition, \code{\link{matsindf}}-style-style matrices have "types" for row and column information,
+A \pkg{matsindf}-style matrix has named rows and columns.
+In addition, \pkg{matsindf}-style-style matrices have "types" for row and column information,
 such as "Commodities", "Industries", "Products", or "Machines".
-The row and column types for the \code{\link{matsindf}}-style matrices are stored as attributes on the matrix
+The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 (\code{rowtype} and \code{coltype}),
 which can be accessed with the \code{\link{rowtype}} and \code{\link{coltype}} functions
-of the \code{\link{matsbyname}} package.
+of the \pkg{matsbyname} package.
 Row and column types are both respected and propagated by the various \code{_byname} functions
-of the \code{\link{matsbyname}} package.
-Use the \code{_byname} functions when you do operations on the \code{\link{matsindf}}-style matrices.
-The \code{\link{matsindf}}-style-style matrices will be stored
+of the \pkg{matsbyname} package.
+Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
+The \pkg{matsindf}-style-style matrices will be stored
 in a column with same name as the incoming \code{values} column.
 This function is similar to \code{\link{summarise}} in that groups are respected.
 (In fact, calls to this function may not work properly unless grouping is provided.

@@ -1,16 +1,16 @@
 #' Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation
 #'
-#' A data frame with \code{\link{matsindf}}-style matrices contains matrices with names \code{matnames}
+#' A data frame with \pkg{matsindf}-style matrices contains matrices with names \code{matnames}
 #' in the column specified by \code{matvals}).
 #' An IO-style matrix has named rows and columns.
-#' In addition, \code{\link{matsindf}}-style matrices have "types" for row and column information, such as "Commodities", "Industries",
+#' In addition, \pkg{matsindf}-style matrices have "types" for row and column information, such as "Commodities", "Industries",
 #' "Products", or "Machines".
 #'
 #' Names for output columns are specified in the \code{rownames}, \code{colnames},
 #' \code{rowtypes}, and \code{coltypes}, arguments.
-#' The entries of the \code{\link{matsindf}}-style matrices are stored in an output column named \code{values}.
+#' The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values}.
 #'
-#' @param    .data the data frame containing \code{\link{matsindf}}-style matrices
+#' @param    .data the data frame containing \pkg{matsindf}-style matrices
 #' @param matnames name of the column in \code{.data} containing matrix names (a string)
 #' @param  matvals name of the column in \code{.data} containing IO-style matrices or constants (a string),
 #' This will also be the name of the column containing matrix entries in the output data frame.
@@ -22,7 +22,7 @@
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
 #'
-#' @return a tidy data frame containing expanded \code{\link{matsindf}}-style matrices
+#' @return a tidy data frame containing expanded \pkg{matsindf}-style matrices
 #' @export
 #'
 #' @examples

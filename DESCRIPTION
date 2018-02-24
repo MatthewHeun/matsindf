@@ -1,11 +1,11 @@
 Package: matsindf
 Type: Package
 Title: Work with matrices in data frames
-Version: 0.2
+Version: 0.2.1
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      email = "matthew.heun@me.com"))
 Author: Matthew Heun [aut, cre]
-Maintainer: Matthew Kuperus Heun <matthew.heun@me.com>
+Maintainer: Matthew Heun <matthew.heun@me.com>
 Description: Provides functions to collapse a tidy data frame into matrices in a data frame
     and expand a data frame of matrices into a tidy data frame.
 License: MIT + file LICENSE

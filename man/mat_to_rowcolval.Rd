@@ -35,7 +35,7 @@ Optionally, values can be dropped.
 }
 \examples{
 library(magrittr)
-library(byname)
+library(matsbyname)
 data <- data.frame(Country  = c("GH", "GH", "GH"),
                    rows = c( "c1",  "c1", "c2"),
                    cols = c( "i1",  "i2", "i2"),

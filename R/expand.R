@@ -28,7 +28,7 @@
 #' @examples
 #' library(magrittr)
 #' library(dplyr)
-#' library(byname)
+#' library(matsbyname)
 #' ptype <- "Products"
 #' itype <- "Industries"
 #' tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",

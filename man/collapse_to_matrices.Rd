@@ -39,9 +39,9 @@ such as "Commodities", "Industries", "Products", or "Machines".
 The row and column types for the \code{\link{matsindf}}-style matrices are stored as attributes on the matrix
 (\code{rowtype} and \code{coltype}),
 which can be accessed with the \code{\link{rowtype}} and \code{\link{coltype}} functions
-of the \code{\link{byname}} package.
+of the \code{\link{matsbyname}} package.
 Row and column types are both respected and propagated by the various \code{_byname} functions
-of the \code{\link{byname}} package.
+of the \code{\link{matsbyname}} package.
 Use the \code{_byname} functions when you do operations on the \code{\link{matsindf}}-style matrices.
 The \code{\link{matsindf}}-style-style matrices will be stored
 in a column with same name as the incoming \code{values} column.

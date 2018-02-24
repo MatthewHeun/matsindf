@@ -37,7 +37,7 @@ in which case the value in the \code{values} column is returned.
 }
 \examples{
 library(magrittr)
-library(byname)
+library(matsbyname)
 library(dplyr)
 data <- data.frame(Country  = c("GH", "GH", "GH"),
                    rows = c( "c 1",  "c 1", "c 2"),

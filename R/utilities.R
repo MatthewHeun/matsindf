@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' library(magrittr)
-#' library(byname)
+#' library(matsbyname)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c1",  "c1", "c2"),
 #'                    cols = c( "i1",  "i2", "i2"),
@@ -98,7 +98,7 @@ mat_to_rowcolval <- function(.matrix, values,
 #'
 #' @examples
 #' library(magrittr)
-#' library(byname)
+#' library(matsbyname)
 #' library(dplyr)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c 1",  "c 1", "c 2"),

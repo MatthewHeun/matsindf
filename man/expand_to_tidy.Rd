@@ -45,7 +45,7 @@ The entries of the \code{\link{matsindf}}-style matrices are stored in an output
 \examples{
 library(magrittr)
 library(dplyr)
-library(byname)
+library(matsbyname)
 ptype <- "Products"
 itype <- "Industries"
 tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",

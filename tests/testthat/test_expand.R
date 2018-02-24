@@ -9,7 +9,7 @@ library(tidyr)
 library(magrittr)
 library(tibble)
 library(lazyeval)
-library(byname)
+library(matsbyname)
 library(rlang)
 library(testthat)
 

@@ -1,5 +1,5 @@
 ---
-title: "<tt>matsindf</tt> Vignette"
+title: "Use Cases and Examples for <tt>matsindf</tt>"
 author: "Matthew Kuperus Heun"
 date: "`r Sys.Date()`"
 header-includes:

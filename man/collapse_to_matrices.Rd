@@ -34,7 +34,7 @@ matrix names, row names, column names, row types, column types, and values (entr
 These column names are specified as strings by the \code{matnames}, \code{rownames}, \code{colnames},
 \code{rowtypes}, \code{coltypes}, and \code{values} arguments to \link{collapse_to_matrices}, respectively.
 A \pkg{matsindf}-style matrix has named rows and columns.
-In addition, \pkg{matsindf}-style-style matrices have "types" for row and column information,
+In addition, \pkg{matsindf}-style matrices have "types" for row and column information,
 such as "Commodities", "Industries", "Products", or "Machines".
 The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 (\code{rowtype} and \code{coltype}),
@@ -43,8 +43,10 @@ of the \pkg{matsbyname} package.
 Row and column types are both respected and propagated by the various \code{_byname} functions
 of the \pkg{matsbyname} package.
 Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
-The \pkg{matsindf}-style-style matrices will be stored
+The \pkg{matsindf}-style matrices will be stored
 in a column with same name as the incoming \code{values} column.
+This function is similar to \code{\link{tidyr::next}}, which stores data frames into a cell of a data frame.
+With \code{collapse_to_matrices}, matrices are created.
 This function is similar to \code{\link{summarise}} in that groups are respected.
 (In fact, calls to this function may not work properly unless grouping is provided.
 Errors of the form "Error: Duplicate identifiers for rows ..." are usually fixed by
@@ -89,4 +91,7 @@ mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
                              rownames = "row", colnames = "col",
                              rowtypes = "rowtype", coltypes = "coltype")
 mats \%>\% spread(key = matrix, value = vals)
+}
+\seealso{
+\code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
 }

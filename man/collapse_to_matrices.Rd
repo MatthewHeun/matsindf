@@ -45,7 +45,7 @@ of the \pkg{matsbyname} package.
 Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
 The \pkg{matsindf}-style matrices will be stored
 in a column with same name as the incoming \code{values} column.
-This function is similar to \code{\link{tidyr::next}}, which stores data frames into a cell of a data frame.
+This function is similar to \code{\link[tidyr]{nest}}, which stores data frames into a cell of a data frame.
 With \code{collapse_to_matrices}, matrices are created.
 This function is similar to \code{\link{summarise}} in that groups are respected.
 (In fact, calls to this function may not work properly unless grouping is provided.

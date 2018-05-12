@@ -4,18 +4,18 @@
 \alias{add_UKEnergy2000_matnames}
 \title{Add a column of matrix names to tidy data frame}
 \usage{
-add_UKEnergy2000_matnames(.data, ledger_side_colname = "Ledger.side",
+add_UKEnergy2000_matnames(.DF, ledger_side_colname = "Ledger.side",
   energy_colname = "E.ktoe", supply_side = "Supply",
   consumption_side = "Consumption", matname_colname = "matname",
   U_name = "U", V_name = "V", Y_name = "Y")
 }
 \arguments{
-\item{.data}{a data frame with \code{ledger_side_colname} and \code{energy_colname}.}
+\item{.DF}{a data frame with \code{ledger_side_colname} and \code{energy_colname}.}
 
-\item{ledger_side_colname}{the name of the column in \code{.data} that contains ledger side
+\item{ledger_side_colname}{the name of the column in \code{.DF} that contains ledger side
 (a string). Default is "\code{Ledger.side}".}
 
-\item{energy_colname}{the name of the column in \code{.data} that contains energy values
+\item{energy_colname}{the name of the column in \code{.DF} that contains energy values
 (a string). Default is "\code{E.ktoe}".}
 
 \item{supply_side}{the identifier for items on the supply side of the ledger (a string).
@@ -34,7 +34,7 @@ in which this row belongs (a string). Default is "\code{UVY}".}
 \item{Y_name}{the name for the final demand matrix (a string). Default is "\code{Y}".}
 }
 \value{
-\code{.data} with an added column, \code{UVY_colname}.
+\code{.DF} with an added column, \code{UVY_colname}.
 }
 \description{
 Add a column of matrix names to tidy data frame

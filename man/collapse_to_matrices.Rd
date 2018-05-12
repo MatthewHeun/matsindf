@@ -4,25 +4,25 @@
 \alias{collapse_to_matrices}
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
-collapse_to_matrices(.data, matnames, values, rownames, colnames,
+collapse_to_matrices(.DF, matnames, values, rownames, colnames,
   rowtypes = NULL, coltypes = NULL)
 }
 \arguments{
-\item{.data}{the "tidy" data frame}
+\item{.DF}{the "tidy" data frame}
 
-\item{matnames}{a string identifying the column in \code{.data} containing matrix names for matrices to be created}
+\item{matnames}{a string identifying the column in \code{.DF} containing matrix names for matrices to be created}
 
-\item{values}{a string identifying the column in \code{.data} containing values to be inserted into the matrices to be created.
+\item{values}{a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
 This will also be the name of the column in the output containing matrices formed from the
 data in the \code{values} column.}
 
-\item{rownames}{a string identifying the column in \code{.data} containing row names for matrices to be created}
+\item{rownames}{a string identifying the column in \code{.DF} containing row names for matrices to be created}
 
-\item{colnames}{a string identifying the column in \code{.data} containing column names for matrices to be created}
+\item{colnames}{a string identifying the column in \code{.DF} containing column names for matrices to be created}
 
-\item{rowtypes}{optional string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created}
+\item{rowtypes}{optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created}
 
-\item{coltypes}{optional string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created}
+\item{coltypes}{optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created}
 }
 \value{
 a data frame with matrices in columns
@@ -50,7 +50,7 @@ With \code{collapse_to_matrices}, matrices are created.
 This function is similar to \code{\link{summarise}} in that groups are respected.
 (In fact, calls to this function may not work properly unless grouping is provided.
 Errors of the form "Error: Duplicate identifiers for rows ..." are usually fixed by
-grouping \code{.data} prior to calling this function.)
+grouping \code{.DF} prior to calling this function.)
 The usual approach is to \code{\link{group_by}} the \code{matnames} column
 and any other columns to be preserved in the output.
 Note that execution is halted if any of

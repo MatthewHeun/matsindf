@@ -3,6 +3,7 @@
 export(collapse_to_matrices)
 export(expand_to_tidy)
 export(mat_to_rowcolval)
+export(matsindf_apply)
 export(rowcolval_to_mat)
 importFrom(dplyr,case_when)
 importFrom(dplyr,filter)

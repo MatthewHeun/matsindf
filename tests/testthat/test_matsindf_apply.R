@@ -64,4 +64,8 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
   expect_equivalent(result, expected)
 })
 
+test_that("matsindf_apply fails properly when not all same type for ...", {
+  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), "unknown state in matsindf_apply")
+})
+
 

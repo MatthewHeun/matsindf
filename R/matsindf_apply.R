@@ -87,7 +87,15 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
              bind_rows() %>%
              bind_cols(.DF, .))
   }
-  stop("unknown state in matsindf_apply. ... must be all same type, all numeric, all matrices, all lists, or all character")
+
+  types <- lapply(dots, class) %>% paste(collapse = ",")
+  msg <- paste(
+    "unknown state in matsindf_apply",
+    "... must be all same type, all numeric, all matrices, all lists, or all character.",
+    "Types are:",
+    types
+  )
+  stop(msg)
 }
 
 

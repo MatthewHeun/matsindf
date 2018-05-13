@@ -59,6 +59,9 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
   expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equivalent(result, expected)
+  # Try with piped .DF argument
+  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
+  expect_equivalent(result, expected)
 })
 
 

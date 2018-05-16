@@ -30,6 +30,11 @@
 #' The return value is \code{.DF} with additional columns (at right)
 #' whose names are the names of list items returned from \code{FUN}.
 #'
+#' \code{NULL} arguments are ignored for the purposes of deciding whether
+#' all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
+#' However, all \code{NULL} arguments are passed to \code{FUN},
+#' so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
+#'
 #' @param .DF the \code{matsindf} data frame
 #' @param FUN the function to be applied to \code{.DF}
 #' @param ... named arguments to be passed by name to \code{FUN}.
@@ -61,10 +66,11 @@
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
 matsindf_apply <- function(.DF = NULL, FUN, ...){
   dots <- list(...)
-  all_dots_num  <- all(lapply(dots, FUN = is.numeric) %>% as.logical())
-  all_dots_mats <- all(lapply(dots, FUN = is.matrix) %>% as.logical())
-  all_dots_list <- all(lapply(dots, FUN = is.list) %>% as.logical())
-  all_dots_char <- all(lapply(dots, FUN = is.character) %>% as.logical())
+  dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
+  all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
+  all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
+  all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
+  all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
 
   if (is.null(.DF) & (all_dots_num | all_dots_mats)) {
     return(FUN(...))

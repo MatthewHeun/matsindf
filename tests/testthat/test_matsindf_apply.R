@@ -68,4 +68,7 @@ test_that("matsindf_apply fails properly when not all same type for ...", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), "unknown state in matsindf_apply")
 })
 
+test_that("matsindf_apply fails gracefully when some of ... are NULL", {
+  expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL), "unused argument")
+})
 

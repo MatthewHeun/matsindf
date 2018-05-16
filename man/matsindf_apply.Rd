@@ -47,6 +47,11 @@ of the form \code{argname = string},
 \code{string}s are expected to be column names in \code{.DF}.
 The return value is \code{.DF} with additional columns (at right)
 whose names are the names of list items returned from \code{FUN}.
+
+\code{NULL} arguments are ignored for the purposes of deciding whether
+all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
+However, all \code{NULL} arguments are passed to \code{FUN},
+so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
 }
 \examples{
 example_fun <- function(a, b){

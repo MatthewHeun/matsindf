@@ -48,10 +48,17 @@ of the form \code{argname = string},
 The return value is \code{.DF} with additional columns (at right)
 whose names are the names of list items returned from \code{FUN}.
 
-\code{NULL} arguments are ignored for the purposes of deciding whether
+\code{NULL} arguments in ... are ignored for the purposes of deciding whether
 all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
 However, all \code{NULL} arguments are passed to \code{FUN},
 so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
+
+If \code{.DF} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
+of a column in \code{.DF},
+\code{FUN} is called WITHOUT the argument whose column is missing.
+I.e., that argument is treated as missing.
+If \code{FUN} works despite the missing argument, execution proceeds.
+If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 }
 \examples{
 example_fun <- function(a, b){

@@ -72,3 +72,8 @@ test_that("matsindf_apply fails gracefully when some of ... are NULL", {
   expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL), "unused argument")
 })
 
+test_that("matsindf_apply fails as expected when an argument is missing from a data frame", {
+  DF <- data.frame(a = c(1,2))
+  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"), 'argument "a" is missing, with no default')
+})
+

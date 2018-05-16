@@ -30,10 +30,17 @@
 #' The return value is \code{.DF} with additional columns (at right)
 #' whose names are the names of list items returned from \code{FUN}.
 #'
-#' \code{NULL} arguments are ignored for the purposes of deciding whether
+#' \code{NULL} arguments in ... are ignored for the purposes of deciding whether
 #' all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
 #' However, all \code{NULL} arguments are passed to \code{FUN},
 #' so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
+#'
+#' If \code{.DF} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
+#' of a column in \code{.DF},
+#' \code{FUN} is called WITHOUT the argument whose column is missing.
+#' I.e., that argument is treated as missing.
+#' If \code{FUN} works despite the missing argument, execution proceeds.
+#' If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 #'
 #' @param .DF the \code{matsindf} data frame
 #' @param FUN the function to be applied to \code{.DF}
@@ -86,10 +93,18 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     return(out_df)
   }
   if (all_dots_char) {
-    args <- lapply(dots, FUN = function(colname){
+    arg_cols <- lapply(dots, FUN = function(colname){
       return(.DF[[colname]])
     })
-    return(do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), args)) %>%
+    # If one of the ... strings is not a name of a column in .DF,
+    # it is, practically speaking, a missing argument, and we should treat it as such.
+    # If an arg is not present in .DF, it will be NULL in arg_cols.
+    # To treat it as "missing," we remove it from the arg_cols.
+    arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
+    # Then, we call FUN, possibly with the missing argument.
+    # If FUN can handle the missing argument, everything will be fine.
+    # If not, an error will occur in FUN.
+    return(do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)) %>%
              bind_rows() %>%
              bind_cols(.DF, .))
   }

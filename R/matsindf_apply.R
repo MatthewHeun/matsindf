@@ -80,13 +80,21 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
   all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
 
   if (is.null(.DF) & (all_dots_num | all_dots_mats)) {
+    # We're not in a data frame.
+    # Simply call FUN on ...
     return(FUN(...))
   }
   if (is.null(.DF) & all_dots_list) {
+    # All arguments are coming in as lists.
+    # Map FUN across the lists.
+    # The result of Map is a list containing all the rows of output.
+    # But we want columns of output, so transpose.
     out_list <- transpose(Map(f = FUN, ...))
     numrows <- length(out_list[[1]])
     numcols <- length(out_list)
+    # Create a data frame filled with NA values.
     out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>% set_names(names(out_list))
+    # Fill the data frame with new columns.
     for (j in 1:numcols) {
       out_df[[j]] <- out_list[[j]]
     }
@@ -109,6 +117,8 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
              bind_cols(.DF, .))
   }
 
+  # If we get here, we don't know how to deal with our inputs.
+  # Try our best to give a meaningful error message.
   types <- lapply(dots, class) %>% paste(collapse = ",")
   msg <- paste(
     "unknown state in matsindf_apply",

@@ -130,6 +130,29 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
 }
 
 
+#' Determine types of ... argument for matsindf_apply
+#'
+#' This is a convenience function that returns a logical list for the types of \code{...}
+#' with components named \code{all_dots_num}, \code{all_dots_mats},
+#' \code{all_dots_list}, and \code{all_dots_char}.
+#'
+#' When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
+#' When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
+#' When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
+#' When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
+#'
+#' @param ... the list of arguments to be checked
+#'
+#' @return A logical list with components named \code{all_dot_num}, \code{all_dots_mats},
+#' \code{all_dots_list}, and \code{all_dots_char}.
+#'
+#' @export
+#'
+#' @examples
+#' matsindf_apply_types(a = 1, b = 2)
+#' matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+#' matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
+#' matsindf_apply_types(a = "a", b = "b", c = "c")
 matsindf_apply_types <- function(...){
   dots <- list(...)
   dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]

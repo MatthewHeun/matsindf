@@ -1,7 +1,7 @@
 Package: matsindf
 Type: Package
 Title: Work with matrices in data frames
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      email = "matthew.heun@me.com"))
 Author: Matthew Heun [aut, cre]
@@ -18,6 +18,7 @@ Imports:
     dplyr,
     ggplot2,
     magrittr,
+    purrr,
     rlang,
     tibble,
     tidyr

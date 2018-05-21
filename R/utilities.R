@@ -81,14 +81,14 @@ mat_to_rowcolval <- function(.matrix, values,
 #' \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
 #' (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
 #' The resulting matrix is a (under the hood) a data frame.
-#' If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
+#' If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 #' it is assumed that this is a single value, not a matrix,
 #' in which case the value in the \code{values} column is returned.
 #'
-#' @param .data a tidy data frame containing columns for row names, column names, and values
-#' @param rownames the name of the column in \code{.data} containing row names (a string)
-#' @param colnames the name of the column in \code{.data} containing column names (a string)
-#' @param values the name of the column in \code{.data} containing values with which to fill the matrix (a string)
+#' @param .DF a tidy data frame containing columns for row names, column names, and values
+#' @param rownames the name of the column in \code{.DF} containing row names (a string)
+#' @param colnames the name of the column in \code{.DF} containing column names (a string)
+#' @param values the name of the column in \code{.DF} containing values with which to fill the matrix (a string)
 #' @param fill the value for missing entries in the resulting matrix (default is \code{0})
 #' @param rowtype an optional string identifying the types of information found in rows of the matrix to be constructed
 #' @param coltype an optional string identifying the types of information found in columns of the matrix to be constructed
@@ -128,14 +128,14 @@ mat_to_rowcolval <- function(.matrix, values,
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
 #'                           values = "vals", rowtype = "rt", coltype = "ct")}
-rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
+rowcolval_to_mat <- function(.DF, values, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
   if (!is.null(rowtype)) {
-    # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (rowtype %in% colnames(.data)) {
+    # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
+    if (rowtype %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.data[[rowtype]]))) {
+      if (!any(is.na(.DF[[rowtype]]))) {
         # Check if all entries in the rowtype column are the same
-        rt <- .data[[rowtype]]
+        rt <- .DF[[rowtype]]
         if (any(rt != rt[[1]])) {
           # All values in the rowtype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", rowtype, "(rowtype) were same as first entry:", rt[[1]]))
@@ -147,12 +147,12 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
   }
 
   if (!is.null(coltype)) {
-    # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (coltype %in% colnames(.data)) {
+    # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
+    if (coltype %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.data[[coltype]]))) {
+      if (!any(is.na(.DF[[coltype]]))) {
         # Check if all entries in the rowtype column are the same
-        ct <- .data[[coltype]]
+        ct <- .DF[[coltype]]
         if (any(ct != ct[[1]])) {
           # All values in the coltype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", coltype, "(coltype) were same as first entry:", ct[[1]]))
@@ -164,19 +164,19 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
   }
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
-  singles <- .data %>%
+  singles <- .DF %>%
     filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
 
   if (nrow(singles) == 1) {
-    return(.data[[values]][[1]])
+    return(.DF[[values]][[1]])
   }
 
   # The remainder of the rows have matrix information stored in the columns
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
-  .data %>%
+  .DF %>%
     select(!!rownames, !!colnames, !!values) %>%
-    # It is possible to have rows with the same Industry in .data,
+    # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
     # For example, in Ghana, 2011, Industrial heat/furnace consumes
@@ -195,10 +195,10 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
 
 #' Add a column of matrix names to tidy data frame
 #'
-#' @param .data a data frame with \code{ledger_side_colname} and \code{energy_colname}.
-#' @param ledger_side_colname the name of the column in \code{.data} that contains ledger side
+#' @param .DF a data frame with \code{ledger_side_colname} and \code{energy_colname}.
+#' @param ledger_side_colname the name of the column in \code{.DF} that contains ledger side
 #'        (a string). Default is "\code{Ledger.side}".
-#' @param energy_colname the name of the column in \code{.data} that contains energy values
+#' @param energy_colname the name of the column in \code{.DF} that contains energy values
 #'        (a string). Default is "\code{E.ktoe}".
 #' @param supply_side the identifier for items on the supply side of the ledger (a string).
 #'        Default is "\code{Supply}".
@@ -210,14 +210,14 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
 #' @param V_name the name for the make matrix (a string). Default is "\code{V}".
 #' @param Y_name the name for the final demand matrix (a string). Default is "\code{Y}".
 #'
-#' @return \code{.data} with an added column, \code{UVY_colname}.
+#' @return \code{.DF} with an added column, \code{UVY_colname}.
 #'
 #' @importFrom dplyr mutate
 #' @importFrom dplyr case_when
 #'
 #' @examples
 #' matsindf:::add_UKEnergy2000_matnames(UKEnergy2000)
-add_UKEnergy2000_matnames <- function(.data,
+add_UKEnergy2000_matnames <- function(.DF,
                          # Input columns
                          ledger_side_colname = "Ledger.side",
                          energy_colname = "E.ktoe",
@@ -230,7 +230,7 @@ add_UKEnergy2000_matnames <- function(.data,
                          U_name = "U",
                          V_name = "V",
                          Y_name = "Y"){
-  .data %>% mutate(
+  .DF %>% mutate(
     # Add a column that indicates the matrix in which this entry belongs.
     !!as.name(matname_colname) := case_when(
       # All negative values on the Supply side of the ledger belong in the use (U) matrix.
@@ -247,15 +247,15 @@ add_UKEnergy2000_matnames <- function(.data,
 
 #' Add row, column, row type, and column type metadata
 #'
-#' @param .data a data frame containing \code{matname_colname}.
-#' @param matname_colname the name of the column in \code{.data} that contains names of matrices
+#' @param .DF a data frame containing \code{matname_colname}.
+#' @param matname_colname the name of the column in \code{.DF} that contains names of matrices
 #'        (a string).  Default is "\code{matname}".
 #' @param U_name the name for use matrices (a string). Default is "\code{U}".
 #' @param V_name the name for make matrices (a string). Default is "\code{V}".
 #' @param Y_name the name for final demand matrices (a string). Default is "\code{Y}".
-#' @param product_colname the name of the column in \code{.data} where Product names
+#' @param product_colname the name of the column in \code{.DF} where Product names
 #'        is found (a string). Default is "\code{Product}".
-#' @param flow_colname the name of the column in \code{.data} where Flow information is found
+#' @param flow_colname the name of the column in \code{.DF} where Flow information is found
 #'        (a string).
 #'        The Flow column usually contains the industries involved in this flow.
 #'        Default is "\code{Flow}".
@@ -274,7 +274,7 @@ add_UKEnergy2000_matnames <- function(.data,
 #' @param coltype_colname the name of the output column that contains column types for matrices
 #'        (a string). Default is "\code{coltype}".
 #'
-#' @return \code{.data} with additional columns named
+#' @return \code{.DF} with additional columns named
 #'         \code{rowname_colname}, \code{colname_colname},
 #'         \code{rowtype_colname}, and \code{coltype_colname}.
 #'
@@ -283,7 +283,7 @@ add_UKEnergy2000_matnames <- function(.data,
 #' UKEnergy2000 %>%
 #'   matsindf:::add_UKEnergy2000_matnames(.) %>%
 #'   matsindf:::add_UKEnergy2000_row_col_meta(.)
-add_UKEnergy2000_row_col_meta <- function(.data,
+add_UKEnergy2000_row_col_meta <- function(.DF,
                                           # Input column containing matrix names
                                           matname_colname = "matname",
                                           U_name = "U", V_name = "V", Y_name = "Y",
@@ -293,7 +293,7 @@ add_UKEnergy2000_row_col_meta <- function(.data,
                                           # Output columns
                                           rowname_colname = "rowname", colname_colname = "colname",
                                           rowtype_colname = "rowtype", coltype_colname = "coltype"){
-  .data %>%
+  .DF %>%
     mutate(
       !!as.name(rowname_colname) := case_when(
         (!!as.name(matname_colname)) == U_name ~ !!as.name(product_colname),

@@ -4,17 +4,17 @@
 \alias{rowcolval_to_mat}
 \title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
-rowcolval_to_mat(.data, values, rownames, colnames, rowtype = NULL,
+rowcolval_to_mat(.DF, values, rownames, colnames, rowtype = NULL,
   coltype = NULL, fill = 0)
 }
 \arguments{
-\item{.data}{a tidy data frame containing columns for row names, column names, and values}
+\item{.DF}{a tidy data frame containing columns for row names, column names, and values}
 
-\item{values}{the name of the column in \code{.data} containing values with which to fill the matrix (a string)}
+\item{values}{the name of the column in \code{.DF} containing values with which to fill the matrix (a string)}
 
-\item{rownames}{the name of the column in \code{.data} containing row names (a string)}
+\item{rownames}{the name of the column in \code{.DF} containing row names (a string)}
 
-\item{colnames}{the name of the column in \code{.data} containing column names (a string)}
+\item{colnames}{the name of the column in \code{.DF} containing column names (a string)}
 
 \item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed}
 
@@ -31,7 +31,7 @@ are silently dropped.
 \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
 (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
 The resulting matrix is a (under the hood) a data frame.
-If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
+If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 it is assumed that this is a single value, not a matrix,
 in which case the value in the \code{values} column is returned.
 }

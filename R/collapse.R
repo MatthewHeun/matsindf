@@ -6,7 +6,7 @@
 #' These column names are specified as strings by the \code{matnames}, \code{rownames}, \code{colnames},
 #' \code{rowtypes}, \code{coltypes}, and \code{values} arguments to \link{collapse_to_matrices}, respectively.
 #' A \pkg{matsindf}-style matrix has named rows and columns.
-#' In addition, \pkg{matsindf}-style-style matrices have "types" for row and column information,
+#' In addition, \pkg{matsindf}-style matrices have "types" for row and column information,
 #' such as "Commodities", "Industries", "Products", or "Machines".
 #' The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 #' (\code{rowtype} and \code{coltype}),
@@ -15,13 +15,15 @@
 #' Row and column types are both respected and propagated by the various \code{_byname} functions
 #' of the \pkg{matsbyname} package.
 #' Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
-#' The \pkg{matsindf}-style-style matrices will be stored
+#' The \pkg{matsindf}-style matrices will be stored
 #' in a column with same name as the incoming \code{values} column.
 
+#' This function is similar to \code{\link[tidyr]{nest}}, which stores data frames into a cell of a data frame.
+#' With \code{collapse_to_matrices}, matrices are created.
 #' This function is similar to \code{\link{summarise}} in that groups are respected.
 #' (In fact, calls to this function may not work properly unless grouping is provided.
 #' Errors of the form "Error: Duplicate identifiers for rows ..." are usually fixed by
-#' grouping \code{.data} prior to calling this function.)
+#' grouping \code{.DF} prior to calling this function.)
 #' The usual approach is to \code{\link{group_by}} the \code{matnames} column
 #' and any other columns to be preserved in the output.
 #' Note that execution is halted if any of
@@ -33,17 +35,19 @@
 #'
 #' Groups are not preserved on output.
 #'
-#' @param .data the "tidy" data frame
-#' @param matnames a string identifying the column in \code{.data} containing matrix names for matrices to be created
-#' @param rownames a string identifying the column in \code{.data} containing row names for matrices to be created
-#' @param colnames a string identifying the column in \code{.data} containing column names for matrices to be created
-#' @param rowtypes optional string identifying the column in \code{.data} containing the type of values in rows of the matrices to be created
-#' @param coltypes optional string identifying the column in \code{.data} containing the type of values in columns of the matrices to be created
-#' @param   values a string identifying the column in \code{.data} containing values to be inserted into the matrices to be created.
+#' @param .DF the "tidy" data frame
+#' @param matnames a string identifying the column in \code{.DF} containing matrix names for matrices to be created
+#' @param rownames a string identifying the column in \code{.DF} containing row names for matrices to be created
+#' @param colnames a string identifying the column in \code{.DF} containing column names for matrices to be created
+#' @param rowtypes optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created
+#' @param coltypes optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
+#' @param   values a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
 #'                 This will also be the name of the column in the output containing matrices formed from the
 #'                 data in the \code{values} column.
 #'
 #' @return a data frame with matrices in columns
+#'
+#' @seealso \code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
 #'
 #' @export
 #'
@@ -93,17 +97,17 @@
 #'                              rownames = "row", colnames = "col",
 #'                              rowtypes = "rowtype", coltypes = "coltype")
 #' mats %>% spread(key = matrix, value = vals)
-collapse_to_matrices <- function(.data, matnames, values, rownames, colnames,
+collapse_to_matrices <- function(.DF, matnames, values, rownames, colnames,
                                  rowtypes = NULL, coltypes = NULL){
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(values, rownames, colnames, rowtypes, coltypes) %in% groups(.data))) {
+  if (any(c(values, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, values)
-    violator <- which(cant_group %in% groups(.data))
+    violator <- which(cant_group %in% groups(.DF))
     stop(paste(cant_group[[violator]], " are grouping variables.",
                "Cannot group on rownames, colnames,",
-               "rowtypes, coltypes, or values in argument .data of collapse_to_matrices."))
+               "rowtypes, coltypes, or values in argument .DF of collapse_to_matrices."))
   }
   # Ensure that not only one of rowtypes or coltypes is non-NULL.
   if (xor(is.null(rowtypes), is.null(coltypes))) {
@@ -118,17 +122,17 @@ collapse_to_matrices <- function(.data, matnames, values, rownames, colnames,
   # If we get here, both rowtypes and coltypes have been changed from default (NULL) or
   # both rowtypes and coltypes have not been changed from default (NULL).
   # Thus, we need to test only for the one of them being non-NULL.
-  .data %>%
+  .DF %>%
     {if (!is.null(rowtypes)) {
-      group_by(.data, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
+      group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
     } else {
-      .data
+      .DF
     } } %>%
     dplyr::do(
-      # Convert .data to matrices
+      # Convert .DF to matrices
       !!values := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, values = values,
                                    rowtype = rowtypes, coltype = coltypes)
     ) %>%
-    select(!!!group_vars(.data), !!values) %>%
+    select(!!!group_vars(.DF), !!values) %>%
     data.frame(check.names = FALSE)
 }

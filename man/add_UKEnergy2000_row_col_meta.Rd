@@ -4,7 +4,7 @@
 \alias{add_UKEnergy2000_row_col_meta}
 \title{Add row, column, row type, and column type metadata}
 \usage{
-add_UKEnergy2000_row_col_meta(.data, matname_colname = "matname",
+add_UKEnergy2000_row_col_meta(.DF, matname_colname = "matname",
   U_name = "U", V_name = "V", Y_name = "Y", product_colname = "Product",
   flow_colname = "Flow", industry_type = "Industry",
   product_type = "Product", sector_type = "Sector",
@@ -12,9 +12,9 @@ add_UKEnergy2000_row_col_meta(.data, matname_colname = "matname",
   rowtype_colname = "rowtype", coltype_colname = "coltype")
 }
 \arguments{
-\item{.data}{a data frame containing \code{matname_colname}.}
+\item{.DF}{a data frame containing \code{matname_colname}.}
 
-\item{matname_colname}{the name of the column in \code{.data} that contains names of matrices
+\item{matname_colname}{the name of the column in \code{.DF} that contains names of matrices
 (a string).  Default is "\code{matname}".}
 
 \item{U_name}{the name for use matrices (a string). Default is "\code{U}".}
@@ -23,10 +23,10 @@ add_UKEnergy2000_row_col_meta(.data, matname_colname = "matname",
 
 \item{Y_name}{the name for final demand matrices (a string). Default is "\code{Y}".}
 
-\item{product_colname}{the name of the column in \code{.data} where Product names
+\item{product_colname}{the name of the column in \code{.DF} where Product names
 is found (a string). Default is "\code{Product}".}
 
-\item{flow_colname}{the name of the column in \code{.data} where Flow information is found
+\item{flow_colname}{the name of the column in \code{.DF} where Flow information is found
 (a string).
 The Flow column usually contains the industries involved in this flow.
 Default is "\code{Flow}".}
@@ -53,7 +53,7 @@ Default is "\code{Sector}".}
 (a string). Default is "\code{coltype}".}
 }
 \value{
-\code{.data} with additional columns named
+\code{.DF} with additional columns named
         \code{rowname_colname}, \code{colname_colname},
         \code{rowtype_colname}, and \code{coltype_colname}.
 }

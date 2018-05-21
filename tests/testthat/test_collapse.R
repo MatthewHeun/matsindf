@@ -7,6 +7,7 @@
 library(dplyr)
 library(tidyr)
 library(magrittr)
+library(purrr)
 library(tibble)
 library(lazyeval)
 library(matsbyname)

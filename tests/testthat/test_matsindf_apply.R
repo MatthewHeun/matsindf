@@ -88,3 +88,18 @@ test_that("matsindf_apply_types works as expected", {
                list(all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = TRUE))
 })
 
+test_that("matsindf_apply works with a NULL argument", {
+  a <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  b <- a
+  c <- a + b
+  d <- a - b
+  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
+  # Here is where the NULL is given as an argument to matsindp_apply.
+  result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
+  expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
+  expect_equivalent(result, expected)
+  # Try with piped .DF argument
+  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
+  expect_equivalent(result, expected)
+})
+

@@ -101,7 +101,12 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     return(out_df)
   }
   if (types$all_dots_char) {
-    arg_cols <- lapply(list(...), FUN = function(colname){
+    dots <- list(...)
+    # If one of the ... strings is NULL, we won't be able to
+    # extract a column from .DF.
+    # So, eliminate all NULLs from the ... strings.
+    dots <- dots[which(!as.logical(lapply(dots, is.null)))]
+    arg_cols <- lapply(dots, FUN = function(colname){
       return(.DF[[colname]])
     })
     # If one of the ... strings is not a name of a column in .DF,

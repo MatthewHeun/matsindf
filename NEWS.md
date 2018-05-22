@@ -1,5 +1,10 @@
 # News for `matsindf`
 
+## matsindf 0.2.3 (2018-05-22)
+
+* `matsindf_apply` now accepts a list as input when arguments are all strings.
+
+
 ## matsindf 0.2.2 (2018-05-20)
 
 * New `matsindf_apply` function.

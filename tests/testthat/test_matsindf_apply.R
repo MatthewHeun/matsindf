@@ -74,7 +74,7 @@ test_that("matsindf_apply fails gracefully when some of ... are NULL", {
 
 test_that("matsindf_apply fails as expected when an argument is missing from a data frame", {
   DF <- data.frame(a = c(1,2))
-  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"), 'argument "a" is missing, with no default')
+  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"), "Unknown type for .DF in matsindf_apply: NULL")
 })
 
 test_that("matsindf_apply_types works as expected", {
@@ -101,5 +101,9 @@ test_that("matsindf_apply works with a NULL argument", {
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
   expect_equivalent(result, expected)
+})
+
+test_that("matsindf_apply works when .DF is a list", {
+  matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b")
 })
 

@@ -28,6 +28,7 @@ of the form \code{argname = m},
 \code{.DF} is ignored, and
 \code{m}s are passed to \code{FUN} by \code{argname}s.
 The return value is a named list provided by \code{FUN}.
+The arguments in \code{...} are not included in the output.
 
 If \code{...} are all lists of numbers or matrices
 of the form \code{argname = l},

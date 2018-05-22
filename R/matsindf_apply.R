@@ -5,31 +5,38 @@
 #' on numbers or matrices.
 #' \code{FUN} must return a named list.
 #'
-#' If \code{...} are all named numbers or matrices
+#' If \code{is.null(.DF)} and \code{...} are all named numbers or matrices
 #' of the form \code{argname = m},
-#' \code{.DF} is ignored, and
 #' \code{m}s are passed to \code{FUN} by \code{argname}s.
 #' The return value is a named list provided by \code{FUN}.
 #' The arguments in \code{...} are not included in the output.
 #'
-#' If \code{...} are all lists of numbers or matrices
+#' If \code{is.null(.DF)} and \code{...} are all lists of numbers or matrices
 #' of the form \code{argname = l},
-#' \code{.DF} is ignored, and
 #' \code{FUN} is \code{Map}ped across the various \code{l}s
 #' to obtain a list of named lists returned from \code{FUN}.
 #' The return value is a data frame
-#' whose rows are the named lists returned from \code{FUN} and
+#' whose rows are the top-level lists returned from \code{FUN} and
 #' whose column names are the names of the list items returned from \code{FUN}.
-#' The series of named lists are \code{rbind}-ed to create the output data frame.
-#' Columns of \code{.DF} are not present in the return value.
+#' Columns of \code{.DF} are not included in the return value.
 #'
-#' If \code{...} are all named character strings
+#' If \code{!is.null(.DF)} and \code{...} are all named character strings
 #' of the form \code{argname = string},
-#' \code{.DF} is required,
 #' \code{argname}s are expected to be names of arguments to \code{FUN}, and
 #' \code{string}s are expected to be column names in \code{.DF}.
 #' The return value is \code{.DF} with additional columns (at right)
 #' whose names are the names of list items returned from \code{FUN}.
+#' When \code{.DF} contains columns whose names are same as columns added at the right,
+#' a warning is emitted.
+#'
+#' \code{.DF} can be a list of named items in which case a list will be returned.
+#'
+#' If items in \code{.DF} have same names are arguments to \code{FUN},
+#' it is not necessary to specify any arguments in \code{...}.
+#' \code{matsindf_apply} assumes that the appropriately-named items in \code{.DF} are
+#' intended to be arguments to \code{FUN}.
+#' When an item name appears in both \code{...} and \code{.DF},
+#' \code{...} takes precedence.
 #'
 #' \code{NULL} arguments in ... are ignored for the purposes of deciding whether
 #' all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
@@ -43,7 +50,7 @@
 #' If \code{FUN} works despite the missing argument, execution proceeds.
 #' If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 #'
-#' @param .DF the \code{matsindf} data frame
+#' @param .DF a list of named items or a data frame
 #' @param FUN the function to be applied to \code{.DF}
 #' @param ... named arguments to be passed by name to \code{FUN}.
 #'
@@ -72,6 +79,13 @@
 #' # Matrices in data frames (matsindf)
 #' DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
+#' # All arguments to FUN are supplied by named items in .DF
+#' matsindf_apply(list(a = 1, b = 2), FUN = example_fun)
+#' # All arguments are supplied by named arguments in ..., but mix them up.
+#' # Note that the named arguments override the items in .DF
+#' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
+#' # Warning is issued when an output item has same name as an input item.
+#' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
 matsindf_apply <- function(.DF = NULL, FUN, ...){
   # dots <- list(...)
   # dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
@@ -81,8 +95,8 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
   # all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
   types <- matsindf_apply_types(...)
   if (is.null(.DF) & (types$all_dots_num | types$all_dots_mats)) {
-    # We're not in a data frame.
-    # Simply call FUN on ...
+    # .DF is not present, and we have numbers or matricies in the ... arguments.
+    # Simply call FUN on ... .
     return(FUN(...))
   }
   if (is.null(.DF) & types$all_dots_list) {
@@ -101,13 +115,26 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     }
     return(out_df)
   }
-  if (types$all_dots_char) {
+  # Note that is.list(.DF) covers the cases where .DF is either a list or a data frame.
+  if (is.list(.DF) & (!types$dots_present | types$all_dots_char)) {
     dots <- list(...)
+    # Get the names of arguments to FUN.
+    FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+    # Get arguments in dots whose names are also names of arguments to FUN
+    dot_names_in_FUN <- dots[FUN_arg_names]
+    # Get the names of items or columns in .DF that are also arguments to FUN,
+    # but do this in a way that assumes the names of the items or columns are the names
+    # to be used for the arguments.
+    .DF_names_in_FUN <- (names(.DF) %>% set_names(names(.DF)) %>% as.list())[FUN_arg_names]
+    # Create a list of arguments to use when extracting information from .DF
+    # Because dot_names is ahead of .DF_names, dot_names takes precedence over .DF_names.
+    use_dots <- c(dot_names_in_FUN, .DF_names_in_FUN)[FUN_arg_names]
+
     # If one of the ... strings is NULL, we won't be able to
     # extract a column from .DF.
     # So, eliminate all NULLs from the ... strings.
-    dots <- dots[which(!as.logical(lapply(dots, is.null)))]
-    arg_cols <- lapply(dots, FUN = function(colname){
+    use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
+    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){
       return(.DF[[colname]])
     })
     # If one of the ... strings is not a name of a column in .DF,
@@ -118,19 +145,23 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     # Then, we call FUN, possibly with the missing argument.
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
+    result <- do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols))
+    # Check to see if the names of result are the same as any names of .DF.
+    # If so, emit a warning.
+    result_names <- names(result)
+    common_names <- intersect(result_names, names(.DF))
+    if (length(common_names) > 0) {
+      warning("name collision in matsindf_apply: ", common_names)
+    }
     if (is.data.frame(.DF)) {
-      return(do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)) %>%
-               bind_rows() %>%
-               bind_cols(.DF, .))
+      return(result %>% bind_rows() %>% bind_cols(.DF, .))
     }
     if (is.list(.DF)) {
-      return(
-        c(.DF, do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)))
-      )
+      return(c(.DF, result))
     }
     # If we get here, we have a value for .DF that doesn't make sense.
     # Throw an error.
-    stop("Unknown type for .DF in matsindf_apply: ", class(.DF))
+    stop(".DF must be a data frame or a list in matsindf_apply, was ", class(.DF))
   }
 
   # If we get here, we don't know how to deal with our inputs.
@@ -138,7 +169,7 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
   clss <- lapply(list(...), class) %>% paste(collapse = ",")
   msg <- paste(
     "unknown state in matsindf_apply",
-    "... must be all same type, all single numbers, all matrices, all lists, or all character.",
+    "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
     "types are:",
     clss
   )
@@ -152,6 +183,7 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
 #' with components named \code{all_dots_num}, \code{all_dots_mats},
 #' \code{all_dots_list}, and \code{all_dots_char}.
 #'
+#' When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
 #' When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
 #' When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
 #' When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
@@ -159,7 +191,8 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
 #'
 #' @param ... the list of arguments to be checked
 #'
-#' @return A logical list with components named \code{all_dot_num}, \code{all_dots_mats},
+#' @return A logical list with components named \code{dots_present},
+#' \code{all_dot_num}, \code{all_dots_mats},
 #' \code{all_dots_list}, and \code{all_dots_char}.
 #'
 #' @export
@@ -171,18 +204,31 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
 #' matsindf_apply_types(a = "a", b = "b", c = "c")
 matsindf_apply_types <- function(...){
   dots <- list(...)
-  dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
-  all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
-  all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
-  all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
-  all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
-  if (all_dots_mats) {
-    # Matrices are numerics.
-    # However, when all items in ... are matrices, we want to operate as matrices, not as numbers.
-    # So, set all_dots_num to FALSE.
-    all_dots_num <- FALSE
+  dots_present <- length(dots) > 0
+  if (!dots_present) {
+    all_dots_num  <- FALSE
+    all_dots_mats <- FALSE
+    all_dots_list <- FALSE
+    all_dots_char <- FALSE
+  } else {
+    # arguments are present in the ... argument.
+    dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
+    all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
+    all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
+    all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
+    all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
+    if (all_dots_mats) {
+      # Matrices are numerics.
+      # However, when all items in ... are matrices, we want to operate as matrices, not as numbers.
+      # So, set all_dots_num to FALSE.
+      all_dots_num <- FALSE
+    }
   }
-  list(all_dots_num = all_dots_num, all_dots_mats = all_dots_mats, all_dots_list = all_dots_list, all_dots_char = all_dots_char)
+  list(dots_present = dots_present,
+       all_dots_num = all_dots_num,
+       all_dots_mats = all_dots_mats,
+       all_dots_list = all_dots_list,
+       all_dots_char = all_dots_char)
 }
 
 

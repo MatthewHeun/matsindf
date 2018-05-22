@@ -72,20 +72,27 @@ test_that("matsindf_apply fails gracefully when some of ... are NULL", {
   expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL), "unused argument")
 })
 
-test_that("matsindf_apply fails as expected when an argument is missing from a data frame", {
-  DF <- data.frame(a = c(1,2))
-  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"), "Unknown type for .DF in matsindf_apply: NULL")
+test_that("matsindf_apply fails as expected when .DF argument is missing from a data frame", {
+  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
+               "unknown state in matsindf_apply ... must be missing or all same type:")
+})
+
+test_that("matsindf_apply fails as expected when .DF argument is not a data frame or a list", {
+  expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
+               "unknown state in matsindf_apply ... must be missing or all same type: all single numbers, ")
 })
 
 test_that("matsindf_apply_types works as expected", {
   expect_equal(matsindf_apply_types(a = 1, b = 2),
-               list(all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
-               list(all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6)),
-               list(all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = "a", b = "b", c = "c"),
-               list(all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = TRUE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = TRUE))
+  expect_equal(matsindf_apply_types(),
+               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = FALSE))
 })
 
 test_that("matsindf_apply works with a NULL argument", {
@@ -104,6 +111,23 @@ test_that("matsindf_apply works with a NULL argument", {
 })
 
 test_that("matsindf_apply works when .DF is a list", {
-  matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b")
+  expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b"),
+               list(a = 1, b = 2, c = 3, d = -1))
 })
 
+test_that("matsindf_apply works when .DF supplies some or all argument names", {
+  # All arguments to FUN are supplied by named items in .DF
+  expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun),
+               list(a = 1, b = 2, c = 3, d = -1))
+  # All arguments are supplied by named arguments in ...
+  expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b"),
+               list(a = 1, b = 2, c = 3, d = -1))
+  # All arguments are supplied by named arguments in ..., but mix them up.
+  # Note that the named arguments override the items in .DF
+  expect_equal(matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b"),
+               list(a = 1, b = 2, z = 10, c = 12, d = 8))
+  # Try when one of the output names is same as an input name
+  expect_warning(matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b"),
+                 "name collision in matsindf_apply: c") %>%
+    expect_equal(c(list(a = 1, b = 2, c = 10), list(c = 12, d = 8)))
+})

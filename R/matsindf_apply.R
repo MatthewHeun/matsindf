@@ -125,7 +125,7 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     # Get the names of items or columns in .DF that are also arguments to FUN,
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
-    .DF_names_in_FUN <- (names(.DF) %>% set_names(.) %>% as.list())[FUN_arg_names]
+    .DF_names_in_FUN <- (names(.DF) %>% set_names(names(.DF)) %>% as.list())[FUN_arg_names]
     # Create a list of arguments to use when extracting information from .DF
     # Because dot_names is ahead of .DF_names, dot_names takes precedence over .DF_names.
     use_dots <- c(dot_names_in_FUN, .DF_names_in_FUN)[FUN_arg_names]

@@ -116,14 +116,14 @@ test_that("matsindf_apply works when .DF is a list", {
 })
 
 test_that("matsindf_apply works when .DF supplies some or all argument names", {
-  # All arguments are supplied by named items in .DF
+  # All arguments to FUN are supplied by named items in .DF
   expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun),
                list(a = 1, b = 2, c = 3, d = -1))
   # All arguments are supplied by named arguments in ...
   expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b"),
                list(a = 1, b = 2, c = 3, d = -1))
   # All arguments are supplied by named arguments in ..., but mix them up.
-  # Note that the named argumens override the items in .DF
+  # Note that the named arguments override the items in .DF
   expect_equal(matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b"),
                list(a = 1, b = 2, z = 10, c = 12, d = 8))
   # Try when one of the output names is same as an input name

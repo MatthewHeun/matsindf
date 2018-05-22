@@ -10,6 +10,7 @@
 #' \code{.DF} is ignored, and
 #' \code{m}s are passed to \code{FUN} by \code{argname}s.
 #' The return value is a named list provided by \code{FUN}.
+#' The arguments in \code{...} are not included in the output.
 #'
 #' If \code{...} are all lists of numbers or matrices
 #' of the form \code{argname = l},
@@ -117,9 +118,19 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     # Then, we call FUN, possibly with the missing argument.
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
-    return(do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)) %>%
-             bind_rows() %>%
-             bind_cols(.DF, .))
+    if (is.data.frame(.DF)) {
+      return(do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)) %>%
+               bind_rows() %>%
+               bind_cols(.DF, .))
+    }
+    if (is.list(.DF)) {
+      return(
+        c(.DF, do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols)))
+      )
+    }
+    # If we get here, we have a value for .DF that doesn't make sense.
+    # Throw an error.
+    stop("Unknown type for .DF in matsindf_apply: ", class(.DF))
   }
 
   # If we get here, we don't know how to deal with our inputs.

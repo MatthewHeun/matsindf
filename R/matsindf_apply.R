@@ -58,7 +58,14 @@
 #'
 #' @export
 #'
+#' @importFrom dplyr bind_cols
+#' @importFrom dplyr bind_rows
+#' @importFrom purrr transpose
+#' @importFrom purrr set_names
+#' @importFrom rlang .data
+#'
 #' @examples
+#' library(matsbyname)
 #' example_fun <- function(a, b){
 #'   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
 #' }
@@ -69,13 +76,15 @@
 #'               dimnames = list(c("r1", "r2"), c("c1", "c2")))
 #' b <- 0.5 * a
 #' matsindf_apply(FUN = example_fun, a = a, b = b)
-#' # Single values in lists
+#' # Single values in lists are treated like columns of a data frame
 #' matsindf_apply(FUN = example_fun, a = list(2, 2), b = list(1, 2))
-#' # Matrices in lists
+#' # Matrices in lists are treated like columns of a data frame
 #' matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
 #' # Single numbers in a data frame
 #' DF <- data.frame(a = c(4, 4, 5), b = c(4, 4, 4))
 #' matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
+#' # By default, arguments to FUN come from DF
+#' matsindf_apply(DF, FUN = example_fun)
 #' # Matrices in data frames (matsindf)
 #' DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
@@ -134,9 +143,7 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     # extract a column from .DF.
     # So, eliminate all NULLs from the ... strings.
     use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
-    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){
-      return(.DF[[colname]])
-    })
+    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.DF[[colname]])})
     # If one of the ... strings is not a name of a column in .DF,
     # it is, practically speaking, a missing argument, and we should treat it as such.
     # If an arg is not present in .DF, it will be NULL in arg_cols.
@@ -148,13 +155,12 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     result <- do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols))
     # Check to see if the names of result are the same as any names of .DF.
     # If so, emit a warning.
-    result_names <- names(result)
-    common_names <- intersect(result_names, names(.DF))
+    common_names <- intersect(names(.DF), names(result))
     if (length(common_names) > 0) {
       warning("name collision in matsindf_apply: ", common_names)
     }
     if (is.data.frame(.DF)) {
-      return(result %>% bind_rows() %>% bind_cols(.DF, .))
+      return(bind_cols(.DF, bind_rows(result)))
     }
     if (is.list(.DF)) {
       return(c(.DF, result))

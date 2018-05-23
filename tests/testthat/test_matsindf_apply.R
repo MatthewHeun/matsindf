@@ -131,3 +131,12 @@ test_that("matsindf_apply works when .DF supplies some or all argument names", {
                  "name collision in matsindf_apply: c") %>%
     expect_equal(c(list(a = 1, b = 2, c = 10), list(c = 12, d = 8)))
 })
+
+test_that("matsindf_apply works for single numbers in data frame columns", {
+  DF <- data.frame(a = c(4, 4, 5), b = c(4, 4, 4))
+  expected <- DF
+  expected$c <- c(8, 8, 9)
+  expected$d <- c(0, 0, 1)
+  expect_equal(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b"), expected)
+  expect_equal(matsindf_apply(DF, FUN = example_fun), expected)
+})

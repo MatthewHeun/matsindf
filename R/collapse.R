@@ -63,6 +63,7 @@
 #' @importFrom dplyr ungroup
 #' @importFrom magrittr %>%
 #' @importFrom rlang :=
+#' @importFrom rlang .data
 #' @importFrom tibble column_to_rownames
 #' @importFrom tibble remove_rownames
 #' @importFrom tibble rownames_to_column

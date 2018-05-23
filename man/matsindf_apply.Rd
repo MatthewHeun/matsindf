@@ -69,6 +69,7 @@ If \code{FUN} works despite the missing argument, execution proceeds.
 If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 }
 \examples{
+library(matsbyname)
 example_fun <- function(a, b){
   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
 }
@@ -79,13 +80,15 @@ a <- 2 * matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
               dimnames = list(c("r1", "r2"), c("c1", "c2")))
 b <- 0.5 * a
 matsindf_apply(FUN = example_fun, a = a, b = b)
-# Single values in lists
+# Single values in lists are treated like columns of a data frame
 matsindf_apply(FUN = example_fun, a = list(2, 2), b = list(1, 2))
-# Matrices in lists
+# Matrices in lists are treated like columns of a data frame
 matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
 # Single numbers in a data frame
 DF <- data.frame(a = c(4, 4, 5), b = c(4, 4, 4))
 matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
+# By default, arguments to FUN come from DF
+matsindf_apply(DF, FUN = example_fun)
 # Matrices in data frames (matsindf)
 DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")

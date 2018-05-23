@@ -110,7 +110,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
   m2 <- m1*10
   df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)))
   class(df$m) <- class(df$m)[-match("AsIs", class(df$m))]
-  tidy <- expand_to_tidy(df, matnames = "matrix", , matvals = "m", rownames = "row", colnames = "col") %>%
+  tidy <- expand_to_tidy(df, matnames = "matrix", matvals = "m", rownames = "row", colnames = "col") %>%
     as.data.frame()
   expected_df <- data.frame(
     matnames = c(rep("m1", 4), rep("m2", 4)),
@@ -123,4 +123,24 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
       col = as.character(col)
     )
   expect_equal(tidy, expected_df)
+})
+
+test_that("expand_to_tidy works with a list of matrices", {
+  m1 <- matrix(c(1,2), nrow = 2, ncol = 1, dimnames = list(c("i1", "i2"), "p1")) %>%
+    setrowtype("industries") %>% setcoltype("products")
+  m2 <- transpose_byname(m1 * 10)
+  result <- expand_to_tidy(list(m1 = m1, m2 = m2),
+                           matnames = "matnames", matvals = "matvals",
+                           rownames = "rownames", colnames = "colnames",
+                           rowtypes = "rt", coltypes = "ct")
+  expected <- data.frame(
+    matnames = c("m1", "m1", "m2", "m2"),
+    rownames = c("i1", "i2", "p1", "p1"),
+    colnames = c("p1", "p1", "i1", "i2"),
+    matvals = c(1, 2, 10, 20),
+    rt = c("industries", "industries", "products", "products"),
+    ct = c("products", "products", "industries", "industries"),
+    stringsAsFactors = FALSE
+  )
+  expect_equal(result, expected)
 })

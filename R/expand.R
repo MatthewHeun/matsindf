@@ -10,17 +10,20 @@
 #' \code{rowtypes}, and \code{coltypes}, arguments.
 #' The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values}.
 #'
-#' @param    .data the data frame containing \pkg{matsindf}-style matrices
-#' @param matnames name of the column in \code{.data} containing matrix names (a string)
-#' @param  matvals name of the column in \code{.data} containing IO-style matrices or constants (a string),
-#' This will also be the name of the column containing matrix entries in the output data frame.
+#' @param      .DF the data frame containing \pkg{matsindf}-style matrices.
+#'                 (\code{.DF} may also be a named list of matrices, in which case
+#'                 names of the matrices are taken from the names of items in the list and
+#'                 list items are expected to be matrices.)
+#' @param matnames name of the column in \code{.DF} containing matrix names (a string)
+#' @param  matvals name of the column in \code{.DF} containing IO-style matrices or constants (a string),
+#'                 This will also be the name of the column containing matrix entries in the output data frame.
 #' @param rownames name for the output column of row names (a string)
 #' @param colnames name for the output column of column names (a string)
 #' @param rowtypes optional name for the output column of row types (a string)
 #' @param coltypes optional name for the output column of column types (a string)
 #' @param     drop if specified, the value to be dropped from output,
-#' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
-#' If \code{NA}, no values are dropped from output.
+#'                 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
+#'                 If \code{NA}, no values are dropped from output.
 #'
 #' @return a tidy data frame containing expanded \pkg{matsindf}-style matrices
 #' @export
@@ -58,16 +61,25 @@
 #' expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
 #'                      rownames = "rows", colnames = "cols",
 #'                      rowtypes = "rt",   coltypes = "ct", drop = 0)
-expand_to_tidy <- function(.data, matnames, matvals,
+expand_to_tidy <- function(.DF, matnames, matvals,
                            rownames, colnames,
                            rowtypes = NULL, coltypes = NULL,
                            drop = NA){
-  .data %>%
+  if (!is.data.frame(.DF) & is.list(.DF)) {
+    # Create an empty 1-row data frame with row names taken from .DF and promote to a column
+    tempDF <- matrix(NA, nrow = length(.DF), ncol = 1, dimnames = list(names(.DF), matvals)) %>%
+      as.data.frame() %>%
+      rownames_to_column(matnames)
+    # Set the matvals column to be the list of items in .DF
+    tempDF[[matvals]] <- I(.DF)
+    .DF <- tempDF
+  }
+  .DF %>%
     # group by everything except matvals column so that "do" will act as desired
-    group_by_at(setdiff(colnames(.data), matvals)) %>%
+    group_by_at(setdiff(colnames(.DF), matvals)) %>%
     dplyr::do(
       # Convert .data to row, col, val format
-      mat_to_rowcolval(.data[[matvals]][[1]], rownames = rownames, colnames = colnames,
+      mat_to_rowcolval(.data[[matvals]][[1L]], rownames = rownames, colnames = colnames,
                        rowtype = rowtypes, coltype = coltypes,
                        values = matvals, drop = drop)
     ) %>%

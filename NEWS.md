@@ -1,5 +1,10 @@
 # News for `matsindf`
 
+## matsindf 0.2.5 (2018-05-23)
+
+* `expand_to_tidy` now accepts a named list of matrices as input.
+
+
 ## matsindf 0.2.4 (2018-05-22)
 
 * `matsindf_apply` now obtains named arguments from `.DF` 

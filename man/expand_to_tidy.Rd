@@ -4,15 +4,18 @@
 \alias{expand_to_tidy}
 \title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
-expand_to_tidy(.data, matnames, matvals, rownames, colnames, rowtypes = NULL,
+expand_to_tidy(.DF, matnames, matvals, rownames, colnames, rowtypes = NULL,
   coltypes = NULL, drop = NA)
 }
 \arguments{
-\item{.data}{the data frame containing \pkg{matsindf}-style matrices}
+\item{.DF}{the data frame containing \pkg{matsindf}-style matrices.
+(\code{.DF} may also be a named list of matrices, in which case
+names of the matrices are taken from the names of items in the list and
+list items are expected to be matrices.)}
 
-\item{matnames}{name of the column in \code{.data} containing matrix names (a string)}
+\item{matnames}{name of the column in \code{.DF} containing matrix names (a string)}
 
-\item{matvals}{name of the column in \code{.data} containing IO-style matrices or constants (a string),
+\item{matvals}{name of the column in \code{.DF} containing IO-style matrices or constants (a string),
 This will also be the name of the column containing matrix entries in the output data frame.}
 
 \item{rownames}{name for the output column of row names (a string)}

@@ -6,7 +6,7 @@
 % \usepackage[sort&compress]{natbib}      % For nice bibliographies
 % \usepackage{hyperref}                   % For hyperlinks in .pdf file
 
-<<setup>>=
+<<setup, include=FALSE>>=
 library(matsbyname)
 library(matsindf)
 @

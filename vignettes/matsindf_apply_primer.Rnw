@@ -1,0 +1,42 @@
+\documentclass{article}
+
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{matsindf_apply primer}
+
+% \usepackage[sort&compress]{natbib}      % For nice bibliographies
+% \usepackage{hyperref}                   % For hyperlinks in .pdf file
+
+\begin{document}
+
+
+\title{A \texttt{matsindf\_apply} primer}
+\author{Matthew Kuperus Heun}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{abstract}
+\texttt{matsindf\_apply}
+is a powerful and versatile function that enables
+analyses of \texttt{matsindf} data frames.
+This vignette demonstrates its use and suggests workflows.
+% \end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\texttt{matsindf\_apply} is a powerful and versatile function
+that assists analysis of \texttt{matsindf} data frames.
+
+
+% \bibliographystyle{plain}
+%
+% \bibliography{recca}
+
+
+\end{document}

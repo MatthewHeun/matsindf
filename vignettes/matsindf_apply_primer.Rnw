@@ -6,6 +6,11 @@
 % \usepackage[sort&compress]{natbib}      % For nice bibliographies
 % \usepackage{hyperref}                   % For hyperlinks in .pdf file
 
+<<setup>>=
+library(matsbyname)
+library(matsindf)
+@
+
 \begin{document}
 
 
@@ -31,7 +36,63 @@ This vignette demonstrates its use and suggests workflows.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \texttt{matsindf\_apply} is a powerful and versatile function
-that assists analysis of \texttt{matsindf} data frames.
+that enables analysis of data frames by applying
+\texttt{FUN} in helpful ways.
+It is called \texttt{matsindf\_apply},
+because it can be used to apply \texttt{FUN} to a \texttt{matsindf}
+data frame containing entire matrices as individual entries in a data frame.
+(A \texttt{matsindf} data frame can be created by
+calling \texttt{matsindf::collapse\_to\_matrices}.)
+
+But \texttt{matsindf\_apply} can apply \texttt{FUN} across much more:
+data frames of single numbers,
+lists of matrices,
+lists of single numbers, and
+individual numbers.
+This vignette demonstrates \texttt{matsindf\_apply},
+starting with simple examples and
+proceeding to sophisticated analyses.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The basics}
+\label{sec:basics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The basis of all analyses conducted with \texttt{matsindf\_apply}
+is a function to be applied, \texttt{FUN}.
+Here is an example function that both adds and subtracts is arguments.
+
+<<example_fun>>=
+example_fun <- function(a, b){
+  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+}
+@
+
+Similar to \texttt{lapply} and its siblings,
+additional argument(s) to \texttt{matsindf\_apply} include
+the data over which \texttt{FUN} is to be applied.
+These arguments can, in the first instance,
+be supplied as named arguments to \texttt{matsindf\_apply}.
+
+<<single-numbers>>=
+matsindf_apply(FUN = example_fun, a = 2, b = 1)
+@
+
+
+
+
+And similar to \texttt{lapply}, data is the first argument to \texttt{matsindf\_apply}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 
 % \bibliographystyle{plain}

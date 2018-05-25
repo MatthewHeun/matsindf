@@ -14,7 +14,7 @@ library(matsbyname)
 library(testthat)
 
 ###########################################################
-context("small example")
+context("Small example")
 ###########################################################
 
 test_that("small example works as expected", {
@@ -69,7 +69,7 @@ test_that("small example works as expected", {
 })
 
 ###########################################################
-context("collapse")
+context("Collapse")
 ###########################################################
 
 test_that("collapse_to_matrices works as expected", {

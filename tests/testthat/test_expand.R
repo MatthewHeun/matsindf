@@ -14,7 +14,7 @@ library(rlang)
 library(testthat)
 
 ###########################################################
-context("expand")
+context("Expand")
 ###########################################################
 
 test_that("expand_to_tidy works as expected", {

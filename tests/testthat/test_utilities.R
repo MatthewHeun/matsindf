@@ -13,7 +13,7 @@ library(matsbyname)
 library(testthat)
 
 ###########################################################
-context("utilities")
+context("Utilities")
 ###########################################################
 
 test_that("rowcolval_to_mat (collapse) works as expected", {

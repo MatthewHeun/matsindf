@@ -127,11 +127,18 @@ because \texttt{.dat} is considered to be a store of data
 from which variables can be drawn as needed.
 In contrast, named arguments to \texttt{...}
 are specified by the user,
-so including an extra variable is considered an error.
+so including an extra variable is considered an error,
+as shown above.
 
 <<single-numbers-extra-.dat>>=
 matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
 @
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advanced techniques}
+\label{sec:advanced_techniques}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 If a named argument is supplied by both \texttt{.dat} and \texttt{...},
 the argument in \texttt{...} takes precedence,
@@ -144,11 +151,11 @@ matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
 When supplying \emph{both} \texttt{.dat} and \texttt{...},
 \texttt{...} can contain named strings
 which are interpreted as mappings
-from variable names in \texttt{.dat}
-to variables in the signature of \texttt{FUN}.
+from item names in \texttt{.dat}
+to arguments in the signature of \texttt{FUN}.
 In the example below,
-\texttt{a = "z"} indicates that the value of variable \texttt{z} in \texttt{.dat}
-should be passed to \texttt{FUN} as the value for argument \texttt{a}.
+\texttt{a = "z"} indicates that argument \texttt{a} to \texttt{FUN}
+should be supplied by item \texttt{z} in \texttt{.dat}.
 
 <<single-numbers-reassign>>=
 matsindf_apply(list(a = 2, b = 1, z = 42),
@@ -165,6 +172,17 @@ tryCatch(
   warning = function(w){w}
 )
 @
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advanced data structures}
+\label{sec:advanced_data_structures}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

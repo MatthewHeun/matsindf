@@ -21,12 +21,12 @@ library(matsindf)
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{abstract}
+\begin{abstract}
 \texttt{matsindf\_apply}
 is a powerful and versatile function that enables
-analyses of \texttt{matsindf} data frames.
+analyses of \texttt{matsindf} (and other) data frames.
 This vignette demonstrates its use and suggests workflows.
-% \end{abstract}
+\end{abstract}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -39,8 +39,8 @@ This vignette demonstrates its use and suggests workflows.
 that enables analysis of data frames by applying
 \texttt{FUN} in helpful ways.
 It is called \texttt{matsindf\_apply},
-because it can be used to apply \texttt{FUN} to a \texttt{matsindf}
-data frame containing entire matrices as individual entries in a data frame.
+because it can be used to apply \texttt{FUN} to a \texttt{matsindf} data frame,
+a data frame that contains matrices as individual entries in a data frame.
 (A \texttt{matsindf} data frame can be created by
 calling \texttt{matsindf::collapse\_to\_matrices}.)
 
@@ -61,7 +61,11 @@ proceeding to sophisticated analyses.
 
 The basis of all analyses conducted with \texttt{matsindf\_apply}
 is a function to be applied, \texttt{FUN}.
-Here is an example function that both adds and subtracts is arguments.
+\texttt{FUN} must return a named list of variables,
+its result.
+Here is an example function that both adds and subtracts is arguments,
+\texttt{a} and \texttt{b} and
+returns a list containing its result, \texttt{c} and \texttt{d}.
 
 <<example_fun>>=
 example_fun <- function(a, b){
@@ -73,18 +77,64 @@ Similar to \texttt{lapply} and its siblings,
 additional argument(s) to \texttt{matsindf\_apply} include
 the data over which \texttt{FUN} is to be applied.
 These arguments can, in the first instance,
-be supplied as named arguments to \texttt{matsindf\_apply}.
+be supplied as named arguments to the \texttt{...} argument
+of \texttt{matsindf\_apply}.
+The \texttt{...} arguments to \texttt{matsindf\_apply}
+are passed to \texttt{FUN} according to their names.
+In this case, the output of \texttt{matsindf\_apply}
+is the the named list returned by \texttt{FUN}.
 
 <<single-numbers>>=
 matsindf_apply(FUN = example_fun, a = 2, b = 1)
 @
 
+Passing an additional argument (\texttt{z~=~2}) causes the familiar \texttt{unused argument}
+error.
 
+<<single-numbers-extra-arg>>=
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2, b = 1, z = 2),
+  error = function(e){e}
+)
+@
 
+Failing to pass a needed argument (\texttt{b = 1}) causes the familiar \texttt{missing argument} error.
 
-And similar to \texttt{lapply}, data is the first argument to \texttt{matsindf\_apply}
+<<single-numbers-missing-arg>>=
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2),
+  error = function(e){e}
+)
+@
 
+Alternatively, arguments to \texttt{FUN} can be given
+in the first argument to \texttt{matsindf\_apply} (\texttt{.dat}).
+When a value is assigned to \texttt{.dat},
+the return value from \texttt{matsindf\_apply}
+contains the arguments supplied to \texttt{FUN}.
 
+<<single-numbers-supplied-in-.dat>>=
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
+@
+
+If a named argument is supplied by both \texttt{.dat} and \texttt{...},
+the argument in \texttt{...} takes precedence,
+overriding the argument in \texttt{.dat}.
+
+<<single-numbers-override>>=
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
+@
+
+If a named argument appears in both \texttt{.dat} and the output of \texttt{FUN},
+a name collision occurs in the output of \texttt{matsindf\_apply}, and
+a warning is given.
+
+<<argument-two-places-warning>>=
+tryCatch(
+  matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun),
+  warning = function(w){w}
+)
+@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

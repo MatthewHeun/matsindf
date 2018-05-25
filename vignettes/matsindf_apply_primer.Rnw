@@ -7,7 +7,6 @@
 % \usepackage{hyperref}                   % For hyperlinks in .pdf file
 
 <<setup, include=FALSE>>=
-library(matsbyname)
 library(matsindf)
 @
 
@@ -60,7 +59,7 @@ proceeding to sophisticated analyses.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 The basis of all analyses conducted with \texttt{matsindf\_apply}
-is a function to be applied, \texttt{FUN}.
+is a function to be applied across data, \texttt{FUN}.
 \texttt{FUN} must return a named list of variables,
 its result.
 Here is an example function that both adds and subtracts is arguments,
@@ -68,6 +67,7 @@ Here is an example function that both adds and subtracts is arguments,
 returns a list containing its result, \texttt{c} and \texttt{d}.
 
 <<example_fun>>=
+library(matsbyname)
 example_fun <- function(a, b){
   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
 }
@@ -88,8 +88,9 @@ is the the named list returned by \texttt{FUN}.
 matsindf_apply(FUN = example_fun, a = 2, b = 1)
 @
 
-Passing an additional argument (\texttt{z~=~2}) causes the familiar \texttt{unused argument}
-error.
+Passing an additional argument (\texttt{z~=~2})
+causes the familiar \texttt{unused argument} error,
+because \texttt{example\_fun} does not have a \texttt{z} argument.
 
 <<single-numbers-extra-arg>>=
 tryCatch(
@@ -98,7 +99,11 @@ tryCatch(
 )
 @
 
-Failing to pass a needed argument (\texttt{b = 1}) causes the familiar \texttt{missing argument} error.
+Failing to pass a needed argument (\texttt{b = 1})
+causes the familiar \texttt{missing argument} error,
+because \texttt{example\_fun} requires a value for \texttt{b}.
+If \texttt{example\_fun} tolerated a missing argument,
+no such error would be created.
 
 <<single-numbers-missing-arg>>=
 tryCatch(
@@ -117,6 +122,17 @@ contains the arguments supplied to \texttt{FUN}.
 matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
 @
 
+Extra variables are tolerated in \texttt{.dat},
+because \texttt{.dat} is considered to be a store of data
+from which variables can be drawn as needed.
+In contrast, named arguments to \texttt{...}
+are specified by the user,
+so including an extra variable is considered an error.
+
+<<single-numbers-extra-.dat>>=
+matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
+@
+
 If a named argument is supplied by both \texttt{.dat} and \texttt{...},
 the argument in \texttt{...} takes precedence,
 overriding the argument in \texttt{.dat}.
@@ -125,9 +141,23 @@ overriding the argument in \texttt{.dat}.
 matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
 @
 
+When supplying \emph{both} \texttt{.dat} and \texttt{...},
+\texttt{...} can contain named strings
+which are interpreted as mappings
+from variable names in \texttt{.dat}
+to variables in the signature of \texttt{FUN}.
+In the example below,
+\texttt{a = "z"} indicates that the value of variable \texttt{z} in \texttt{.dat}
+should be passed to \texttt{FUN} as the value for argument \texttt{a}.
+
+<<single-numbers-reassign>>=
+matsindf_apply(list(a = 2, b = 1, z = 42),
+               FUN = example_fun, a = "z")
+@
+
 If a named argument appears in both \texttt{.dat} and the output of \texttt{FUN},
 a name collision occurs in the output of \texttt{matsindf\_apply}, and
-a warning is given.
+a warning is issued.
 
 <<argument-two-places-warning>>=
 tryCatch(

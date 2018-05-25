@@ -1,41 +1,41 @@
 #' Apply a function to a \code{matsindf} data frame (and more)
 #'
-#' Applies \code{FUN} to \code{.DF} or
+#' Applies \code{FUN} to \code{.dat} or
 #' performs the calculation specified by \code{FUN}
 #' on numbers or matrices.
 #' \code{FUN} must return a named list.
 #'
-#' If \code{is.null(.DF)} and \code{...} are all named numbers or matrices
+#' If \code{is.null(.dat)} and \code{...} are all named numbers or matrices
 #' of the form \code{argname = m},
 #' \code{m}s are passed to \code{FUN} by \code{argname}s.
 #' The return value is a named list provided by \code{FUN}.
 #' The arguments in \code{...} are not included in the output.
 #'
-#' If \code{is.null(.DF)} and \code{...} are all lists of numbers or matrices
+#' If \code{is.null(.dat)} and \code{...} are all lists of numbers or matrices
 #' of the form \code{argname = l},
 #' \code{FUN} is \code{Map}ped across the various \code{l}s
 #' to obtain a list of named lists returned from \code{FUN}.
 #' The return value is a data frame
 #' whose rows are the top-level lists returned from \code{FUN} and
 #' whose column names are the names of the list items returned from \code{FUN}.
-#' Columns of \code{.DF} are not included in the return value.
+#' Columns of \code{.dat} are not included in the return value.
 #'
-#' If \code{!is.null(.DF)} and \code{...} are all named character strings
+#' If \code{!is.null(.dat)} and \code{...} are all named character strings
 #' of the form \code{argname = string},
 #' \code{argname}s are expected to be names of arguments to \code{FUN}, and
-#' \code{string}s are expected to be column names in \code{.DF}.
-#' The return value is \code{.DF} with additional columns (at right)
+#' \code{string}s are expected to be column names in \code{.dat}.
+#' The return value is \code{.dat} with additional columns (at right)
 #' whose names are the names of list items returned from \code{FUN}.
-#' When \code{.DF} contains columns whose names are same as columns added at the right,
+#' When \code{.dat} contains columns whose names are same as columns added at the right,
 #' a warning is emitted.
 #'
-#' \code{.DF} can be a list of named items in which case a list will be returned.
+#' \code{.dat} can be a list of named items in which case a list will be returned.
 #'
-#' If items in \code{.DF} have same names are arguments to \code{FUN},
+#' If items in \code{.dat} have same names are arguments to \code{FUN},
 #' it is not necessary to specify any arguments in \code{...}.
-#' \code{matsindf_apply} assumes that the appropriately-named items in \code{.DF} are
+#' \code{matsindf_apply} assumes that the appropriately-named items in \code{.dat} are
 #' intended to be arguments to \code{FUN}.
-#' When an item name appears in both \code{...} and \code{.DF},
+#' When an item name appears in both \code{...} and \code{.dat},
 #' \code{...} takes precedence.
 #'
 #' \code{NULL} arguments in ... are ignored for the purposes of deciding whether
@@ -43,15 +43,15 @@
 #' However, all \code{NULL} arguments are passed to \code{FUN},
 #' so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
 #'
-#' If \code{.DF} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
-#' of a column in \code{.DF},
+#' If \code{.dat} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
+#' of a column in \code{.dat},
 #' \code{FUN} is called WITHOUT the argument whose column is missing.
 #' I.e., that argument is treated as missing.
 #' If \code{FUN} works despite the missing argument, execution proceeds.
 #' If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 #'
-#' @param .DF a list of named items or a data frame
-#' @param FUN the function to be applied to \code{.DF}
+#' @param .dat a list of named items or a data frame
+#' @param FUN the function to be applied to \code{.dat}
 #' @param ... named arguments to be passed by name to \code{FUN}.
 #'
 #' @return a named list or a data frame. (See details.)
@@ -88,27 +88,74 @@
 #' # Matrices in data frames (matsindf)
 #' DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
-#' # All arguments to FUN are supplied by named items in .DF
+#' # All arguments to FUN are supplied by named items in .dat
 #' matsindf_apply(list(a = 1, b = 2), FUN = example_fun)
 #' # All arguments are supplied by named arguments in ..., but mix them up.
-#' # Note that the named arguments override the items in .DF
+#' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 #' # Warning is issued when an output item has same name as an input item.
 #' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
-matsindf_apply <- function(.DF = NULL, FUN, ...){
-  # dots <- list(...)
-  # dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
-  # all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
-  # all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
-  # all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
-  # all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
+matsindf_apply <- function(.dat = NULL, FUN, ...){
   types <- matsindf_apply_types(...)
-  if (is.null(.DF) & (types$all_dots_num | types$all_dots_mats)) {
-    # .DF is not present, and we have numbers or matricies in the ... arguments.
+  # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
+  if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
+    # Get the names of the arguments to FUN
+    FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+    # Combine the arguments in ... and .dat, keeping arguments in ... when the same name is present in both.
+    new_dots <- c(list(...), .dat)[FUN_arg_names]
+    # Re-call with the new arguments (neglecting the arguments to .dat)
+    return(matsindf_apply(.dat = new_dots, FUN = FUN))
+
+    # dots <- list(...)
+    # # Get the names of arguments to FUN.
+    # FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+    # # Get arguments in dots whose names are also names of arguments to FUN
+    # dot_names_in_FUN <- dots[FUN_arg_names]
+    # # Get the names of items or columns in .dat that are also arguments to FUN,
+    # # but do this in a way that assumes the names of the items or columns are the names
+    # # to be used for the arguments.
+    # .dat_names_in_FUN <- (names(.dat) %>% set_names(names(.dat)) %>% as.list())[FUN_arg_names]
+    # # Create a list of arguments to use when extracting information from .dat
+    # # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
+    # use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
+    #
+    # # If one of the ... strings is NULL, we won't be able to
+    # # extract a column from .dat.
+    # # So, eliminate all NULLs from the ... strings.
+    # use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
+    # arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.dat[[colname]])})
+    # # If one of the ... strings is not a name of a column in .dat,
+    # # it is, practically speaking, a missing argument, and we should treat it as such.
+    # # If an arg is not present in .dat, it will be NULL in arg_cols.
+    # # To treat it as "missing," we remove it from the arg_cols.
+    # arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
+    # # Then, we call FUN, possibly with the missing argument.
+    # # If FUN can handle the missing argument, everything will be fine.
+    # # If not, an error will occur in FUN.
+    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+    # # Check to see if the names of result are the same as any names of .dat.
+    # # If so, emit a warning.
+    # common_names <- intersect(names(.dat), names(result))
+    # if (length(common_names) > 0) {
+    #   warning("name collision in matsindf_apply: ", common_names)
+    # }
+    # if (is.data.frame(.dat)) {
+    #   return(bind_cols(.dat, bind_rows(result)))
+    # }
+    # if (is.list(.dat)) {
+    #   return(c(.dat, result))
+    # }
+    # # If we get here, we have a value for .dat that doesn't make sense.
+    # # Throw an error.
+    # stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
+  }
+
+  if (is.null(.dat) & (types$all_dots_num | types$all_dots_mats)) {
+    # .dat is not present, and we have numbers or matricies in the ... arguments.
     # Simply call FUN on ... .
     return(FUN(...))
   }
-  if (is.null(.DF) & types$all_dots_list) {
+  if (is.null(.dat) & types$all_dots_list) {
     # All arguments are coming in as lists.
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
@@ -124,50 +171,50 @@ matsindf_apply <- function(.DF = NULL, FUN, ...){
     }
     return(out_df)
   }
-  # Note that is.list(.DF) covers the cases where .DF is either a list or a data frame.
-  if (is.list(.DF) & (!types$dots_present | types$all_dots_char)) {
+  # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
+  if (is.list(.dat) & (!types$dots_present | types$all_dots_char)) {
     dots <- list(...)
     # Get the names of arguments to FUN.
     FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
     # Get arguments in dots whose names are also names of arguments to FUN
     dot_names_in_FUN <- dots[FUN_arg_names]
-    # Get the names of items or columns in .DF that are also arguments to FUN,
+    # Get the names of items or columns in .dat that are also arguments to FUN,
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
-    .DF_names_in_FUN <- (names(.DF) %>% set_names(names(.DF)) %>% as.list())[FUN_arg_names]
-    # Create a list of arguments to use when extracting information from .DF
-    # Because dot_names is ahead of .DF_names, dot_names takes precedence over .DF_names.
-    use_dots <- c(dot_names_in_FUN, .DF_names_in_FUN)[FUN_arg_names]
+    .dat_names_in_FUN <- (names(.dat) %>% set_names(names(.dat)) %>% as.list())[FUN_arg_names]
+    # Create a list of arguments to use when extracting information from .dat
+    # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
+    use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
 
     # If one of the ... strings is NULL, we won't be able to
-    # extract a column from .DF.
+    # extract a column from .dat.
     # So, eliminate all NULLs from the ... strings.
     use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
-    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.DF[[colname]])})
-    # If one of the ... strings is not a name of a column in .DF,
+    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.dat[[colname]])})
+    # If one of the ... strings is not a name of a column in .dat,
     # it is, practically speaking, a missing argument, and we should treat it as such.
-    # If an arg is not present in .DF, it will be NULL in arg_cols.
+    # If an arg is not present in .dat, it will be NULL in arg_cols.
     # To treat it as "missing," we remove it from the arg_cols.
     arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
     # Then, we call FUN, possibly with the missing argument.
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
-    result <- do.call(matsindf_apply, args = c(list(.DF = NULL, FUN = FUN), arg_cols))
-    # Check to see if the names of result are the same as any names of .DF.
+    result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+    # Check to see if the names of result are the same as any names of .dat.
     # If so, emit a warning.
-    common_names <- intersect(names(.DF), names(result))
+    common_names <- intersect(names(.dat), names(result))
     if (length(common_names) > 0) {
       warning("name collision in matsindf_apply: ", common_names)
     }
-    if (is.data.frame(.DF)) {
-      return(bind_cols(.DF, bind_rows(result)))
+    if (is.data.frame(.dat)) {
+      return(bind_cols(.dat, bind_rows(result)))
     }
-    if (is.list(.DF)) {
-      return(c(.DF, result))
+    if (is.list(.dat)) {
+      return(c(.dat, result))
     }
-    # If we get here, we have a value for .DF that doesn't make sense.
+    # If we get here, we have a value for .dat that doesn't make sense.
     # Throw an error.
-    stop(".DF must be a data frame or a list in matsindf_apply, was ", class(.DF))
+    stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
   }
 
   # If we get here, we don't know how to deal with our inputs.

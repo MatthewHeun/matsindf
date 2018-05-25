@@ -140,3 +140,8 @@ test_that("matsindf_apply works for single numbers in data frame columns", {
   expect_equal(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b"), expected)
   expect_equal(matsindf_apply(DF, FUN = example_fun), expected)
 })
+
+test_that("override works for single numbers supplied in a list", {
+  expect_equal(matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10),
+               list(a = 10, b = 1, c = 11, d = 9))
+})

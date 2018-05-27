@@ -84,15 +84,15 @@ test_that("matsindf_apply fails as expected when .DF argument is not a data fram
 
 test_that("matsindf_apply_types works as expected", {
   expect_equal(matsindf_apply_types(a = 1, b = 2),
-               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6)),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_char = FALSE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
   expect_equal(matsindf_apply_types(a = "a", b = "b", c = "c"),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = TRUE))
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
   expect_equal(matsindf_apply_types(),
-               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_char = FALSE))
+               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
 })
 
 test_that("matsindf_apply works with a NULL argument", {

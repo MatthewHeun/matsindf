@@ -155,8 +155,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Simply call FUN on ... .
     return(FUN(...))
   }
-  if (is.null(.dat) & types$all_dots_list) {
-    # All arguments are coming in as lists.
+  if (is.null(.dat) & (types$all_dots_list | types$all_dots_vect)) {
+    # All arguments are coming in as lists or vectors across which FUN should be mapped.
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
     # But we want columns of output, so transpose.
@@ -233,13 +233,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' Determine types of ... argument for matsindf_apply
 #'
 #' This is a convenience function that returns a logical list for the types of \code{...}
-#' with components named \code{all_dots_num}, \code{all_dots_mats},
-#' \code{all_dots_list}, and \code{all_dots_char}.
+#' with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+#' \code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
 #'
 #' When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
 #' When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
 #' When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
 #' When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
+#' When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
 #' When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 #'
 #' @param ... the list of arguments to be checked
@@ -253,6 +254,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' @examples
 #' matsindf_apply_types(a = 1, b = 2)
 #' matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+#' matsindf_apply_types(a = c(1, 2), b = c(3, 4), c = c(5, 6))
 #' matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
 #' matsindf_apply_types(a = "a", b = "b", c = "c")
 matsindf_apply_types <- function(...){
@@ -262,6 +264,7 @@ matsindf_apply_types <- function(...){
     all_dots_num  <- FALSE
     all_dots_mats <- FALSE
     all_dots_list <- FALSE
+    all_dots_vect <- FALSE
     all_dots_char <- FALSE
   } else {
     # arguments are present in the ... argument.
@@ -269,6 +272,9 @@ matsindf_apply_types <- function(...){
     all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
     all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
     all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
+    all_dots_vect <- all(lapply(dots_except_NULL, FUN = function(x){
+      (!"matrix" %in% class(x)) & (length(x) > 1)
+    }) %>% as.logical())
     all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
     if (all_dots_mats) {
       # Matrices are numerics.
@@ -281,6 +287,7 @@ matsindf_apply_types <- function(...){
        all_dots_num = all_dots_num,
        all_dots_mats = all_dots_mats,
        all_dots_list = all_dots_list,
+       all_dots_vect = all_dots_vect,
        all_dots_char = all_dots_char)
 }
 

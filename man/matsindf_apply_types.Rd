@@ -16,14 +16,15 @@ A logical list with components named \code{dots_present},
 }
 \description{
 This is a convenience function that returns a logical list for the types of \code{...}
-with components named \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, and \code{all_dots_char}.
+with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
 }
 \details{
 When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
 When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
+When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 }
 \examples{

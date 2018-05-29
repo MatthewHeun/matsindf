@@ -179,6 +179,8 @@ tryCatch(
 \label{sec:advanced_data_structures}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\texttt{.dat} can be a list (as shown in several examples above),
+but it can also be a data frame.
 
 
 

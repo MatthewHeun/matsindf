@@ -105,49 +105,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     new_dots <- c(list(...), .dat)[FUN_arg_names]
     # Re-call with the new arguments (neglecting the arguments to .dat)
     return(matsindf_apply(.dat = new_dots, FUN = FUN))
-
-    # dots <- list(...)
-    # # Get the names of arguments to FUN.
-    # FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
-    # # Get arguments in dots whose names are also names of arguments to FUN
-    # dot_names_in_FUN <- dots[FUN_arg_names]
-    # # Get the names of items or columns in .dat that are also arguments to FUN,
-    # # but do this in a way that assumes the names of the items or columns are the names
-    # # to be used for the arguments.
-    # .dat_names_in_FUN <- (names(.dat) %>% set_names(names(.dat)) %>% as.list())[FUN_arg_names]
-    # # Create a list of arguments to use when extracting information from .dat
-    # # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
-    # use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
-    #
-    # # If one of the ... strings is NULL, we won't be able to
-    # # extract a column from .dat.
-    # # So, eliminate all NULLs from the ... strings.
-    # use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
-    # arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.dat[[colname]])})
-    # # If one of the ... strings is not a name of a column in .dat,
-    # # it is, practically speaking, a missing argument, and we should treat it as such.
-    # # If an arg is not present in .dat, it will be NULL in arg_cols.
-    # # To treat it as "missing," we remove it from the arg_cols.
-    # arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
-    # # Then, we call FUN, possibly with the missing argument.
-    # # If FUN can handle the missing argument, everything will be fine.
-    # # If not, an error will occur in FUN.
-    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
-    # # Check to see if the names of result are the same as any names of .dat.
-    # # If so, emit a warning.
-    # common_names <- intersect(names(.dat), names(result))
-    # if (length(common_names) > 0) {
-    #   warning("name collision in matsindf_apply: ", common_names)
-    # }
-    # if (is.data.frame(.dat)) {
-    #   return(bind_cols(.dat, bind_rows(result)))
-    # }
-    # if (is.list(.dat)) {
-    #   return(c(.dat, result))
-    # }
-    # # If we get here, we have a value for .dat that doesn't make sense.
-    # # Throw an error.
-    # stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
   }
 
   if (is.null(.dat) & (types$all_dots_num | types$all_dots_mats)) {

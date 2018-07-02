@@ -16,6 +16,21 @@ library(testthat)
 context("Utilities")
 ###########################################################
 
+test_that("index_var works as expected", {
+  DF <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40)) %>%
+    group_by(Country)
+  expected <- DF %>%
+    mutate(
+      var_indexed = c(1, 2, 4)
+    )
+  expect_equal(index_var(DF, var_to_index = "var"), expected)
+  # Test when there are no groups.
+  DF_nogroups <- DF %>%
+    ungroup() %>%
+    select(-Country)
+  index_var(DF_nogroups, var_to_index = "var")
+})
+
 test_that("rowcolval_to_mat (collapse) works as expected", {
   # Establish some matrices that we expect to see.
   expected_mat <- matrix(c(11, 12,

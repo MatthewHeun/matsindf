@@ -193,6 +193,113 @@ rowcolval_to_mat <- function(.DF, values, rownames, colnames, rowtype = NULL, co
     setrowtype(rowtype) %>% setcoltype(coltype)
 }
 
+#' Index a column in a data frame by groups relative to an initial year
+#'
+#' This function indexes (by ratio) variables in \code{vars_to_index}
+#' to the first time in \code{time_var}
+#' or to \code{index_time} (if specified).
+#' Groups in \code{.DF} are respected.
+#' Neither \code{var_to_index} nor \code{time_var} can be in the grouping variables.
+#'
+#' Note that this function works when the variable to index is
+#' a column of numbers or a column of matrices.
+#'
+#' @param .DF the data frame in which the variables are contained
+#' @param var_to_index the column name representing the variable to be indexed (a string)
+#' @param time_var the name of the column containing time information.
+#'        Default is "\code{Year}".
+#' @param index_time the time to which data in \code{var_to_index} are indexed.
+#'        If \code{NULL} (the default), \code{index_time} is set to the first time of each group.
+#' @param indexed_var the name of the indexed variable. Default is "\code{<<var_to_index>>_<<suffix>>}".
+#' @param suffix the suffix to be appended to the indexed variable. Default is "\code{_indexed}".
+#'
+#' @return a data frame with same number of rows as \code{.DF} and the following columns:
+#' grouping variables of \code{.DF}, \code{var_to_index}, \code{time_var},
+#' and one additional column containing indexed \code{var_to_index}
+#' named with the value of \code{var_to_index}.
+#'
+#' @export
+#'
+#' @examples
+#' DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) %>%
+#'   gather(key = name, value = var, a, b) %>%
+#'   group_by(name)
+#' index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_indexed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", indexed_colname = "now.indexed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005, indexed_colname = "now.indexed")
+#' \dontrun{
+#'   DF %>% ungroup %>%
+#'     group_by(name, var) %>%
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
+#'   DF %>% ungroup %>%
+#'     group_by(name, Year) %>%
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
+#' }
+index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
+                         indexed_var = paste0(var_to_index, suffix), suffix = "_indexed"){
+  if (var_to_index %in% as.character(groups(.DF))) {
+    stop(paste0("Indexing variable '", var_to_index, "' in groups of .DF in index_column."))
+  }
+  if (time_var %in% as.character(groups(.DF))) {
+    stop(paste0("Year variable '", time_var, "' in groups of .DF in index_column."))
+  }
+
+  if (is.null(index_time)) {
+    # Set IndexYearData to first year data for each group.
+    IndexYearData <- .DF %>%
+      summarise_(.dots = list(
+        interp(~ min(yearcol),
+               yearcol = as.name(time_var))
+      ) %>%
+        setNames(time_var)
+      ) %>%
+      inner_join(.DF, by = c(as.character(groups(.DF)), time_var)) %>%
+      mutate_(
+        .dots = list(
+          # var_to_index_init = var_to_index
+          interp(~ var,
+                 var = as.name(var_to_index))
+        ) %>%
+          setNames(paste0(var_to_index, "_init"))
+      )
+  } else {
+    # Set IndexYearData to data from index year for each group.
+    IndexYearData <- .DF %>%
+      filter_(.dots = interp(~ ycn == index_time,
+                             ycn = as.name(time_var))
+      ) %>%
+      mutate_(
+        .dots = list(
+          # var_to_index_init = var_to_index
+          interp(~ var,
+                 var = as.name(var_to_index))
+        ) %>%
+          setNames(paste0(var_to_index, "_init"))
+      )
+  }
+
+  IndexYearData <- IndexYearData %>%
+    # Eliminate column containing non-initial data. We want to keep the _init column for joining.
+    select_(.dots = interp(~ -vc, vc = as.name(var_to_index))) %>%
+    # Eliminate year column
+    select_(.dots = interp(~ -yc, yc = as.name(time_var)))
+
+  # Bring together and return
+  .DF %>% right_join(IndexYearData, by = as.character(groups(.DF))) %>%
+    mutate_(
+      .dots = list(
+        # var_to_index_suffix = var_to_index / var_to_index_init
+        interp(~ abs / init,
+               abs = as.name(var_to_index),
+               init = as.name(paste0(var_to_index, "_init")))
+      ) %>%
+        setNames(indexed_var)
+    ) %>%
+    # Remove var_to_index_init
+    select_(.dots = interp(~ -init, init = as.name(paste0(var_to_index, "_init"))))
+}
+
+
 #' Add a column of matrix names to tidy data frame
 #'
 #' @param .DF a data frame with \code{ledger_side_colname} and \code{energy_colname}.

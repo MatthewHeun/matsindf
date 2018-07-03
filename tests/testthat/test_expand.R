@@ -31,7 +31,7 @@ test_that("expand_to_tidy works as expected", {
   ) %>% group_by(Country, Year, matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                                  rowtypes = "rowtype", coltypes = "coltype",
-                                 values = "vals") %>%
+                               matvals = "vals") %>%
     ungroup
   # For the first tests, do not drop 0 values.
   A <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",

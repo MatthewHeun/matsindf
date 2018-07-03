@@ -36,14 +36,20 @@
 #' Groups are not preserved on output.
 #'
 #' @param .DF the "tidy" data frame
-#' @param matnames a string identifying the column in \code{.DF} containing matrix names for matrices to be created
-#' @param rownames a string identifying the column in \code{.DF} containing row names for matrices to be created
-#' @param colnames a string identifying the column in \code{.DF} containing column names for matrices to be created
-#' @param rowtypes optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created
-#' @param coltypes optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
-#' @param   values a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
+#' @param matnames a string identifying the column in \code{.DF} containing matrix names for matrices to be created.
+#'                 Default is "\code{matnames}".
+#' @param matvals  a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
 #'                 This will also be the name of the column in the output containing matrices formed from the
-#'                 data in the \code{values} column.
+#'                 data in the \code{matvals} column.
+#'                 Default is "\code{matvals}".
+#' @param rownames a string identifying the column in \code{.DF} containing row names for matrices to be created.
+#'                 Default is "\code{rownames}".
+#' @param colnames a string identifying the column in \code{.DF} containing column names for matrices to be created.
+#'                 Default is "\code{colnames}".
+#' @param rowtypes optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
+#'                 Default is \code{NULL}.
+#' @param coltypes optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
+#'                 Default is \code{NULL}.
 #'
 #' @return a data frame with matrices in columns
 #'
@@ -94,21 +100,21 @@
 #'                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
 #'                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 #' ) %>% group_by(Country, Year, matrix)
-#' mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+#' mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
 #'                              rownames = "row", colnames = "col",
 #'                              rowtypes = "rowtype", coltypes = "coltype")
 #' mats %>% spread(key = matrix, value = vals)
-collapse_to_matrices <- function(.DF, matnames, values, rownames, colnames,
+collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals", rownames = "rownames", colnames = "colnames",
                                  rowtypes = NULL, coltypes = NULL){
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(values, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
-    cant_group <- c(rownames, colnames, rowtypes, coltypes, values)
+  if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
+    cant_group <- c(rownames, colnames, rowtypes, coltypes, matvals)
     violator <- which(cant_group %in% groups(.DF))
     stop(paste(cant_group[[violator]], " are grouping variables.",
                "Cannot group on rownames, colnames,",
-               "rowtypes, coltypes, or values in argument .DF of collapse_to_matrices."))
+               "rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices."))
   }
   # Ensure that not only one of rowtypes or coltypes is non-NULL.
   if (xor(is.null(rowtypes), is.null(coltypes))) {
@@ -131,9 +137,9 @@ collapse_to_matrices <- function(.DF, matnames, values, rownames, colnames,
     } } %>%
     dplyr::do(
       # Convert .DF to matrices
-      !!values := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, values = values,
-                                   rowtype = rowtypes, coltype = coltypes)
+      !!matvals := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
+                                    rowtype = rowtypes, coltype = coltypes)
     ) %>%
-    select(!!!group_vars(.DF), !!values) %>%
+    select(!!!group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)
 }

@@ -4,25 +4,32 @@
 \alias{collapse_to_matrices}
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
-collapse_to_matrices(.DF, matnames, values, rownames, colnames,
-  rowtypes = NULL, coltypes = NULL)
+collapse_to_matrices(.DF, matnames = "matnames", matvals = "matvals",
+  rownames = "rownames", colnames = "colnames", rowtypes = NULL,
+  coltypes = NULL)
 }
 \arguments{
 \item{.DF}{the "tidy" data frame}
 
-\item{matnames}{a string identifying the column in \code{.DF} containing matrix names for matrices to be created}
+\item{matnames}{a string identifying the column in \code{.DF} containing matrix names for matrices to be created.
+Default is "\code{matnames}".}
 
-\item{values}{a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
+\item{matvals}{a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
 This will also be the name of the column in the output containing matrices formed from the
-data in the \code{values} column.}
+data in the \code{matvals} column.
+Default is "\code{matvals}".}
 
-\item{rownames}{a string identifying the column in \code{.DF} containing row names for matrices to be created}
+\item{rownames}{a string identifying the column in \code{.DF} containing row names for matrices to be created.
+Default is "\code{rownames}".}
 
-\item{colnames}{a string identifying the column in \code{.DF} containing column names for matrices to be created}
+\item{colnames}{a string identifying the column in \code{.DF} containing column names for matrices to be created.
+Default is "\code{colnames}".}
 
-\item{rowtypes}{optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created}
+\item{rowtypes}{optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
+Default is \code{NULL}.}
 
-\item{coltypes}{optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created}
+\item{coltypes}{optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
+Default is \code{NULL}.}
 }
 \value{
 a data frame with matrices in columns
@@ -87,7 +94,7 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 ) \%>\% group_by(Country, Year, matrix)
-mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                              rownames = "row", colnames = "col",
                              rowtypes = "rowtype", coltypes = "coltype")
 mats \%>\% spread(key = matrix, value = vals)

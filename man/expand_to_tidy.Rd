@@ -4,7 +4,8 @@
 \alias{expand_to_tidy}
 \title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
-expand_to_tidy(.DF, matnames, matvals, rownames, colnames, rowtypes = NULL,
+expand_to_tidy(.DF, matnames = "matnames", matvals = "matvals",
+  rownames = "rownames", colnames = "colnames", rowtypes = NULL,
   coltypes = NULL, drop = NA)
 }
 \arguments{
@@ -13,22 +14,29 @@ expand_to_tidy(.DF, matnames, matvals, rownames, colnames, rowtypes = NULL,
 names of the matrices are taken from the names of items in the list and
 list items are expected to be matrices.)}
 
-\item{matnames}{name of the column in \code{.DF} containing matrix names (a string)}
+\item{matnames}{name of the column in \code{.DF} containing matrix names (a string).
+Default is "\code{matnames}".}
 
 \item{matvals}{name of the column in \code{.DF} containing IO-style matrices or constants (a string),
-This will also be the name of the column containing matrix entries in the output data frame.}
+This will also be the name of the column containing matrix entries in the output data frame.
+Default is "\code{matvals}".}
 
-\item{rownames}{name for the output column of row names (a string)}
+\item{rownames}{name for the output column of row names (a string).
+Default is "\code{rownames}".}
 
-\item{colnames}{name for the output column of column names (a string)}
+\item{colnames}{name for the output column of column names (a string).
+Default is "\code{colnames}".}
 
-\item{rowtypes}{optional name for the output column of row types (a string)}
+\item{rowtypes}{optional name for the output column of row types (a string).
+Default is \code{NULL}.}
 
-\item{coltypes}{optional name for the output column of column types (a string)}
+\item{coltypes}{optional name for the output column of column types (a string)
+Default is \code{NULL}.}
 
 \item{drop}{if specified, the value to be dropped from output,
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
-If \code{NA}, no values are dropped from output.}
+If \code{NA}, no values are dropped from output.
+Default is \code{NA}.}
 }
 \value{
 a tidy data frame containing expanded \pkg{matsindf}-style matrices
@@ -70,7 +78,7 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
 ) \%>\% group_by(Country, Year, matrix)
 mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                              rowtypes = "rowtype", coltypes = "coltype",
-                             values = "vals") \%>\%
+                             matvals = "vals") \%>\%
           ungroup
 expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
                      rownames = "rows", colnames = "cols",

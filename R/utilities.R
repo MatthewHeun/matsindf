@@ -230,18 +230,18 @@ rowcolval_to_mat <- function(.DF, values, rownames, colnames, rowtype = NULL, co
 #' \dontrun{
 #'   DF %>% ungroup %>%
 #'     group_by(name, var) %>%
-#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
+#'     index_var(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
 #'   DF %>% ungroup %>%
 #'     group_by(name, Year) %>%
-#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
+#'     index_var(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
 #' }
 index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
                          indexed_var = paste0(var_to_index, suffix), suffix = "_indexed"){
-  if (var_to_index %in% as.character(groups(.DF))) {
+  if (var_to_index %in% group_vars(.DF)) {
     stop(paste0("Indexing variable '", var_to_index, "' in groups of .DF in index_column."))
   }
-  if (time_var %in% as.character(groups(.DF))) {
-    stop(paste0("Year variable '", time_var, "' in groups of .DF in index_column."))
+  if (time_var %in% group_vars(.DF)) {
+    stop(paste0("Time variable '", time_var, "' in groups of .DF in index_column."))
   }
 
   if (is.null(index_time)) {
@@ -253,7 +253,7 @@ index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
       ) %>%
         setNames(time_var)
       ) %>%
-      inner_join(.DF, by = c(as.character(groups(.DF)), time_var)) %>%
+      inner_join(.DF, by = c(group_vars(.DF), time_var)) %>%
       mutate_(
         .dots = list(
           # var_to_index_init = var_to_index
@@ -285,7 +285,7 @@ index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
     select_(.dots = interp(~ -yc, yc = as.name(time_var)))
 
   # Bring together and return
-  .DF %>% right_join(IndexYearData, by = as.character(groups(.DF))) %>%
+  .DF %>% right_join(IndexYearData, by = group_vars(.DF)) %>%
     mutate_(
       .dots = list(
         # var_to_index_suffix = var_to_index / var_to_index_init

@@ -243,60 +243,84 @@ index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
   if (time_var %in% group_vars(.DF)) {
     stop(paste0("Time variable '", time_var, "' in groups of .DF in index_column."))
   }
+  var_to_index_init <- as.name(paste0(var_to_index, "_init"))
+  var_to_index <- as.name(var_to_index)
+  time_var <- as.name(time_var)
+  indexed_var <- as.name(indexed_var)
 
+  # We need to make two new columns in the incoming data frame.
+  # Ensure that they are not already present.
+  verify_cols_missing(.DF, newcols = c(var_to_index_init, indexed_var))
+
+  # IndexYearData is a data frame containing the value of var_to_index in the indexing year.
   if (is.null(index_time)) {
     # Set IndexYearData to first year data for each group.
     IndexYearData <- .DF %>%
-      summarise_(.dots = list(
-        interp(~ min(yearcol),
-               yearcol = as.name(time_var))
+      summarise(
+        !!time_var := min(!!time_var)
       ) %>%
-        setNames(time_var)
-      ) %>%
-      inner_join(.DF, by = c(group_vars(.DF), time_var)) %>%
-      mutate_(
-        .dots = list(
-          # var_to_index_init = var_to_index
-          interp(~ var,
-                 var = as.name(var_to_index))
-        ) %>%
-          setNames(paste0(var_to_index, "_init"))
-      )
+      inner_join(.DF, by = c(group_vars(.DF), as.character(time_var)))
   } else {
     # Set IndexYearData to data from index year for each group.
     IndexYearData <- .DF %>%
-      filter_(.dots = interp(~ ycn == index_time,
-                             ycn = as.name(time_var))
-      ) %>%
-      mutate_(
-        .dots = list(
-          # var_to_index_init = var_to_index
-          interp(~ var,
-                 var = as.name(var_to_index))
-        ) %>%
-          setNames(paste0(var_to_index, "_init"))
-      )
+      filter(!!time_var == index_time)
   }
 
   IndexYearData <- IndexYearData %>%
-    # Eliminate column containing non-initial data. We want to keep the _init column for joining.
-    select_(.dots = interp(~ -vc, vc = as.name(var_to_index))) %>%
+    rename(
+      !!var_to_index_init := !!var_to_index
+    ) %>%
     # Eliminate year column
-    select_(.dots = interp(~ -yc, yc = as.name(time_var)))
+    select(-(!!time_var))
 
   # Bring together and return
-  .DF %>% right_join(IndexYearData, by = group_vars(.DF)) %>%
-    mutate_(
-      .dots = list(
-        # var_to_index_suffix = var_to_index / var_to_index_init
-        interp(~ abs / init,
-               abs = as.name(var_to_index),
-               init = as.name(paste0(var_to_index, "_init")))
-      ) %>%
-        setNames(indexed_var)
+  .DF %>%
+    right_join(IndexYearData, by = group_vars(.DF)) %>%
+    mutate(
+      !!indexed_var := !!var_to_index / !!var_to_index_init
     ) %>%
     # Remove var_to_index_init
-    select_(.dots = interp(~ -init, init = as.name(paste0(var_to_index, "_init"))))
+    select(-(!!var_to_index_init))
+}
+
+
+#' Verify that column names in a data frame are not already present
+#'
+#' In the \code{Recca} package, many functions add columns to an existing data frame.
+#' If the incoming data frame already contains columns with the names of new columns to be added,
+#' a name collision could occur, deleting the existing column of data.
+#' This function provides a way to quickly check whether \code{newcols} are already present in
+#' \code{.DF}.
+#'
+#' This function terminates execution if a column of \code{.DF} will be overwritten
+#' by one of the \code{newcols}.
+#'
+#' @param .DF the data frame to which \code{newcols} are to be added
+#' @param newcols a single string, a single name,
+#'                a vector of strings representing the names of new columns to be added to \code{.DF}, or
+#'                a vector of names of new columns to be added to \code{.DF}
+#'
+#' @return \code{NULL}. This function should be called for its side effect of checking the validity
+#'         of the names of \code{newcols} to be added to \code{.DF}.
+#'
+#' @export
+#'
+#' @examples
+#' df <- data.frame(a = c(1,2), b = c(3,4))
+#' verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
+#' newcols <- c("c", "d", "a", "b")
+#' \dontrun{verify_cols_missing(df, newcols)}
+verify_cols_missing <- function(.DF, newcols){
+  if (!is.vector(newcols)) {
+    newcols <- c(newcols)
+  }
+  df_names <- names(.DF)
+  if (any(newcols %in% df_names)) {
+    violators <- paste0("'", newcols[which(newcols %in% df_names)], "'", collapse = ", ")
+    stop(paste0("column(s) ", violators, " is (are) already column names in data frame '",
+                deparse(substitute(.DF)), "'"))
+  }
+  invisible(NULL)
 }
 
 

@@ -216,7 +216,7 @@ rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, c
 #' @return a data frame with same number of rows as \code{.DF} and the following columns:
 #' grouping variables of \code{.DF}, \code{var_to_index}, \code{time_var},
 #' and one additional column containing indexed \code{var_to_index}
-#' named with the value of \code{var_to_index}.
+#' named with the value of \code{indexed_var}.
 #'
 #' @importFrom matsbyname elementquotient_byname
 #' @importFrom dplyr inner_join

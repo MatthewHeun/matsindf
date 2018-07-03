@@ -16,13 +16,13 @@ library(testthat)
 context("Utilities")
 ###########################################################
 
-test_that("index_var works as expected", {
+test_that("index_column works as expected", {
   DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
   expected1 <- DF1 %>%
     mutate(
       var_indexed = c(1, 2, 4)
     )
-  expect_equal(index_var(DF1 %>% group_by(Country), var_to_index = "var"), expected1)
+  expect_equal(index_column(DF1 %>% group_by(Country), var_to_index = "var"), expected1)
 
   # Test with 2 groups.
   DF2 <- DF1 %>%
@@ -35,7 +35,7 @@ test_that("index_var works as expected", {
     mutate(
       var_indexed = c(1, 2, 4, 1, 2, 4)
     )
-  expect_equal(index_var(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
+  expect_equal(index_column(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
 
   # Test when the variable to be indexed is a column of a data frame containing matrices.
   # In this case, we expect an element-by-element division of the matrices to occur
@@ -74,7 +74,7 @@ test_that("index_var works as expected", {
     # Put in the expected order
     select(Country, Year, matname, matvals, matvals_indexed)
 
-  expect_equal(index_var(DF3 %>% group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
+  expect_equal(index_column(DF3 %>% group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
 })
 
 test_that("rowcolval_to_mat (collapse) works as expected", {

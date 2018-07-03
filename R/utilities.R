@@ -232,19 +232,19 @@ rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, c
 #' DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) %>%
 #'   gather(key = name, value = var, a, b) %>%
 #'   group_by(name)
-#' index_var(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
-#' index_var(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
-#' index_var(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
+#' index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
 #'           indexed_var = "now.indexed")
 #' \dontrun{
 #'   DF %>% ungroup %>%
 #'     group_by(name, var) %>%
-#'     index_var(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
 #'   DF %>% ungroup %>%
 #'     group_by(name, Year) %>%
-#'     index_var(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
 #' }
-index_var <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
+index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
                          indexed_var = paste0(var_to_index, suffix), suffix = "_indexed"){
   if (var_to_index %in% group_vars(.DF)) {
     stop(paste0("Indexing variable '", var_to_index, "' in groups of .DF in index_column."))

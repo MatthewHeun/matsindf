@@ -1,0 +1,203 @@
+\documentclass{article}
+
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{matsindf_apply primer}
+
+% \usepackage[sort&compress]{natbib}      % For nice bibliographies
+% \usepackage{hyperref}                   % For hyperlinks in .pdf file
+
+<<setup, include=FALSE>>=
+library(matsindf)
+@
+
+\begin{document}
+
+
+\title{A \texttt{matsindf\_apply} primer}
+\author{Matthew Kuperus Heun}
+
+\maketitle
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{abstract}
+\texttt{matsindf\_apply}
+is a powerful and versatile function that enables
+analyses of \texttt{matsindf} (and other) data frames.
+This vignette demonstrates its use and suggests workflows.
+\end{abstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\texttt{matsindf\_apply} is a powerful and versatile function
+that enables analysis of data frames by applying
+\texttt{FUN} in helpful ways.
+It is called \texttt{matsindf\_apply},
+because it can be used to apply \texttt{FUN} to a \texttt{matsindf} data frame,
+a data frame that contains matrices as individual entries in a data frame.
+(A \texttt{matsindf} data frame can be created by
+calling \texttt{matsindf::collapse\_to\_matrices}.)
+
+But \texttt{matsindf\_apply} can apply \texttt{FUN} across much more:
+data frames of single numbers,
+lists of matrices,
+lists of single numbers, and
+individual numbers.
+This vignette demonstrates \texttt{matsindf\_apply},
+starting with simple examples and
+proceeding to sophisticated analyses.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The basics}
+\label{sec:basics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The basis of all analyses conducted with \texttt{matsindf\_apply}
+is a function to be applied across data, \texttt{FUN}.
+\texttt{FUN} must return a named list of variables,
+its result.
+Here is an example function that both adds and subtracts is arguments,
+\texttt{a} and \texttt{b} and
+returns a list containing its result, \texttt{c} and \texttt{d}.
+
+<<example_fun>>=
+library(matsbyname)
+example_fun <- function(a, b){
+  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+}
+@
+
+Similar to \texttt{lapply} and its siblings,
+additional argument(s) to \texttt{matsindf\_apply} include
+the data over which \texttt{FUN} is to be applied.
+These arguments can, in the first instance,
+be supplied as named arguments to the \texttt{...} argument
+of \texttt{matsindf\_apply}.
+The \texttt{...} arguments to \texttt{matsindf\_apply}
+are passed to \texttt{FUN} according to their names.
+In this case, the output of \texttt{matsindf\_apply}
+is the the named list returned by \texttt{FUN}.
+
+<<single-numbers>>=
+matsindf_apply(FUN = example_fun, a = 2, b = 1)
+@
+
+Passing an additional argument (\texttt{z~=~2})
+causes the familiar \texttt{unused argument} error,
+because \texttt{example\_fun} does not have a \texttt{z} argument.
+
+<<single-numbers-extra-arg>>=
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2, b = 1, z = 2),
+  error = function(e){e}
+)
+@
+
+Failing to pass a needed argument (\texttt{b = 1})
+causes the familiar \texttt{missing argument} error,
+because \texttt{example\_fun} requires a value for \texttt{b}.
+If \texttt{example\_fun} tolerated a missing argument,
+no such error would be created.
+
+<<single-numbers-missing-arg>>=
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2),
+  error = function(e){e}
+)
+@
+
+Alternatively, arguments to \texttt{FUN} can be given
+in the first argument to \texttt{matsindf\_apply} (\texttt{.dat}).
+When a value is assigned to \texttt{.dat},
+the return value from \texttt{matsindf\_apply}
+contains the arguments supplied to \texttt{FUN}.
+
+<<single-numbers-supplied-in-.dat>>=
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
+@
+
+Extra variables are tolerated in \texttt{.dat},
+because \texttt{.dat} is considered to be a store of data
+from which variables can be drawn as needed.
+In contrast, named arguments to \texttt{...}
+are specified by the user,
+so including an extra variable is considered an error,
+as shown above.
+
+<<single-numbers-extra-.dat>>=
+matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
+@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advanced techniques}
+\label{sec:advanced_techniques}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+If a named argument is supplied by both \texttt{.dat} and \texttt{...},
+the argument in \texttt{...} takes precedence,
+overriding the argument in \texttt{.dat}.
+
+<<single-numbers-override>>=
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
+@
+
+When supplying \emph{both} \texttt{.dat} and \texttt{...},
+\texttt{...} can contain named strings
+which are interpreted as mappings
+from item names in \texttt{.dat}
+to arguments in the signature of \texttt{FUN}.
+In the example below,
+\texttt{a = "z"} indicates that argument \texttt{a} to \texttt{FUN}
+should be supplied by item \texttt{z} in \texttt{.dat}.
+
+<<single-numbers-reassign>>=
+matsindf_apply(list(a = 2, b = 1, z = 42),
+               FUN = example_fun, a = "z")
+@
+
+If a named argument appears in both \texttt{.dat} and the output of \texttt{FUN},
+a name collision occurs in the output of \texttt{matsindf\_apply}, and
+a warning is issued.
+
+<<argument-two-places-warning>>=
+tryCatch(
+  matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun),
+  warning = function(w){w}
+)
+@
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Advanced data structures}
+\label{sec:advanced_data_structures}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\texttt{.dat} can be a list (as shown in several examples above),
+but it can also be a data frame.
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusion}
+\label{sec:conclusion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+% \bibliographystyle{plain}
+%
+% \bibliography{recca}
+
+
+\end{document}

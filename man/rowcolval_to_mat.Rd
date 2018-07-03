@@ -4,17 +4,17 @@
 \alias{rowcolval_to_mat}
 \title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
-rowcolval_to_mat(.data, values, rownames, colnames, rowtype = NULL,
+rowcolval_to_mat(.DF, matvals, rownames, colnames, rowtype = NULL,
   coltype = NULL, fill = 0)
 }
 \arguments{
-\item{.data}{a tidy data frame containing columns for row names, column names, and values}
+\item{.DF}{a tidy data frame containing columns for row names, column names, and values}
 
-\item{values}{the name of the column in \code{.data} containing values with which to fill the matrix (a string)}
+\item{matvals}{the name of the column in \code{.DF} containing values with which to fill the matrix (a string)}
 
-\item{rownames}{the name of the column in \code{.data} containing row names (a string)}
+\item{rownames}{the name of the column in \code{.DF} containing row names (a string)}
 
-\item{colnames}{the name of the column in \code{.data} containing column names (a string)}
+\item{colnames}{the name of the column in \code{.DF} containing column names (a string)}
 
 \item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed}
 
@@ -31,7 +31,7 @@ are silently dropped.
 \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
 (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
 The resulting matrix is a (under the hood) a data frame.
-If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
+If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 it is assumed that this is a single value, not a matrix,
 in which case the value in the \code{values} column is returned.
 }
@@ -43,28 +43,28 @@ data <- data.frame(Country  = c("GH", "GH", "GH"),
                    rows = c( "c 1",  "c 1", "c 2"),
                    cols = c( "i 1",  "i 2", "i 2"),
                    vals = c(   11  ,   12,    22 ))
-A <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", values = "vals")
+A <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals")
 A
 rowtype(A) # NULL, because types not set
 coltype(A) # NULL, because types not set
-B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", values = "vals",
+B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals",
                             rowtype  = "Commodities", coltype  = "Industries")
 B
 C <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
                                    ct = c("Industries", "Industries", "Industries"))) \%>\%
-  rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+  rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                    rowtype = "rt", coltype = "ct")
 C
 # Also works for single values if both the rownames and colnames columns contain NA
 data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
   rowtype = c(NA), coltype = c(NA), vals = c(2))
-data2 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+data2 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
   rowtype = "rowtype", coltype = "coltype")
 data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
-data3 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals")
+data3 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
 # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
 data4 <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
                                        ct = c("Industries", "Industries", "Industries")))
 \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-                          values = "vals", rowtype = "rt", coltype = "ct")}
+                          matvals = "vals", rowtype = "rt", coltype = "ct")}
 }

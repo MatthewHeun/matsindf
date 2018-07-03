@@ -7,13 +7,14 @@
 library(dplyr)
 library(tidyr)
 library(magrittr)
+library(purrr)
 library(tibble)
 library(lazyeval)
 library(matsbyname)
 library(testthat)
 
 ###########################################################
-context("small example")
+context("Small example")
 ###########################################################
 
 test_that("small example works as expected", {
@@ -26,7 +27,7 @@ test_that("small example works as expected", {
       coltype  = "Products"
     ) %>%
     group_by(matrix)
-  mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+  mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtype", coltypes = "coltype")
   # Check that groups are discarded.
@@ -57,7 +58,7 @@ test_that("small example works as expected", {
       rowtype = NULL,
       coltype = NULL
     )
-  mats_trimmed <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+  mats_trimmed <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                        rownames = "row", colnames = "col")
   # Test for V1
   expect_equal(mats_trimmed$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
@@ -68,7 +69,7 @@ test_that("small example works as expected", {
 })
 
 ###########################################################
-context("collapse")
+context("Collapse")
 ###########################################################
 
 test_that("collapse_to_matrices works as expected", {
@@ -83,7 +84,7 @@ test_that("collapse_to_matrices works as expected", {
                      coltype = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
                      vals  = c(   11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3)
   ) %>% group_by(Country, Year, matrix)
-  mats <- collapse_to_matrices(tidy, matnames = "matrix", values = "vals",
+  mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtype", coltypes = "coltype")
   A <- matrix(c(11, 0,

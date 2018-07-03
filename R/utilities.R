@@ -6,7 +6,7 @@
 #' Optionally, values can be dropped.
 #'
 #' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
-#' @param   values a string for the name of the output column containing values
+#' @param  matvals a string for the name of the output column containing values
 #' @param rownames a string for the name of the output column containing row names
 #' @param colnames a string for the name of the output column containing column names
 #' @param  rowtype a string for the name of the output column containing row types
@@ -30,20 +30,20 @@
 #' data
 #' A <- data %>%
 #'   rowcolval_to_mat(rownames = "rows", colnames = "cols",
-#'                     rowtype = "rt",    coltype = "ct", values = "vals")
+#'                     rowtype = "rt",    coltype = "ct", matvals = "vals")
 #' A
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", values = "vals")
+#'                  rowtype = "rt", coltype = "ct", matvals = "vals")
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+#'                  rowtype = "rt", coltype = "ct", matvals = "vals", drop = 0)
 #' # This also works for single values
-#' mat_to_rowcolval(2, values = "vals",
+#' mat_to_rowcolval(2, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct")
-#' mat_to_rowcolval(0, values = "vals",
+#' mat_to_rowcolval(0, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct", drop = 0)
-mat_to_rowcolval <- function(.matrix, values,
+mat_to_rowcolval <- function(.matrix, matvals,
                              rownames, colnames,
                              rowtype = NULL, coltype = NULL,
                              drop = NA){
@@ -53,7 +53,7 @@ mat_to_rowcolval <- function(.matrix, values,
       # setcoltype(coltype(.matrix)) %>%
       data.frame(check.names = FALSE) %>%
       rownames_to_column(var = rownames) %>%
-      gather(key = !!colnames, value = !!values, !!!colnames(.matrix))
+      gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
     if (!is.null(rowtype(.matrix))) {
       out[[rowtype]] <- rowtype(.matrix)
     }
@@ -63,13 +63,13 @@ mat_to_rowcolval <- function(.matrix, values,
   } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
     out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA)
-    names(out) <- c(rownames, colnames, values, rowtype, coltype)
+    names(out) <- c(rownames, colnames, matvals, rowtype, coltype)
   } else {
     stop(paste("Unknown type of .matrix in mat_to_rowcolval", .matrix,
                "of class", class(.matrix), "and length", length(.matrix)))
   }
   if (!is.na(drop)) {
-    out <- out[out[[values]] != drop, ]
+    out <- out[out[[matvals]] != drop, ]
   }
   return(out)
 }
@@ -81,17 +81,17 @@ mat_to_rowcolval <- function(.matrix, values,
 #' \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
 #' (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
 #' The resulting matrix is a (under the hood) a data frame.
-#' If both \code{rownames} and \code{colnames} columns of \code{.data} contain \code{NA},
+#' If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 #' it is assumed that this is a single value, not a matrix,
 #' in which case the value in the \code{values} column is returned.
 #'
-#' @param .data a tidy data frame containing columns for row names, column names, and values
-#' @param rownames the name of the column in \code{.data} containing row names (a string)
-#' @param colnames the name of the column in \code{.data} containing column names (a string)
-#' @param values the name of the column in \code{.data} containing values with which to fill the matrix (a string)
-#' @param fill the value for missing entries in the resulting matrix (default is \code{0})
-#' @param rowtype an optional string identifying the types of information found in rows of the matrix to be constructed
-#' @param coltype an optional string identifying the types of information found in columns of the matrix to be constructed
+#' @param .DF      a tidy data frame containing columns for row names, column names, and values
+#' @param rownames the name of the column in \code{.DF} containing row names (a string)
+#' @param colnames the name of the column in \code{.DF} containing column names (a string)
+#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string)
+#' @param fill     the value for missing entries in the resulting matrix (default is \code{0})
+#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed
+#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed
 #'
 #' @return a matrix with named rows and columns and, optionally, row and column types
 #' @export
@@ -104,38 +104,38 @@ mat_to_rowcolval <- function(.matrix, values,
 #'                    rows = c( "c 1",  "c 1", "c 2"),
 #'                    cols = c( "i 1",  "i 2", "i 2"),
 #'                    vals = c(   11  ,   12,    22 ))
-#' A <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", values = "vals")
+#' A <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals")
 #' A
 #' rowtype(A) # NULL, because types not set
 #' coltype(A) # NULL, because types not set
-#' B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", values = "vals",
+#' B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals",
 #'                             rowtype  = "Commodities", coltype  = "Industries")
 #' B
 #' C <- data %>% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
 #'                                    ct = c("Industries", "Industries", "Industries"))) %>%
-#'   rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+#'   rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
 #'                    rowtype = "rt", coltype = "ct")
 #' C
 #' # Also works for single values if both the rownames and colnames columns contain NA
 #' data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
 #'   rowtype = c(NA), coltype = c(NA), vals = c(2))
-#' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals",
+#' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
 #'   rowtype = "rowtype", coltype = "coltype")
 #' data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
-#' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", values = "vals")
+#' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
 #' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-#'                           values = "vals", rowtype = "rt", coltype = "ct")}
-rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
+#'                           matvals = "vals", rowtype = "rt", coltype = "ct")}
+rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
   if (!is.null(rowtype)) {
-    # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (rowtype %in% colnames(.data)) {
+    # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
+    if (rowtype %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.data[[rowtype]]))) {
+      if (!any(is.na(.DF[[rowtype]]))) {
         # Check if all entries in the rowtype column are the same
-        rt <- .data[[rowtype]]
+        rt <- .DF[[rowtype]]
         if (any(rt != rt[[1]])) {
           # All values in the rowtype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", rowtype, "(rowtype) were same as first entry:", rt[[1]]))
@@ -147,12 +147,12 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
   }
 
   if (!is.null(coltype)) {
-    # If rowtype is supplied and is not NA, check if it is one of the columns of .data
-    if (coltype %in% colnames(.data)) {
+    # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
+    if (coltype %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.data[[coltype]]))) {
+      if (!any(is.na(.DF[[coltype]]))) {
         # Check if all entries in the rowtype column are the same
-        ct <- .data[[coltype]]
+        ct <- .DF[[coltype]]
         if (any(ct != ct[[1]])) {
           # All values in the coltype column should be the same. If not, how are we to know which to use?
           stop(paste("Not all values in", coltype, "(coltype) were same as first entry:", ct[[1]]))
@@ -164,19 +164,19 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
   }
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
-  singles <- .data %>%
+  singles <- .DF %>%
     filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
 
   if (nrow(singles) == 1) {
-    return(.data[[values]][[1]])
+    return(.DF[[matvals]][[1]])
   }
 
   # The remainder of the rows have matrix information stored in the columns
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
-  .data %>%
-    select(!!rownames, !!colnames, !!values) %>%
-    # It is possible to have rows with the same Industry in .data,
+  .DF %>%
+    select(!!rownames, !!colnames, !!matvals) %>%
+    # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
     # For example, in Ghana, 2011, Industrial heat/furnace consumes
@@ -184,8 +184,8 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
     group_by_at(c(rownames, colnames)) %>%
-    summarise(!!values := sum(!!as.name(values))) %>%
-    spread(key = !!colnames, value = !!values, fill = fill) %>%
+    summarise(!!matvals := sum(!!as.name(matvals))) %>%
+    spread(key = !!colnames, value = !!matvals, fill = fill) %>%
     remove_rownames %>%
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns
     column_to_rownames(var = rownames) %>%
@@ -193,12 +193,153 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
     setrowtype(rowtype) %>% setcoltype(coltype)
 }
 
+#' Index a column in a data frame by groups relative to an initial year
+#'
+#' This function indexes (by ratio) variables in \code{vars_to_index}
+#' to the first time in \code{time_var}
+#' or to \code{index_time} (if specified).
+#' Groups in \code{.DF} are both respected and required.
+#' Neither \code{var_to_index} nor \code{time_var} can be in the grouping variables.
+#'
+#' Note that this function works when the variable to index is
+#' a column of numbers or a column of matrices.
+#'
+#' @param .DF the data frame in which the variables are contained
+#' @param var_to_index the column name representing the variable to be indexed (a string)
+#' @param time_var the name of the column containing time information.
+#'        Default is "\code{Year}".
+#' @param index_time the time to which data in \code{var_to_index} are indexed.
+#'        If \code{NULL} (the default), \code{index_time} is set to the first time of each group.
+#' @param indexed_var the name of the indexed variable. Default is "\code{<<var_to_index>>_<<suffix>>}".
+#' @param suffix the suffix to be appended to the indexed variable. Default is "\code{_indexed}".
+#'
+#' @return a data frame with same number of rows as \code{.DF} and the following columns:
+#' grouping variables of \code{.DF}, \code{var_to_index}, \code{time_var},
+#' and one additional column containing indexed \code{var_to_index}
+#' named with the value of \code{var_to_index}.
+#'
+#' @importFrom matsbyname elementquotient_byname
+#' @importFrom dplyr inner_join
+#' @importFrom dplyr rename
+#' @importFrom dplyr right_join
+#'
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' library(magrittr)
+#' library(tidyr)
+#' DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) %>%
+#'   gather(key = name, value = var, a, b) %>%
+#'   group_by(name)
+#' index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
+#' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
+#'           indexed_var = "now.indexed")
+#' \dontrun{
+#'   DF %>% ungroup %>%
+#'     group_by(name, var) %>%
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
+#'   DF %>% ungroup %>%
+#'     group_by(name, Year) %>%
+#'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
+#' }
+index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
+                         indexed_var = paste0(var_to_index, suffix), suffix = "_indexed"){
+  if (var_to_index %in% group_vars(.DF)) {
+    stop(paste0("Indexing variable '", var_to_index, "' in groups of .DF in index_column."))
+  }
+  if (time_var %in% group_vars(.DF)) {
+    stop(paste0("Time variable '", time_var, "' in groups of .DF in index_column."))
+  }
+  var_to_index_init <- as.name(paste0(var_to_index, "_init"))
+  var_to_index <- as.name(var_to_index)
+  time_var <- as.name(time_var)
+  indexed_var <- as.name(indexed_var)
+
+  # We need to make two new columns in the incoming data frame.
+  # Ensure that they are not already present.
+  verify_cols_missing(.DF, newcols = c(var_to_index_init, indexed_var))
+
+  # IndexYearData is a data frame containing the value of var_to_index in the indexing year.
+  if (is.null(index_time)) {
+    # Set IndexYearData to first year data for each group.
+    IndexYearData <- .DF %>%
+      summarise(
+        !!time_var := min(!!time_var)
+      ) %>%
+      inner_join(.DF, by = c(group_vars(.DF), as.character(time_var)))
+  } else {
+    # Set IndexYearData to data from index year for each group.
+    IndexYearData <- .DF %>%
+      filter(!!time_var == index_time)
+  }
+
+  IndexYearData <- IndexYearData %>%
+    rename(
+      !!var_to_index_init := !!var_to_index
+    ) %>%
+    # Eliminate year column
+    select(-(!!time_var))
+
+  # Bring together and return
+  .DF %>%
+    right_join(IndexYearData, by = group_vars(.DF)) %>%
+    mutate(
+      # !!indexed_var := !!var_to_index / !!var_to_index_init
+      !!indexed_var := elementquotient_byname(!!var_to_index, !!var_to_index_init)
+    ) %>%
+    # Remove var_to_index_init
+    select(-(!!var_to_index_init))
+}
+
+
+#' Verify that column names in a data frame are not already present
+#'
+#' In the \code{Recca} package, many functions add columns to an existing data frame.
+#' If the incoming data frame already contains columns with the names of new columns to be added,
+#' a name collision could occur, deleting the existing column of data.
+#' This function provides a way to quickly check whether \code{newcols} are already present in
+#' \code{.DF}.
+#'
+#' This function terminates execution if a column of \code{.DF} will be overwritten
+#' by one of the \code{newcols}.
+#'
+#' @param .DF the data frame to which \code{newcols} are to be added
+#' @param newcols a single string, a single name,
+#'                a vector of strings representing the names of new columns to be added to \code{.DF}, or
+#'                a vector of names of new columns to be added to \code{.DF}
+#'
+#' @return \code{NULL}. This function should be called for its side effect of checking the validity
+#'         of the names of \code{newcols} to be added to \code{.DF}.
+#'
+#' @export
+#'
+#' @examples
+#' df <- data.frame(a = c(1,2), b = c(3,4))
+#' verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
+#' newcols <- c("c", "d", "a", "b")
+#' \dontrun{verify_cols_missing(df, newcols)}
+verify_cols_missing <- function(.DF, newcols){
+  if (!is.vector(newcols)) {
+    newcols <- c(newcols)
+  }
+  df_names <- names(.DF)
+  if (any(newcols %in% df_names)) {
+    violators <- paste0("'", newcols[which(newcols %in% df_names)], "'", collapse = ", ")
+    stop(paste0("column(s) ", violators, " is (are) already column names in data frame '",
+                deparse(substitute(.DF)), "'"))
+  }
+  invisible(NULL)
+}
+
+
 #' Add a column of matrix names to tidy data frame
 #'
-#' @param .data a data frame with \code{ledger_side_colname} and \code{energy_colname}.
-#' @param ledger_side_colname the name of the column in \code{.data} that contains ledger side
+#' @param .DF a data frame with \code{ledger_side_colname} and \code{energy_colname}.
+#' @param ledger_side_colname the name of the column in \code{.DF} that contains ledger side
 #'        (a string). Default is "\code{Ledger.side}".
-#' @param energy_colname the name of the column in \code{.data} that contains energy values
+#' @param energy_colname the name of the column in \code{.DF} that contains energy values
 #'        (a string). Default is "\code{E.ktoe}".
 #' @param supply_side the identifier for items on the supply side of the ledger (a string).
 #'        Default is "\code{Supply}".
@@ -210,14 +351,14 @@ rowcolval_to_mat <- function(.data, values, rownames, colnames, rowtype = NULL, 
 #' @param V_name the name for the make matrix (a string). Default is "\code{V}".
 #' @param Y_name the name for the final demand matrix (a string). Default is "\code{Y}".
 #'
-#' @return \code{.data} with an added column, \code{UVY_colname}.
+#' @return \code{.DF} with an added column, \code{UVY_colname}.
 #'
 #' @importFrom dplyr mutate
 #' @importFrom dplyr case_when
 #'
 #' @examples
 #' matsindf:::add_UKEnergy2000_matnames(UKEnergy2000)
-add_UKEnergy2000_matnames <- function(.data,
+add_UKEnergy2000_matnames <- function(.DF,
                          # Input columns
                          ledger_side_colname = "Ledger.side",
                          energy_colname = "E.ktoe",
@@ -230,7 +371,7 @@ add_UKEnergy2000_matnames <- function(.data,
                          U_name = "U",
                          V_name = "V",
                          Y_name = "Y"){
-  .data %>% mutate(
+  .DF %>% mutate(
     # Add a column that indicates the matrix in which this entry belongs.
     !!as.name(matname_colname) := case_when(
       # All negative values on the Supply side of the ledger belong in the use (U) matrix.
@@ -247,15 +388,15 @@ add_UKEnergy2000_matnames <- function(.data,
 
 #' Add row, column, row type, and column type metadata
 #'
-#' @param .data a data frame containing \code{matname_colname}.
-#' @param matname_colname the name of the column in \code{.data} that contains names of matrices
+#' @param .DF a data frame containing \code{matname_colname}.
+#' @param matname_colname the name of the column in \code{.DF} that contains names of matrices
 #'        (a string).  Default is "\code{matname}".
 #' @param U_name the name for use matrices (a string). Default is "\code{U}".
 #' @param V_name the name for make matrices (a string). Default is "\code{V}".
 #' @param Y_name the name for final demand matrices (a string). Default is "\code{Y}".
-#' @param product_colname the name of the column in \code{.data} where Product names
+#' @param product_colname the name of the column in \code{.DF} where Product names
 #'        is found (a string). Default is "\code{Product}".
-#' @param flow_colname the name of the column in \code{.data} where Flow information is found
+#' @param flow_colname the name of the column in \code{.DF} where Flow information is found
 #'        (a string).
 #'        The Flow column usually contains the industries involved in this flow.
 #'        Default is "\code{Flow}".
@@ -274,7 +415,7 @@ add_UKEnergy2000_matnames <- function(.data,
 #' @param coltype_colname the name of the output column that contains column types for matrices
 #'        (a string). Default is "\code{coltype}".
 #'
-#' @return \code{.data} with additional columns named
+#' @return \code{.DF} with additional columns named
 #'         \code{rowname_colname}, \code{colname_colname},
 #'         \code{rowtype_colname}, and \code{coltype_colname}.
 #'
@@ -283,7 +424,7 @@ add_UKEnergy2000_matnames <- function(.data,
 #' UKEnergy2000 %>%
 #'   matsindf:::add_UKEnergy2000_matnames(.) %>%
 #'   matsindf:::add_UKEnergy2000_row_col_meta(.)
-add_UKEnergy2000_row_col_meta <- function(.data,
+add_UKEnergy2000_row_col_meta <- function(.DF,
                                           # Input column containing matrix names
                                           matname_colname = "matname",
                                           U_name = "U", V_name = "V", Y_name = "Y",
@@ -293,7 +434,7 @@ add_UKEnergy2000_row_col_meta <- function(.data,
                                           # Output columns
                                           rowname_colname = "rowname", colname_colname = "colname",
                                           rowtype_colname = "rowtype", coltype_colname = "coltype"){
-  .data %>%
+  .DF %>%
     mutate(
       !!as.name(rowname_colname) := case_when(
         (!!as.name(matname_colname)) == U_name ~ !!as.name(product_colname),

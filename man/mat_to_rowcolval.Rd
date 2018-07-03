@@ -4,13 +4,13 @@
 \alias{mat_to_rowcolval}
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
-mat_to_rowcolval(.matrix, values, rownames, colnames, rowtype = NULL,
+mat_to_rowcolval(.matrix, matvals, rownames, colnames, rowtype = NULL,
   coltype = NULL, drop = NA)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}
 
-\item{values}{a string for the name of the output column containing values}
+\item{matvals}{a string for the name of the output column containing values}
 
 \item{rownames}{a string for the name of the output column containing row names}
 
@@ -45,17 +45,17 @@ data <- data.frame(Country  = c("GH", "GH", "GH"),
 data
 A <- data \%>\%
   rowcolval_to_mat(rownames = "rows", colnames = "cols",
-                    rowtype = "rt",    coltype = "ct", values = "vals")
+                    rowtype = "rt",    coltype = "ct", matvals = "vals")
 A
 mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", values = "vals")
+                 rowtype = "rt", coltype = "ct", matvals = "vals")
 mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", values = "vals", drop = 0)
+                 rowtype = "rt", coltype = "ct", matvals = "vals", drop = 0)
 # This also works for single values
-mat_to_rowcolval(2, values = "vals",
+mat_to_rowcolval(2, matvals = "vals",
                  rownames = "rows", colnames = "cols",
                  rowtype = "rt", coltype = "ct")
-mat_to_rowcolval(0, values = "vals",
+mat_to_rowcolval(0, matvals = "vals",
                  rownames = "rows", colnames = "cols",
                  rowtype = "rt", coltype = "ct", drop = 0)
 }

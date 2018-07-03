@@ -33,7 +33,7 @@ head(UKEnergy2000_with_metadata, 2)
 ## ------------------------------------------------------------------------
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, matname) %>% 
-  collapse_to_matrices(matnames = "matname", values = "E.ktoe",
+  collapse_to_matrices(matnames = "matname", matvals = "E.ktoe",
                        rownames = "rowname", colnames = "colname", 
                        rowtypes = "rowtype", coltypes = "coltype") %>% 
   rename(matrix.name = matname, matrix = E.ktoe)

@@ -32,7 +32,7 @@ named with the value of \code{var_to_index}.
 This function indexes (by ratio) variables in \code{vars_to_index}
 to the first time in \code{time_var}
 or to \code{index_time} (if specified).
-Groups in \code{.DF} are respected.
+Groups in \code{.DF} are both respected and required.
 Neither \code{var_to_index} nor \code{time_var} can be in the grouping variables.
 }
 \details{
@@ -40,12 +40,16 @@ Note that this function works when the variable to index is
 a column of numbers or a column of matrices.
 }
 \examples{
+library(dplyr)
+library(magrittr)
+library(tidyr)
 DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) \%>\%
   gather(key = name, value = var, a, b) \%>\%
   group_by(name)
-index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_indexed")
-index_column(DF, var_to_index = "var", time_var = "Year", indexed_colname = "now.indexed")
-index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005, indexed_colname = "now.indexed")
+index_var(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
+index_var(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
+index_var(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
+          indexed_var = "now.indexed")
 \dontrun{
   DF \%>\% ungroup \%>\%
     group_by(name, var) \%>\%

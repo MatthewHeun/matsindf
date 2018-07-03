@@ -17,13 +17,26 @@ context("Utilities")
 ###########################################################
 
 test_that("index_var works as expected", {
-  DF <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40)) %>%
-    group_by(Country)
-  expected <- DF %>%
+  DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
+  expected1 <- DF1 %>%
     mutate(
       var_indexed = c(1, 2, 4)
     )
-  expect_equal(index_var(DF, var_to_index = "var"), expected)
+  expect_equal(index_var(DF %>% group_by(Country), var_to_index = "var"), expected1)
+  # Test with 2 groups.
+  DF2 <- DF1 %>%
+    ungroup() %>%
+    mutate(
+      Country = as.character(Country)
+    ) %>%
+    bind_rows(data.frame(Country = c("GH", "GH", "GH"), Year = c(2011, 2012, 2013), var = c(1, 2, 4), stringsAsFactors = FALSE))
+  expected2 <- DF2 %>%
+    mutate(
+      var_indexed = c(1, 2, 4, 1, 2, 4)
+    )
+  expect_equal(index_var(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
+
+
   # Test when there are no groups.
   DF_nogroups <- DF %>%
     ungroup() %>%

@@ -6,12 +6,12 @@
 #' Optionally, values can be dropped.
 #'
 #' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
-#' @param  matvals a string for the name of the output column containing values
-#' @param rownames a string for the name of the output column containing row names
-#' @param colnames a string for the name of the output column containing column names
-#' @param  rowtype a string for the name of the output column containing row types
-#' @param  coltype a string for the name of the output column containing column types
-#' @param     drop if specified, the value to be dropped from output.
+#' @param  matvals a string for the name of the output column containing values. Default is "\code{matvals}".
+#' @param rownames a string for the name of the output column containing row names. Default is "\code{rownames}".
+#' @param colnames a string for the name of the output column containing column names. Default is "\code{colnames}".
+#' @param  rowtype a string for the name of the output column containing row types. Default is \code{NULL}.
+#' @param  coltype a string for the name of the output column containing column types. Default is \code{NULL}.
+#' @param     drop if specified, the value to be dropped from output. Default is \code{NA}.
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
 #'
@@ -43,8 +43,8 @@
 #' mat_to_rowcolval(0, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct", drop = 0)
-mat_to_rowcolval <- function(.matrix, matvals,
-                             rownames, colnames,
+mat_to_rowcolval <- function(.matrix, matvals = "matvals",
+                             rownames = "rownames", colnames = "colnames",
                              rowtype = NULL, coltype = NULL,
                              drop = NA){
   if (is.matrix(.matrix)) {

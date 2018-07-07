@@ -86,12 +86,12 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' in which case the value in the \code{values} column is returned.
 #'
 #' @param .DF      a tidy data frame containing columns for row names, column names, and values
-#' @param rownames the name of the column in \code{.DF} containing row names (a string)
-#' @param colnames the name of the column in \code{.DF} containing column names (a string)
-#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string)
-#' @param fill     the value for missing entries in the resulting matrix (default is \code{0})
-#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed
-#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed
+#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
+#' @param rownames the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
+#' @param colnames the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
+#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{NULL}".
+#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{NULL}".
+#' @param fill     the value for missing entries in the resulting matrix. default is \code{0}.
 #'
 #' @return a matrix with named rows and columns and, optionally, row and column types
 #' @export
@@ -128,7 +128,9 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
 #'                           matvals = "vals", rowtype = "rt", coltype = "ct")}
-rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
+rowcolval_to_mat <- function(.DF, matvals = "matvals",
+                             rownames = "rownames", colnames = "colnames",
+                             rowtype = NULL, coltype = NULL, fill = 0){
   if (!is.null(rowtype)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
     if (rowtype %in% colnames(.DF)) {

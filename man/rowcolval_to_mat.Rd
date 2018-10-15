@@ -4,23 +4,23 @@
 \alias{rowcolval_to_mat}
 \title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
-rowcolval_to_mat(.DF, matvals, rownames, colnames, rowtype = NULL,
-  coltype = NULL, fill = 0)
+rowcolval_to_mat(.DF, matvals = "matvals", rownames = "rownames",
+  colnames = "colnames", rowtype = NULL, coltype = NULL, fill = 0)
 }
 \arguments{
 \item{.DF}{a tidy data frame containing columns for row names, column names, and values}
 
-\item{matvals}{the name of the column in \code{.DF} containing values with which to fill the matrix (a string)}
+\item{matvals}{the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".}
 
-\item{rownames}{the name of the column in \code{.DF} containing row names (a string)}
+\item{rownames}{the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".}
 
-\item{colnames}{the name of the column in \code{.DF} containing column names (a string)}
+\item{colnames}{the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".}
 
-\item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed}
+\item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{NULL}".}
 
-\item{coltype}{an optional string identifying the types of information found in columns of the matrix to be constructed}
+\item{coltype}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{NULL}".}
 
-\item{fill}{the value for missing entries in the resulting matrix (default is \code{0})}
+\item{fill}{the value for missing entries in the resulting matrix. default is \code{0}.}
 }
 \value{
 a matrix with named rows and columns and, optionally, row and column types

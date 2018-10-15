@@ -26,7 +26,7 @@ If \code{NULL} (the default), \code{index_time} is set to the first time of each
 a data frame with same number of rows as \code{.DF} and the following columns:
 grouping variables of \code{.DF}, \code{var_to_index}, \code{time_var},
 and one additional column containing indexed \code{var_to_index}
-named with the value of \code{var_to_index}.
+named with the value of \code{indexed_var}.
 }
 \description{
 This function indexes (by ratio) variables in \code{vars_to_index}

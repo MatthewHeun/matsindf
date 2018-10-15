@@ -6,12 +6,12 @@
 #' Optionally, values can be dropped.
 #'
 #' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
-#' @param  matvals a string for the name of the output column containing values
-#' @param rownames a string for the name of the output column containing row names
-#' @param colnames a string for the name of the output column containing column names
-#' @param  rowtype a string for the name of the output column containing row types
-#' @param  coltype a string for the name of the output column containing column types
-#' @param     drop if specified, the value to be dropped from output.
+#' @param  matvals a string for the name of the output column containing values. Default is "\code{matvals}".
+#' @param rownames a string for the name of the output column containing row names. Default is "\code{rownames}".
+#' @param colnames a string for the name of the output column containing column names. Default is "\code{colnames}".
+#' @param  rowtype a string for the name of the output column containing row types. Default is \code{NULL}.
+#' @param  coltype a string for the name of the output column containing column types. Default is \code{NULL}.
+#' @param     drop if specified, the value to be dropped from output. Default is \code{NA}.
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
 #'
@@ -43,8 +43,8 @@
 #' mat_to_rowcolval(0, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
 #'                  rowtype = "rt", coltype = "ct", drop = 0)
-mat_to_rowcolval <- function(.matrix, matvals,
-                             rownames, colnames,
+mat_to_rowcolval <- function(.matrix, matvals = "matvals",
+                             rownames = "rownames", colnames = "colnames",
                              rowtype = NULL, coltype = NULL,
                              drop = NA){
   if (is.matrix(.matrix)) {
@@ -86,12 +86,12 @@ mat_to_rowcolval <- function(.matrix, matvals,
 #' in which case the value in the \code{values} column is returned.
 #'
 #' @param .DF      a tidy data frame containing columns for row names, column names, and values
-#' @param rownames the name of the column in \code{.DF} containing row names (a string)
-#' @param colnames the name of the column in \code{.DF} containing column names (a string)
-#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string)
-#' @param fill     the value for missing entries in the resulting matrix (default is \code{0})
-#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed
-#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed
+#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
+#' @param rownames the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
+#' @param colnames the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
+#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{NULL}".
+#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{NULL}".
+#' @param fill     the value for missing entries in the resulting matrix. default is \code{0}.
 #'
 #' @return a matrix with named rows and columns and, optionally, row and column types
 #' @export
@@ -128,7 +128,9 @@ mat_to_rowcolval <- function(.matrix, matvals,
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
 #'                           matvals = "vals", rowtype = "rt", coltype = "ct")}
-rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, coltype = NULL, fill = 0){
+rowcolval_to_mat <- function(.DF, matvals = "matvals",
+                             rownames = "rownames", colnames = "colnames",
+                             rowtype = NULL, coltype = NULL, fill = 0){
   if (!is.null(rowtype)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
     if (rowtype %in% colnames(.DF)) {
@@ -216,7 +218,7 @@ rowcolval_to_mat <- function(.DF, matvals, rownames, colnames, rowtype = NULL, c
 #' @return a data frame with same number of rows as \code{.DF} and the following columns:
 #' grouping variables of \code{.DF}, \code{var_to_index}, \code{time_var},
 #' and one additional column containing indexed \code{var_to_index}
-#' named with the value of \code{var_to_index}.
+#' named with the value of \code{indexed_var}.
 #'
 #' @importFrom matsbyname elementquotient_byname
 #' @importFrom dplyr inner_join

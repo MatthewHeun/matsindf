@@ -85,7 +85,7 @@ a suitably-formatted
 [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
 data frame into a data frame containing a column of matrices.
 
-Furthermore, <tt>byname</tt> is a sister package that ...
+Furthermore, <tt>matsbyname</tt> is a sister package that ...
 
 * ... provides matrix algebra functions that respect names of matrix rows and columns
 (<tt>dimnames</tt> in <tt>R</tt>)
@@ -98,7 +98,7 @@ and other
 [<tt>tidyverse</tt>](http://www.tidyverse.org)
 functions.
 
-When used together, <tt>matsindf</tt> and <tt>byname</tt>
+When used together, <tt>matsindf</tt> and <tt>matsbyname</tt>
 allow analysts to wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics))
 and 
@@ -151,7 +151,7 @@ It:
 
 * shows how to *collapse* and spread 
 the data into appropriate matrices stored in columns of a data frame,
-* demonstrates analyzing the matrices with <tt>byname</tt> functions,
+* demonstrates analyzing the matrices with <tt>matsbyname</tt> functions,
 * illustrates *expand*ing the matrices back into a tidy data frame, and
 * uses [<tt>ggplot</tt>](http://ggplot2.tidyverse.org) to graph the results.
 
@@ -250,7 +250,7 @@ for a fictitious country <tt>AB</tt>.
 Although the data are unchanged, 
 the additional rows serve to illustrate the
 functional programming aspects 
-of the <tt>matsindf</tt> and <tt>byname</tt> packages.
+of the <tt>matsindf</tt> and <tt>matsbyname</tt> packages.
 
 ```{r}
 Energy <- EnergyMats_2000 %>% 
@@ -286,7 +286,7 @@ and
 
 $$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
 
-Energy balance verification can be implemented with <tt>byname</tt> functions
+Energy balance verification can be implemented with <tt>matsbyname</tt> functions
 and <tt>tidyverse</tt> functional programming:
 
 ```{r}
@@ -315,7 +315,7 @@ other analyses can proceed.
 
 ### Efficiencies
 
-To further illustrate the power of <tt>byname</tt> functions 
+To further illustrate the power of <tt>matsbyname</tt> functions 
 in the context of <tt>matsindf</tt>,
 consider the calulation of the efficiency of every industry in the ECC as column vector $\eta$ 
 as shown by Equation 11 of Heun, Owen, and Brockway [-@heun2017].
@@ -417,7 +417,7 @@ etas_UK_2000 %>%
 
 ## Conclusion
 
-This vignette demonstrated the use of the <tt>matsindf</tt> and <tt>byname</tt> packages
+This vignette demonstrated the use of the <tt>matsindf</tt> and <tt>matsbyname</tt> packages
 and suggested a workflow to accomplish
 sophisticated analyses using *matrices in data frames* (<tt>matsindf</tt>).
 
@@ -436,7 +436,7 @@ similar to <tt>EnergyMats_2000</tt> above.
 similar to <tt>Energy</tt> above.
 * Validate the data, similar to <tt>Check</tt> above.
 * Perform matrix algebra operations on the columns of matrices
-using <tt>byname</tt> functions in a manner similar to the process of generating
+using <tt>matsbyname</tt> functions in a manner similar to the process of generating
 the <tt>Etas</tt> data frame above.
 * <tt>tidyr::gather</tt> the columns to obtain a tidy data frame of matrices.
 * Use <tt>expand_to_tidy</tt> to create a tidy data frame of matrix elements,

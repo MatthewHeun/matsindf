@@ -4,23 +4,23 @@
 \alias{mat_to_rowcolval}
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
-mat_to_rowcolval(.matrix, matvals, rownames, colnames, rowtype = NULL,
-  coltype = NULL, drop = NA)
+mat_to_rowcolval(.matrix, matvals = "matvals", rownames = "rownames",
+  colnames = "colnames", rowtype = NULL, coltype = NULL, drop = NA)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}
 
-\item{matvals}{a string for the name of the output column containing values}
+\item{matvals}{a string for the name of the output column containing values. Default is "\code{matvals}".}
 
-\item{rownames}{a string for the name of the output column containing row names}
+\item{rownames}{a string for the name of the output column containing row names. Default is "\code{rownames}".}
 
-\item{colnames}{a string for the name of the output column containing column names}
+\item{colnames}{a string for the name of the output column containing column names. Default is "\code{colnames}".}
 
-\item{rowtype}{a string for the name of the output column containing row types}
+\item{rowtype}{a string for the name of the output column containing row types. Default is \code{NULL}.}
 
-\item{coltype}{a string for the name of the output column containing column types}
+\item{coltype}{a string for the name of the output column containing column types. Default is \code{NULL}.}
 
-\item{drop}{if specified, the value to be dropped from output.
+\item{drop}{if specified, the value to be dropped from output. Default is \code{NA}.
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 If \code{NA}, no values are dropped from output.}
 }

@@ -1,0 +1,37 @@
+---
+output: github_document
+bibliography: vignettes/References.bib
+---
+
+# matsindf
+
+The `R` package `matsindf` provides 
+ways to interact with matrices in data frames. 
+
+
+## Installation
+
+You can install `matsindf` from github with:
+
+```{r gh-installation, eval = FALSE}
+# install devtools if not already installed
+# install.packages("devtools")
+devtools::install_github("MatthewHeun/matsindf")
+# To build vignettes locally, use
+devtools::install_github("MatthewHeun/matsindf", build_vignettes = TRUE)
+```
+
+
+## History
+
+The functions in this package were used in the paper 
+[Heun et al. [-@Heun:2018]](https://doi.org/10.1016/j.apenergy.2018.05.109).
+
+
+## More Information
+
+Find more information, including vignettes and function documentation at 
+<https://MatthewHeun.github.io/matsindf/>.
+
+
+## References

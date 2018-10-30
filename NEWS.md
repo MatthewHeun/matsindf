@@ -1,6 +1,11 @@
 # News for `matsindf`
 
 
+## matsindf 0.2.7 (2018-10-309)
+
+* Added documentation website.
+
+
 ## matsindf 0.2.6 (2018-07-03)
 
 * New function `index_column` that ratios both numbers and matrices relative to an initial time.

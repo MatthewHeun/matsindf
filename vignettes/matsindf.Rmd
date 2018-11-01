@@ -11,25 +11,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
-references:
-- id: heun2017
-  title: A physical supply-use table framework for energy analysis on the energy conversion chain
-  author:
-  - family: Heun
-    given: Matthew
-  - family: Owen
-    given: Anne
-  - family: Brockway
-    given: Paul
-  container-title: Sustainability Research Institute Papers
-  volume: 111
-  URL: 'http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf'
-  publisher: University of Leeds, School of Earth and Environment, Sustainability Research Institute
-  page: 
-  type: article-journal
-  issued:
-    year: 2017
-    month: 11
+bibliography: References.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -121,7 +103,7 @@ this example is based on an approximation to a portion of the UK's ECC circa 200
 (Note that these data are to be used for demonstration purposes only and
 have been rounded to 1--2 significant digits.)
 These example data first appeared in Figures 3 and 4 
-of Heun, Owen, and Brockway [-@heun2017].
+of Heun, Owen, and Brockway [-@Heun:2018].
 
 ```{r}
 head(UKEnergy2000, 2)
@@ -277,7 +259,7 @@ An important step in any analysis is data verfication.
 For an ECC analysis, it is important to verify that energy is conserved
 (i.e., energy is in balance) 
 across all industries.
-Equations 1 and 2 in Heun, Owen, and Brockway [-@heun2017]
+Equations 1 and 2 in Heun, Owen, and Brockway [-@Heun:2018]
 show that energy balance is verified by 
 
 $$\mat{W} = \transpose{\mat{V}} - \mat{U},$$
@@ -318,7 +300,7 @@ other analyses can proceed.
 To further illustrate the power of <tt>matsbyname</tt> functions 
 in the context of <tt>matsindf</tt>,
 consider the calulation of the efficiency of every industry in the ECC as column vector $\eta$ 
-as shown by Equation 11 of Heun, Owen, and Brockway [-@heun2017].
+as shown by Equation 11 of Heun, Owen, and Brockway [-@Heun:2018].
 
 $$\colvec{g} = \mat{V}\colvec{i}$$
 
@@ -385,7 +367,7 @@ etas_forgraphing <- Etas %>%
     eta = matrix
   )
 
-# Compare to Figure 8 of Heun, Owen, and Brockway (2017)
+# Compare to Figure 8 of Heun, Owen, and Brockway (2018)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 ```
 

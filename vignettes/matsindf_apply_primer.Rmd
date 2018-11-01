@@ -1,0 +1,175 @@
+---
+title: "A matsindf_apply primer"
+author: "Matthew Kuperus Heun"
+date: "`r Sys.Date()`"
+header-includes:
+   - \usepackage{amsmath}
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{matsindf Vignette}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+bibliography: References.bib
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(matsbyname)
+library(matsindf)
+```
+
+
+## Introduction
+
+`matsindf_apply` is a powerful and versatile function
+that enables analysis of data frames by applying
+`FUN` in helpful ways.
+It is called `matsindf_apply`,
+because it can be used to apply `FUN` to a `matsindf` data frame,
+a data frame that contains matrices as individual entries in a data frame.
+(A `matsindf` data frame can be created by
+calling `matsindf::collapse_to_matrices`.)
+
+But `matsindf_apply` can apply `FUN` across much more:
+data frames of single numbers,
+lists of matrices,
+lists of single numbers, and
+individual numbers.
+This vignette demonstrates `matsindf\_apply`,
+starting with simple examples and
+proceeding to sophisticated analyses.
+
+
+## The basics
+
+The basis of all analyses conducted with `matsindf_apply`
+is a function to be applied across data, `FUN`.
+`FUN` must return a named list of variables,
+its result.
+Here is an example function that both adds and subtracts is arguments,
+`a` and `b` and
+returns a list containing its result, `c` and `d`.
+
+```{r}
+example_fun <- function(a, b){
+  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+}
+```
+
+Similar to `lapply` and its siblings,
+additional argument(s) to `matsindf_apply` include
+the data over which `FUN` is to be applied.
+These arguments can, in the first instance,
+be supplied as named arguments to the `...` argument
+of `matsindf_apply`.
+The `...` arguments to `matsindf_apply`
+are passed to `FUN` according to their names.
+In this case, the output of `matsindf_apply`
+is the the named list returned by `FUN`.
+
+```{r}
+matsindf_apply(FUN = example_fun, a = 2, b = 1)
+```
+
+Passing an additional argument (`z = 2`)
+causes the familiar `unused argument` error,
+because `example_fun` does not have a `z` argument.
+
+```{r}
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2, b = 1, z = 2),
+  error = function(e){e}
+)
+```
+
+Failing to pass a needed argument (`b = 1`)
+causes the familiar `missing argument` error,
+because `example_fun` requires a value for `b`.
+If `example\_fun` tolerated a missing argument,
+no such error would be created.
+
+```{r}
+tryCatch(
+  matsindf_apply(FUN = example_fun, a = 2),
+  error = function(e){e}
+)
+```
+
+Alternatively, arguments to `FUN` can be given
+in the first argument to `matsindf_apply` (`.dat`).
+When a value is assigned to `.dat`,
+the return value from `matsindf_apply`
+contains the arguments supplied to `FUN`.
+
+```{r}
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
+```
+
+Extra variables are tolerated in `.dat`,
+because `.dat` is considered to be a store of data
+from which variables can be drawn as needed.
+In contrast, named arguments to `...`
+are specified by the user,
+so including an extra variable is considered an error,
+as shown above.
+
+```{r}
+matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
+```
+
+
+## Advanced techniques
+
+If a named argument is supplied by both `.dat` and `...`,
+the argument in `...` takes precedence,
+overriding the argument in `.dat`.
+
+```{r}
+matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
+```
+
+When supplying **both** `.dat` and `...`,
+`...` can contain named strings
+which are interpreted as mappings
+from item names in `.dat`
+to arguments in the signature of `FUN`.
+In the example below,
+`a = "z"` indicates that argument `a` to `FUN`
+should be supplied by item `z` in `.dat`.
+
+```{r}
+matsindf_apply(list(a = 2, b = 1, z = 42),
+               FUN = example_fun, a = "z")
+```
+
+If a named argument appears in both `.dat` and the output of `FUN`,
+a name collision occurs in the output of `matsindf_apply`, and
+a warning is issued.
+
+```{r}
+tryCatch(
+  matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun),
+  warning = function(w){w}
+)
+```
+
+
+## Advanced data structures
+
+`.dat` can be a list (as shown in several examples above),
+but it can also be a data frame.
+
+
+
+
+
+## Conclusion
+
+
+
+

@@ -3,4 +3,5 @@ pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   matsindf: matsindf.html
+  matsindf_apply_primer: matsindf_apply_primer.html
 

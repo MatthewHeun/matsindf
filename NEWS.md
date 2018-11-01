@@ -1,7 +1,13 @@
 # News for `matsindf`
 
 
-## matsindf 0.2.7 (2018-10-309)
+## matsindf 0.2.8 (2018-11-01)
+
+* Added new vignette to documentation website, 
+  which required moving from .Rnw to .Rmd file.
+
+
+## matsindf 0.2.7 (2018-10-30)
 
 * Added documentation website.
 

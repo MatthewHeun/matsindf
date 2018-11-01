@@ -1,6 +1,7 @@
-pandoc: 1.19.2.1
+pandoc: 2.1.2
 pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
   matsindf: matsindf.html
+  matsindf_apply_primer: matsindf_apply_primer.html
 

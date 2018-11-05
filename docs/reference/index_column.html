@@ -187,7 +187,7 @@ a column of numbers or a column of matrices.</p>
 <span class='fu'>library</span>(<span class='no'>tidyr</span>)
 <span class='no'>DF</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Year</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2000</span>, <span class='fl'>2005</span>, <span class='fl'>2010</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>20</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>5</span>, <span class='fl'>5.5</span>, <span class='fl'>6</span>)) <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>name</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>var</span>, <span class='no'>a</span>, <span class='no'>b</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>)
+  <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>name</span>)
 <span class='fu'>index_column</span>(<span class='no'>DF</span>, <span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_ratioed"</span>)</div><div class='output co'>#&gt; # A tibble: 6 x 4
 #&gt; # Groups:   name [2]
 #&gt;    Year name    var var_ratioed
@@ -218,10 +218,10 @@ a column of numbers or a column of matrices.</p>
 #&gt; 5  2005 b       5.5       1    
 #&gt; 6  2010 b       6         1.09 </div><span class='co'># NOT RUN {</span>
   <span class='no'>DF</span> <span class='kw'>%&gt;%</span> <span class='no'>ungroup</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>var</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>var</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>index_column</span>(<span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>) <span class='co'># Fails! Do not group on var_to_index.</span>
   <span class='no'>DF</span> <span class='kw'>%&gt;%</span> <span class='no'>ungroup</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>Year</span>) <span class='kw'>%&gt;%</span>
+    <span class='fu'><a href='http://www.rdocumentation.org/packages/dplyr/topics/group_by'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>Year</span>) <span class='kw'>%&gt;%</span>
     <span class='fu'>index_column</span>(<span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>) <span class='co'># Fails! Do not group on time_var.</span>
 <span class='co'># }</span></pre>
   </div>

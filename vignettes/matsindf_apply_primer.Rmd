@@ -40,7 +40,7 @@ data frames of single numbers,
 lists of matrices,
 lists of single numbers, and
 individual numbers.
-This vignette demonstrates `matsindf\_apply`,
+This vignette demonstrates `matsindf_apply`,
 starting with simple examples and
 proceeding to sophisticated analyses.
 
@@ -48,7 +48,7 @@ proceeding to sophisticated analyses.
 ## The basics
 
 The basis of all analyses conducted with `matsindf_apply`
-is a function to be applied across data, `FUN`.
+is a function (`FUN`) to be applied across data.
 `FUN` must return a named list of variables,
 its result.
 Here is an example function that both adds and subtracts is arguments,
@@ -90,8 +90,6 @@ tryCatch(
 Failing to pass a needed argument (`b = 1`)
 causes the familiar `missing argument` error,
 because `example_fun` requires a value for `b`.
-If `example\_fun` tolerated a missing argument,
-no such error would be created.
 
 ```{r}
 tryCatch(
@@ -100,11 +98,17 @@ tryCatch(
 )
 ```
 
+(If `example_fun` tolerated a missing argument,
+no such error would be created.)
+
 Alternatively, arguments to `FUN` can be given
-in the first argument to `matsindf_apply` (`.dat`).
+in a named list to the first argument to `matsindf_apply` (`.dat`).
 When a value is assigned to `.dat`,
 the return value from `matsindf_apply`
-contains the arguments supplied to `FUN`.
+contains all named variables in `.dat`
+(in this case both `a` and `b`)
+in addition to the results provided by `FUN`
+(in this case both `c` and `d`).
 
 ```{r}
 matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
@@ -113,14 +117,15 @@ matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
 Extra variables are tolerated in `.dat`,
 because `.dat` is considered to be a store of data
 from which variables can be drawn as needed.
-In contrast, named arguments to `...`
-are specified by the user,
-so including an extra variable is considered an error,
-as shown above.
 
 ```{r}
 matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
 ```
+
+In contrast, named arguments to `...`
+are specified by the user,
+so including an extra variable is considered an error,
+as shown above.
 
 
 ## Advanced techniques
@@ -164,6 +169,11 @@ tryCatch(
 `.dat` can be a list (as shown in several examples above),
 but it can also be a data frame.
 
+```{r}
+df <- data.frame(a = c(2, 3, 4), b = c(1, 2, 3))
+matsindf_apply(df, FUN = example_fun)
+
+```
 
 
 

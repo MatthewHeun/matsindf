@@ -1,3 +1,6 @@
+* Extended the `matsindf` primer.
+
+
 # matsindf 0.2.8 (2018-11-01)
 
 * Added new vignette to documentation website, 

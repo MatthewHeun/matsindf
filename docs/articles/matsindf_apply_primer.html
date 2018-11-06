@@ -311,7 +311,7 @@ result<span class="op">$</span>W[[<span class="dv">2</span>]]
   <span class="co"># The inner function does all the work.</span>
   W_inner_func &lt;-<span class="st"> </span><span class="cf">function</span>(U, V){
     <span class="co"># When we get here, U and V will be single matrices or single numbers, </span>
-    <span class="co"># not a column in a data frame.</span>
+    <span class="co"># not a column in a data frame or an item in a list.</span>
     <span class="co"># Calculate W from the inputs U and V</span>
     W &lt;-<span class="st"> </span><span class="kw">difference_byname</span>(<span class="kw">transpose_byname</span>(V), U)
     <span class="co"># Return a named list.</span>
@@ -322,7 +322,7 @@ result<span class="op">$</span>W[[<span class="dv">2</span>]]
   <span class="kw"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span>(.DF, <span class="dt">FUN =</span> W_inner_func, <span class="dt">U =</span> U_colname, <span class="dt">V =</span> V_colname)
 }</code></pre></div>
 <p>This style of writing <code>matsindf_apply</code> functions is incredibly versatile, leveraging the capabilities of both the <code>matsindf</code> and <code>matsbyname</code> packages. (Indeed, the <code>Recca</code> pacakge uses <code>matsindf_apply</code> heavily and is built upon the functions in the <code>matsindf</code> and <code>matsbyname</code> packages.)</p>
-<p>Functions written like <code>calc_W</code> can operate in ways similar to <code>matsindf_apply</code> itself. To demonstrate, we’ll use <code>calc_W</code> in all the ways that <code>matsindf_apply</code> can be used, going in the reverse order to our demonstration of <code>matsindf_apply</code> above.</p>
+<p>Functions written like <code>calc_W</code> can operate in ways similar to <code>matsindf_apply</code> itself. To demonstrate, we’ll use <code>calc_W</code> in all the ways that <code>matsindf_apply</code> can be used, going in the reverse order to our demonstration of the capabilities of <code>matsindf_apply</code> above.</p>
 <p><code>calc_W</code> can be used as a specialized <code>mutate</code> function that operates on <code>matsindf</code> data frames.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">midf <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">calc_W</span>()
 <span class="co">#&gt;   Year              U              V              W</span>
@@ -412,10 +412,7 @@ result<span class="op">$</span>W[[<span class="dv">2</span>]]
 <p><code>matsindf_apply</code> can be used for programming, and functions constructed as demonstrated above share characteristics with <code>matsindf_apply</code>:</p>
 <ul>
 <li>they can be used as specialized <code>mutate</code> operators, and</li>
-<li>they can be applied to</li>
-<li>single numbers</li>
-<li>matrices, or</li>
-<li>data frames with appropriately-named columns.</li>
+<li>they can be applied to single numbers, matrices, or data frames with appropriately-named columns.</li>
 </ul>
 </div>
   </div>

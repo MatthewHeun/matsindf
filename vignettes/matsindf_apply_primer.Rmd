@@ -19,8 +19,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+library(dplyr)
 library(matsbyname)
 library(matsindf)
+library(tidyr)
 ```
 
 
@@ -29,18 +31,18 @@ library(matsindf)
 `matsindf_apply` is a powerful and versatile function
 that enables analysis of data frames by applying
 `FUN` in helpful ways.
-It is called `matsindf_apply`,
+The function is called `matsindf_apply`,
 because it can be used to apply `FUN` to a `matsindf` data frame,
 a data frame that contains matrices as individual entries in a data frame.
 (A `matsindf` data frame can be created by
-calling `matsindf::collapse_to_matrices`.)
+calling `collapse_to_matrices`, as demonstrated below.)
 
 But `matsindf_apply` can apply `FUN` across much more:
 data frames of single numbers,
 lists of matrices,
 lists of single numbers, and
 individual numbers.
-This vignette demonstrates `matsindf\_apply`,
+This vignette demonstrates `matsindf_apply`,
 starting with simple examples and
 proceeding to sophisticated analyses.
 
@@ -48,7 +50,7 @@ proceeding to sophisticated analyses.
 ## The basics
 
 The basis of all analyses conducted with `matsindf_apply`
-is a function to be applied across data, `FUN`.
+is a function (`FUN`) to be applied across data.
 `FUN` must return a named list of variables,
 its result.
 Here is an example function that both adds and subtracts is arguments,
@@ -90,8 +92,6 @@ tryCatch(
 Failing to pass a needed argument (`b = 1`)
 causes the familiar `missing argument` error,
 because `example_fun` requires a value for `b`.
-If `example\_fun` tolerated a missing argument,
-no such error would be created.
 
 ```{r}
 tryCatch(
@@ -100,11 +100,17 @@ tryCatch(
 )
 ```
 
+(If `example_fun` tolerated a missing argument,
+no such error would be created.)
+
 Alternatively, arguments to `FUN` can be given
-in the first argument to `matsindf_apply` (`.dat`).
+in a named list to the first argument to `matsindf_apply` (`.dat`).
 When a value is assigned to `.dat`,
 the return value from `matsindf_apply`
-contains the arguments supplied to `FUN`.
+contains all named variables in `.dat`
+(in this case both `a` and `b`)
+in addition to the results provided by `FUN`
+(in this case both `c` and `d`).
 
 ```{r}
 matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
@@ -113,17 +119,18 @@ matsindf_apply(list(a = 2, b = 1), FUN = example_fun)
 Extra variables are tolerated in `.dat`,
 because `.dat` is considered to be a store of data
 from which variables can be drawn as needed.
-In contrast, named arguments to `...`
-are specified by the user,
-so including an extra variable is considered an error,
-as shown above.
 
 ```{r}
 matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
 ```
 
+In contrast, named arguments to `...`
+are specified by the user,
+so including an extra variable is considered an error,
+as shown above.
 
-## Advanced techniques
+
+## Some details
 
 If a named argument is supplied by both `.dat` and `...`,
 the argument in `...` takes precedence,
@@ -159,17 +166,197 @@ tryCatch(
 ```
 
 
-## Advanced data structures
+## matsindf_apply and data frames
 
 `.dat` can be a list (as shown in several examples above),
 but it can also be a data frame.
 
+```{r}
+df <- data.frame(a = 2:4, b = 1:3)
+matsindf_apply(df, FUN = example_fun)
+```
+
+Furthermore, `matsindf_apply` works with a `matsindf` data frame,
+a data frame wherein each entry in the data frame is a matrix.
+To demonstrate use of `matsindf_apply` with a data frame, 
+we'll construct a simple `matsindf` data frame (`midf`)
+using functions in this package.
+
+```{r}
+# Create a tidy data frame containing data for matrices
+tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
+                   matnames = c(rep("U", 8), rep("V", 8)),
+                   matvals = c(1:4, 11:14, 21:24, 31:34),
+                   rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
+                                rep(c(rep("i1", 2), rep("i2", 2)), 2)),
+                   colnames = c(rep(c("i1", "i2"), 4), 
+                                rep(c("p1", "p2"), 4))) %>%
+  mutate(
+    rowtypes = case_when(
+      matnames == "U" ~ "product",
+      matnames == "V" ~ "industry", 
+      TRUE ~ NA_character_
+    ),
+    coltypes = case_when(
+      matnames == "U" ~ "industry",
+      matnames == "V" ~ "product",
+      TRUE ~ NA_character_
+    )
+  )
+
+tidy
+
+# Convert to a matsindf data frame
+midf <- tidy %>% 
+  group_by(Year, matnames) %>% 
+  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") %>% 
+  spread(key = "matnames", value = "matvals")
+
+# Take a look at the midf data frame and some of the matrices it contains.
+midf
+midf$U[[1]]
+midf$V[[1]]
+```
+
+With `midf` in hand, we can demonstrate use of 
+[`tidyverse`](http://www.tidyverse.org)-style
+functional programming to perform
+matrix algebra within a data frame.
+The functions of the `matsbyname` package
+(such as `difference_byname` below)
+can be used for this purpose.
+
+```{r}
+result <- midf %>% 
+  mutate(
+    W = difference_byname(transpose_byname(V), U)
+  )
+result
+result$W[[1]]
+result$W[[2]]
+```
+
+This way of performing matrix calculations works equally well 
+within a 2-row `matsindf` data frame
+(as shown above)
+or a 1000-row `matsindf` data frame.
 
 
+## Programming with matsindf_apply
+
+Users can write their own functions using `matsindf_apply`. 
+A flexible `calc_W` function can be written as follows. 
+
+```{r}
+calc_W <- function(.DF = NULL, U_colname = "U", V_colname = "V", W_colname = "W"){
+  # The inner function does all the work.
+  W_inner_func <- function(U, V){
+    # When we get here, U and V will be single matrices or single numbers, 
+    # not a column in a data frame.
+    # Calculate W from the inputs U and V
+    W <- difference_byname(transpose_byname(V), U)
+    # Return a named list.
+    list(W) %>% magrittr::set_names(W_colname)
+  }
+  # The body of the main function consists of a call to matsindf_apply
+  # that specifies the inner function
+  matsindf_apply(.DF, FUN = W_inner_func, U = U_colname, V = V_colname)
+}
+```
+
+This style of writing `matsindf_apply` functions is incredibly versatile,
+leveraging the capabilities of both the `matsindf` and `matsbyname` packages. 
+(Indeed, the `Recca` pacakge 
+uses `matsindf_apply` heavily and
+is built upon the functions in the `matsindf` and `matsbyname` packages.)
+
+Functions written like `calc_W`
+can operate in ways similar to `matsindf_apply` itself.
+To demonstrate, we'll use `calc_W` in all the ways that `matsindf_apply` can be used,
+going in the reverse order to our demonstration of `matsindf_apply` above.
+
+`calc_W` can be used as a specialized `mutate` function
+that operates on `matsindf` data frames.
+
+```{r}
+midf %>% calc_W()
+```
+
+The added column could be given a different name from the default ("`W`")
+using the `W_colname` argument.
+
+```{r}
+midf %>% calc_W(W_colname = "W_prime")
+```
+
+As with `matsindf_apply`, 
+column names in `midf` can be mapped to the arguments of `calc_W`
+by the arguments to `calc_W`.
+
+```{r}
+midf %>% 
+  rename(X = U, Y = V) %>% 
+  calc_W(U_colname = "X", V_colname = "Y")
+```
+
+`calc_W` can operate on lists of single matrices, too.
+This approach works, because the default values for the 
+`U_colname` and `V_colname` arguments to `calc_W` are 
+"`U`" and "`V`", respectively.
+
+```{r}
+calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
+```
+
+But it may be clearer to name the arguments as required by the `calc_W` function
+without wrapping in a list first,
+as shown below.
+
+```{r}
+calc_W(U_colname = midf$U[[1]], V_colname = midf$V[[1]])
+```
+
+In the named argument approach above, the `*_colname` argument names are awkward.
+But if the intent is to use the `calc_W` function with `matsindf` data frames,
+perhaps the awkwardness can be tolerated.
+If the user is willing to tolerate a `partially matched arguments` warning, 
+the following approach works, too.
+
+```{r}
+calc_W(U = midf$U[[1]], V = midf$V[[1]])
+```
+
+`calc_W` can operate on data frames containing single numbers.
+
+```{r}
+data.frame(U = c(1, 2), V = c(3, 4)) %>% 
+  calc_W()
+```
+
+Finally, `calc_W` can be applied to single numbers,
+and the result is 1x1 matrix.
+
+```{r}
+calc_W(U_colname = 2, V_colname = 3)
+```
 
 
 ## Conclusion
 
+This vignette demonstrated use of
+the versatile `matsindf_apply` function.
+Inputs to `matsindf_apply` can be 
 
+* single numbers,
+* matrices, or
+* data frames with appropriately-named columns.
 
+`matsindf_apply` can be used for programming, and 
+functions constructed as demonstrated above
+share characteristics with `matsindf_apply`:
 
+* they can be used as specialized `mutate` operators, and
+* they can be applied to 
+   + single numbers
+   + matrices, or
+   + data frames with appropriately-named columns.

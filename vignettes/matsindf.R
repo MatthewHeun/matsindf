@@ -108,7 +108,7 @@ etas_forgraphing <- Etas %>%
     eta = matrix
   )
 
-# Compare to Figure 8 of Heun, Owen, and Brockway (2017)
+# Compare to Figure 8 of Heun, Owen, and Brockway (2018)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 
 ## ------------------------------------------------------------------------

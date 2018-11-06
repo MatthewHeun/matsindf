@@ -356,7 +356,5 @@ functions constructed as demonstrated above
 share characteristics with `matsindf_apply`:
 
 * they can be used as specialized `mutate` operators, and
-* they can be applied to 
-   + single numbers
-   + matrices, or
-   + data frames with appropriately-named columns.
+* they can be applied to single numbers, matrices, or
+  data frames with appropriately-named columns.

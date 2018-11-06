@@ -432,7 +432,7 @@ in which single cells contain entire matrices.
 With this data structure, 
 analysts can wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
-[`tidyverse`](http://www.tidyverse.org) 
+[tidyverse](http://www.tidyverse.org) 
 functional programming.
 
 

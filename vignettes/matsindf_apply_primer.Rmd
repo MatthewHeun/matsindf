@@ -35,7 +35,7 @@ The function is called `matsindf_apply`,
 because it can be used to apply `FUN` to a `matsindf` data frame,
 a data frame that contains matrices as individual entries in a data frame.
 (A `matsindf` data frame can be created by
-calling `matsindf::collapse_to_matrices`, as demonstrated below.)
+calling `collapse_to_matrices`, as demonstrated below.)
 
 But `matsindf_apply` can apply `FUN` across much more:
 data frames of single numbers,
@@ -249,11 +249,18 @@ A flexible `calc_W` function can be written as follows.
 
 ```{r}
 calc_W <- function(.DF = NULL, U_colname = "U", V_colname = "V", W_colname = "W"){
-  Wfunc <- function(U, V){
+  # The inner function does all the work.
+  W_inner_func <- function(U, V){
+    # When we get here, U and V will be single matrices or single numbers, 
+    # not a column in a data frame.
+    # Calculate W from the inputs U and V
     W <- difference_byname(transpose_byname(V), U)
+    # Return a named list.
     list(W) %>% magrittr::set_names(W_colname)
   }
-  matsindf_apply(.DF, FUN = Wfunc, U = U_colname, V = V_colname)
+  # The body of the main function consists of a call to matsindf_apply
+  # that specifies the inner function
+  matsindf_apply(.DF, FUN = W_inner_func, U = U_colname, V = V_colname)
 }
 ```
 
@@ -263,8 +270,8 @@ leveraging the capabilities of both the `matsindf` and `matsbyname` packages.
 uses `matsindf_apply` heavily and
 is built upon the functions in the `matsindf` and `matsbyname` packages.)
 
-Functions written in this way (like `calc_W`)
-can operate in ways similar to `matsindf_apply`.
+Functions written like `calc_W`
+can operate in ways similar to `matsindf_apply` itself.
 To demonstrate, we'll use `calc_W` in all the ways that `matsindf_apply` can be used,
 going in the reverse order to our demonstration of `matsindf_apply` above.
 
@@ -292,16 +299,17 @@ midf %>%
   calc_W(U_colname = "X", V_colname = "Y")
 ```
 
-`calc_W` can operate on lists of single matrices, too, 
-although doing so requires knowledge of the names of the arguments 
-to the internal `Wfunc` function.
-This approach is not recommended.
+`calc_W` can operate on lists of single matrices, too.
+This approach works, because the default values for the 
+`U_colname` and `V_colname` arguments to `calc_W` are 
+"`U`" and "`V`".
 
 ```{r}
 calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 ```
 
-Rather, name the arguments as required by `calc_W` without wrapping in a list first,
+But it may be clearer to name the arguments as required by the `calc_W` function
+without wrapping in a list first,
 as shown below.
 
 ```{r}
@@ -311,8 +319,8 @@ calc_W(U_colname = midf$U[[1]], V_colname = midf$V[[1]])
 In the named argument approach, the `*_colname` argument names are awkward.
 But if the intent is to use the `calc_W` function with `matsindf` data frames,
 perhaps the awkwardness can be tolerated.
-If the user is willing to tolerate a "partially matched arguments" warning, 
-the following approcah works, too.
+If the user is willing to tolerate a `partially matched arguments` warning, 
+the following approach works, too.
 
 ```{r}
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
@@ -331,6 +339,7 @@ and the result is 1x1 matrix.
 ```{r}
 calc_W(U_colname = 2, V_colname = 3)
 ```
+
 
 ## Conclusion
 

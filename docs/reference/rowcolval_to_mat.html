@@ -68,7 +68,7 @@ in which case the value in the values column is returned." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.10</span>
       </span>
     </div>
 
@@ -141,7 +141,8 @@ in which case the value in the <code>values</code> column is returned.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rowcolval_to_mat</span>(<span class='no'>.DF</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"matvals"</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rownames"</span>,
-  <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>, <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+  <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>, <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>,
+  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>, <span class='kw'>fill</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,12 +164,12 @@ in which case the value in the <code>values</code> column is returned.</p>
       <td><p>the name of the column in <code>.DF</code> containing column names (a string). Default is "<code>colnames</code>".</p></td>
     </tr>
     <tr>
-      <th>rowtype</th>
-      <td><p>an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "<code>NULL</code>".</p></td>
+      <th>rowtypes</th>
+      <td><p>an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "<code>rowtypes</code>".</p></td>
     </tr>
     <tr>
-      <th>coltype</th>
-      <td><p>an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "<code>NULL</code>".</p></td>
+      <th>coltypes</th>
+      <td><p>an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "<code>coltypes</code>".</p></td>
     </tr>
     <tr>
       <th>fill</th>
@@ -192,8 +193,12 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='fu'>rowcolval_to_mat</span>(<span class='no'>data</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)
 <span class='no'>A</span></div><div class='output co'>#&gt;     i 1 i 2
 #&gt; c 1  11  12
-#&gt; c 2   0  22</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/matsbyname/topics/rowtype'>rowtype</a></span>(<span class='no'>A</span>) <span class='co'># NULL, because types not set</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/matsbyname/topics/coltype'>coltype</a></span>(<span class='no'>A</span>) <span class='co'># NULL, because types not set</span></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'>rowcolval_to_mat</span>(<span class='no'>data</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
-                            <span class='kw'>rowtype</span>  <span class='kw'>=</span> <span class='st'>"Commodities"</span>, <span class='kw'>coltype</span>  <span class='kw'>=</span> <span class='st'>"Industries"</span>)
+#&gt; c 2   0  22
+#&gt; attr(,"rowtype")
+#&gt; [1] "rowtypes"
+#&gt; attr(,"coltype")
+#&gt; [1] "coltypes"</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/matsbyname/topics/rowtype'>rowtype</a></span>(<span class='no'>A</span>) <span class='co'># NULL, because types not set</span></div><div class='output co'>#&gt; [1] "rowtypes"</div><div class='input'><span class='fu'><a href='http://www.rdocumentation.org/packages/matsbyname/topics/coltype'>coltype</a></span>(<span class='no'>A</span>) <span class='co'># NULL, because types not set</span></div><div class='output co'>#&gt; [1] "coltypes"</div><div class='input'><span class='no'>B</span> <span class='kw'>&lt;-</span> <span class='fu'>rowcolval_to_mat</span>(<span class='no'>data</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
+                            <span class='kw'>rowtypes</span>  <span class='kw'>=</span> <span class='st'>"Commodities"</span>, <span class='kw'>coltypes</span>  <span class='kw'>=</span> <span class='st'>"Industries"</span>)
 <span class='no'>B</span></div><div class='output co'>#&gt;     i 1 i 2
 #&gt; c 1  11  12
 #&gt; c 2   0  22
@@ -203,7 +208,7 @@ in which case the value in the <code>values</code> column is returned.</p>
 #&gt; [1] "Industries"</div><div class='input'><span class='no'>C</span> <span class='kw'>&lt;-</span> <span class='no'>data</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='fu'>data.frame</span>(<span class='kw'>rt</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Commodities"</span>, <span class='st'>"Commodities"</span>, <span class='st'>"Commodities"</span>),
                                    <span class='kw'>ct</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Industries"</span>, <span class='st'>"Industries"</span>, <span class='st'>"Industries"</span>))) <span class='kw'>%&gt;%</span>
   <span class='fu'>rowcolval_to_mat</span>(<span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
-                   <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)
+                   <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)
 <span class='no'>C</span></div><div class='output co'>#&gt;     i 1 i 2
 #&gt; c 1  11  12
 #&gt; c 2   0  22
@@ -212,14 +217,14 @@ in which case the value in the <code>values</code> column is returned.</p>
 #&gt; attr(,"coltype")
 #&gt; [1] "Industries"</div><div class='input'><span class='co'># Also works for single values if both the rownames and colnames columns contain NA</span>
 <span class='no'>data2</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Country</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"GH"</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>),
-  <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>vals</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>))
+  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>vals</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>))
 <span class='no'>data2</span> <span class='kw'>%&gt;%</span> <span class='fu'>rowcolval_to_mat</span>(<span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
-  <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rowtype"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"coltype"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='no'>data3</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Country</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"GH"</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>vals</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>))
-<span class='no'>data3</span> <span class='kw'>%&gt;%</span> <span class='fu'>rowcolval_to_mat</span>(<span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># Fails when rowtype or coltype not all same. In data3, column rt is not all same.</span>
+  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='no'>data3</span> <span class='kw'>&lt;-</span> <span class='fu'>data.frame</span>(<span class='kw'>Country</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"GH"</span>), <span class='kw'>rows</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>NA</span>), <span class='kw'>vals</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>2</span>))
+<span class='no'>data3</span> <span class='kw'>%&gt;%</span> <span class='fu'>rowcolval_to_mat</span>(<span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='co'># Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.</span>
 <span class='no'>data4</span> <span class='kw'>&lt;-</span> <span class='no'>data</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/bind.html'>bind_cols</a></span>(<span class='fu'>data.frame</span>(<span class='kw'>rt</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Commodities"</span>, <span class='st'>"Industries"</span>, <span class='st'>"Commodities"</span>),
                                        <span class='kw'>ct</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Industries"</span>, <span class='st'>"Industries"</span>, <span class='st'>"Industries"</span>)))</div><span class='co'># NOT RUN {</span>
 <span class='fu'>rowcolval_to_mat</span>(<span class='no'>data4</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                          <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>, <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)
+                          <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>, <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

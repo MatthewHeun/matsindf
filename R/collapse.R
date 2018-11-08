@@ -10,11 +10,11 @@
 #' such as "Commodities", "Industries", "Products", or "Machines".
 #' The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 #' (\code{rowtype} and \code{coltype}),
-#' which can be accessed with the \code{\link{rowtype}} and \code{\link{coltype}} functions
+#' which can be accessed with the \code{\link[matsbyname]{rowtype}} and \code{\link[matsbyname]{coltype}} functions
 #' of the \pkg{matsbyname} package.
 #' Row and column types are both respected and propagated by the various \code{_byname} functions
 #' of the \pkg{matsbyname} package.
-#' Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
+#' Use the \code{*_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
 #' The \pkg{matsindf}-style matrices will be stored
 #' in a column with same name as the incoming \code{values} column.
 
@@ -102,7 +102,7 @@
 #' ) %>% group_by(Country, Year, matrix)
 #' mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
 #'                              rownames = "row", colnames = "col",
-#'                              rowtypes = "rowtype", coltypes = "coltype")
+#'                              rowtypes = "rowtypes", coltypes = "coltypes")
 #' mats %>% spread(key = matrix, value = vals)
 collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals", rownames = "rownames", colnames = "colnames",
                                  rowtypes = "rowtypes", coltypes = "coltypes"){

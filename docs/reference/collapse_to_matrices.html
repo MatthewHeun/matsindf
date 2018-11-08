@@ -46,7 +46,7 @@ which can be accessed with the rowtype and coltype functions
 of the matsbyname package.
 Row and column types are both respected and propagated by the various _byname functions
 of the matsbyname package.
-Use the _byname functions when you do operations on the matsindf-style matrices.
+Use the *_byname functions when you do operations on the matsindf-style matrices.
 The matsindf-style matrices will be stored
 in a column with same name as the incoming values column.
 This function is similar to nest, which stores data frames into a cell of a data frame.
@@ -91,7 +91,7 @@ See the example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.10</span>
       </span>
     </div>
 
@@ -162,11 +162,11 @@ In addition, <span class="pkg">matsindf</span>-style matrices have "types" for r
 such as "Commodities", "Industries", "Products", or "Machines".
 The row and column types for the <span class="pkg">matsindf</span>-style matrices are stored as attributes on the matrix
 (<code>rowtype</code> and <code>coltype</code>),
-which can be accessed with the <code>rowtype</code> and <code>coltype</code> functions
+which can be accessed with the <code><a href='http://www.rdocumentation.org/packages/matsbyname/topics/rowtype'>rowtype</a></code> and <code><a href='http://www.rdocumentation.org/packages/matsbyname/topics/coltype'>coltype</a></code> functions
 of the <span class="pkg">matsbyname</span> package.
 Row and column types are both respected and propagated by the various <code>_byname</code> functions
 of the <span class="pkg">matsbyname</span> package.
-Use the <code>_byname</code> functions when you do operations on the <span class="pkg">matsindf</span>-style matrices.
+Use the <code>*_byname</code> functions when you do operations on the <span class="pkg">matsindf</span>-style matrices.
 The <span class="pkg">matsindf</span>-style matrices will be stored
 in a column with same name as the incoming <code>values</code> column.
 This function is similar to <code><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></code>, which stores data frames into a cell of a data frame.
@@ -187,8 +187,8 @@ See the example.</p>
     </div>
 
     <pre class="usage"><span class='fu'>collapse_to_matrices</span>(<span class='no'>.DF</span>, <span class='kw'>matnames</span> <span class='kw'>=</span> <span class='st'>"matnames"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"matvals"</span>,
-  <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rownames"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>, <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rownames"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>,
+  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,12 +222,12 @@ Default is "<code>colnames</code>".</p></td>
     <tr>
       <th>rowtypes</th>
       <td><p>optional string identifying the column in <code>.DF</code> containing the type of values in rows of the matrices to be created.
-Default is <code>NULL</code>.</p></td>
+Default is "<code>rowtypes</code>".</p></td>
     </tr>
     <tr>
       <th>coltypes</th>
       <td><p>optional string identifying the column in <code>.DF</code> containing the type of values in columns of the matrices to be created
-Default is <code>NULL</code>.</p></td>
+Default is "<code>coltypes</code>".</p></td>
     </tr>
     </table>
     
@@ -269,16 +269,16 @@ Default is <code>NULL</code>.</p></td>
                                <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
                   <span class='kw'>col</span>     <span class='kw'>=</span> <span class='fu'>c</span>( <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 3"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>,
                                <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='fu'>c</span>( <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>,
-                               <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='fu'>c</span>( <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>,
-                               <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
+                  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='fu'>c</span>( <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>,
+                                <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
+                  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='fu'>c</span>( <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>,
+                                <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
                   <span class='kw'>vals</span>  <span class='kw'>=</span> <span class='fu'>c</span>(    <span class='fl'>11</span>  ,  <span class='fl'>22</span>,    <span class='fl'>11</span> ,   <span class='fl'>22</span> ,   <span class='fl'>23</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span> ,
                                 <span class='fl'>11</span> ,   <span class='fl'>12</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span>,   <span class='fl'>0.2</span>, <span class='fl'>0.3</span>)
 ) <span class='kw'>%&gt;%</span> <span class='fu'><a href='http://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Country</span>, <span class='no'>Year</span>, <span class='no'>matrix</span>)
 <span class='no'>mats</span> <span class='kw'>&lt;-</span> <span class='fu'>collapse_to_matrices</span>(<span class='no'>tidy</span>, <span class='kw'>matnames</span> <span class='kw'>=</span> <span class='st'>"matrix"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
                              <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"row"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"col"</span>,
-                             <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtype"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltype"</span>)
+                             <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>)
 <span class='no'>mats</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>matrix</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>vals</span>)</div><div class='output co'>#&gt;   Country Year                   E eta            U            V
 #&gt; 1      GH 1971 11, 0, 0, 22, 0, 23 0.2 11, 0, 0, 22 11, 0, 0, 22
 #&gt; 2      US 1980        11, 0, 0, 22 0.3       11, 12         NULL</div></pre>

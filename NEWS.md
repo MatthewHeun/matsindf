@@ -1,3 +1,5 @@
+# matsindf 0.2.10 (2018-11-08)
+
 * Breaking change: Default values of `rowtypes` and `coltypes` arguments to 
   `expand_to_tidy` and `collapse_to_matrices` functions are no longer `NULL`.
   Rather, they are "`rowtypes`" and "`coltypes`".

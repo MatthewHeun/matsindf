@@ -1,3 +1,8 @@
+# matsindf 0.2.9 (2018-11-06)
+
+* Extended the `matsindf_apply` primer to include sections on using `matsindf_apply` with a data frame and programming.
+
+
 # matsindf 0.2.8 (2018-11-01)
 
 * Added new vignette to documentation website, 

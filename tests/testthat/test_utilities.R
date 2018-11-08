@@ -40,19 +40,19 @@ test_that("index_column works as expected", {
   # Test when the variable to be indexed is a column of a data frame containing matrices.
   # In this case, we expect an element-by-element division of the matrices to occur
   DF3 <- data.frame(
-    Country = rep("US", times = 12),
-    Year    = rep(c(1980, 1981, 1982), each = 4),
-    matname = rep("m", times = 12),
-    rowname = rep(c("r1", "r2"), times = 6),
-    colname = rep(c("c1", "c2"), each = 2),
-    matvals = rep(c(10, 20, 40), each = 4),
-    rowtype = "row",
-    coltype = "col"
+    Country  = rep("US", times = 12),
+    Year     = rep(c(1980, 1981, 1982), each = 4),
+    matname  = rep("m", times = 12),
+    rowname  = rep(c("r1", "r2"), times = 6),
+    colname  = rep(c("c1", "c2"), each = 2),
+    matvals  = rep(c(10, 20, 40), each = 4),
+    rowtypes = "row",
+    coltypes = "col"
   ) %>%
     group_by(Country, Year, matname) %>%
-    collapse_to_matrices(matnames = "matname", matvals = "matvals",
-                         rownames = "rowname", colnames = "colname",
-                         rowtypes = "rowtype", coltypes = "coltype")
+    collapse_to_matrices(matnames = "matname",  matvals = "matvals",
+                         rownames = "rowname",  colnames = "colname",
+                         rowtypes = "rowtypes", coltypes = "coltypes")
   expected3 <- data.frame(
     Country = rep("US", times = 12),
     Year    = rep(c(1980, 1981, 1982), each = 4),
@@ -60,13 +60,13 @@ test_that("index_column works as expected", {
     rowname = rep(c("r1", "r2"), times = 6),
     colname = rep(c("c1", "c2"), each = 2),
     matvals_indexed = rep(c(1, 2, 4), each = 4),
-    rowtype = "row",
-    coltype = "col"
+    rowtypes = "row",
+    coltypes = "col"
   ) %>%
     group_by(Country, Year, matname) %>%
-    collapse_to_matrices(matnames = "matname", matvals = "matvals_indexed",
-                         rownames = "rowname", colnames = "colname",
-                         rowtypes = "rowtype", coltypes = "coltype") %>%
+    collapse_to_matrices(matnames = "matname",  matvals = "matvals_indexed",
+                         rownames = "rowname",  colnames = "colname",
+                         rowtypes = "rowtypes", coltypes = "coltypes") %>%
     # Add the matvals column
     mutate(
       matvals = DF3$matvals
@@ -91,7 +91,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                           rows = c( "p1",  "p1", "p2"),
                           cols = c( "i1",  "i2", "i2"),
                           vals = c(  11  ,  12,   22 ))
-  A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals")
+  A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
   expect_equal(class(A), "matrix")
   expect_equal(A, expected_mat)
   expect_null(rowtype(A)) # rowtype has not been set
@@ -99,21 +99,21 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
 
   # Provide single row and column types to be applied to all entries.
   B <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
-                        rowtype  = "Products", coltype  = "Industries")
+                        rowtypes  = "Products", coltypes  = "Industries")
   expect_equal(B, expected_mat_with_types)
 
   # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
   C <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
                                           ct = c("Industries", "Industries", "Industries"))) %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-                     rowtype = "rt", coltype = "ct")
+                     rowtypes = "rt", coltypes = "ct")
   expect_equal(C, expected_mat_with_types)
 
   # Also works for single values if both the rownames and colnames columns contain NA
   rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
-                           rowtype = c(NA), coltype = c(NA), vals = c(2))
+                           rowtypes = c(NA), coltypes = c(NA), vals = c(2))
   D <- rowcolval2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-                                       rowtype = "rowtype", coltype = "coltype")
+                                       rowtypes = "rowtype", coltypes = "coltype")
   expect_equal(D, 2)
 
   # Try without rowtype or coltype columns in the data frame.
@@ -127,7 +127,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
   expect_error(rowcolval_to_mat(rowcolval4,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
-                                rowtype = "rt", coltype = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
+                                rowtypes = "rt", coltypes = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
 })
 
 
@@ -156,13 +156,13 @@ test_that("mat_to_rowcolval (expand) works as expected", {
   # Construct the matrix that we'll convert later to a data frame.
   A <- data %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols",
-                     rowtype = "rt",    coltype = "ct", matvals = "vals")
+                     rowtypes = "rt",   coltypes = "ct", matvals = "vals")
   expect_equal(A, expected_mat)
 
   # Veryfy that we can convert the matrix to a data frame.
   expect_equal(mat_to_rowcolval(A,
                                 rownames = "rows", colnames = "cols",
-                                rowtype = "rt", coltype = "ct",
+                                rowtypes = "rt", coltypes = "ct",
                                 matvals = "vals",
                                 drop = 0) %>%
                  set_rownames(NULL),
@@ -182,7 +182,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
   expect_equal(
     mat_to_rowcolval(A,
                      rownames = "rows", colnames = "cols",
-                     rowtype = "rt", coltype = "ct",
+                     rowtypes = "rt", coltypes = "ct",
                      matvals = "vals",
                      drop = 0) %>%
       rownames() %>% as.numeric(),
@@ -190,13 +190,13 @@ test_that("mat_to_rowcolval (expand) works as expected", {
     c(1, 3, 4))
 
   # This also works for single values
-  expect_equal(mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtype = "rt", coltype = "ct", matvals = "vals"),
+  expect_equal(mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtypes = "rt", coltypes = "ct", matvals = "vals"),
                data.frame(rows = NA, cols = NA, vals = 2, rt = NA, ct = NA)
   )
   # For a 0 value when we drop 0's, we get a zero-length data frame
   B <- mat_to_rowcolval(0,
                         rownames = "rows", colnames = "cols",
-                        rowtype = "rt", coltype = "ct",
+                        rowtypes = "rt", coltypes = "ct",
                         matvals = "vals",
                         drop = 0)
   expect_equal(B %>% nrow(), 0)

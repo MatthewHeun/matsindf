@@ -5,7 +5,8 @@
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
 mat_to_rowcolval(.matrix, matvals = "matvals", rownames = "rownames",
-  colnames = "colnames", rowtype = NULL, coltype = NULL, drop = NA)
+  colnames = "colnames", rowtypes = "rowtypes",
+  coltypes = "coltypes", drop = NA)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}
@@ -16,9 +17,9 @@ mat_to_rowcolval(.matrix, matvals = "matvals", rownames = "rownames",
 
 \item{colnames}{a string for the name of the output column containing column names. Default is "\code{colnames}".}
 
-\item{rowtype}{a string for the name of the output column containing row types. Default is \code{NULL}.}
+\item{rowtypes}{a string for the name of the output column containing row types. Default is "\code{rowtypes}".}
 
-\item{coltype}{a string for the name of the output column containing column types. Default is \code{NULL}.}
+\item{coltypes}{a string for the name of the output column containing column types. Default is "\code{coltypes}".}
 
 \item{drop}{if specified, the value to be dropped from output. Default is \code{NA}.
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
@@ -45,17 +46,17 @@ data <- data.frame(Country  = c("GH", "GH", "GH"),
 data
 A <- data \%>\%
   rowcolval_to_mat(rownames = "rows", colnames = "cols",
-                    rowtype = "rt",    coltype = "ct", matvals = "vals")
+                   rowtypes = "rt",   coltypes = "ct", matvals = "vals")
 A
 mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", matvals = "vals")
+                 rowtypes = "rt", coltypes = "ct", matvals = "vals")
 mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", matvals = "vals", drop = 0)
+                 rowtypes = "rt", coltypes = "ct", matvals = "vals", drop = 0)
 # This also works for single values
 mat_to_rowcolval(2, matvals = "vals",
                  rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct")
+                 rowtypes = "rt", coltypes = "ct")
 mat_to_rowcolval(0, matvals = "vals",
                  rownames = "rows", colnames = "cols",
-                 rowtype = "rt", coltype = "ct", drop = 0)
+                 rowtypes = "rt", coltypes = "ct", drop = 0)
 }

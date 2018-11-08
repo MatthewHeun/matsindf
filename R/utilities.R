@@ -9,8 +9,8 @@
 #' @param  matvals a string for the name of the output column containing values. Default is "\code{matvals}".
 #' @param rownames a string for the name of the output column containing row names. Default is "\code{rownames}".
 #' @param colnames a string for the name of the output column containing column names. Default is "\code{colnames}".
-#' @param  rowtype a string for the name of the output column containing row types. Default is \code{NULL}.
-#' @param  coltype a string for the name of the output column containing column types. Default is \code{NULL}.
+#' @param rowtypes a string for the name of the output column containing row types. Default is "\code{rowtypes}".
+#' @param coltypes a string for the name of the output column containing column types. Default is "\code{coltypes}".
 #' @param     drop if specified, the value to be dropped from output. Default is \code{NA}.
 #' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 #' If \code{NA}, no values are dropped from output.
@@ -30,40 +30,38 @@
 #' data
 #' A <- data %>%
 #'   rowcolval_to_mat(rownames = "rows", colnames = "cols",
-#'                     rowtype = "rt",    coltype = "ct", matvals = "vals")
+#'                    rowtypes = "rt",   coltypes = "ct", matvals = "vals")
 #' A
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", matvals = "vals")
+#'                  rowtypes = "rt", coltypes = "ct", matvals = "vals")
 #' mat_to_rowcolval(A, rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", matvals = "vals", drop = 0)
+#'                  rowtypes = "rt", coltypes = "ct", matvals = "vals", drop = 0)
 #' # This also works for single values
 #' mat_to_rowcolval(2, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct")
+#'                  rowtypes = "rt", coltypes = "ct")
 #' mat_to_rowcolval(0, matvals = "vals",
 #'                  rownames = "rows", colnames = "cols",
-#'                  rowtype = "rt", coltype = "ct", drop = 0)
+#'                  rowtypes = "rt", coltypes = "ct", drop = 0)
 mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
-                             rowtype = NULL, coltype = NULL,
+                             rowtypes = "rowtypes", coltypes = "coltypes",
                              drop = NA){
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
-      # setrowtype(rowtype(.matrix)) %>%
-      # setcoltype(coltype(.matrix)) %>%
       data.frame(check.names = FALSE) %>%
       rownames_to_column(var = rownames) %>%
       gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
     if (!is.null(rowtype(.matrix))) {
-      out[[rowtype]] <- rowtype(.matrix)
+      out[[rowtypes]] <- rowtype(.matrix)
     }
     if (!is.null(coltype(.matrix))) {
-      out[[coltype]] <- coltype(.matrix)
+      out[[coltypes]] <- coltype(.matrix)
     }
   } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
     out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA)
-    names(out) <- c(rownames, colnames, matvals, rowtype, coltype)
+    names(out) <- c(rownames, colnames, matvals, rowtypes, coltypes)
   } else {
     stop(paste("Unknown type of .matrix in mat_to_rowcolval", .matrix,
                "of class", class(.matrix), "and length", length(.matrix)))
@@ -89,8 +87,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
 #' @param rownames the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
 #' @param colnames the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
-#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{NULL}".
-#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{NULL}".
+#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".
+#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".
 #' @param fill     the value for missing entries in the resulting matrix. default is \code{0}.
 #'
 #' @return a matrix with named rows and columns and, optionally, row and column types
@@ -114,53 +112,53 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' C <- data %>% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
 #'                                    ct = c("Industries", "Industries", "Industries"))) %>%
 #'   rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-#'                    rowtype = "rt", coltype = "ct")
+#'                    rowtypes = "rt", coltypes = "ct")
 #' C
 #' # Also works for single values if both the rownames and colnames columns contain NA
 #' data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
-#'   rowtype = c(NA), coltype = c(NA), vals = c(2))
+#'   rowtypes = c(NA), coltypes = c(NA), vals = c(2))
 #' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-#'   rowtype = "rowtype", coltype = "coltype")
+#'   rowtypes = "rowtype", coltypes = "coltype")
 #' data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
 #' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
 #' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-#'                           matvals = "vals", rowtype = "rt", coltype = "ct")}
+#'                           matvals = "vals", rowtypes = "rt", coltypes = "ct")}
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
-                             rowtype = NULL, coltype = NULL, fill = 0){
-  if (!is.null(rowtype)) {
+                             rowtypes = "rowtypes", coltypes = "coltypes", fill = 0){
+  if (!is.null(rowtypes)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
-    if (rowtype %in% colnames(.DF)) {
+    if (rowtypes %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.DF[[rowtype]]))) {
+      if (!any(is.na(.DF[[rowtypes]]))) {
         # Check if all entries in the rowtype column are the same
-        rt <- .DF[[rowtype]]
+        rt <- .DF[[rowtypes]]
         if (any(rt != rt[[1]])) {
           # All values in the rowtype column should be the same. If not, how are we to know which to use?
-          stop(paste("Not all values in", rowtype, "(rowtype) were same as first entry:", rt[[1]]))
+          stop(paste("Not all values in", rowtypes, "(rowtype) were same as first entry:", rt[[1]]))
         }
         # But if they are all same, use it as the rowtype
-        rowtype <- as.character(rt[[1]])
+        rowtypes <- as.character(rt[[1]])
       }
     }
   }
 
-  if (!is.null(coltype)) {
+  if (!is.null(coltypes)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
-    if (coltype %in% colnames(.DF)) {
+    if (coltypes %in% colnames(.DF)) {
       # Only do this if none of the entries in this column are NA. If any of the entries are NA skip this
-      if (!any(is.na(.DF[[coltype]]))) {
+      if (!any(is.na(.DF[[coltypes]]))) {
         # Check if all entries in the rowtype column are the same
-        ct <- .DF[[coltype]]
+        ct <- .DF[[coltypes]]
         if (any(ct != ct[[1]])) {
           # All values in the coltype column should be the same. If not, how are we to know which to use?
-          stop(paste("Not all values in", coltype, "(coltype) were same as first entry:", ct[[1]]))
+          stop(paste("Not all values in", coltypes, "(coltype) were same as first entry:", ct[[1]]))
         }
         # But if they are all same, use it as the rowtype
-        coltype <- as.character(ct[[1]])
+        coltypes <- as.character(ct[[1]])
       }
     }
   }
@@ -192,7 +190,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns
     column_to_rownames(var = rownames) %>%
     as.matrix %>%
-    setrowtype(rowtype) %>% setcoltype(coltype)
+    setrowtype(rowtypes) %>% setcoltype(coltypes)
 }
 
 #' Index a column in a data frame by groups relative to an initial year

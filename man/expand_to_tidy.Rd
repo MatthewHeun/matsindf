@@ -5,8 +5,8 @@
 \title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
 expand_to_tidy(.DF, matnames = "matnames", matvals = "matvals",
-  rownames = "rownames", colnames = "colnames", rowtypes = NULL,
-  coltypes = NULL, drop = NA)
+  rownames = "rownames", colnames = "colnames",
+  rowtypes = "rowtypes", coltypes = "coltypes", drop = NA)
 }
 \arguments{
 \item{.DF}{the data frame containing \pkg{matsindf}-style matrices.
@@ -28,10 +28,10 @@ Default is "\code{rownames}".}
 Default is "\code{colnames}".}
 
 \item{rowtypes}{optional name for the output column of row types (a string).
-Default is \code{NULL}.}
+Default is "\code{rowtypes}".}
 
 \item{coltypes}{optional name for the output column of column types (a string)
-Default is \code{NULL}.}
+Default is "\code{coltypes}".}
 
 \item{drop}{if specified, the value to be dropped from output,
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
@@ -77,7 +77,7 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                                11 ,   12 ,   11 ,   22,   0.2, 0.3)
 ) \%>\% group_by(Country, Year, matrix)
 mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
-                             rowtypes = "rowtype", coltypes = "coltype",
+                             rowtypes = "rowtypes", coltypes = "coltypes",
                              matvals = "vals") \%>\%
           ungroup
 expand_to_tidy(mats, matnames = "matrix", matvals = "vals",

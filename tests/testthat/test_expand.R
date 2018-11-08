@@ -32,7 +32,7 @@ test_that("expand_to_tidy works as expected", {
   mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                                  rowtypes = "rowtype", coltypes = "coltype",
                                matvals = "vals") %>%
-    ungroup
+    ungroup()
   # For the first tests, do not drop 0 values.
   A <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
                       rownames = "rows", colnames = "cols",

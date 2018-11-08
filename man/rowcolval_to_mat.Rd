@@ -17,11 +17,11 @@ rowcolval_to_mat(.DF, matvals = "matvals", rownames = "rownames",
 
 \item{colnames}{the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".}
 
+\item{rowtypes}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".}
+
+\item{coltypes}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".}
+
 \item{fill}{the value for missing entries in the resulting matrix. default is \code{0}.}
-
-\item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".}
-
-\item{coltype}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".}
 }
 \value{
 a matrix with named rows and columns and, optionally, row and column types
@@ -49,7 +49,7 @@ A
 rowtype(A) # NULL, because types not set
 coltype(A) # NULL, because types not set
 B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals",
-                            rowtype  = "Commodities", coltype  = "Industries")
+                            rowtypes  = "Commodities", coltypes  = "Industries")
 B
 C <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
                                    ct = c("Industries", "Industries", "Industries"))) \%>\%
@@ -60,10 +60,10 @@ C
 data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
   rowtypes = c(NA), coltypes = c(NA), vals = c(2))
 data2 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-  rowtypes = "rowtype", coltypes = "coltype")
+  rowtypes = "rowtypes", coltypes = "coltypes")
 data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
 data3 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
-# Fails when rowtype or coltype not all same. In data3, column rt is not all same.
+# Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.
 data4 <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
                                        ct = c("Industries", "Industries", "Industries")))
 \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",

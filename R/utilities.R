@@ -16,7 +16,11 @@
 #' If \code{NA}, no values are dropped from output.
 #'
 #' @return a data frame with rows, columns, and values
+#'
 #' @export
+#'
+#' @importFrom matsbyname rowtype
+#' @importFrom matsbyname coltype
 #'
 #' @examples
 #' library(magrittr)
@@ -83,16 +87,20 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' it is assumed that this is a single value, not a matrix,
 #' in which case the value in the \code{values} column is returned.
 #'
-#' @param .DF      a tidy data frame containing columns for row names, column names, and values
-#' @param matvals  the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
-#' @param rownames the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
-#' @param colnames the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
-#' @param rowtype  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".
-#' @param coltype  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".
-#' @param fill     the value for missing entries in the resulting matrix. default is \code{0}.
+#' @param .DF       a tidy data frame containing columns for row names, column names, and values
+#' @param matvals   the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
+#' @param rownames  the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
+#' @param colnames  the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
+#' @param rowtypes  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".
+#' @param coltypes  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".
+#' @param fill      the value for missing entries in the resulting matrix. default is \code{0}.
 #'
 #' @return a matrix with named rows and columns and, optionally, row and column types
+#'
 #' @export
+#'
+#' @importFrom matsbyname rowtype
+#' @importFrom matsbyname coltype
 #'
 #' @examples
 #' library(magrittr)
@@ -107,7 +115,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' rowtype(A) # NULL, because types not set
 #' coltype(A) # NULL, because types not set
 #' B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals",
-#'                             rowtype  = "Commodities", coltype  = "Industries")
+#'                             rowtypes  = "Commodities", coltypes  = "Industries")
 #' B
 #' C <- data %>% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
 #'                                    ct = c("Industries", "Industries", "Industries"))) %>%
@@ -118,10 +126,10 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
 #'   rowtypes = c(NA), coltypes = c(NA), vals = c(2))
 #' data2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-#'   rowtypes = "rowtype", coltypes = "coltype")
+#'   rowtypes = "rowtypes", coltypes = "coltypes")
 #' data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
 #' data3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
-#' # Fails when rowtype or coltype not all same. In data3, column rt is not all same.
+#' # Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
 #' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",

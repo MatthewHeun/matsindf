@@ -23,13 +23,13 @@ test_that("small example works as expected", {
                      col = c("p1", "p2", "p2", "p1", "p2"),
                      vals = c(1, 2, 3, 4, 5)) %>%
     mutate(
-      rowtype = "Industries",
-      coltype  = "Products"
+      rowtypes = "Industries",
+      coltypes  = "Products"
     ) %>%
     group_by(matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
-                               rowtypes = "rowtype", coltypes = "coltype")
+                               rowtypes = "rowtypes", coltypes = "coltypes")
   # Check that groups are discarded.
   expect_equal(length(group_vars(mats)), 0)
   # Test for V1
@@ -44,7 +44,7 @@ test_that("small example works as expected", {
   tidy2 <- mats %>%
     expand_to_tidy(matnames = "matrix", matvals = "vals",
                    rownames = "row", colnames = "col",
-                   rowtypes = "rowtype", coltypes = "coltype", drop = 0) %>%
+                   rowtypes = "rowtypes", coltypes = "coltypes", drop = 0) %>%
     mutate(
       # The original tidy data frame had factors
       row = as.factor(row),
@@ -55,11 +55,12 @@ test_that("small example works as expected", {
   # Try the test when we are missing the rowtype and coltype columns
   tidy_trimmed <- tidy %>%
     mutate(
-      rowtype = NULL,
-      coltype = NULL
+      rowtypes = NULL,
+      coltypes = NULL
     )
   mats_trimmed <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
-                                       rownames = "row", colnames = "col")
+                                       rownames = "row", colnames = "col",
+                                       rowtypes = NULL, coltypes = NULL)
   # Test for V1
   expect_equal(mats_trimmed$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
                                               dimnames = list(c("i1", "i2"), c("p1", "p2"))))
@@ -75,18 +76,18 @@ context("Collapse")
 test_that("collapse_to_matrices works as expected", {
   ptype <- "Products"
   itype <- "Industries"
-  tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
-                     Year    = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
-                     matrix  = c(  "U",  "U",  "Y",  "Y",  "Y",  "V",  "V",  "U",  "U",  "Y",  "Y", "eta", "eta"),
-                     row     = c( "p1", "p2", "p1", "p2", "p2", "i1", "i2", "p1", "p1", "p1", "p2",   NA,    NA),
-                     col     = c( "i1", "i2", "i1", "i2", "i3", "p1", "p2", "i1", "i2", "i1", "i2",   NA,    NA),
-                     rowtype = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
-                     coltype = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
+  tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
+                     Year     = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
+                     matrix   = c(  "U",  "U",  "Y",  "Y",  "Y",  "V",  "V",  "U",  "U",  "Y",  "Y", "eta", "eta"),
+                     row      = c( "p1", "p2", "p1", "p2", "p2", "i1", "i2", "p1", "p1", "p1", "p2",   NA,    NA),
+                     col      = c( "i1", "i2", "i1", "i2", "i3", "p1", "p2", "i1", "i2", "i1", "i2",   NA,    NA),
+                     rowtypes = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
+                     coltypes = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
                      vals  = c(   11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3)
   ) %>% group_by(Country, Year, matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
-                               rowtypes = "rowtype", coltypes = "coltype")
+                               rowtypes = "rowtypes", coltypes = "coltypes")
   A <- matrix(c(11, 0,
                 0, 22),
               nrow = 2, ncol = 2, byrow = TRUE,

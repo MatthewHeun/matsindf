@@ -5,8 +5,8 @@
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
 collapse_to_matrices(.DF, matnames = "matnames", matvals = "matvals",
-  rownames = "rownames", colnames = "colnames", rowtypes = NULL,
-  coltypes = NULL)
+  rownames = "rownames", colnames = "colnames",
+  rowtypes = "rowtypes", coltypes = "coltypes")
 }
 \arguments{
 \item{.DF}{the "tidy" data frame}
@@ -26,10 +26,10 @@ Default is "\code{rownames}".}
 Default is "\code{colnames}".}
 
 \item{rowtypes}{optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
-Default is \code{NULL}.}
+Default is "\code{rowtypes}".}
 
 \item{coltypes}{optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
-Default is \code{NULL}.}
+Default is "\code{coltypes}".}
 }
 \value{
 a data frame with matrices in columns
@@ -45,11 +45,11 @@ In addition, \pkg{matsindf}-style matrices have "types" for row and column infor
 such as "Commodities", "Industries", "Products", or "Machines".
 The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 (\code{rowtype} and \code{coltype}),
-which can be accessed with the \code{\link{rowtype}} and \code{\link{coltype}} functions
+which can be accessed with the \code{\link[matsbyname]{rowtype}} and \code{\link[matsbyname]{coltype}} functions
 of the \pkg{matsbyname} package.
 Row and column types are both respected and propagated by the various \code{_byname} functions
 of the \pkg{matsbyname} package.
-Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
+Use the \code{*_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
 The \pkg{matsindf}-style matrices will be stored
 in a column with same name as the incoming \code{values} column.
 This function is similar to \code{\link[tidyr]{nest}}, which stores data frames into a cell of a data frame.
@@ -87,16 +87,16 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                                "c 1", "c 1", "c 1", "c 2", NA, NA),
                   col     = c( "i 1", "i 2", "i 1", "i 2", "i 3", "c 1", "c 2",
                                "i 1", "i 2", "i 1", "i 2", NA, NA),
-                  rowtype = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
-                               ptype, ptype, ptype, ptype, NA, NA),
-                  coltype = c( itype, itype, itype, itype, itype, ptype, ptype,
-                               itype, itype, itype, itype, NA, NA),
+                  rowtypes = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
+                                ptype, ptype, ptype, ptype, NA, NA),
+                  coltypes = c( itype, itype, itype, itype, itype, ptype, ptype,
+                                itype, itype, itype, itype, NA, NA),
                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 ) \%>\% group_by(Country, Year, matrix)
 mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                              rownames = "row", colnames = "col",
-                             rowtypes = "rowtype", coltypes = "coltype")
+                             rowtypes = "rowtypes", coltypes = "coltypes")
 mats \%>\% spread(key = matrix, value = vals)
 }
 \seealso{

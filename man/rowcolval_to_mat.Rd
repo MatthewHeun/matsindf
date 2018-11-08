@@ -5,7 +5,8 @@
 \title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
 rowcolval_to_mat(.DF, matvals = "matvals", rownames = "rownames",
-  colnames = "colnames", rowtype = NULL, coltype = NULL, fill = 0)
+  colnames = "colnames", rowtypes = "rowtypes",
+  coltypes = "coltypes", fill = 0)
 }
 \arguments{
 \item{.DF}{a tidy data frame containing columns for row names, column names, and values}
@@ -16,9 +17,9 @@ rowcolval_to_mat(.DF, matvals = "matvals", rownames = "rownames",
 
 \item{colnames}{the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".}
 
-\item{rowtype}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{NULL}".}
+\item{rowtypes}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".}
 
-\item{coltype}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{NULL}".}
+\item{coltypes}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".}
 
 \item{fill}{the value for missing entries in the resulting matrix. default is \code{0}.}
 }
@@ -48,23 +49,23 @@ A
 rowtype(A) # NULL, because types not set
 coltype(A) # NULL, because types not set
 B <- rowcolval_to_mat(data, rownames = "rows", colnames = "cols", matvals = "vals",
-                            rowtype  = "Commodities", coltype  = "Industries")
+                            rowtypes  = "Commodities", coltypes  = "Industries")
 B
 C <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Commodities", "Commodities"),
                                    ct = c("Industries", "Industries", "Industries"))) \%>\%
   rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-                   rowtype = "rt", coltype = "ct")
+                   rowtypes = "rt", coltypes = "ct")
 C
 # Also works for single values if both the rownames and colnames columns contain NA
 data2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
-  rowtype = c(NA), coltype = c(NA), vals = c(2))
+  rowtypes = c(NA), coltypes = c(NA), vals = c(2))
 data2 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-  rowtype = "rowtype", coltype = "coltype")
+  rowtypes = "rowtypes", coltypes = "coltypes")
 data3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
 data3 \%>\% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
-# Fails when rowtype or coltype not all same. In data3, column rt is not all same.
+# Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.
 data4 <- data \%>\% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
                                        ct = c("Industries", "Industries", "Industries")))
 \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-                          matvals = "vals", rowtype = "rt", coltype = "ct")}
+                          matvals = "vals", rowtypes = "rt", coltypes = "ct")}
 }

@@ -64,7 +64,7 @@ Optionally, values can be dropped." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.9</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.10</span>
       </span>
     </div>
 
@@ -133,7 +133,8 @@ Optionally, values can be dropped.</p>
     </div>
 
     <pre class="usage"><span class='fu'>mat_to_rowcolval</span>(<span class='no'>.matrix</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"matvals"</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rownames"</span>,
-  <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>, <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
+  <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>, <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>,
+  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>NA</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,12 +156,12 @@ Optionally, values can be dropped.</p>
       <td><p>a string for the name of the output column containing column names. Default is "<code>colnames</code>".</p></td>
     </tr>
     <tr>
-      <th>rowtype</th>
-      <td><p>a string for the name of the output column containing row types. Default is <code>NULL</code>.</p></td>
+      <th>rowtypes</th>
+      <td><p>a string for the name of the output column containing row types. Default is "<code>rowtypes</code>".</p></td>
     </tr>
     <tr>
-      <th>coltype</th>
-      <td><p>a string for the name of the output column containing column types. Default is <code>NULL</code>.</p></td>
+      <th>coltypes</th>
+      <td><p>a string for the name of the output column containing column types. Default is "<code>coltypes</code>".</p></td>
     </tr>
     <tr>
       <th>drop</th>
@@ -189,7 +190,7 @@ If <code>NA</code>, no values are dropped from output.</p></td>
 #&gt; 2      GH   c1   i2 Commodities Industries   12
 #&gt; 3      GH   c2   i2 Commodities Industries   22</div><div class='input'><span class='no'>A</span> <span class='kw'>&lt;-</span> <span class='no'>data</span> <span class='kw'>%&gt;%</span>
   <span class='fu'><a href='rowcolval_to_mat.html'>rowcolval_to_mat</a></span>(<span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                    <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>,    <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)
+                   <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>,   <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)
 <span class='no'>A</span></div><div class='output co'>#&gt;    i1 i2
 #&gt; c1 11 12
 #&gt; c2  0 22
@@ -197,21 +198,21 @@ If <code>NA</code>, no values are dropped from output.</p></td>
 #&gt; [1] "Commodities"
 #&gt; attr(,"coltype")
 #&gt; [1] "Industries"</div><div class='input'><span class='fu'>mat_to_rowcolval</span>(<span class='no'>A</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                 <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)</div><div class='output co'>#&gt;   rows cols vals          rt         ct
+                 <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>)</div><div class='output co'>#&gt;   rows cols vals          rt         ct
 #&gt; 1   c1   i1   11 Commodities Industries
 #&gt; 2   c2   i1    0 Commodities Industries
 #&gt; 3   c1   i2   12 Commodities Industries
 #&gt; 4   c2   i2   22 Commodities Industries</div><div class='input'><span class='fu'>mat_to_rowcolval</span>(<span class='no'>A</span>, <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                 <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt;   rows cols vals          rt         ct
+                 <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt;   rows cols vals          rt         ct
 #&gt; 1   c1   i1   11 Commodities Industries
 #&gt; 3   c1   i2   12 Commodities Industries
 #&gt; 4   c2   i2   22 Commodities Industries</div><div class='input'><span class='co'># This also works for single values</span>
 <span class='fu'>mat_to_rowcolval</span>(<span class='fl'>2</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
                  <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                 <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)</div><div class='output co'>#&gt;   rows cols vals rt ct
+                 <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>)</div><div class='output co'>#&gt;   rows cols vals rt ct
 #&gt; 1   NA   NA    2 NA NA</div><div class='input'><span class='fu'>mat_to_rowcolval</span>(<span class='fl'>0</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
                  <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rows"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"cols"</span>,
-                 <span class='kw'>rowtype</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltype</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; [1] rows cols vals rt   ct  
+                 <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rt"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"ct"</span>, <span class='kw'>drop</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; [1] rows cols vals rt   ct  
 #&gt; &lt;0 rows&gt; (or 0-length row.names)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

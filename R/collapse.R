@@ -10,11 +10,11 @@
 #' such as "Commodities", "Industries", "Products", or "Machines".
 #' The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
 #' (\code{rowtype} and \code{coltype}),
-#' which can be accessed with the \code{\link{rowtype}} and \code{\link{coltype}} functions
+#' which can be accessed with the \code{\link[matsbyname]{rowtype}} and \code{\link[matsbyname]{coltype}} functions
 #' of the \pkg{matsbyname} package.
 #' Row and column types are both respected and propagated by the various \code{_byname} functions
 #' of the \pkg{matsbyname} package.
-#' Use the \code{_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
+#' Use the \code{*_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
 #' The \pkg{matsindf}-style matrices will be stored
 #' in a column with same name as the incoming \code{values} column.
 
@@ -47,9 +47,9 @@
 #' @param colnames a string identifying the column in \code{.DF} containing column names for matrices to be created.
 #'                 Default is "\code{colnames}".
 #' @param rowtypes optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
-#'                 Default is \code{NULL}.
+#'                 Default is "\code{rowtypes}".
 #' @param coltypes optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
-#'                 Default is \code{NULL}.
+#'                 Default is "\code{coltypes}".
 #'
 #' @return a data frame with matrices in columns
 #'
@@ -93,19 +93,19 @@
 #'                                "c 1", "c 1", "c 1", "c 2", NA, NA),
 #'                   col     = c( "i 1", "i 2", "i 1", "i 2", "i 3", "c 1", "c 2",
 #'                                "i 1", "i 2", "i 1", "i 2", NA, NA),
-#'                   rowtype = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
-#'                                ptype, ptype, ptype, ptype, NA, NA),
-#'                   coltype = c( itype, itype, itype, itype, itype, ptype, ptype,
-#'                                itype, itype, itype, itype, NA, NA),
+#'                   rowtypes = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
+#'                                 ptype, ptype, ptype, ptype, NA, NA),
+#'                   coltypes = c( itype, itype, itype, itype, itype, ptype, ptype,
+#'                                 itype, itype, itype, itype, NA, NA),
 #'                   vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
 #'                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)
 #' ) %>% group_by(Country, Year, matrix)
 #' mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
 #'                              rownames = "row", colnames = "col",
-#'                              rowtypes = "rowtype", coltypes = "coltype")
+#'                              rowtypes = "rowtypes", coltypes = "coltypes")
 #' mats %>% spread(key = matrix, value = vals)
 collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals", rownames = "rownames", colnames = "colnames",
-                                 rowtypes = NULL, coltypes = NULL){
+                                 rowtypes = "rowtypes", coltypes = "coltypes"){
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
@@ -126,8 +126,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
     stop(paste("One of rowtypes or coltypes was non-NULL while the other was NULL.",
                "Both need to be NULL or both need to be non-NULL in collapse_to_matrices."))
   }
-  # If we get here, both rowtypes and coltypes have been changed from default (NULL) or
-  # both rowtypes and coltypes have not been changed from default (NULL).
+  # If we get here, both rowtypes and coltypes are not (NULL).
   # Thus, we need to test only for the one of them being non-NULL.
   .DF %>%
     {if (!is.null(rowtypes)) {
@@ -138,7 +137,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
     dplyr::do(
       # Convert .DF to matrices
       !!matvals := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
-                                    rowtype = rowtypes, coltype = coltypes)
+                                    rowtypes = rowtypes, coltypes = coltypes)
     ) %>%
     select(!!!group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)

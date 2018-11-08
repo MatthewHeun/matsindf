@@ -100,7 +100,7 @@ calc_W <- function(.DF = NULL, U_colname = "U", V_colname = "V", W_colname = "W"
   # The inner function does all the work.
   W_inner_func <- function(U, V){
     # When we get here, U and V will be single matrices or single numbers, 
-    # not a column in a data frame.
+    # not a column in a data frame or an item in a list.
     # Calculate W from the inputs U and V
     W <- difference_byname(transpose_byname(V), U)
     # Return a named list.

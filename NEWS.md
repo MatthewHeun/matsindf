@@ -1,3 +1,8 @@
+# matsindf 0.2.11 (2018-11-13)
+
+* Now creating README.md from README.Rmd for `pkgdown` documentation.
+
+
 # matsindf 0.2.10 (2018-11-08)
 
 * Breaking change: Default values of `rowtypes` and `coltypes` arguments to 

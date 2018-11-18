@@ -23,7 +23,6 @@
 #' @importFrom matsbyname coltype
 #'
 #' @examples
-#' library(magrittr)
 #' library(matsbyname)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c1",  "c1", "c2"),
@@ -103,7 +102,6 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @importFrom matsbyname coltype
 #'
 #' @examples
-#' library(magrittr)
 #' library(matsbyname)
 #' library(dplyr)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
@@ -235,7 +233,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #'
 #' @examples
 #' library(dplyr)
-#' library(magrittr)
 #' library(tidyr)
 #' DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) %>%
 #'   gather(key = name, value = var, a, b) %>%
@@ -428,7 +425,6 @@ add_UKEnergy2000_matnames <- function(.DF,
 #'         \code{rowtype_colname}, and \code{coltype_colname}.
 #'
 #' @examples
-#' library(magrittr)
 #' UKEnergy2000 %>%
 #'   matsindf:::add_UKEnergy2000_matnames(.) %>%
 #'   matsindf:::add_UKEnergy2000_row_col_meta(.)

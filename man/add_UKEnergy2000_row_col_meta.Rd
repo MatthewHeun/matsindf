@@ -62,7 +62,6 @@ Default is "\code{Sector}".}
 Add row, column, row type, and column type metadata
 }
 \examples{
-library(magrittr)
 UKEnergy2000 \%>\%
   matsindf:::add_UKEnergy2000_matnames(.) \%>\%
   matsindf:::add_UKEnergy2000_row_col_meta(.)

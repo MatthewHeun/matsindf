@@ -71,7 +71,6 @@ See the example.
 Groups are not preserved on output.
 }
 \examples{
-library(magrittr)
 library(dplyr)
 library(tidyr)
 library(tibble)

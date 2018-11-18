@@ -77,7 +77,6 @@
 #' @importFrom tidyr spread
 #'
 #' @examples
-#' library(magrittr)
 #' library(dplyr)
 #' library(tidyr)
 #' library(tibble)

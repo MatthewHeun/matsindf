@@ -41,7 +41,6 @@ a column of numbers or a column of matrices.
 }
 \examples{
 library(dplyr)
-library(magrittr)
 library(tidyr)
 DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) \%>\%
   gather(key = name, value = var, a, b) \%>\%

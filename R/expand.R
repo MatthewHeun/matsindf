@@ -37,7 +37,6 @@
 #' @export
 #'
 #' @examples
-#' library(magrittr)
 #' library(dplyr)
 #' library(matsbyname)
 #' ptype <- "Products"

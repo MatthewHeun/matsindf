@@ -310,10 +310,10 @@ are returned with the output.
 calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 ```
 
-But it may be clearer to name the arguments as required by the `calc_W` function
+It may be clearer to name the arguments as required by the `calc_W` function
 without wrapping in a list first,
 as shown below.
-But in this approach the input matrices are not returned with the output.
+But in this approach, the input matrices are not returned with the output.
 
 ```{r}
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
@@ -322,8 +322,7 @@ calc_W(U = midf$U[[1]], V = midf$V[[1]])
 `calc_W` can operate on data frames containing single numbers.
 
 ```{r}
-data.frame(U = c(1, 2), V = c(3, 4)) %>% 
-  calc_W()
+data.frame(U = c(1, 2), V = c(3, 4)) %>% calc_W()
 ```
 
 Finally, `calc_W` can be applied to single numbers,

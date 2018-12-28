@@ -255,7 +255,7 @@ glimpse(Energy)
 
 ### Verify data
 
-An important step in any analysis is data verfication.
+An important step in any analysis is data verification.
 For an ECC analysis, it is important to verify that energy is conserved
 (i.e., energy is in balance) 
 across all industries.
@@ -299,7 +299,7 @@ other analyses can proceed.
 
 To further illustrate the power of `matsbyname` functions 
 in the context of `matsindf`,
-consider the calulation of the efficiency of every industry in the ECC as column vector $\eta$ 
+consider the calculation of the efficiency of every industry in the ECC as column vector $\eta$ 
 as shown by Equation 11 of Heun, Owen, and Brockway [-@Heun:2018].
 
 $$\colvec{g} = \mat{V}\colvec{i}$$
@@ -322,7 +322,7 @@ Etas$eta[[1]]
 ```
 
 Note that only a few lines of code are required to perform the same series of 
-matrix operations on every combintaion of `Country` and `Year`.
+matrix operations on every combination of `Country` and `Year`.
 In fact, the same code will be used to calculate the efficiency of 
 any number of industries in any number of countries and years!
 
@@ -405,7 +405,7 @@ sophisticated analyses using *matrices in data frames* (`matsindf`).
 
 The workflow is as follows:
 
-* Munge data into a tidy data frame with columns for
+* Reshape data into a tidy data frame with columns for
 matrix name, element value,
 row name, column name, 
 row type, and column type,

@@ -266,7 +266,7 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
 
 This style of writing `matsindf_apply` functions is incredibly versatile,
 leveraging the capabilities of both the `matsindf` and `matsbyname` packages. 
-(Indeed, the `Recca` pacakge 
+(Indeed, the `Recca` package 
 uses `matsindf_apply` heavily and
 is built upon the functions in the `matsindf` and `matsbyname` packages.)
 

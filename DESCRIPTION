@@ -11,6 +11,7 @@ Maintainer: Matthew Heun <matthew.heun@me.com>
 Description: Provides functions to collapse a tidy data frame into matrices in a data frame
     and expand a data frame of matrices into a tidy data frame.
 License: MIT + file LICENSE
+Language: en-US
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1

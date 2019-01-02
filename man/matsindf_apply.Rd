@@ -57,7 +57,7 @@ When an item name appears in both \code{...} and \code{.dat},
 \code{...} takes precedence.
 
 \code{NULL} arguments in ... are ignored for the purposes of deciding whether
-all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
+all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 However, all \code{NULL} arguments are passed to \code{FUN},
 so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
 

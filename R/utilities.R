@@ -275,6 +275,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
       ) %>%
       inner_join(.DF, by = c(group_vars(.DF), as.character(time_var)))
   } else {
+    # We have an index_time and should use it.
     # Set IndexYearData to data from index year for each group.
     IndexYearData <- .DF %>%
       filter(!!time_var == index_time)

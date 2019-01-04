@@ -8,6 +8,11 @@ example_fun <- function(a, b){
   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
 }
 
+test_that("matsindf_apply fails with an unexpected argument", {
+  expect_error(matsindf_apply(.dat = "a string", FUN = example_fun, a = 2, b = 2),
+               ".dat must be a data frame or a list in matsindf_apply, was character")
+})
+
 test_that("matsindf_apply works as expected for single values", {
   expect_equal(example_fun(a = 2, b = 2), list(c = 4, d = 0))
   expect_equal(matsindf_apply(FUN = example_fun, a = 2, b = 2), list(c = 4, d = 0))

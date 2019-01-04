@@ -111,7 +111,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, matvals)
     violator <- which(cant_group %in% groups(.DF))
-    stop(paste(cant_group[[violator]], " are grouping variables.",
+    stop(paste(cant_group[[violator]], "is/are grouping variable/s.",
                "Cannot group on rownames, colnames,",
                "rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices."))
   }

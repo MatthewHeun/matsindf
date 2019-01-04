@@ -25,9 +25,28 @@ test_that("small example works as expected", {
     mutate(
       rowtypes = "Industries",
       coltypes  = "Products"
-    ) %>%
-    group_by(matrix)
-  mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
+    )
+  # Group on too many columns and expect an error.
+  expect_error(collapse_to_matrices(tidy %>% group_by(matrix, row),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = "rowtypes", coltypes = "coltypes"),
+               "row is/are grouping variable/s. Cannot group on rownames, colnames, rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices.")
+  # Try with NULL rowtypes but non-NULL coltypes and expect an error.
+  expect_error(collapse_to_matrices(tidy %>% group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = NULL, coltypes = "coltypes"),
+               "One of rowtypes or coltypes was non-NULL while the other was NULL. Both need to be NULL or both need to be non-NULL in collapse_to_matrices.")
+  # Try with NULL coltypes but non-NULL rowtypes and expect an error.
+  expect_error(collapse_to_matrices(tidy %>% group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = "rowtypes", coltypes = NULL),
+               "One of rowtypes or coltypes was non-NULL while the other was NULL. Both need to be NULL or both need to be non-NULL in collapse_to_matrices.")
+  # Group on the right things and expect success.
+  mats <- collapse_to_matrices(tidy %>% group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes")
   # Check that groups are discarded.
@@ -58,7 +77,8 @@ test_that("small example works as expected", {
       rowtypes = NULL,
       coltypes = NULL
     )
-  mats_trimmed <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
+  mats_trimmed <- collapse_to_matrices(tidy %>% group_by(matrix),
+                                       matnames = "matrix", matvals = "vals",
                                        rownames = "row", colnames = "col",
                                        rowtypes = NULL, coltypes = NULL)
   # Test for V1

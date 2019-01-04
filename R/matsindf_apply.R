@@ -96,6 +96,13 @@
 #' # Warning is issued when an output item has same name as an input item.
 #' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
 matsindf_apply <- function(.dat = NULL, FUN, ...){
+  if (!is.null(.dat)) {
+    if (!is.list(.dat)) {
+      # If we get here, we have a value for .dat that doesn't make sense.
+      # Throw an error.
+      stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
+    }
+  }
   types <- matsindf_apply_types(...)
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
@@ -169,9 +176,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     if (is.list(.dat)) {
       return(c(.dat, result))
     }
-    # If we get here, we have a value for .dat that doesn't make sense.
-    # Throw an error.
-    stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
   }
 
   # If we get here, we don't know how to deal with our inputs.

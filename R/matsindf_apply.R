@@ -178,6 +178,36 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
   }
 
+  # Some arguments could be coming in as strings while all other arguments are of same type.
+  # This outcome is possible when
+  # (1) .dat is missing and
+  # (2) an outer function has string defaults for names and
+  # (3) some of the arguments are missing.
+  # To put it another way, when there is no .dat and some arguments are specified as strings,
+  # it means that the string arguments are unavailable (missing).
+  # In a last-ditch effort, let's try to
+  # * elimiante all strings from ...
+  # * re-call this function with the remaining arguments
+  # This approach will, in effect, call FUN with missing arguments.
+  # If FUN can handle the missing arguments,
+  # we'll get a result.
+  # If FUN can't handle the missing arguments,
+  # an error will occur.
+  if (is.null(.dat)) {
+    dots <- list(...)
+    chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
+    dots <- rlist::list.remove(dots, range = which(chars))
+    if (length(dots) == 0) {
+      # We have eliminated all of the arguments.
+      # This is most certainly an error.
+      # And calling ourselves again would result in a stack overflow.
+      stop(".dat was missing and all arguments were strings")
+    }
+    # Now that we have eliminated the missing string arguments,
+    # call ourselves again.
+    return(do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), dots)))
+  }
+
   # If we get here, we don't know how to deal with our inputs.
   # Try our best to give a meaningful error message.
   clss <- lapply(list(...), class) %>% paste(collapse = ",")

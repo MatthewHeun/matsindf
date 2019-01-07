@@ -4,11 +4,11 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(dplyr)
-library(tidyr)
-library(tibble)
 library(ggplot2)
 library(matsbyname)
 library(matsindf)
+library(tidyr)
+library(tibble)
 
 ## ------------------------------------------------------------------------
 head(UKEnergy2000, 2)

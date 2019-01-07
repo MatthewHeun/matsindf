@@ -1,3 +1,8 @@
+# matsindf 0.2.12 (2018-01-07)
+
+* Now importing the `magrittr` pipe at a high level.
+
+
 # matsindf 0.2.11 (2018-11-13)
 
 * Now creating README.md from README.Rmd for `pkgdown` documentation.

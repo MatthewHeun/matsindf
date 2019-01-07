@@ -1,5 +1,9 @@
 # Tests for matsindf_apply
 
+library(dplyr)
+library(matsbyname)
+library(testthat)
+
 ###########################################################
 context("Testing matsindf_apply")
 ###########################################################
@@ -7,6 +11,11 @@ context("Testing matsindf_apply")
 example_fun <- function(a, b){
   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
 }
+
+test_that("matsindf_apply fails with an unexpected argument", {
+  expect_error(matsindf_apply(.dat = "a string", FUN = example_fun, a = 2, b = 2),
+               ".dat must be a data frame or a list in matsindf_apply, was character")
+})
 
 test_that("matsindf_apply works as expected for single values", {
   expect_equal(example_fun(a = 2, b = 2), list(c = 4, d = 0))
@@ -65,7 +74,7 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
 })
 
 test_that("matsindf_apply fails properly when not all same type for ...", {
-  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), "unknown state in matsindf_apply")
+  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), 'argument "a" is missing, with no default')
 })
 
 test_that("matsindf_apply fails gracefully when some of ... are NULL", {
@@ -74,12 +83,12 @@ test_that("matsindf_apply fails gracefully when some of ... are NULL", {
 
 test_that("matsindf_apply fails as expected when .DF argument is missing from a data frame", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
-               "unknown state in matsindf_apply ... must be missing or all same type:")
+               ".dat was missing and all arguments were strings")
 })
 
 test_that("matsindf_apply fails as expected when .DF argument is not a data frame or a list", {
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
-               "unknown state in matsindf_apply ... must be missing or all same type: all single numbers, ")
+               ".dat was missing and all arguments were strings")
 })
 
 test_that("matsindf_apply_types works as expected", {
@@ -144,4 +153,20 @@ test_that("matsindf_apply works for single numbers in data frame columns", {
 test_that("override works for single numbers supplied in a list", {
   expect_equal(matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10),
                list(a = 10, b = 1, c = 11, d = 9))
+})
+
+test_that("matsindf_apply works when an argument is missing", {
+  outer_fun <- function(.DF = NULL, a = "a", b = "b"){
+    inner_fun <- function(a_num, b_num = NULL){
+      return(list(c = sum_byname(a_num, b_num), d = difference_byname(a_num, b_num)))
+    }
+    matsindf_apply(.DF, FUN = inner_fun, a_num = a, b_num = b)
+  }
+  # Make sure it works when all arguments are present.
+  expect_equal(outer_fun(a = 2, b = 2), list(c = 4, d = 0))
+  # Now try when an argument is missing and the inner function can handle it.
+  expect_equal(outer_fun(a = 2), list(c = 2, d = 2))
+  # Try when an argument is missing and the inner function can't handle it.
+  expect_error(outer_fun(b = 2),
+               'argument "a_num" is missing, with no default')
 })

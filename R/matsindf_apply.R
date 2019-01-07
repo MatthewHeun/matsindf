@@ -39,7 +39,7 @@
 #' \code{...} takes precedence.
 #'
 #' \code{NULL} arguments in ... are ignored for the purposes of deciding whether
-#' all arguments are numbers, matrices, lists of numbers of matrieces, or named character strings.
+#' all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 #' However, all \code{NULL} arguments are passed to \code{FUN},
 #' so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
 #'
@@ -96,6 +96,13 @@
 #' # Warning is issued when an output item has same name as an input item.
 #' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
 matsindf_apply <- function(.dat = NULL, FUN, ...){
+  if (!is.null(.dat)) {
+    if (!is.list(.dat)) {
+      # If we get here, we have a value for .dat that doesn't make sense.
+      # Throw an error.
+      stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
+    }
+  }
   types <- matsindf_apply_types(...)
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
@@ -169,9 +176,36 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     if (is.list(.dat)) {
       return(c(.dat, result))
     }
-    # If we get here, we have a value for .dat that doesn't make sense.
-    # Throw an error.
-    stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
+  }
+
+  # Some arguments could be coming in as strings while all other arguments are of same type.
+  # This outcome is possible when
+  # (1) .dat is missing and
+  # (2) an outer function has string defaults for names and
+  # (3) some of the arguments are missing.
+  # To put it another way, when there is no .dat and some arguments are specified as strings,
+  # it means that the string arguments are unavailable (missing).
+  # In a last-ditch effort, let's try to
+  # * elimiante all strings from ...
+  # * re-call this function with the remaining arguments
+  # This approach will, in effect, call FUN with missing arguments.
+  # If FUN can handle the missing arguments,
+  # we'll get a result.
+  # If FUN can't handle the missing arguments,
+  # an error will occur.
+  if (is.null(.dat)) {
+    dots <- list(...)
+    chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
+    dots <- rlist::list.remove(dots, range = which(chars))
+    if (length(dots) == 0) {
+      # We have eliminated all of the arguments.
+      # This is most certainly an error.
+      # And calling ourselves again would result in a stack overflow.
+      stop(".dat was missing and all arguments were strings")
+    }
+    # Now that we have eliminated the missing string arguments,
+    # call ourselves again.
+    return(do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), dots)))
   }
 
   # If we get here, we don't know how to deal with our inputs.

@@ -37,7 +37,6 @@ it is assumed that this is a single value, not a matrix,
 in which case the value in the \code{values} column is returned.
 }
 \examples{
-library(magrittr)
 library(matsbyname)
 library(dplyr)
 data <- data.frame(Country  = c("GH", "GH", "GH"),

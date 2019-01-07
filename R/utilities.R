@@ -23,7 +23,6 @@
 #' @importFrom matsbyname coltype
 #'
 #' @examples
-#' library(magrittr)
 #' library(matsbyname)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
 #'                    rows = c( "c1",  "c1", "c2"),
@@ -103,7 +102,6 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @importFrom matsbyname coltype
 #'
 #' @examples
-#' library(magrittr)
 #' library(matsbyname)
 #' library(dplyr)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
@@ -226,7 +224,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' and one additional column containing indexed \code{var_to_index}
 #' named with the value of \code{indexed_var}.
 #'
-#' @importFrom matsbyname elementquotient_byname
+#' @importFrom matsbyname quotient_byname
 #' @importFrom dplyr inner_join
 #' @importFrom dplyr rename
 #' @importFrom dplyr right_join
@@ -235,7 +233,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #'
 #' @examples
 #' library(dplyr)
-#' library(magrittr)
 #' library(tidyr)
 #' DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)) %>%
 #'   gather(key = name, value = var, a, b) %>%
@@ -278,6 +275,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
       ) %>%
       inner_join(.DF, by = c(group_vars(.DF), as.character(time_var)))
   } else {
+    # We have an index_time and should use it.
     # Set IndexYearData to data from index year for each group.
     IndexYearData <- .DF %>%
       filter(!!time_var == index_time)
@@ -295,7 +293,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
     right_join(IndexYearData, by = group_vars(.DF)) %>%
     mutate(
       # !!indexed_var := !!var_to_index / !!var_to_index_init
-      !!indexed_var := elementquotient_byname(!!var_to_index, !!var_to_index_init)
+      !!indexed_var := quotient_byname(!!var_to_index, !!var_to_index_init)
     ) %>%
     # Remove var_to_index_init
     select(-(!!var_to_index_init))
@@ -428,7 +426,6 @@ add_UKEnergy2000_matnames <- function(.DF,
 #'         \code{rowtype_colname}, and \code{coltype_colname}.
 #'
 #' @examples
-#' library(magrittr)
 #' UKEnergy2000 %>%
 #'   matsindf:::add_UKEnergy2000_matnames(.) %>%
 #'   matsindf:::add_UKEnergy2000_row_col_meta(.)

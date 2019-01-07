@@ -54,7 +54,6 @@ Names for output columns are specified in the \code{rownames}, \code{colnames},
 The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values}.
 }
 \examples{
-library(magrittr)
 library(dplyr)
 library(matsbyname)
 ptype <- "Products"

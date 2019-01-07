@@ -22,6 +22,13 @@ test_that("index_column works as expected", {
     mutate(
       var_indexed = c(1, 2, 4)
     )
+  # Group on the indexing variable to obtain an error.
+  expect_error(index_column(DF1 %>% group_by(var), var_to_index = "var"),
+               "Indexing variable 'var' in groups of .DF in index_column.")
+  # Group on the time variable to obtain an error.
+  expect_error(index_column(DF1 %>% group_by(Year), var_to_index = "var"),
+               "Time variable 'Year' in groups of .DF in index_column.")
+  # Group on the correct variable to achieve success.
   expect_equal(index_column(DF1 %>% group_by(Country), var_to_index = "var"), expected1)
 
   # Test with 2 groups.
@@ -35,7 +42,19 @@ test_that("index_column works as expected", {
     mutate(
       var_indexed = c(1, 2, 4, 1, 2, 4)
     )
+  # Index on the (default) first year in each group.
   expect_equal(index_column(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
+  # Index on a specified year
+  DF2half <- DF2 %>%
+    mutate(
+      Year = c(2011, 2012, 2013, 2011, 2012, 2013)
+    )
+  expected2half <- DF2half %>%
+    mutate(
+      var_indexed = c(0.5, 1, 2, 0.5, 1, 2)
+    )
+  expect_equal(index_column(DF2half %>% group_by(Country), var_to_index = "var", index_time = 2012),
+               expected2half)
 
   # Test when the variable to be indexed is a column of a data frame containing matrices.
   # In this case, we expect an element-by-element division of the matrices to occur
@@ -128,6 +147,12 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 rowtypes = "rt", coltypes = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
+  rowcolval5 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                              ct = c("Industries", "Products", "Industries")))
+  expect_error(rowcolval_to_mat(rowcolval5,
+                                rownames = "rows", colnames = "cols",
+                                matvals = "vals",
+                                rowtypes = "rt", coltypes = "ct"), "Not all values in ct \\(coltype\\) were same as first entry: Industries")
 })
 
 
@@ -158,6 +183,14 @@ test_that("mat_to_rowcolval (expand) works as expected", {
     rowcolval_to_mat(rownames = "rows", colnames = "cols",
                      rowtypes = "rt",   coltypes = "ct", matvals = "vals")
   expect_equal(A, expected_mat)
+
+  # Verify that if we feed garbage into the function, we obtain an error
+  expect_error(mat_to_rowcolval("A",
+                   rownames = "rows", colnames = "cols",
+                   rowtypes = "rt", coltypes = "ct",
+                   matvals = "vals",
+                   drop = 0) %>% set_rownames(NULL),
+               "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
   # Veryfy that we can convert the matrix to a data frame.
   expect_equal(mat_to_rowcolval(A,
@@ -227,6 +260,15 @@ test_that("add_UKEnergy2000_row_col_meta works as expected", {
   # Load it for comparison.
   expected_with_metadata <- readRDS("UKEnergy2000_with_metadata.rds")
   expect_equal(UKEnergy2000_with_metadata, expected_with_metadata)
+})
+
+
+test_that("verify_cols_missing errors as expected", {
+  DF <- data.frame(A = 1:4, B = 11:14)
+  # Try with a non-vector for newcols (a data frame is not a vector)
+  expect_null(verify_cols_missing(DF, newcols = DF))
+  expect_error(verify_cols_missing(DF, "A"),
+               "column\\(s\\) 'A' is \\(are\\) already column names in data frame 'DF'")
 })
 
 

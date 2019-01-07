@@ -96,45 +96,41 @@ result$W[[1]]
 result$W[[2]]
 
 ## ------------------------------------------------------------------------
-calc_W <- function(.DF = NULL, U_colname = "U", V_colname = "V", W_colname = "W"){
+calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
   # The inner function does all the work.
-  W_inner_func <- function(U, V){
-    # When we get here, U and V will be single matrices or single numbers, 
+  W_func <- function(U_mat, V_mat){
+    # When we get here, U_mat and V_mat will be single matrices or single numbers, 
     # not a column in a data frame or an item in a list.
-    # Calculate W from the inputs U and V
-    W <- difference_byname(transpose_byname(V), U)
+    # Calculate W_mat from the inputs U_mat and V_mat.
+    W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
     # Return a named list.
-    list(W) %>% magrittr::set_names(W_colname)
+    list(W_mat) %>% magrittr::set_names(W)
   }
   # The body of the main function consists of a call to matsindf_apply
   # that specifies the inner function
-  matsindf_apply(.DF, FUN = W_inner_func, U = U_colname, V = V_colname)
+  matsindf_apply(.DF, FUN = W_func, U_mat = U, V_mat = V)
 }
 
 ## ------------------------------------------------------------------------
 midf %>% calc_W()
 
 ## ------------------------------------------------------------------------
-midf %>% calc_W(W_colname = "W_prime")
+midf %>% calc_W(W = "W_prime")
 
 ## ------------------------------------------------------------------------
 midf %>% 
   rename(X = U, Y = V) %>% 
-  calc_W(U_colname = "X", V_colname = "Y")
+  calc_W(U = "X", V = "Y")
 
 ## ------------------------------------------------------------------------
 calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 
 ## ------------------------------------------------------------------------
-calc_W(U_colname = midf$U[[1]], V_colname = midf$V[[1]])
-
-## ------------------------------------------------------------------------
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
 
 ## ------------------------------------------------------------------------
-data.frame(U = c(1, 2), V = c(3, 4)) %>% 
-  calc_W()
+data.frame(U = c(1, 2), V = c(3, 4)) %>% calc_W()
 
 ## ------------------------------------------------------------------------
-calc_W(U_colname = 2, V_colname = 3)
+calc_W(U = 2, V = 3)
 

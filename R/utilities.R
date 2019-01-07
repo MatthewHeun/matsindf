@@ -224,7 +224,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' and one additional column containing indexed \code{var_to_index}
 #' named with the value of \code{indexed_var}.
 #'
-#' @importFrom matsbyname elementquotient_byname
+#' @importFrom matsbyname quotient_byname
 #' @importFrom dplyr inner_join
 #' @importFrom dplyr rename
 #' @importFrom dplyr right_join
@@ -293,7 +293,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
     right_join(IndexYearData, by = group_vars(.DF)) %>%
     mutate(
       # !!indexed_var := !!var_to_index / !!var_to_index_init
-      !!indexed_var := elementquotient_byname(!!var_to_index, !!var_to_index_init)
+      !!indexed_var := quotient_byname(!!var_to_index, !!var_to_index_init)
     ) %>%
     # Remove var_to_index_init
     select(-(!!var_to_index_init))

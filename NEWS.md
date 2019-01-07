@@ -1,3 +1,5 @@
+# matsindf 0.2.12 (2018-01-07)
+
 * Now importing the `magrittr` pipe at a high level.
 
 

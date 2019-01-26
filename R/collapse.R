@@ -55,9 +55,6 @@
 #'
 #' @seealso \code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
 #'
-#' @importFrom rlang :=
-#' @importFrom rlang .data
-#'
 #' @export
 #'
 #' @examples

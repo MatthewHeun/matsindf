@@ -8,9 +8,10 @@ bibliography: vignettes/References.bib
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
 <!-- *********** -->
 
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Travis-CI Build Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
+[![Coverage status](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/github/MatthewHeun/matsindf?branch=master)
 
-<!-- Add this later, after I have connected matsindf to matsbyname. -->
-<!-- [![Travis-CI Build Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf) -->
 
 # matsindf
 

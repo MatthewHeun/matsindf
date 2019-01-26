@@ -1,4 +1,6 @@
 ^codecov\.yml$
+^cran-comments\.md$
+^cran-comments\.html$
 ^\.travis\.yml$
 ^Meta$
 ^doc$

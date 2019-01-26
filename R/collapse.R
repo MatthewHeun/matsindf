@@ -55,12 +55,7 @@
 #'
 #' @seealso \code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
 #'
-#' @export
-#'
-#' @importFrom matsbyname setrowtype
-#' @importFrom matsbyname setcoltype
 #' @importFrom dplyr filter
-#' @importFrom dplyr groups
 #' @importFrom dplyr group_by
 #' @importFrom dplyr group_by_at
 #' @importFrom dplyr group_vars
@@ -75,6 +70,8 @@
 #' @importFrom tibble rownames_to_column
 #' @importFrom tidyr gather
 #' @importFrom tidyr spread
+#'
+#' @export
 #'
 #' @examples
 #' library(dplyr)
@@ -108,9 +105,9 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
+  if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% dplyr::groups(.DF))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, matvals)
-    violator <- which(cant_group %in% groups(.DF))
+    violator <- which(cant_group %in% dplyr::groups(.DF))
     stop(paste(cant_group[[violator]], "is/are grouping variable/s.",
                "Cannot group on rownames, colnames,",
                "rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices."))

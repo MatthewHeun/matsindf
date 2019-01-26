@@ -181,7 +181,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
   .DF %>%
-    select(!!rownames, !!colnames, !!matvals) %>%
+    dplyr::select(!!rownames, !!colnames, !!matvals) %>%
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
@@ -189,14 +189,14 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # both Fuel oil and Refinery gas to make MTH.200.C.
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
-    group_by_at(c(rownames, colnames)) %>%
-    summarise(!!matvals := sum(!!as.name(matvals))) %>%
-    spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-    remove_rownames %>%
+    dplyr::group_by_at(c(rownames, colnames)) %>%
+    dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
+    tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
+    tibble::remove_rownames() %>%
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns
-    column_to_rownames(var = rownames) %>%
-    as.matrix %>%
-    setrowtype(rowtypes) %>% setcoltype(coltypes)
+    tibble::column_to_rownames(var = rownames) %>%
+    as.matrix() %>%
+    matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
 }
 
 #' Index a column in a data frame by groups relative to an initial year

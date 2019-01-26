@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
-Title: Work with matrices in data frames
-Version: 0.2.12
-Date: 2018-01-07
+Title: Matrices in data frames
+Version: 0.3.0
+Date: 2018-01-26
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -16,16 +16,16 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depends: R (>= 2.10)
 Imports:
-    matsbyname,
     dplyr,
-    ggplot2,
     magrittr,
+    matsbyname,
     purrr,
     rlang,
     rlist,
     tibble,
     tidyr
 Suggests:
+    ggplot2,
     knitr,
     rmarkdown,
     testthat,

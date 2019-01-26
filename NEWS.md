@@ -1,3 +1,5 @@
+# matsindf 0.3.0 (2018-01-26)
+
 * Fully-qualified all function calls in `matsindf` functions.
 * Now importing the `:=` and `.data` at a high level.
 * Added TravisCI integration

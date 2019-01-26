@@ -58,12 +58,6 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr bind_cols
-#' @importFrom dplyr bind_rows
-#' @importFrom purrr transpose
-#' @importFrom purrr set_names
-#' @importFrom rlang .data
-#'
 #' @examples
 #' library(matsbyname)
 #' example_fun <- function(a, b){
@@ -124,11 +118,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
     # But we want columns of output, so transpose.
-    out_list <- transpose(Map(f = FUN, ...))
+    out_list <- purrr::transpose(Map(f = FUN, ...))
     numrows <- length(out_list[[1]])
     numcols <- length(out_list)
     # Create a data frame filled with NA values.
-    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>% set_names(names(out_list))
+    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>%
+      magrittr::set_names(names(out_list))
     # Fill the data frame with new columns.
     for (j in 1:numcols) {
       out_df[[j]] <- out_list[[j]]
@@ -145,7 +140,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Get the names of items or columns in .dat that are also arguments to FUN,
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
-    .dat_names_in_FUN <- (names(.dat) %>% set_names(names(.dat)) %>% as.list())[FUN_arg_names]
+    .dat_names_in_FUN <- (names(.dat) %>%
+                            magrittr::set_names(names(.dat)) %>%
+                            as.list())[FUN_arg_names]
     # Create a list of arguments to use when extracting information from .dat
     # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
     use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
@@ -171,7 +168,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       warning("name collision in matsindf_apply: ", common_names)
     }
     if (is.data.frame(.dat)) {
-      return(bind_cols(.dat, bind_rows(result)))
+      return(dplyr::bind_cols(.dat, dplyr::bind_rows(result)))
     }
     if (is.list(.dat)) {
       return(c(.dat, result))

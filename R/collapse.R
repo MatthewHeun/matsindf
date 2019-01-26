@@ -55,21 +55,8 @@
 #'
 #' @seealso \code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
 #'
-#' @importFrom dplyr filter
-#' @importFrom dplyr group_by
-#' @importFrom dplyr group_by_at
-#' @importFrom dplyr group_vars
-#' @importFrom dplyr select
-#' @importFrom dplyr summarise
-#' @importFrom dplyr ungroup
-#' @importFrom magrittr %>%
 #' @importFrom rlang :=
 #' @importFrom rlang .data
-#' @importFrom tibble column_to_rownames
-#' @importFrom tibble remove_rownames
-#' @importFrom tibble rownames_to_column
-#' @importFrom tidyr gather
-#' @importFrom tidyr spread
 #'
 #' @export
 #'
@@ -126,7 +113,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   # Thus, we need to test only for the one of them being non-NULL.
   .DF %>%
     {if (!is.null(rowtypes)) {
-      group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
+      dplyr::group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
     } else {
       .DF
     } } %>%
@@ -135,6 +122,6 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
       !!matvals := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
                                     rowtypes = rowtypes, coltypes = coltypes)
     ) %>%
-    select(!!!group_vars(.DF), !!matvals) %>%
+    dplyr::select(!!!dplyr::group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)
 }

@@ -5,13 +5,12 @@
 # and tests containing the string "(" don't work as expected.
 
 library(dplyr)
-library(tidyr)
 library(magrittr)
-library(tibble)
-library(lazyeval)
 library(matsbyname)
 library(rlang)
 library(testthat)
+library(tibble)
+library(tidyr)
 
 ###########################################################
 context("Expand")

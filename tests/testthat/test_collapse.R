@@ -5,13 +5,12 @@
 # and tests containing the string "(" don't work as expected.
 
 library(dplyr)
-library(tidyr)
 library(magrittr)
-library(purrr)
-library(tibble)
-library(lazyeval)
 library(matsbyname)
+library(purrr)
 library(testthat)
+library(tibble)
+library(tidyr)
 
 ###########################################################
 context("Small example")

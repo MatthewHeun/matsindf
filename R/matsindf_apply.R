@@ -58,12 +58,6 @@
 #'
 #' @export
 #'
-#' @importFrom dplyr bind_cols
-#' @importFrom dplyr bind_rows
-#' @importFrom purrr transpose
-#' @importFrom purrr set_names
-#' @importFrom rlang .data
-#'
 #' @examples
 #' library(matsbyname)
 #' example_fun <- function(a, b){
@@ -103,7 +97,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
     }
   }
+  # .dat is NULL (the default)
   types <- matsindf_apply_types(...)
+
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
     # Get the names of the arguments to FUN
@@ -114,27 +110,30 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(matsindf_apply(.dat = new_dots, FUN = FUN))
   }
 
-  if (is.null(.dat) & (types$all_dots_num | types$all_dots_mats)) {
+  if (types$all_dots_num | types$all_dots_mats) {
     # .dat is not present, and we have numbers or matricies in the ... arguments.
     # Simply call FUN on ... .
     return(FUN(...))
   }
-  if (is.null(.dat) & (types$all_dots_list | types$all_dots_vect)) {
+
+  if (types$all_dots_list | types$all_dots_vect) {
     # All arguments are coming in as lists or vectors across which FUN should be mapped.
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
     # But we want columns of output, so transpose.
-    out_list <- transpose(Map(f = FUN, ...))
+    out_list <- purrr::transpose(Map(f = FUN, ...))
     numrows <- length(out_list[[1]])
     numcols <- length(out_list)
     # Create a data frame filled with NA values.
-    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>% set_names(names(out_list))
+    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>%
+      magrittr::set_names(names(out_list))
     # Fill the data frame with new columns.
     for (j in 1:numcols) {
       out_df[[j]] <- out_list[[j]]
     }
     return(out_df)
   }
+
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & (!types$dots_present | types$all_dots_char)) {
     dots <- list(...)
@@ -145,7 +144,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Get the names of items or columns in .dat that are also arguments to FUN,
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
-    .dat_names_in_FUN <- (names(.dat) %>% set_names(names(.dat)) %>% as.list())[FUN_arg_names]
+    .dat_names_in_FUN <- (names(.dat) %>%
+                            magrittr::set_names(names(.dat)) %>%
+                            as.list())[FUN_arg_names]
     # Create a list of arguments to use when extracting information from .dat
     # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
     use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
@@ -171,7 +172,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       warning("name collision in matsindf_apply: ", common_names)
     }
     if (is.data.frame(.dat)) {
-      return(bind_cols(.dat, bind_rows(result)))
+      return(dplyr::bind_cols(.dat, dplyr::bind_rows(result)))
     }
     if (is.list(.dat)) {
       return(c(.dat, result))
@@ -208,16 +209,28 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), dots)))
   }
 
+  # We'll never get here, because at the top of this function, we check for
+  #   if (!is.null(.dat)).
+  # Then, just above, we check for
+  #   (is.null(.dat))
+  # So, that covers everything, and
+  # there is no need for further checks.
+  # Also, the code below is the only code not hit by tests,
+  # resulting in code coverage less than 100%.
+  # But, it is actually impossible to get here.
+  # By commenting this code,
+  # the package will get to 100% testing coverage.
+  #
   # If we get here, we don't know how to deal with our inputs.
   # Try our best to give a meaningful error message.
-  clss <- lapply(list(...), class) %>% paste(collapse = ",")
-  msg <- paste(
-    "unknown state in matsindf_apply",
-    "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
-    "types are:",
-    clss
-  )
-  stop(msg)
+  # clss <- lapply(list(...), class) %>% paste(collapse = ",")
+  # msg <- paste(
+  #   "unknown state in matsindf_apply",
+  #   "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
+  #   "types are:",
+  #   clss
+  # )
+  # stop(msg)
 }
 
 

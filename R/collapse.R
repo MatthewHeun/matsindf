@@ -57,25 +57,6 @@
 #'
 #' @export
 #'
-#' @importFrom matsbyname setrowtype
-#' @importFrom matsbyname setcoltype
-#' @importFrom dplyr filter
-#' @importFrom dplyr groups
-#' @importFrom dplyr group_by
-#' @importFrom dplyr group_by_at
-#' @importFrom dplyr group_vars
-#' @importFrom dplyr select
-#' @importFrom dplyr summarise
-#' @importFrom dplyr ungroup
-#' @importFrom magrittr %>%
-#' @importFrom rlang :=
-#' @importFrom rlang .data
-#' @importFrom tibble column_to_rownames
-#' @importFrom tibble remove_rownames
-#' @importFrom tibble rownames_to_column
-#' @importFrom tidyr gather
-#' @importFrom tidyr spread
-#'
 #' @examples
 #' library(dplyr)
 #' library(tidyr)
@@ -108,9 +89,9 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
-  if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% groups(.DF))) {
+  if (any(c(matvals, rownames, colnames, rowtypes, coltypes) %in% dplyr::groups(.DF))) {
     cant_group <- c(rownames, colnames, rowtypes, coltypes, matvals)
-    violator <- which(cant_group %in% groups(.DF))
+    violator <- which(cant_group %in% dplyr::groups(.DF))
     stop(paste(cant_group[[violator]], "is/are grouping variable/s.",
                "Cannot group on rownames, colnames,",
                "rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices."))
@@ -129,7 +110,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   # Thus, we need to test only for the one of them being non-NULL.
   .DF %>%
     {if (!is.null(rowtypes)) {
-      group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
+      dplyr::group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
     } else {
       .DF
     } } %>%
@@ -138,6 +119,6 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
       !!matvals := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
                                     rowtypes = rowtypes, coltypes = coltypes)
     ) %>%
-    select(!!!group_vars(.DF), !!matvals) %>%
+    dplyr::select(!!!dplyr::group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)
 }

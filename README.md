@@ -7,9 +7,11 @@
 
 <!-- *********** -->
 
-<!-- Add this later, after I have connected matsindf to matsbyname. -->
-
-<!-- [![Travis-CI Build Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf) -->
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Travis-CI Build
+Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
+[![Coverage
+status](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/github/MatthewHeun/matsindf?branch=master)
 
 # matsindf
 

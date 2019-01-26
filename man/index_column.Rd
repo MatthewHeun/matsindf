@@ -50,10 +50,12 @@ index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.ind
 index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
           indexed_var = "now.indexed")
 \dontrun{
-  DF \%>\% ungroup \%>\%
+  DF \%>\%
+    ungroup() \%>\%
     group_by(name, var) \%>\%
     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
-  DF \%>\% ungroup \%>\%
+  DF \%>\%
+    ungroup() \%>\%
     group_by(name, Year) \%>\%
     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
 }

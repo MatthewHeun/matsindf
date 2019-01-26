@@ -6,10 +6,9 @@
 
 library(dplyr)
 library(magrittr)
-library(lazyeval)
-library(tidyr)
-library(tibble)
 library(matsbyname)
+library(tibble)
+library(tidyr)
 library(testthat)
 
 ###########################################################

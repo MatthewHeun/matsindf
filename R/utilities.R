@@ -19,9 +19,6 @@
 #'
 #' @export
 #'
-#' @importFrom matsbyname rowtype
-#' @importFrom matsbyname coltype
-#'
 #' @examples
 #' library(matsbyname)
 #' data <- data.frame(Country  = c("GH", "GH", "GH"),
@@ -53,13 +50,13 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
       data.frame(check.names = FALSE) %>%
-      rownames_to_column(var = rownames) %>%
-      gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
-    if (!is.null(rowtype(.matrix))) {
-      out[[rowtypes]] <- rowtype(.matrix)
+      tibble::rownames_to_column(var = rownames) %>%
+      tidyr::gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
+    if (!is.null(matsbyname::rowtype(.matrix))) {
+      out[[rowtypes]] <- matsbyname::rowtype(.matrix)
     }
-    if (!is.null(coltype(.matrix))) {
-      out[[coltypes]] <- coltype(.matrix)
+    if (!is.null(matsbyname::coltype(.matrix))) {
+      out[[coltypes]] <- matsbyname::coltype(.matrix)
     }
   } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
@@ -97,9 +94,6 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @return a matrix with named rows and columns and, optionally, row and column types
 #'
 #' @export
-#'
-#' @importFrom matsbyname rowtype
-#' @importFrom matsbyname coltype
 #'
 #' @examples
 #' library(matsbyname)
@@ -171,7 +165,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
   singles <- .DF %>%
-    filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
+    dplyr::filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
 
   if (nrow(singles) == 1) {
     return(.DF[[matvals]][[1]])
@@ -181,7 +175,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
   .DF %>%
-    select(!!rownames, !!colnames, !!matvals) %>%
+    dplyr::select(!!rownames, !!colnames, !!matvals) %>%
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
@@ -189,14 +183,14 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # both Fuel oil and Refinery gas to make MTH.200.C.
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
-    group_by_at(c(rownames, colnames)) %>%
-    summarise(!!matvals := sum(!!as.name(matvals))) %>%
-    spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-    remove_rownames %>%
+    dplyr::group_by_at(c(rownames, colnames)) %>%
+    dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
+    tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
+    tibble::remove_rownames() %>%
     data.frame(check.names = FALSE) %>% # Avoids munging names of columns
-    column_to_rownames(var = rownames) %>%
-    as.matrix %>%
-    setrowtype(rowtypes) %>% setcoltype(coltypes)
+    tibble::column_to_rownames(var = rownames) %>%
+    as.matrix() %>%
+    matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
 }
 
 #' Index a column in a data frame by groups relative to an initial year
@@ -224,11 +218,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' and one additional column containing indexed \code{var_to_index}
 #' named with the value of \code{indexed_var}.
 #'
-#' @importFrom matsbyname quotient_byname
-#' @importFrom dplyr inner_join
-#' @importFrom dplyr rename
-#' @importFrom dplyr right_join
-#'
 #' @export
 #'
 #' @examples
@@ -242,19 +231,21 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
 #'           indexed_var = "now.indexed")
 #' \dontrun{
-#'   DF %>% ungroup %>%
+#'   DF %>%
+#'     ungroup() %>%
 #'     group_by(name, var) %>%
 #'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on var_to_index.
-#'   DF %>% ungroup %>%
+#'   DF %>%
+#'     ungroup() %>%
 #'     group_by(name, Year) %>%
 #'     index_column(var_to_index = "var", time_var = "Year") # Fails! Do not group on time_var.
 #' }
 index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL,
                          indexed_var = paste0(var_to_index, suffix), suffix = "_indexed"){
-  if (var_to_index %in% group_vars(.DF)) {
+  if (var_to_index %in% dplyr::group_vars(.DF)) {
     stop(paste0("Indexing variable '", var_to_index, "' in groups of .DF in index_column."))
   }
-  if (time_var %in% group_vars(.DF)) {
+  if (time_var %in% dplyr::group_vars(.DF)) {
     stop(paste0("Time variable '", time_var, "' in groups of .DF in index_column."))
   }
   var_to_index_init <- as.name(paste0(var_to_index, "_init"))
@@ -270,33 +261,33 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
   if (is.null(index_time)) {
     # Set IndexYearData to first year data for each group.
     IndexYearData <- .DF %>%
-      summarise(
+      dplyr::summarise(
         !!time_var := min(!!time_var)
       ) %>%
-      inner_join(.DF, by = c(group_vars(.DF), as.character(time_var)))
+      dplyr::inner_join(.DF, by = c(dplyr::group_vars(.DF), as.character(time_var)))
   } else {
     # We have an index_time and should use it.
     # Set IndexYearData to data from index year for each group.
     IndexYearData <- .DF %>%
-      filter(!!time_var == index_time)
+      dplyr::filter(!!time_var == index_time)
   }
 
   IndexYearData <- IndexYearData %>%
-    rename(
+    dplyr::rename(
       !!var_to_index_init := !!var_to_index
     ) %>%
     # Eliminate year column
-    select(-(!!time_var))
+    dplyr::select(-(!!time_var))
 
   # Bring together and return
   .DF %>%
-    right_join(IndexYearData, by = group_vars(.DF)) %>%
-    mutate(
+    dplyr::right_join(IndexYearData, by = dplyr::group_vars(.DF)) %>%
+    dplyr::mutate(
       # !!indexed_var := !!var_to_index / !!var_to_index_init
-      !!indexed_var := quotient_byname(!!var_to_index, !!var_to_index_init)
+      !!indexed_var := matsbyname::quotient_byname(!!var_to_index, !!var_to_index_init)
     ) %>%
     # Remove var_to_index_init
-    select(-(!!var_to_index_init))
+    dplyr::select(-(!!var_to_index_init))
 }
 
 
@@ -359,9 +350,6 @@ verify_cols_missing <- function(.DF, newcols){
 #'
 #' @return \code{.DF} with an added column, \code{UVY_colname}.
 #'
-#' @importFrom dplyr mutate
-#' @importFrom dplyr case_when
-#'
 #' @examples
 #' matsindf:::add_UKEnergy2000_matnames(UKEnergy2000)
 add_UKEnergy2000_matnames <- function(.DF,
@@ -377,9 +365,9 @@ add_UKEnergy2000_matnames <- function(.DF,
                          U_name = "U",
                          V_name = "V",
                          Y_name = "Y"){
-  .DF %>% mutate(
+  .DF %>% dplyr::mutate(
     # Add a column that indicates the matrix in which this entry belongs.
-    !!as.name(matname_colname) := case_when(
+    !!as.name(matname_colname) := dplyr::case_when(
       # All negative values on the Supply side of the ledger belong in the use (U) matrix.
       (!!as.name(ledger_side_colname)) == supply_side & (!!as.name(energy_colname)) <= 0 ~ U_name,
       # All positive values on the Supply side of the ledger belong in the make (V) matrix.
@@ -440,26 +428,26 @@ add_UKEnergy2000_row_col_meta <- function(.DF,
                                           rowname_colname = "rowname", colname_colname = "colname",
                                           rowtype_colname = "rowtype", coltype_colname = "coltype"){
   .DF %>%
-    mutate(
-      !!as.name(rowname_colname) := case_when(
+    dplyr::mutate(
+      !!as.name(rowname_colname) := dplyr::case_when(
         (!!as.name(matname_colname)) == U_name ~ !!as.name(product_colname),
         (!!as.name(matname_colname)) == V_name ~ !!as.name(flow_colname),
         (!!as.name(matname_colname)) == Y_name ~ !!as.name(product_colname),
         TRUE ~ NA_character_
       ),
-      !!as.name(colname_colname) := case_when(
+      !!as.name(colname_colname) := dplyr::case_when(
         (!!as.name(matname_colname)) == U_name ~ !!as.name(flow_colname),
         (!!as.name(matname_colname)) == V_name ~ !!as.name(product_colname),
         (!!as.name(matname_colname)) == Y_name ~ !!as.name(flow_colname),
         TRUE ~ NA_character_
       ),
-      !!as.name(rowtype_colname) := case_when(
+      !!as.name(rowtype_colname) := dplyr::case_when(
         (!!as.name(matname_colname)) == U_name ~ product_type,
         (!!as.name(matname_colname)) == V_name ~ industry_type,
         (!!as.name(matname_colname)) == Y_name ~ product_type,
         TRUE ~ NA_character_
       ),
-      !!as.name(coltype_colname) := case_when(
+      !!as.name(coltype_colname) := dplyr::case_when(
         (!!as.name(matname_colname)) == U_name ~ industry_type,
         (!!as.name(matname_colname)) == V_name ~ product_type,
         (!!as.name(matname_colname)) == Y_name ~ sector_type,

@@ -26,9 +26,10 @@ Imports:
     tibble,
     tidyr
 Suggests:
-    knitr, 
+    knitr,
     rmarkdown,
-    testthat
+    testthat,
+    covr
 VignetteBuilder: 
     knitr
 URL: https://github.com/MatthewHeun/matsindf

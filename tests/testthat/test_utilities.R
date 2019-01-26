@@ -37,7 +37,7 @@ test_that("index_column works as expected", {
     mutate(
       Country = as.character(Country)
     ) %>%
-    bind_rows(data.frame(Country = c("GH", "GH", "GH"), Year = c(2011, 2012, 2013), var = c(1, 2, 4), stringsAsFactors = FALSE))
+    dplyr::bind_rows(data.frame(Country = c("GH", "GH", "GH"), Year = c(2011, 2012, 2013), var = c(1, 2, 4), stringsAsFactors = FALSE))
   expected2 <- DF2 %>%
     mutate(
       var_indexed = c(1, 2, 4, 1, 2, 4)

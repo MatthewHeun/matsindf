@@ -76,14 +76,14 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
     # Create an empty 1-row data frame with row names taken from .DF and promote to a column
     tempDF <- matrix(NA, nrow = length(.DF), ncol = 1, dimnames = list(names(.DF), matvals)) %>%
       as.data.frame() %>%
-      rownames_to_column(matnames)
+      tibble::rownames_to_column(matnames)
     # Set the matvals column to be the list of items in .DF
     tempDF[[matvals]] <- I(.DF)
     .DF <- tempDF
   }
   .DF %>%
     # group by everything except matvals column so that "do" will act as desired
-    group_by_at(setdiff(colnames(.DF), matvals)) %>%
+    dplyr::group_by_at(setdiff(colnames(.DF), matvals)) %>%
     dplyr::do(
       # Convert .data to row, col, val format
       mat_to_rowcolval(.data[[matvals]][[1L]], rownames = rownames, colnames = colnames,
@@ -91,5 +91,5 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
                        matvals = matvals, drop = drop)
     ) %>%
     # Remove the grouping
-    ungroup
+    dplyr::ungroup()
 }

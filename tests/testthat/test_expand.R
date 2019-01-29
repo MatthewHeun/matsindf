@@ -105,7 +105,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
     col = c(rep("c1", 2), rep("c2", 2)),
     m = c(1, 3, 2, 4, 10, 30, 20, 40)
   ) %>%
-    mutate(
+    dplyr::mutate(
       row = as.character(row),
       col = as.character(col)
     )
@@ -115,7 +115,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
 test_that("expand_to_tidy works with a list of matrices", {
   m1 <- matrix(c(1,2), nrow = 2, ncol = 1, dimnames = list(c("i1", "i2"), "p1")) %>%
     matsbyname::setrowtype("industries") %>% matsbyname::setcoltype("products")
-  m2 <- transpose_byname(m1 * 10)
+  m2 <- matsbyname::transpose_byname(m1 * 10)
   result <- expand_to_tidy(list(m1 = m1, m2 = m2),
                            matnames = "matnames", matvals = "matvals",
                            rownames = "rownames", colnames = "colnames",

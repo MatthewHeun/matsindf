@@ -102,28 +102,28 @@ test_that("collapse_to_matrices works as expected", {
     matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # Check that the single values turned out OK
-  expect_equal((mats %>% filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2 )
-  expect_equal((mats %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3 )
+  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2 )
+  expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3 )
 
   # Check that GH U turned out OK
-  expect_equal((mats %>% filter(Country == "GH", matrix == "U"))$vals[[1]], A)
+  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "U"))$vals[[1]], A)
   # Check that US U turned out OK
-  expect_equal((mats %>% filter(Country == "US", matrix == "U"))$vals[[1]],
+  expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "U"))$vals[[1]],
                matrix(c(11, 12),
                       nrow = 1, ncol = 2, byrow = TRUE,
                       dimnames = list(c("p1"), c("i1", "i2"))) %>%
                  matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
   # Check that GH V turned out OK
-  expect_equal((mats %>% filter(Country == "GH", matrix == "V"))$vals[[1]], A %>% transpose_byname)
+  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "V"))$vals[[1]], A %>% transpose_byname)
   # Check that GH Y turned out OK
-  expect_equal((mats %>% filter(Country == "GH", matrix == "Y"))$vals[[1]],
+  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "Y"))$vals[[1]],
                matrix(c(11, 0, 0,
                         0, 22, 23),
                       nrow = 2, ncol = 3, byrow = TRUE,
                       dimnames = list(c("p1", "p2"), c("i1", "i2", "i3"))) %>%
                  matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
   # Check that US Y turned out OK
-  expect_equal((mats %>% filter(Country == "US", matrix == "Y"))$vals[[1]], A)
+  expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "Y"))$vals[[1]], A)
   # Check that groups are discarded.
   expect_equal(length(group_vars(mats)), 0)
 })

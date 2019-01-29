@@ -1,6 +1,6 @@
 Package: matsindf
 Type: Package
-Title: Matrices in data frames
+Title: Matrices in Data Frames
 Version: 0.3.0
 Date: 2019-01-26
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),

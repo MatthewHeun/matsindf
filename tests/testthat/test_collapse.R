@@ -114,7 +114,7 @@ test_that("collapse_to_matrices works as expected", {
                       dimnames = list(c("p1"), c("i1", "i2"))) %>%
                  matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
   # Check that GH V turned out OK
-  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "V"))$vals[[1]], A %>% transpose_byname)
+  expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "V"))$vals[[1]], A %>% matsbyname::transpose_byname())
   # Check that GH Y turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "Y"))$vals[[1]],
                matrix(c(11, 0, 0,
@@ -125,6 +125,6 @@ test_that("collapse_to_matrices works as expected", {
   # Check that US Y turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "Y"))$vals[[1]], A)
   # Check that groups are discarded.
-  expect_equal(length(group_vars(mats)), 0)
+  expect_equal(length(dplyr::group_vars(mats)), 0)
 })
 

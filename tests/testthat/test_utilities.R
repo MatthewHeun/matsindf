@@ -18,41 +18,41 @@ context("Utilities")
 test_that("index_column works as expected", {
   DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
   expected1 <- DF1 %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(1, 2, 4)
     )
   # Group on the indexing variable to obtain an error.
-  expect_error(index_column(DF1 %>% group_by(var), var_to_index = "var"),
+  expect_error(index_column(DF1 %>% dplyr::group_by(var), var_to_index = "var"),
                "Indexing variable 'var' in groups of .DF in index_column.")
   # Group on the time variable to obtain an error.
-  expect_error(index_column(DF1 %>% group_by(Year), var_to_index = "var"),
+  expect_error(index_column(DF1 %>% dplyr::group_by(Year), var_to_index = "var"),
                "Time variable 'Year' in groups of .DF in index_column.")
   # Group on the correct variable to achieve success.
-  expect_equal(index_column(DF1 %>% group_by(Country), var_to_index = "var"), expected1)
+  expect_equal(index_column(DF1 %>% dplyr::group_by(Country), var_to_index = "var"), expected1)
 
   # Test with 2 groups.
   DF2 <- DF1 %>%
-    ungroup() %>%
-    mutate(
+    dplyr::ungroup() %>%
+    dplyr::mutate(
       Country = as.character(Country)
     ) %>%
     dplyr::bind_rows(data.frame(Country = c("GH", "GH", "GH"), Year = c(2011, 2012, 2013), var = c(1, 2, 4), stringsAsFactors = FALSE))
   expected2 <- DF2 %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(1, 2, 4, 1, 2, 4)
     )
   # Index on the (default) first year in each group.
-  expect_equal(index_column(DF2 %>% group_by(Country), var_to_index = "var"), expected2)
+  expect_equal(index_column(DF2 %>% dplyr::group_by(Country), var_to_index = "var"), expected2)
   # Index on a specified year
   DF2half <- DF2 %>%
-    mutate(
+    dplyr::mutate(
       Year = c(2011, 2012, 2013, 2011, 2012, 2013)
     )
   expected2half <- DF2half %>%
-    mutate(
+    dplyr::mutate(
       var_indexed = c(0.5, 1, 2, 0.5, 1, 2)
     )
-  expect_equal(index_column(DF2half %>% group_by(Country), var_to_index = "var", index_time = 2012),
+  expect_equal(index_column(DF2half %>% dplyr::group_by(Country), var_to_index = "var", index_time = 2012),
                expected2half)
 
   # Test when the variable to be indexed is a column of a data frame containing matrices.
@@ -67,7 +67,7 @@ test_that("index_column works as expected", {
     rowtypes = "row",
     coltypes = "col"
   ) %>%
-    group_by(Country, Year, matname) %>%
+    dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals",
                          rownames = "rowname",  colnames = "colname",
                          rowtypes = "rowtypes", coltypes = "coltypes")
@@ -81,18 +81,18 @@ test_that("index_column works as expected", {
     rowtypes = "row",
     coltypes = "col"
   ) %>%
-    group_by(Country, Year, matname) %>%
+    dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals_indexed",
                          rownames = "rowname",  colnames = "colname",
                          rowtypes = "rowtypes", coltypes = "coltypes") %>%
     # Add the matvals column
-    mutate(
+    dplyr::mutate(
       matvals = DF3$matvals
     ) %>%
     # Put in the expected order
-    select(Country, Year, matname, matvals, matvals_indexed)
+    dplyr::select(Country, Year, matname, matvals, matvals_indexed)
 
-  expect_equal(index_column(DF3 %>% group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
+  expect_equal(index_column(DF3 %>% dplyr::group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
 })
 
 test_that("rowcolval_to_mat (collapse) works as expected", {
@@ -102,7 +102,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                          nrow = 2, ncol = 2, byrow = TRUE,
                          dimnames = list(c("p1", "p2"), c("i1", "i2")))
   expected_mat_with_types <- expected_mat %>%
-    setrowtype("Products") %>% setcoltype("Industries")
+    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # Create a data frame that can be converted to a matrix.
   rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
@@ -161,7 +161,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                            0,  22),
                          nrow = 2, ncol = 2, byrow = TRUE,
                          dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-    setrowtype("Products") %>% setcoltype("Industries")
+    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # This is the data frame that we'll use the construct the matrix
   data <- data.frame(rows = c( "p1",  "p1", "p2"),
@@ -169,13 +169,13 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                      vals = c(  11  ,  12,   22 ),
                      rt = c("Products", "Products", "Products"),
                      ct = c("Industries", "Industries", "Industries")) %>%
-    mutate(
+    dplyr::mutate(
       rows = as.character(rows),
       cols = as.character(cols),
       rt = as.character(rt),
       ct = as.character(ct)
     ) %>%
-    set_rownames(NULL)
+    magrittr::set_rownames(NULL)
 
   # Construct the matrix that we'll convert later to a data frame.
   A <- data %>%
@@ -188,7 +188,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                    rownames = "rows", colnames = "cols",
                    rowtypes = "rt", coltypes = "ct",
                    matvals = "vals",
-                   drop = 0) %>% set_rownames(NULL),
+                   drop = 0) %>% magrittr::set_rownames(NULL),
                "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
   # Veryfy that we can convert the matrix to a data frame.
@@ -197,17 +197,17 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                                 rowtypes = "rt", coltypes = "ct",
                                 matvals = "vals",
                                 drop = 0) %>%
-                 set_rownames(NULL),
+                 magrittr::set_rownames(NULL),
                data)
 
   # Try when rowtype and coltype are not specified.
-  A_trimmed <- A %>% setrowtype(NULL) %>% setcoltype(NULL)
+  A_trimmed <- A %>% matsbyname::setrowtype(NULL) %>% matsbyname::setcoltype(NULL)
   expect_equal(mat_to_rowcolval(A_trimmed,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 drop = 0) %>%
-                 set_rownames(1:nrow(.)),
-               data %>% mutate(rt = NULL, ct = NULL))
+                 magrittr::set_rownames(1:nrow(.)),
+               data %>% dplyr::mutate(rt = NULL, ct = NULL))
 
 
   # Verify that drop works correctly.

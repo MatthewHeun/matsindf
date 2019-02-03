@@ -88,7 +88,7 @@
 #' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 #' # Warning is issued when an output item has same name as an input item.
-#' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
+#' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {

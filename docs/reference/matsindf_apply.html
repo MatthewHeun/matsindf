@@ -238,7 +238,7 @@ If <code>FUN</code> cannot handle the missing argument, an error will occur in <
 <span class='fu'>matsindf_apply</span>(<span class='no'>DF</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>example_fun</span>)</div><div class='output co'>#&gt;   a b c d
 #&gt; 1 4 4 8 0
 #&gt; 2 4 4 8 0
-#&gt; 3 5 4 9 1</div><div class='input'><span class='co'># Matrices in Data Frames (matsindf)</span>
+#&gt; 3 5 4 9 1</div><div class='input'><span class='co'># Now put some matrices in a data frame.</span>
 <span class='no'>DF2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>a</span>, <span class='no'>a</span>)), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>b</span>,<span class='no'>b</span>)))
 <span class='fu'>matsindf_apply</span>(<span class='no'>DF2</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>example_fun</span>, <span class='kw'>a</span> <span class='kw'>=</span> <span class='st'>"a"</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='st'>"b"</span>)</div><div class='output co'>#&gt;            a          b           c          d
 #&gt; 1 2, 6, 4, 8 1, 3, 2, 4 3, 9, 6, 12 1, 3, 2, 4

@@ -1,7 +1,7 @@
 ## Context
 `matsindf` is a new package that provides functions to work with matrices stored in data frames.
 
-## Test environments
+## Test environments (6 in total)
 * local macOS X install 10.14.2 (Mojave), R3.5.2
 * ubuntu 14.04.5 (on Travis CI), R3.5.2
 * windows (on win-builder)

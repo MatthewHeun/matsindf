@@ -89,7 +89,7 @@ DF <- data.frame(a = c(4, 4, 5), b = c(4, 4, 4))
 matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
 # By default, arguments to FUN come from DF
 matsindf_apply(DF, FUN = example_fun)
-# Matrices in Data Frames (matsindf)
+# Now put some matrices in a data frame.
 DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
 # All arguments to FUN are supplied by named items in .dat

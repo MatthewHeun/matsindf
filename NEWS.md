@@ -1,4 +1,4 @@
-# matsindf 0.3.0 (2019-02-03)
+# matsindf 0.3.0 (2019-02-05)
 
 * Address questions from CRAN: 
       - Title case: Matrices in Data Frames

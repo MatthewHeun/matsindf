@@ -7,6 +7,8 @@
 
 <!-- *********** -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.org/package=matsindf)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis-CI Build
 Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)

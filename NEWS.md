@@ -1,3 +1,4 @@
+* Added CRAN badge.
 * Fully-qualified all function calls in `matsindf` functions.
 * Now importing the `:=` and `.data` at a high level.
 * Added TravisCI integration

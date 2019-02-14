@@ -79,7 +79,7 @@
 #' matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
 #' # By default, arguments to FUN come from DF
 #' matsindf_apply(DF, FUN = example_fun)
-#' # Matrices in data frames (matsindf)
+#' # Now put some matrices in a data frame.
 #' DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
 #' # All arguments to FUN are supplied by named items in .dat
@@ -88,7 +88,7 @@
 #' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 #' # Warning is issued when an output item has same name as an input item.
-#' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
+#' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {

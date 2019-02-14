@@ -66,7 +66,7 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
   d <- a - b
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
-  expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equivalent(result, expected)
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
@@ -112,7 +112,7 @@ test_that("matsindf_apply works with a NULL argument", {
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   # Here is where the NULL is given as an argument to matsindp_apply.
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
-  expected <- bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equivalent(result, expected)
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)

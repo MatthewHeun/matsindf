@@ -48,8 +48,8 @@ DF <- data.frame(Year = c(2000, 2005, 2010), a = c(10, 15, 20), b = c(5, 5.5, 6)
 index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
 index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
 index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
-          indexed_var = "now.indexed")
-\dontrun{
+             indexed_var = "now.indexed")
+\donttest{
   DF \%>\%
     ungroup() \%>\%
     group_by(name, var) \%>\%

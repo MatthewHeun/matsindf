@@ -1,17 +1,5 @@
 # Contains tests for the matsindf package.
 
-# Need to put dplyr before testthat.
-# If not, the "matches" function in dplyr overrides the "matches" function in testthat,
-# and tests containing the string "(" don't work as expected.
-
-library(dplyr)
-library(magrittr)
-library(matsbyname)
-library(rlang)
-library(testthat)
-library(tibble)
-library(tidyr)
-
 ###########################################################
 context("Expand")
 ###########################################################
@@ -27,39 +15,39 @@ test_that("expand_to_tidy works as expected", {
                      rowtypes = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
                      coltypes = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
                      vals     = c(   11  ,  12,    13 ,   14 ,   15 ,   16 ,   17 ,   49 ,   50 ,   51 ,   52,   0.2, 0.3)
-  ) %>% group_by(Country, Year, matrix)
+  ) %>% dplyr::group_by(Country, Year, matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
                                matvals = "vals") %>%
-    ungroup()
+    dplyr::ungroup()
   # For the first tests, do not drop 0 values.
   A <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
                       rownames = "rows", colnames = "cols",
                       rowtypes = "rt",   coltypes = "ct")
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 11)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i1"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i2"))$vals[[1]], 12)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 13)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i3"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 14)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i3"))$vals[[1]], 15)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p1"))$vals[[1]], 16)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p2"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p1"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p2"))$vals[[1]], 17)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 11)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i1"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i2"))$vals[[1]], 12)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 13)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i3"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 14)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i3"))$vals[[1]], 15)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p1"))$vals[[1]], 16)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p2"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p1"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p2"))$vals[[1]], 17)
 
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 49)
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 50)
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 51)
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]], 0)
-  expect_equal((A %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 49)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 50)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 51)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]], 0)
+  expect_equal((A %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
 
-  expect_equal((A %>% filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
-  expect_equal((A %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
+  expect_equal((A %>% dplyr::filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
+  expect_equal((A %>% dplyr::filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
 
   # For this second set of tests, drop 0 values.
   B <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
@@ -67,39 +55,39 @@ test_that("expand_to_tidy works as expected", {
                       rowtypes = "rt",   coltypes = "ct",
                       drop = 0)
 
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 11)
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]],
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 11)
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]],
                "subscript out of bounds")
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i1"))$vals[[1]],
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i1"))$vals[[1]],
                "subscript out of bounds")
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i2"))$vals[[1]], 12)
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 13)
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]],
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "U", rows == "p2", cols == "i2"))$vals[[1]], 12)
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 13)
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]],
                "subscript out of bounds")
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i3"))$vals[[1]],
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p1", cols == "i3"))$vals[[1]],
                "subscript out of bounds")
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
                "subscript out of bounds")
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 14)
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i3"))$vals[[1]], 15)
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p1"))$vals[[1]], 16)
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p2"))$vals[[1]],
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 14)
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "Y", rows == "p2", cols == "i3"))$vals[[1]], 15)
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p1"))$vals[[1]], 16)
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i1", cols == "p2"))$vals[[1]],
                "subscript out of bounds")
-  expect_error((B %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p1"))$vals[[1]],
+  expect_error((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p1"))$vals[[1]],
                "subscript out of bounds")
-  expect_equal((B %>% filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p2"))$vals[[1]], 17)
+  expect_equal((B %>% dplyr::filter(Country == "GH", Year == 1971, matrix == "V", rows == "i2", cols == "p2"))$vals[[1]], 17)
 
-  expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 49)
-  expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 50)
-  expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 51)
-  expect_error((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]],
+  expect_equal((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i1"))$vals[[1]], 49)
+  expect_equal((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "U", rows == "p1", cols == "i2"))$vals[[1]], 50)
+  expect_equal((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i1"))$vals[[1]], 51)
+  expect_error((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p1", cols == "i2"))$vals[[1]],
                "subscript out of bounds")
-  expect_error((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
+  expect_error((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i1"))$vals[[1]],
                "subscript out of bounds")
-  expect_equal((B %>% filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
+  expect_equal((B %>% dplyr::filter(Country == "US", Year == 1980, matrix == "Y", rows == "p2", cols == "i2"))$vals[[1]], 52)
 
-  expect_equal((B %>% filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
-  expect_equal((B %>% filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
+  expect_equal((B %>% dplyr::filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2)
+  expect_equal((B %>% dplyr::filter(Country == "US", matrix == "eta"))$vals[[1]], 0.3)
 
 })
 
@@ -117,7 +105,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
     col = c(rep("c1", 2), rep("c2", 2)),
     m = c(1, 3, 2, 4, 10, 30, 20, 40)
   ) %>%
-    mutate(
+    dplyr::mutate(
       row = as.character(row),
       col = as.character(col)
     )
@@ -126,8 +114,8 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
 
 test_that("expand_to_tidy works with a list of matrices", {
   m1 <- matrix(c(1,2), nrow = 2, ncol = 1, dimnames = list(c("i1", "i2"), "p1")) %>%
-    setrowtype("industries") %>% setcoltype("products")
-  m2 <- transpose_byname(m1 * 10)
+    matsbyname::setrowtype("industries") %>% matsbyname::setcoltype("products")
+  m2 <- matsbyname::transpose_byname(m1 * 10)
   result <- expand_to_tidy(list(m1 = m1, m2 = m2),
                            matnames = "matnames", matvals = "matvals",
                            rownames = "rownames", colnames = "colnames",

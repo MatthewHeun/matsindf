@@ -1,11 +1,18 @@
 * Added CRAN badge.
+
+
+# matsindf 0.3.0 (2019-02-05)
+
+* Address questions from CRAN: 
+      - Title case: Matrices in Data Frames
+      - `\dontrun{}` --> `\donttest{}` in Roxygen examples 
 * Fully-qualified all function calls in `matsindf` functions.
 * Now importing the `:=` and `.data` at a high level.
 * Added TravisCI integration
 * Added code coverage
 
 
-# matsindf 0.2.12 (2018-01-07)
+# matsindf 0.2.12 (2019-01-07)
 
 * Now importing the `magrittr` pipe at a high level.
 

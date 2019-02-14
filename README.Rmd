@@ -35,7 +35,7 @@ devtools::install_github("MatthewHeun/matsindf", build_vignettes = TRUE)
 
 ## History
 
-The functions in this package were used in the paper 
+The functions in this package were used in 
 [Heun et al. [-@Heun:2018]](https://doi.org/10.1016/j.apenergy.2018.05.109).
 
 

@@ -32,5 +32,5 @@ by one of the \code{newcols}.
 df <- data.frame(a = c(1,2), b = c(3,4))
 verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
 newcols <- c("c", "d", "a", "b")
-\dontrun{verify_cols_missing(df, newcols)}
+\donttest{verify_cols_missing(df, newcols)} # Error: a and b are already in df.
 }

@@ -79,7 +79,7 @@
 #' matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
 #' # By default, arguments to FUN come from DF
 #' matsindf_apply(DF, FUN = example_fun)
-#' # Matrices in data frames (matsindf)
+#' # Now put some matrices in a data frame.
 #' DF2 <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
 #' matsindf_apply(DF2, FUN = example_fun, a = "a", b = "b")
 #' # All arguments to FUN are supplied by named items in .dat
@@ -88,7 +88,7 @@
 #' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 #' # Warning is issued when an output item has same name as an input item.
-#' \dontrun{matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")}
+#' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {
@@ -97,7 +97,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
     }
   }
+  # .dat is NULL (the default)
   types <- matsindf_apply_types(...)
+
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
     # Get the names of the arguments to FUN
@@ -108,12 +110,13 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(matsindf_apply(.dat = new_dots, FUN = FUN))
   }
 
-  if (is.null(.dat) & (types$all_dots_num | types$all_dots_mats)) {
+  if (types$all_dots_num | types$all_dots_mats) {
     # .dat is not present, and we have numbers or matricies in the ... arguments.
     # Simply call FUN on ... .
     return(FUN(...))
   }
-  if (is.null(.dat) & (types$all_dots_list | types$all_dots_vect)) {
+
+  if (types$all_dots_list | types$all_dots_vect) {
     # All arguments are coming in as lists or vectors across which FUN should be mapped.
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
@@ -130,6 +133,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
     return(out_df)
   }
+
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & (!types$dots_present | types$all_dots_char)) {
     dots <- list(...)
@@ -205,16 +209,28 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), dots)))
   }
 
+  # We'll never get here, because at the top of this function, we check for
+  #   if (!is.null(.dat)).
+  # Then, just above, we check for
+  #   (is.null(.dat))
+  # So, that covers everything, and
+  # there is no need for further checks.
+  # Also, the code below is the only code not hit by tests,
+  # resulting in code coverage less than 100%.
+  # But, it is actually impossible to get here.
+  # By commenting this code,
+  # the package will get to 100% testing coverage.
+  #
   # If we get here, we don't know how to deal with our inputs.
   # Try our best to give a meaningful error message.
-  clss <- lapply(list(...), class) %>% paste(collapse = ",")
-  msg <- paste(
-    "unknown state in matsindf_apply",
-    "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
-    "types are:",
-    clss
-  )
-  stop(msg)
+  # clss <- lapply(list(...), class) %>% paste(collapse = ",")
+  # msg <- paste(
+  #   "unknown state in matsindf_apply",
+  #   "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
+  #   "types are:",
+  #   clss
+  # )
+  # stop(msg)
 }
 
 

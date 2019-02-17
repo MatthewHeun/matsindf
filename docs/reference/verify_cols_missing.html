@@ -67,7 +67,7 @@ This function provides a way to quickly check whether newcols are already presen
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.12</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -167,9 +167,8 @@ by one of the <code>newcols</code>.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/data.frame'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>3</span>,<span class='fl'>4</span>))
 <span class='fu'>verify_cols_missing</span>(<span class='no'>df</span>, <span class='st'>"d"</span>) <span class='co'># Silent. There will be no problem adding column "d".</span>
-<span class='no'>newcols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"c"</span>, <span class='st'>"d"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>)</div><span class='co'># NOT RUN {</span>
-<span class='fu'>verify_cols_missing</span>(<span class='no'>df</span>, <span class='no'>newcols</span>)
-<span class='co'># }</span></pre>
+<span class='no'>newcols</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"c"</span>, <span class='st'>"d"</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>)</div><div class='input'><span class='fu'>verify_cols_missing</span>(<span class='no'>df</span>, <span class='no'>newcols</span>)</div><div class='output co'>#&gt; <span class='error'>Error in verify_cols_missing(df, newcols): column(s) 'a', 'b' is (are) already column names in data frame 'df'</span></div><div class='input'> # Error: a and b are already in df.
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

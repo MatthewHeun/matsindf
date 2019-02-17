@@ -124,8 +124,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' # Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.
 #' data4 <- data %>% bind_cols(data.frame(rt = c("Commodities", "Industries", "Commodities"),
 #'                                        ct = c("Industries", "Industries", "Industries")))
-#' \dontrun{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
-#'                           matvals = "vals", rowtypes = "rt", coltypes = "ct")}
+#' \donttest{rowcolval_to_mat(data4, rownames = "rows", colnames = "cols",
+#'                            matvals = "vals", rowtypes = "rt", coltypes = "ct")}
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes", fill = 0){
@@ -229,8 +229,8 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 #' index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
 #' index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
 #' index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
-#'           indexed_var = "now.indexed")
-#' \dontrun{
+#'              indexed_var = "now.indexed")
+#' \donttest{
 #'   DF %>%
 #'     ungroup() %>%
 #'     group_by(name, var) %>%
@@ -316,7 +316,7 @@ index_column <- function(.DF, var_to_index, time_var = "Year", index_time = NULL
 #' df <- data.frame(a = c(1,2), b = c(3,4))
 #' verify_cols_missing(df, "d") # Silent. There will be no problem adding column "d".
 #' newcols <- c("c", "d", "a", "b")
-#' \dontrun{verify_cols_missing(df, newcols)}
+#' \donttest{verify_cols_missing(df, newcols)} # Error: a and b are already in df.
 verify_cols_missing <- function(.DF, newcols){
   if (!is.vector(newcols)) {
     newcols <- c(newcols)

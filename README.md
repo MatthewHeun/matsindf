@@ -46,8 +46,8 @@ The functions in this package were used in [Heun et al.
 
 ## More Information
 
-Find more information, including vignettes and function documentation at
-<https://MatthewHeun.github.io/matsindf/>.
+Find more information, including vignettes and function documentation,
+at <https://MatthewHeun.github.io/matsindf/>.
 
 ## References
 

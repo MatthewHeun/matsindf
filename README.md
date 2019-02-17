@@ -22,7 +22,14 @@ data frames.
 
 ## Installation
 
-You can install `matsindf` from github with:
+You can install `matsindf` from CRAN with:
+
+``` r
+install.packages("matsindf")
+```
+
+You can install a recent development version of `matsindf` from github
+with:
 
 ``` r
 # install devtools if not already installed

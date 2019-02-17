@@ -22,8 +22,13 @@ ways to interact with matrices in data frames.
 
 ## Installation
 
-You can install `matsindf` from github with:
+You can install `matsindf` from CRAN with:
 
+```{r CRAN-installation, eval = FALSE}
+install.packages("matsindf")
+```
+
+You can install a recent development version of `matsindf` from github with:
 ```{r gh-installation, eval = FALSE}
 # install devtools if not already installed
 # install.packages("devtools")

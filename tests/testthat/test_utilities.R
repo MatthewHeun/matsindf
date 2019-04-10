@@ -305,6 +305,10 @@ test_that("group_by_everything_except works as expected", {
   # Test that everything works when the excluded column is NOT in the data frame.
   expect_equal(group_by_everything_except(DF, c("a", "z")) %>% dplyr::group_vars(), c("b", "c"))
   expect_equal(group_by_everything_except(DF, c("x", "y", "z")) %>% dplyr::group_vars(), c("a", "b", "c"))
+
+  # Test that it works when you supply a reference to a string.
+  a_var <- "a"
+  expect_equal(group_by_everything_except(DF, a_var) %>% dplyr::group_vars(), c("b", "c"))
 })
 
 

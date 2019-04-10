@@ -1,3 +1,4 @@
+* New function `group_by_everything_except()`
 * Added CRAN badge.
 
 

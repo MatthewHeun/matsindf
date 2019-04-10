@@ -9,7 +9,7 @@ group_by_everything_except(.DF, ..., add = FALSE)
 \arguments{
 \item{.DF}{a data frame to be grouped}
 
-\item{...}{a string or list of strings representing column names to be excluded from grouping}
+\item{...}{a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping}
 
 \item{add}{When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
 To add to the existing groups, use \code{add = TRUE}.}
@@ -21,4 +21,17 @@ a grouped version of \code{.DF}
 This is a convenience function
 that allows grouping of a data frame by all variables (columns)
 except those variables specified in \code{...}.
+}
+\examples{
+library(dplyr)
+DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+group_by_everything_except(DF) \%>\% group_vars()
+group_by_everything_except(DF, NULL) \%>\% group_vars()
+group_by_everything_except(DF, c()) \%>\% group_vars()
+group_by_everything_except(DF, list()) \%>\% group_vars()
+group_by_everything_except(DF, c) \%>\% group_vars()
+group_by_everything_except(DF, "c") \%>\% group_vars()
+group_by_everything_except(DF, c("a", "c")) \%>\% group_vars()
+group_by_everything_except(DF, c("a")) \%>\% group_vars()
+group_by_everything_except(DF, list("a")) \%>\% group_vars()
 }

@@ -338,7 +338,7 @@ verify_cols_missing <- function(.DF, newcols){
 #' except those variables specified in \code{...}.
 #'
 #' @param .DF a data frame to be grouped
-#' @param ... a string or list of strings representing column names to be excluded from grouping
+#' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
 #' @param add When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
 #'            To add to the existing groups, use \code{add = TRUE}.
 #'
@@ -347,28 +347,19 @@ verify_cols_missing <- function(.DF, newcols){
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' group_by_everything_except(DF) %>% group_vars()
+#' group_by_everything_except(DF, NULL) %>% group_vars()
+#' group_by_everything_except(DF, c()) %>% group_vars()
+#' group_by_everything_except(DF, list()) %>% group_vars()
+#' group_by_everything_except(DF, c) %>% group_vars()
+#' group_by_everything_except(DF, "c") %>% group_vars()
+#' group_by_everything_except(DF, c("a", "c")) %>% group_vars()
+#' group_by_everything_except(DF, c("a")) %>% group_vars()
+#' group_by_everything_except(DF, list("a")) %>% group_vars()
 group_by_everything_except <- function(.DF, ..., add = FALSE){
-
-  # if (length(list(...)) == 0) {
-  #   exclude_from_grouping_vars <- NULL
-  # } else if (length(list(...)) == 1 & length(list(...))[[1]] > 1) {
-  #   exclude
-  # } else {
-  #   if (all(is.character(...))) {
-  #     exclude_from_grouping_vars <- list(...)
-  #   } else {
-  #     # Assume all items in ... are symbols.
-  #     # Convert symbols to strings using the deparse(substitute()) trick.
-  #     exclude_from_grouping_vars <- deparse(substitute(...))
-  #   }
-  # }
-
-  dots <- NULL
-  if (length(list(...)) == 1 & length(list(...))[[1]] >= 1) {
-    dots <- list(...)[[1]]
-  } else if (length(list(...)) == 1) {
-    dots <- list(...)
-  }
+  dots <- list(...) %>% unlist()
   if (all(is.character(dots))) {
     exclude_from_grouping_vars <- dots
   } else {
@@ -376,9 +367,6 @@ group_by_everything_except <- function(.DF, ..., add = FALSE){
     # Convert symbols to strings using the deparse(substitute()) trick.
     exclude_from_grouping_vars <- deparse(substitute(...))
   }
-
-
-
   grouping_vars <- base::setdiff(names(.DF), exclude_from_grouping_vars)
   grouping_symbols <- lapply(grouping_vars, as.name)
   .DF %>%

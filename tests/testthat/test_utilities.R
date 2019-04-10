@@ -271,3 +271,31 @@ test_that("verify_cols_missing errors as expected", {
 })
 
 
+
+test_that("group_by_everything_except works as expected", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
+  expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
+  expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Ensure that it works with symbols
+  expect_equal(group_by_everything_except(DF, c) %>% dplyr::group_vars(), c("a", "b"))
+  # Ensure that it works with strings
+  expect_equal(group_by_everything_except(DF, "c") %>% dplyr::group_vars(), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(group_by_everything_except(DF, c("a", "c")) %>% dplyr::group_vars(), "b")
+
+  # Test that things go as expected when groups already exist.
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("b") %>%  # Resets groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "c"))
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("a", add = TRUE) %>%  # Adds to groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "b", "c"))
+
+})
+
+

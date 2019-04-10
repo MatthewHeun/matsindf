@@ -331,6 +331,61 @@ verify_cols_missing <- function(.DF, newcols){
 }
 
 
+#' Group by all variables except some
+#'
+#' This is a convenience function
+#' that allows grouping of a data frame by all variables (columns)
+#' except those variables specified in \code{...}.
+#'
+#' @param .DF a data frame to be grouped
+#' @param ... a string or list of strings representing column names to be excluded from grouping
+#' @param add When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
+#'            To add to the existing groups, use \code{add = TRUE}.
+#'
+#' @return a grouped version of \code{.DF}
+#'
+#' @export
+#'
+#' @examples
+group_by_everything_except <- function(.DF, ..., add = FALSE){
+
+  # if (length(list(...)) == 0) {
+  #   exclude_from_grouping_vars <- NULL
+  # } else if (length(list(...)) == 1 & length(list(...))[[1]] > 1) {
+  #   exclude
+  # } else {
+  #   if (all(is.character(...))) {
+  #     exclude_from_grouping_vars <- list(...)
+  #   } else {
+  #     # Assume all items in ... are symbols.
+  #     # Convert symbols to strings using the deparse(substitute()) trick.
+  #     exclude_from_grouping_vars <- deparse(substitute(...))
+  #   }
+  # }
+
+  dots <- NULL
+  if (length(list(...)) == 1 & length(list(...))[[1]] >= 1) {
+    dots <- list(...)[[1]]
+  } else if (length(list(...)) == 1) {
+    dots <- list(...)
+  }
+  if (all(is.character(dots))) {
+    exclude_from_grouping_vars <- dots
+  } else {
+    # Assume all items in ... are symbols.
+    # Convert symbols to strings using the deparse(substitute()) trick.
+    exclude_from_grouping_vars <- deparse(substitute(...))
+  }
+
+
+
+  grouping_vars <- base::setdiff(names(.DF), exclude_from_grouping_vars)
+  grouping_symbols <- lapply(grouping_vars, as.name)
+  .DF %>%
+    dplyr::group_by(!!!grouping_symbols, add = add)
+}
+
+
 #' Add a column of matrix names to tidy data frame
 #'
 #' @param .DF a data frame with \code{ledger_side_colname} and \code{energy_colname}.

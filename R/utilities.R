@@ -331,6 +331,39 @@ verify_cols_missing <- function(.DF, newcols){
 }
 
 
+
+
+#' Get symbols for all columns except ...
+#'
+#' This convenience function performs a set difference between
+#' the columns of \code{.DF} and the variable names (or symbols) given in \code{...}.
+#' The return value is a list of symbols.
+#'
+#' @param .DF a data frame whose variable names are to be differenced
+#' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
+#'
+#' @return a list of symbols containing all variables names except those given in \code{...}
+#'
+#' @export
+#'
+#' @examples
+#' library(dplyr)
+#' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' everything_except(DF, "a", b)
+everything_except <- function(.DF, ...){
+  dots <- list(...) %>% unlist()
+  if (all(is.character(dots))) {
+    to_exclude <- dots
+  } else {
+    # Assume all items in ... are symbols.
+    # Convert symbols to strings using the deparse(substitute()) trick.
+    to_exclude <- deparse(substitute(...))
+  }
+  grouping_vars <- base::setdiff(names(.DF), to_exclude)
+  lapply(grouping_vars, as.name)
+}
+
+
 #' Group by all variables except some
 #'
 #' This is a convenience function

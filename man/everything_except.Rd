@@ -12,7 +12,7 @@ everything_except(.DF, ...)
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}}
 }
 \value{
-a list of symbols containing all variables names except those given in \code{...}
+a vector of symbols containing all variables names except those given in \code{...}
 }
 \description{
 This convenience function performs a set difference between
@@ -20,7 +20,6 @@ the columns of \code{.DF} and the variable names (or symbols) given in \code{...
 The return value is a list of symbols.
 }
 \examples{
-library(dplyr)
 DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
-everything_except(DF, "a", b)
+everything_except(DF, "a", "b")
 }

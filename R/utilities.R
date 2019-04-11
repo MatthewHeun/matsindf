@@ -342,14 +342,13 @@ verify_cols_missing <- function(.DF, newcols){
 #' @param .DF a data frame whose variable names are to be differenced
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
 #'
-#' @return a list of symbols containing all variables names except those given in \code{...}
+#' @return a vector of symbols containing all variables names except those given in \code{...}
 #'
 #' @export
 #'
 #' @examples
-#' library(dplyr)
 #' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
-#' everything_except(DF, "a", b)
+#' everything_except(DF, "a", "b")
 everything_except <- function(.DF, ...){
   dots <- list(...) %>% unlist()
   if (all(is.character(dots))) {
@@ -360,7 +359,8 @@ everything_except <- function(.DF, ...){
     to_exclude <- deparse(substitute(...))
   }
   grouping_vars <- base::setdiff(names(.DF), to_exclude)
-  lapply(grouping_vars, as.name)
+  sapply(grouping_vars, as.name, USE.NAMES = FALSE) %>%
+    as.vector(mode = "character")
 }
 
 

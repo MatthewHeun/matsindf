@@ -1,3 +1,4 @@
+* Refactored `group_by_everything_except()` to use a new helper function `everything_except()`
 * New function `group_by_everything_except()`
 * Added CRAN badge.
 

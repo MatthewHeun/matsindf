@@ -342,14 +342,14 @@ verify_cols_missing <- function(.DF, newcols){
 #' @param .DF a data frame whose variable names are to be differenced
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
 #'
-#' @return a vector of strings containing all variables names except those given in \code{...}
+#' @return a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
 #'
 #' @export
 #'
 #' @examples
 #' DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
 #' everything_except(DF, "a", "b")
-everything_except <- function(.DF, ...){
+everything_except <- function(.DF, ..., symbols = TRUE){
   dots <- list(...) %>% unlist()
   if (all(is.character(dots))) {
     to_exclude <- dots
@@ -358,13 +358,10 @@ everything_except <- function(.DF, ...){
     # Convert symbols to strings using the deparse(substitute()) trick.
     to_exclude <- deparse(substitute(...))
   }
-  # grouping_vars <- base::setdiff(names(.DF), to_exclude)
-  # sapply(grouping_vars, as.name, USE.NAMES = FALSE) %>%
-  #   as.character()
-
-  # base::setdiff(names(.DF), to_exclude)
-
   grouping_vars <- base::setdiff(names(.DF), to_exclude)
+  if (!symbols) {
+    return(grouping_vars)
+  }
   sapply(grouping_vars, as.name, USE.NAMES = FALSE)
 }
 
@@ -398,19 +395,6 @@ everything_except <- function(.DF, ...){
 #' group_by_everything_except(DF, c("a")) %>% group_vars()
 #' group_by_everything_except(DF, list("a")) %>% group_vars()
 group_by_everything_except <- function(.DF, ..., add = FALSE){
-  # dots <- list(...) %>% unlist()
-  # if (all(is.character(dots))) {
-  #   exclude_from_grouping_vars <- dots
-  # } else {
-  #   # Assume all items in ... are symbols.
-  #   # Convert symbols to strings using the deparse(substitute()) trick.
-  #   exclude_from_grouping_vars <- deparse(substitute(...))
-  # }
-  # grouping_vars <- base::setdiff(names(.DF), exclude_from_grouping_vars)
-  # grouping_symbols <- lapply(grouping_vars, as.name)
-  # grouping_strings <- do.call(everything_except, c(list(.DF = .DF), list(...)), quote = TRUE)
-  # grouping_strings <- do.call(everything_except, list(.DF = .DF, ...))
-  # grouping_symbols <- lapply(grouping_strings, as.name)
   grouping_symbols <- do.call(everything_except, list(.DF = .DF, ...))
   .DF %>%
     dplyr::group_by(!!!grouping_symbols, add = add)

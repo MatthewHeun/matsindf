@@ -271,7 +271,7 @@ test_that("verify_cols_missing errors as expected", {
 })
 
 
-test_that("everything_except works as expected", {
+test_that("everything_except works as expected for symbols", {
   DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
   expect_equal(everything_except(DF, "a"), c(as.name("b"), as.name("c")))
   expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
@@ -291,6 +291,27 @@ test_that("everything_except works as expected", {
   expect_equal(everything_except(DF, c("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
   # Try a list.  Should still work.
   expect_equal(everything_except(DF, list("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+})
+
+test_that("everything_except works as expected for strings", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  expect_equal(everything_except(DF, "a", symbols = FALSE), c("b", "c"))
+  # Ensure all columns of .DF are returned if ... is empty or NULL.
+  expect_equal(DF %>% everything_except(symbols = FALSE), c("a", "b", "c"))
+  expect_equal(everything_except(DF, NULL, symbols = FALSE), c("a", "b", "c"))
+  # Try an empty vector
+  expect_equal(everything_except(DF, c(), symbols = FALSE), c("a", "b", "c"))
+  # Try an empty list
+  expect_equal(everything_except(DF, list(), symbols = FALSE), c("a", "b", "c"))
+  # Ensure that it works with strings
+  expect_equal(everything_except(DF, "a", symbols = FALSE), c("b", "c"))
+  expect_equal(everything_except(DF, "a", "b", symbols = FALSE), "c")
+  expect_equal(everything_except(DF, "c", symbols = FALSE), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(everything_except(DF, c("a", "c"), symbols = FALSE), "b")
+  expect_equal(everything_except(DF, c("a"), symbols = FALSE), c("b", "c"))
+  # Try a list.  Should still work.
+  expect_equal(everything_except(DF, list("a"), symbols = FALSE), c("b", "c"))
 })
 
 test_that("group_by_everything_except works as expected", {

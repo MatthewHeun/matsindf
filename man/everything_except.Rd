@@ -4,7 +4,7 @@
 \alias{everything_except}
 \title{Get symbols for all columns except ...}
 \usage{
-everything_except(.DF, ...)
+everything_except(.DF, ..., symbols = TRUE)
 }
 \arguments{
 \item{.DF}{a data frame whose variable names are to be differenced}
@@ -12,7 +12,7 @@ everything_except(.DF, ...)
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}}
 }
 \value{
-a vector of strings containing all variables names except those given in \code{...}
+a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
 }
 \description{
 This convenience function performs a set difference between

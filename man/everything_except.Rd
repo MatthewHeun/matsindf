@@ -12,7 +12,7 @@ everything_except(.DF, ...)
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}}
 }
 \value{
-a vector of symbols containing all variables names except those given in \code{...}
+a vector of strings containing all variables names except those given in \code{...}
 }
 \description{
 This convenience function performs a set difference between

@@ -4,14 +4,14 @@
 \alias{everything_except}
 \title{Get symbols for all columns except ...}
 \usage{
-everything_except(.DF, ..., symbols = TRUE)
+everything_except(.DF, ..., .symbols = TRUE)
 }
 \arguments{
 \item{.DF}{a data frame whose variable names are to be differenced}
 
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}}
 
-\item{symbols}{a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings}
+\item{.symbols}{a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings}
 }
 \value{
 a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}

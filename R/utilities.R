@@ -341,7 +341,7 @@ verify_cols_missing <- function(.DF, newcols){
 #'
 #' @param .DF a data frame whose variable names are to be differenced
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
-#' @param symbols a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings
+#' @param .symbols a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings
 #'
 #' @return a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
 #'
@@ -353,7 +353,7 @@ verify_cols_missing <- function(.DF, newcols){
 #' everything_except(DF, "a", "b", symbols = FALSE)
 #' everything_except(DF, c("a", "b"))
 #' everything_except(DF, list("a", "b"))
-everything_except <- function(.DF, ..., symbols = TRUE){
+everything_except <- function(.DF, ..., .symbols = TRUE){
   dots <- list(...) %>% unlist()
   if (all(is.character(dots))) {
     to_exclude <- dots
@@ -363,7 +363,7 @@ everything_except <- function(.DF, ..., symbols = TRUE){
     to_exclude <- deparse(substitute(...))
   }
   grouping_vars <- base::setdiff(names(.DF), to_exclude)
-  if (!symbols) {
+  if (!.symbols) {
     return(grouping_vars)
   }
   sapply(grouping_vars, as.name, USE.NAMES = FALSE)

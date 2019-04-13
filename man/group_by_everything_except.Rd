@@ -4,7 +4,7 @@
 \alias{group_by_everything_except}
 \title{Group by all variables except some}
 \usage{
-group_by_everything_except(.DF, ..., add = FALSE)
+group_by_everything_except(.DF, ..., add = FALSE, .drop = FALSE)
 }
 \arguments{
 \item{.DF}{a data frame to be grouped}
@@ -13,6 +13,8 @@ group_by_everything_except(.DF, ..., add = FALSE)
 
 \item{add}{When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
 To add to the existing groups, use \code{add = TRUE}.}
+
+\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped.}
 }
 \value{
 a grouped version of \code{.DF}

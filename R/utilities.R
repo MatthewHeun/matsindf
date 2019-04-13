@@ -380,6 +380,7 @@ everything_except <- function(.DF, ..., symbols = TRUE){
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
 #' @param add When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
 #'            To add to the existing groups, use \code{add = TRUE}.
+#' @param .drop When \code{.drop = TRUE}, empty groups are dropped.
 #'
 #' @return a grouped version of \code{.DF}
 #'
@@ -398,10 +399,10 @@ everything_except <- function(.DF, ..., symbols = TRUE){
 #' group_by_everything_except(DF, c("a", "c")) %>% group_vars()
 #' group_by_everything_except(DF, c("a")) %>% group_vars()
 #' group_by_everything_except(DF, list("a")) %>% group_vars()
-group_by_everything_except <- function(.DF, ..., add = FALSE){
-  grouping_symbols <- do.call(everything_except, list(.DF = .DF, ...))
+group_by_everything_except <- function(.DF, ..., add = FALSE, .drop = FALSE){
+  grouping_cols <- do.call(everything_except, list(.DF = .DF, ...))
   .DF %>%
-    dplyr::group_by(!!!grouping_symbols, add = add)
+    dplyr::group_by(!!!grouping_cols, add = add, .drop = .drop)
 }
 
 

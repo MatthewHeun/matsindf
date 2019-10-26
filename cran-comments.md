@@ -6,7 +6,7 @@
 * TRAVIS-CI: ubuntu 16.04.6, R3.6.1
 * Windows (on win-builder):
     * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
-    * `devtools::check_win_devel()`, R Under development (unstable) (2019-02-04 r76055)
+    * `devtools::check_win_devel()`, R Under development (unstable) (2019-10-24 r77329)
 * rhub:
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
@@ -27,11 +27,8 @@
         * 0 ERRORs
         * 0 WARNINGs
         * 0 NOTES
-    * `devtools::check_win_devel()`, 
-        * 2 ERRORs
-            * The 2 ERRORs are test failures that occur only in this R-devel environment.
-            * Both ERRORs are test failures of the type "target is logical, current is character"
-            * I don't think these ERRORs are the fault of the `matsindf` package.
+    * `devtools::check_win_devel()`, R Under development (unstable) (2019-10-24 r77329)
+        * 0 ERRORs
         * 0 WARNINGs
         * 0 NOTES
 * rhub

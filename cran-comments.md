@@ -58,4 +58,5 @@
                   Rather, the warning appears to be a font issue that is unique to this R-devel environment.
 
 ## Downstream dependencies
-There are currently no downstream dependencies for `matsindf`.
+* Reverse dependencies were checked with `revdepcheck::revdep_check(num_workers = 4)`.
+* There are currently no downstream dependencies for `matsindf`.

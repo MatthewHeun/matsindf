@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pipe operator — := • matsindf</title>
+<title>Get symbols for all columns except ... — everything_except • matsindf</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,10 @@
 
 
 
-<meta property="og:title" content="Pipe operator — :=" />
-<meta property="og:description" content="See rlang:::= for details." />
+<meta property="og:title" content="Get symbols for all columns except ... — everything_except" />
+<meta property="og:description" content="This convenience function performs a set difference between
+the columns of .DF and the variable names (or symbols) given in ....
+The return value is a list of symbols." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -123,23 +125,58 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pipe operator</h1>
-    <small class="dont-index">Source: <a href='https://github.com/MatthewHeun/matsindf/blob/master/R/utils-qqassign.R'><code>R/utils-qqassign.R</code></a></small>
-    <div class="hidden name"><code>quasi-quote-assign.Rd</code></div>
+    <h1>Get symbols for all columns except ...</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MatthewHeun/matsindf/blob/master/R/utilities.R'><code>R/utilities.R</code></a></small>
+    <div class="hidden name"><code>everything_except.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>See <code>rlang::<a href='https://rlang.r-lib.org/reference/quasiquotation.html'>:=</a></code> for details.</p>
+    <p>This convenience function performs a set difference between
+the columns of <code>.DF</code> and the variable names (or symbols) given in <code>...</code>.
+The return value is a list of symbols.</p>
     </div>
 
-    <pre class="usage"><span class='no'>x</span> <span class='kw'>:=</span> <span class='no'>y</span></pre>
+    <pre class="usage"><span class='fu'>everything_except</span>(<span class='no'>.DF</span>, <span class='no'>...</span>, <span class='kw'>.symbols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>.DF</th>
+      <td><p>a data frame whose variable names are to be differenced</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of <code>.DF</code></p></td>
+    </tr>
+    <tr>
+      <th>.symbols</th>
+      <td><p>a boolean that defines the return type: <code>TRUE</code> for symbols, <code>FALSE</code> for strings</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
+    <p>a vector of symbols (when <code>symbols = TRUE</code>) or strings (when <code>symbol = FALSE</code>) containing all variables names except those given in <code>...</code></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>DF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>4</span>), <span class='kw'>c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>6</span>))
+<span class='fu'>everything_except</span>(<span class='no'>DF</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; c
+#&gt; </div><div class='input'><span class='fu'>everything_except</span>(<span class='no'>DF</span>, <span class='st'>"a"</span>, <span class='st'>"b"</span>, <span class='kw'>symbols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [[1]]
+#&gt; c
+#&gt; </div><div class='input'><span class='fu'>everything_except</span>(<span class='no'>DF</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; c
+#&gt; </div><div class='input'><span class='fu'>everything_except</span>(<span class='no'>DF</span>, <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"a"</span>, <span class='st'>"b"</span>))</div><div class='output co'>#&gt; [[1]]
+#&gt; c
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

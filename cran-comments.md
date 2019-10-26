@@ -26,33 +26,25 @@
     * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
         * 0 ERRORs
         * 0 WARNINGs
-        * 0 NOTES
+        * 0 NOTEs
     * `devtools::check_win_devel()`, R Under development (unstable) (2019-10-24 r77329)
         * 0 ERRORs
         * 0 WARNINGs
-        * 0 NOTES
+        * 0 NOTEs
 * rhub
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-            * 0 ERRORs
+            * 4 ERRORs
             * 0 WARNINGs
-            * 1 NOTE: New submission (as expected)
+            * 0 NOTEs
         * Ubuntu Linux 16.04 LTS, R-release, GCC
             * 0 ERRORs
             * 0 WARNINGs
-            * 2 NOTEs
-                * The first note identifies `matsindf` as a new submission (as expected).
-                * The second note says `Author field differs from that derived from Authors@R`.
-                    * This note occurs in only this environment.
-                    * I do not have an `Author` field in the DESCRIPTION file.
-                    * I don't think this NOTE is the fault of the `matsindf` package.
+            * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
             * 0 ERRORs
-            * 1 WARNING
-                * This WARNING occurs only in this environment and only when building a vignette.
-                * The WARNING states `X11 font -adobe-helvetica-%s-%s-*-*-%d-*-*-*-*-*-*-*, face 5 at size 11 could not be loaded`
-                * I don't think this WARNING is the fault of the `matsindf` package.
-                  Rather, the warning appears to be a font issue that is unique to this R-devel environment.
+            * 0 WARNINGs
+            * 0 NOTEs
 
 ## Downstream dependencies
 * Reverse dependencies were checked with `revdepcheck::revdep_check(num_workers = 4)`.

@@ -2,12 +2,12 @@
 `matsindf` is a package that provides functions to work with matrices stored in data frames.
 
 ## Test environments (7 in total)
-* Local macOS X install 10.14.6 (Mojave), R3.6.1
-* TRAVIS-CI ubuntu 16.04.6, R3.6.1
-* Windows (on win-builder)
+* Local: macOS X install 10.14.6 (Mojave), R3.6.1
+* TRAVIS-CI: ubuntu 16.04.6, R3.6.1
+* Windows (on win-builder):
     * `devtools::check_win_release()`, R3.5.2 (2018-12-20)
     * `devtools::check_win_devel()`, R Under development (unstable) (2019-02-04 r76055)
-* rhub
+* rhub:
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
         * Ubuntu Linux 16.04 LTS, R-release, GCC

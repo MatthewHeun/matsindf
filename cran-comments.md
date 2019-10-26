@@ -22,7 +22,7 @@
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs
-* Windows (on win-builder)
+* Windows (on win-builder):
     * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
         * 0 ERRORs
         * 0 WARNINGs
@@ -31,10 +31,16 @@
         * 0 ERRORs
         * 0 WARNINGs
         * 0 NOTEs
-* rhub
+* rhub:
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
             * 4 ERRORs
+                * All four testing errors are caused by a problem with the `data.table` package
+                * Error messages are 
+                  `error: This is R 4.0.0 but data.table has been installed using R 3.6.1. The major version must match. Please reinstall data.table.`
+                * This platform (Windows Server 2008 R2 SP1, R-devel, 32/64 bit) is the only platform on which these errors appear.
+                * These errors appear to be caused by a configuration error at rhub. 
+                * These errors are unlikely the fault of the `matsindf` package.
             * 0 WARNINGs
             * 0 NOTEs
         * Ubuntu Linux 16.04 LTS, R-release, GCC

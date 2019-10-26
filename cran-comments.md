@@ -1,11 +1,11 @@
 ## Context
-`matsindf` is a package that provides functions to work with matrices stored in data frames.
+`matsindf` v0.3.1 adds one new function. See `NEWS.md` for details. 
 
 ## Test environments (7 in total)
 * Local: macOS X install 10.14.6 (Mojave), R3.6.1
 * TRAVIS-CI: ubuntu 16.04.6, R3.6.1
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R3.5.2 (2018-12-20)
+    * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
     * `devtools::check_win_devel()`, R Under development (unstable) (2019-02-04 r76055)
 * rhub:
     * `devtools::check_rhub()`
@@ -14,26 +14,26 @@
         * Fedora Linux, R-devel, clang, gfortran
 
 ## R CMD check results
-* Local macOS X install 10.14.2 (Mojave), R3.5.2
+* Local: macOS X install 10.14.6 (Mojave), R3.6.1
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs
-* TRAVIS-CI ubuntu 14.04.5, R3.5.2
+* TRAVIS-CI: ubuntu 16.04.6, R3.6.1
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs
 * Windows (on win-builder)
-    * `devtools::check_win_release()`, R3.5.2 (2018-12-20)
+    * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
         * 0 ERRORs
         * 0 WARNINGs
-        * 1 NOTE: New submission (as expected)
-    * `devtools::check_win_devel()`, R Under development (unstable) (2019-02-04 r76055)
+        * 0 NOTES
+    * `devtools::check_win_devel()`, 
         * 2 ERRORs
             * The 2 ERRORs are test failures that occur only in this R-devel environment.
             * Both ERRORs are test failures of the type "target is logical, current is character"
             * I don't think these ERRORs are the fault of the `matsindf` package.
         * 0 WARNINGs
-        * 1 NOTE: New submission (as expected)
+        * 0 NOTES
 * rhub
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit

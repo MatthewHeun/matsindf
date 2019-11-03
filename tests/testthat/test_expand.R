@@ -14,8 +14,9 @@ test_that("expand_to_tidy works as expected", {
                      col      = c(  "i1",  "i2",  "i1",  "i2",  "i3",  "p1",  "p2",  "i1",  "i2",  "i1",  "i2", NA, NA),
                      rowtypes = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
                      coltypes = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
-                     vals     = c(   11  ,  12,    13 ,   14 ,   15 ,   16 ,   17 ,   49 ,   50 ,   51 ,   52,   0.2, 0.3)
-  ) %>% dplyr::group_by(Country, Year, matrix)
+                     vals     = c(   11  ,  12,    13 ,   14 ,   15 ,   16 ,   17 ,   49 ,   50 ,   51 ,   52,   0.2, 0.3),
+                     stringsAsFactors = FALSE) %>%
+    dplyr::group_by(Country, Year, matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
                                matvals = "vals") %>%

@@ -6,7 +6,7 @@ header-includes:
    - \usepackage{amsmath}
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Use Cases and Cxamples for matsindf}
+  %\VignetteIndexEntry{Use Cases and Examples for matsindf}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 

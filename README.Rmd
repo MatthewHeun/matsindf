@@ -8,6 +8,7 @@ bibliography: vignettes/References.bib
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
 <!-- *********** -->
 
+[![CRAN status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.org/package=matsindf)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis-CI Build Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
 [![Coverage status](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/github/MatthewHeun/matsindf?branch=master)
@@ -21,8 +22,13 @@ ways to interact with matrices in data frames.
 
 ## Installation
 
-You can install `matsindf` from github with:
+You can install `matsindf` from CRAN with:
 
+```{r CRAN-installation, eval = FALSE}
+install.packages("matsindf")
+```
+
+You can install a recent development version of `matsindf` from github with:
 ```{r gh-installation, eval = FALSE}
 # install devtools if not already installed
 # install.packages("devtools")
@@ -40,7 +46,7 @@ The functions in this package were used in
 
 ## More Information
 
-Find more information, including vignettes and function documentation at 
+Find more information, including vignettes and function documentation, at 
 <https://MatthewHeun.github.io/matsindf/>.
 
 

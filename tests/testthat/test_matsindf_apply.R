@@ -73,7 +73,7 @@ test_that("matsindf_apply works as expected using .DF with matrices", {
   expect_equivalent(result, expected)
 })
 
-test_that("matsindf_apply fails properly when not all same type for ...", {
+test_that("matsindf_apply fails as expected when not all same type for ...", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), 'argument "a" is missing, with no default')
 })
 
@@ -170,3 +170,4 @@ test_that("matsindf_apply works when an argument is missing", {
   expect_error(outer_fun(b = 2),
                'argument "a_num" is missing, with no default')
 })
+

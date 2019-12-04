@@ -4,9 +4,15 @@
 \alias{rowcolval_to_mat}
 \title{Collapse a tidy data frame into a matrix with named rows and columns}
 \usage{
-rowcolval_to_mat(.DF, matvals = "matvals", rownames = "rownames",
-  colnames = "colnames", rowtypes = "rowtypes",
-  coltypes = "coltypes", fill = 0)
+rowcolval_to_mat(
+  .DF,
+  matvals = "matvals",
+  rownames = "rownames",
+  colnames = "colnames",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes",
+  fill = 0
+)
 }
 \arguments{
 \item{.DF}{a tidy data frame containing columns for row names, column names, and values}

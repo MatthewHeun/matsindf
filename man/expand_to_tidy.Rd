@@ -4,9 +4,16 @@
 \alias{expand_to_tidy}
 \title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
 \usage{
-expand_to_tidy(.DF, matnames = "matnames", matvals = "matvals",
-  rownames = "rownames", colnames = "colnames",
-  rowtypes = "rowtypes", coltypes = "coltypes", drop = NA)
+expand_to_tidy(
+  .DF,
+  matnames = "matnames",
+  matvals = "matvals",
+  rownames = "rownames",
+  colnames = "colnames",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes",
+  drop = NA
+)
 }
 \arguments{
 \item{.DF}{the data frame containing \pkg{matsindf}-style matrices.

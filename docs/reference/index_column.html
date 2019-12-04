@@ -140,8 +140,14 @@ Groups in <code>.DF</code> are both respected and required.
 Neither <code>var_to_index</code> nor <code>time_var</code> can be in the grouping variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>index_column</span>(<span class='no'>.DF</span>, <span class='no'>var_to_index</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>index_time</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indexed_var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>var_to_index</span>, <span class='no'>suffix</span>), <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_indexed"</span>)</pre>
+    <pre class="usage"><span class='fu'>index_column</span>(
+  <span class='no'>.DF</span>,
+  <span class='no'>var_to_index</span>,
+  <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>,
+  <span class='kw'>index_time</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>indexed_var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>var_to_index</span>, <span class='no'>suffix</span>),
+  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_indexed"</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

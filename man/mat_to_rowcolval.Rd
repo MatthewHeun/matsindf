@@ -4,9 +4,15 @@
 \alias{mat_to_rowcolval}
 \title{Convert a matrix to a data frame with rows, columns, and values.}
 \usage{
-mat_to_rowcolval(.matrix, matvals = "matvals", rownames = "rownames",
-  colnames = "colnames", rowtypes = "rowtypes",
-  coltypes = "coltypes", drop = NA)
+mat_to_rowcolval(
+  .matrix,
+  matvals = "matvals",
+  rownames = "rownames",
+  colnames = "colnames",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes",
+  drop = NA
+)
 }
 \arguments{
 \item{.matrix}{the IO-style matrix to be converted to a data frame with rows, columns, and values}

@@ -1,3 +1,9 @@
+# matsindf 0.3.2 (2019-12-04)
+
+* Change `class(A) == "matrix"` to `inherits(A, "matrix")` in one test to prepare for R4.0.0.
+  See https://developer.r-project.org/Blog/public/2019/11/09/when-you-think-class.-think-again/index.html for details.
+  
+
 # matsindf 0.3.1 (2019-10-26)
 
 * Refactored `group_by_everything_except()` to use a new helper function `everything_except()`

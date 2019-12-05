@@ -1,5 +1,5 @@
 ## Context
-`matsindf` v0.3.1 adds one new function. See `NEWS.md` for details. 
+`matsindf` v0.3.2 is a maintenance release to prepare for R4.0.0. See `NEWS.md` for details. 
 
 ## Test environments (7 in total)
 * Local: macOS X install 10.14.6 (Mojave), R3.6.1

@@ -42,7 +42,10 @@
             * 0 WARNINGs
             * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
-            * 0 ERRORs
+            * 1 ERROR:
+              The error is "ERROR: dependency ‘rlist’ is not available for package ‘matsindf’.
+              This error does not appear to be the fault of the `matsindf` package. 
+              Rather, this error appears to the result of a configuration problem on rhub.
             * 0 WARNINGs
             * 0 NOTEs
 

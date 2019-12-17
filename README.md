@@ -7,6 +7,8 @@
 
 <!-- *********** -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.org/package=matsindf)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Travis-CI Build
 Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
@@ -20,7 +22,14 @@ data frames.
 
 ## Installation
 
-You can install `matsindf` from github with:
+You can install `matsindf` from CRAN with:
+
+``` r
+install.packages("matsindf")
+```
+
+You can install a recent development version of `matsindf` from github
+with:
 
 ``` r
 # install devtools if not already installed
@@ -37,8 +46,8 @@ The functions in this package were used in [Heun et al.
 
 ## More Information
 
-Find more information, including vignettes and function documentation at
-<https://MatthewHeun.github.io/matsindf/>.
+Find more information, including vignettes and function documentation,
+at <https://MatthewHeun.github.io/matsindf/>.
 
 ## References
 

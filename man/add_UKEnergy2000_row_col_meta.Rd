@@ -4,13 +4,22 @@
 \alias{add_UKEnergy2000_row_col_meta}
 \title{Add row, column, row type, and column type metadata}
 \usage{
-add_UKEnergy2000_row_col_meta(.DF, matname_colname = "matname",
-  U_name = "U", V_name = "V", Y_name = "Y",
-  product_colname = "Product", flow_colname = "Flow",
-  industry_type = "Industry", product_type = "Product",
-  sector_type = "Sector", rowname_colname = "rowname",
-  colname_colname = "colname", rowtype_colname = "rowtype",
-  coltype_colname = "coltype")
+add_UKEnergy2000_row_col_meta(
+  .DF,
+  matname_colname = "matname",
+  U_name = "U",
+  V_name = "V",
+  Y_name = "Y",
+  product_colname = "Product",
+  flow_colname = "Flow",
+  industry_type = "Industry",
+  product_type = "Product",
+  sector_type = "Sector",
+  rowname_colname = "rowname",
+  colname_colname = "colname",
+  rowtype_colname = "rowtype",
+  coltype_colname = "coltype"
+)
 }
 \arguments{
 \item{.DF}{a data frame containing \code{matname_colname}.}

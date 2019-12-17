@@ -110,7 +110,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                           cols = c( "i1",  "i2", "i2"),
                           vals = c(  11  ,  12,   22 ))
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
-  expect_equal(class(A), "matrix")
+  expect_true(inherits(A, "matrix"))
   expect_equal(A, expected_mat)
   expect_null(rowtype(A)) # rowtype has not been set
   expect_null(coltype(A)) # coltype has not been set
@@ -268,6 +268,88 @@ test_that("verify_cols_missing errors as expected", {
   expect_null(verify_cols_missing(DF, newcols = DF))
   expect_error(verify_cols_missing(DF, "A"),
                "column\\(s\\) 'A' is \\(are\\) already column names in data frame 'DF'")
+})
+
+
+test_that("everything_except works as expected for symbols", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  expect_equal(everything_except(DF, "a"), c(as.name("b"), as.name("c")))
+  expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  # Ensure all columns of .DF are returned if ... is empty or NULL.
+  expect_equal(DF %>% everything_except(), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, NULL), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Try an empty vector
+  expect_equal(everything_except(DF, c()), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Try an empty list
+  expect_equal(everything_except(DF, list()), sapply(c("a", "b", "c"), as.name, USE.NAMES = FALSE))
+  # Ensure that it works with strings
+  expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, "a", "b"), sapply("c", as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, "c"), sapply(c("a", "b"), as.name, USE.NAMES = FALSE))
+  # Now try a vector of strings
+  expect_equal(everything_except(DF, c("a", "c")), sapply("b", as.name, USE.NAMES = FALSE))
+  expect_equal(everything_except(DF, c("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+  # Try a list.  Should still work.
+  expect_equal(everything_except(DF, list("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
+})
+
+test_that("everything_except works as expected for strings", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
+  # Ensure all columns of .DF are returned if ... is empty or NULL.
+  expect_equal(DF %>% everything_except(.symbols = FALSE), c("a", "b", "c"))
+  expect_equal(everything_except(DF, NULL, .symbols = FALSE), c("a", "b", "c"))
+  # Try an empty vector
+  expect_equal(everything_except(DF, c(), .symbols = FALSE), c("a", "b", "c"))
+  # Try an empty list
+  expect_equal(everything_except(DF, list(), .symbols = FALSE), c("a", "b", "c"))
+  # Ensure that it works with strings
+  expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
+  expect_equal(everything_except(DF, "a", "b", .symbols = FALSE), "c")
+  expect_equal(everything_except(DF, "c", .symbols = FALSE), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(everything_except(DF, c("a", "c"), .symbols = FALSE), "b")
+  expect_equal(everything_except(DF, c("a"), .symbols = FALSE), c("b", "c"))
+  # Try a list.  Should still work.
+  expect_equal(everything_except(DF, list("a"), .symbols = FALSE), c("b", "c"))
+})
+
+test_that("group_by_everything_except works as expected", {
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
+  expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
+  expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Try an empty vector
+  expect_equal(group_by_everything_except(DF, c()) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Try an empty list
+  expect_equal(group_by_everything_except(DF, list()) %>% dplyr::group_vars(), c("a", "b", "c"))
+  # Ensure that it works with strings
+  expect_equal(group_by_everything_except(DF, "c") %>% dplyr::group_vars(), c("a", "b"))
+  # Now try a vector of strings
+  expect_equal(group_by_everything_except(DF, c("a", "c")) %>% dplyr::group_vars(), "b")
+  expect_equal(group_by_everything_except(DF, c("a")) %>% dplyr::group_vars(), c("b", "c"))
+  # Try a list.  Should still work.
+  expect_equal(group_by_everything_except(DF, list("a")) %>% dplyr::group_vars(), c("b", "c"))
+
+  # Test that things go as expected when groups already exist.
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("b") %>%  # Resets groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "c"))
+  DF %>%
+    dplyr::group_by(a) %>%
+    group_by_everything_except("a", add = TRUE) %>%  # Adds to groups
+    dplyr::group_vars() %>%
+    expect_equal(c("a", "b", "c"))
+
+  # Test that everything works when the excluded column is NOT in the data frame.
+  expect_equal(group_by_everything_except(DF, c("a", "z")) %>% dplyr::group_vars(), c("b", "c"))
+  expect_equal(group_by_everything_except(DF, c("x", "y", "z")) %>% dplyr::group_vars(), c("a", "b", "c"))
+
+  # Test that it works when you supply a reference to a string.
+  a_var <- "a"
+  expect_equal(group_by_everything_except(DF, a_var) %>% dplyr::group_vars(), c("b", "c"))
 })
 
 

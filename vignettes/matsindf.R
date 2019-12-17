@@ -1,4 +1,4 @@
-## ----setup, include = FALSE----------------------------------------------
+## ----setup, include = FALSE---------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -10,10 +10,10 @@ library(matsindf)
 library(tidyr)
 library(tibble)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 head(UKEnergy2000, 2)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
   # Add a column indicating the matrix in which this entry belongs (U, V, or Y).
   matsindf:::add_UKEnergy2000_matnames(.) %>% 
@@ -30,7 +30,7 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
   )
 head(UKEnergy2000_with_metadata, 2)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, matname) %>% 
   collapse_to_matrices(matnames = "matname", matvals = "E.ktoe",
@@ -48,7 +48,7 @@ EnergyMats_2000$matrix[[2]] # The V matrix
 
 EnergyMats_2000$matrix[[3]] # The Y matrix
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 Energy <- EnergyMats_2000 %>% 
   # Create rows for a fictitious country "AB".
   # Although the rows for "AB" are same as the "GB" rows,
@@ -65,7 +65,7 @@ Energy <- EnergyMats_2000 %>%
 
 glimpse(Energy)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 Check <- Energy %>% 
   mutate(
     W = difference_byname(transpose_byname(V), U),
@@ -78,7 +78,7 @@ Check <- Energy %>%
 Check %>% select(Country, Year, EBalOK)
 all(Check$EBalOK %>% as.logical())
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 Etas <- Energy %>% 
   mutate(
     g = rowsums_byname(V),
@@ -91,7 +91,7 @@ Etas <- Energy %>%
 
 Etas$eta[[1]]
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 etas_forgraphing <- Etas %>% 
   gather(key = matrix.names, value = matrix, eta) %>% 
   expand_to_tidy(matnames = "matrix.names", matvals = "matrix", 
@@ -111,7 +111,7 @@ etas_forgraphing <- Etas %>%
 # Compare to Figure 8 of Heun, Owen, and Brockway (2018)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 etas_UK_2000 <- etas_forgraphing %>% filter(Country == "GB", Year == 2000) 
 
 etas_UK_2000 %>% 

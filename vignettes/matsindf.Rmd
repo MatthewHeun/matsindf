@@ -112,15 +112,15 @@ head(UKEnergy2000, 2)
 `Country` and `Year` contain only one value each, 
 `GB` and `2000` respectively.
 Following conventions of the [International Energy Agency](http://www.iea.org)'s 
-[energy balance tables](http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/), 
+[energy balance tables](https://www.iea.org/data-and-statistics/data-tables), 
 
 * `Ledger.side` indicates `Supply` or `Consumption`;
 * `Flow.aggregation.point` indicates how data are to be aggregated;
 * `Flow` indicates the industry, machine, or final demand sector for this flow;
 * `Product` indicates the energy carrier for this flow; and 
 * `E.ktoe` gives the magnitude of this flow 
-in [units](https://www.iea.org/statistics/resources/unitconverter/) of kilotons of oil equivalent
-(ktoe).
+in [units](https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php) 
+of kilotons of oil equivalent (ktoe).
 
 Each flow is its own observation 
 (its own row)

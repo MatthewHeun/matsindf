@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -125,6 +125,14 @@
       <small>Source: <a href='https://github.com/MatthewHeun/matsindf/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="matsindf-0-3-2-2019-12-05" class="section level1">
+<h1 class="page-header">
+<a href="#matsindf-0-3-2-2019-12-05" class="anchor"></a>matsindf 0.3.2 (2019-12-05)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Maintenance release to prepare for R4.0.0. <code>matrix</code> objects now inherit from both <code>matrix</code> and <code>array</code>. Thus, code should no longer assume that <code><a href="https://rdrr.io/r/base/class.html">class(A)</a></code> returns an object of length 1 when <code>A</code> is a <code>matrix</code>. So, I eliminated all instances of <code>class(A) == "matrix"</code> in <code>if</code> statements in favor of <code><a href="https://rdrr.io/r/base/class.html">inherits(A, "matrix")</a></code>. See <a href="https://developer.r-project.org/Blog/public/2019/11/09/when-you-think-class.-think-again/index.html" class="uri">https://developer.r-project.org/Blog/public/2019/11/09/when-you-think-class.-think-again/index.html</a> for more details.</li>
+</ul>
+</div>
     <div id="matsindf-0-3-1-2019-10-26" class="section level1">
 <h1 class="page-header">
 <a href="#matsindf-0-3-1-2019-10-26" class="anchor"></a>matsindf 0.3.1 (2019-10-26)<small> 2019-10-27 </small>
@@ -264,6 +272,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#matsindf-0-3-2-2019-12-05">0.3.2</a></li>
         <li><a href="#matsindf-0-3-1-2019-10-26">0.3.1</a></li>
         <li><a href="#matsindf-0-3-0-2019-02-05">0.3.0</a></li>
         <li><a href="#matsindf-0-2-12-2019-01-07">0.2.12</a></li>

@@ -9,7 +9,10 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.org/package=matsindf)
-[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Travis-CI Build
 Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
 [![Coverage
@@ -41,8 +44,8 @@ devtools::install_github("MatthewHeun/matsindf", build_vignettes = TRUE)
 
 ## History
 
-The functions in this package were used in [Heun et al.
-(2018)](https://doi.org/10.1016/j.apenergy.2018.05.109).
+The functions in this package were used in [Heun et
+al. (2018)](https://doi.org/10.1016/j.apenergy.2018.05.109).
 
 ## More Information
 
@@ -57,7 +60,7 @@ at <https://MatthewHeun.github.io/matsindf/>.
 
 Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. “A
 Physical Supply-Use Table Framework for Energy Analysis on the Energy
-Conversion Chain.” *Applied Energy* 226 (September):1134–62.
+Conversion Chain.” *Applied Energy* 226 (September): 1134–62.
 <https://doi.org/10.1016/j.apenergy.2018.05.109>.
 
 </div>

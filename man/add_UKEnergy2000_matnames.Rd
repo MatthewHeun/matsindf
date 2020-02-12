@@ -4,10 +4,17 @@
 \alias{add_UKEnergy2000_matnames}
 \title{Add a column of matrix names to tidy data frame}
 \usage{
-add_UKEnergy2000_matnames(.DF, ledger_side_colname = "Ledger.side",
-  energy_colname = "E.ktoe", supply_side = "Supply",
-  consumption_side = "Consumption", matname_colname = "matname",
-  U_name = "U", V_name = "V", Y_name = "Y")
+add_UKEnergy2000_matnames(
+  .DF,
+  ledger_side_colname = "Ledger.side",
+  energy_colname = "E.ktoe",
+  supply_side = "Supply",
+  consumption_side = "Consumption",
+  matname_colname = "matname",
+  U_name = "U",
+  V_name = "V",
+  Y_name = "Y"
+)
 }
 \arguments{
 \item{.DF}{a data frame with \code{ledger_side_colname} and \code{energy_colname}.}

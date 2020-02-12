@@ -4,8 +4,14 @@
 \alias{index_column}
 \title{Index a column in a data frame by groups relative to an initial year}
 \usage{
-index_column(.DF, var_to_index, time_var = "Year", index_time = NULL,
-  indexed_var = paste0(var_to_index, suffix), suffix = "_indexed")
+index_column(
+  .DF,
+  var_to_index,
+  time_var = "Year",
+  index_time = NULL,
+  indexed_var = paste0(var_to_index, suffix),
+  suffix = "_indexed"
+)
 }
 \arguments{
 \item{.DF}{the data frame in which the variables are contained}

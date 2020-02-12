@@ -4,9 +4,15 @@
 \alias{collapse_to_matrices}
 \title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
-collapse_to_matrices(.DF, matnames = "matnames", matvals = "matvals",
-  rownames = "rownames", colnames = "colnames",
-  rowtypes = "rowtypes", coltypes = "coltypes")
+collapse_to_matrices(
+  .DF,
+  matnames = "matnames",
+  matvals = "matvals",
+  rownames = "rownames",
+  colnames = "colnames",
+  rowtypes = "rowtypes",
+  coltypes = "coltypes"
+)
 }
 \arguments{
 \item{.DF}{the "tidy" data frame}

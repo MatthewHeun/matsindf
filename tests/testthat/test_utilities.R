@@ -110,7 +110,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
                           cols = c( "i1",  "i2", "i2"),
                           vals = c(  11  ,  12,   22 ))
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
-  expect_equal(class(A), "matrix")
+  expect_true(inherits(A, "matrix"))
   expect_equal(A, expected_mat)
   expect_null(rowtype(A)) # rowtype has not been set
   expect_null(coltype(A)) # coltype has not been set

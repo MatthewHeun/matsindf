@@ -125,17 +125,17 @@
       <small>Source: <a href='https://github.com/MatthewHeun/matsindf/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="matsindf-0-3-2-2019-12-05" class="section level1">
+    <div id="matsindf-032-2019-12-05" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-3-2-2019-12-05" class="anchor"></a>matsindf 0.3.2 (2019-12-05)<small> Unreleased </small>
+<a href="#matsindf-032-2019-12-05" class="anchor"></a>matsindf 0.3.2 (2019-12-05)<small> 2019-12-06 </small>
 </h1>
 <ul>
 <li>Maintenance release to prepare for R4.0.0. <code>matrix</code> objects now inherit from both <code>matrix</code> and <code>array</code>. Thus, code should no longer assume that <code><a href="https://rdrr.io/r/base/class.html">class(A)</a></code> returns an object of length 1 when <code>A</code> is a <code>matrix</code>. So, I eliminated all instances of <code>class(A) == "matrix"</code> in <code>if</code> statements in favor of <code><a href="https://rdrr.io/r/base/class.html">inherits(A, "matrix")</a></code>. See <a href="https://developer.r-project.org/Blog/public/2019/11/09/when-you-think-class.-think-again/index.html" class="uri">https://developer.r-project.org/Blog/public/2019/11/09/when-you-think-class.-think-again/index.html</a> for more details.</li>
 </ul>
 </div>
-    <div id="matsindf-0-3-1-2019-10-26" class="section level1">
+    <div id="matsindf-031-2019-10-26" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-3-1-2019-10-26" class="anchor"></a>matsindf 0.3.1 (2019-10-26)<small> 2019-10-27 </small>
+<a href="#matsindf-031-2019-10-26" class="anchor"></a>matsindf 0.3.1 (2019-10-26)<small> 2019-10-27 </small>
 </h1>
 <ul>
 <li>Refactored <code><a href="../reference/group_by_everything_except.html">group_by_everything_except()</a></code> to use a new helper function <code><a href="../reference/everything_except.html">everything_except()</a></code>
@@ -145,9 +145,9 @@
 <li>Added CRAN badge.</li>
 </ul>
 </div>
-    <div id="matsindf-0-3-0-2019-02-05" class="section level1">
+    <div id="matsindf-030-2019-02-05" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-3-0-2019-02-05" class="anchor"></a>matsindf 0.3.0 (2019-02-05)<small> 2019-02-11 </small>
+<a href="#matsindf-030-2019-02-05" class="anchor"></a>matsindf 0.3.0 (2019-02-05)<small> 2019-02-11 </small>
 </h1>
 <ul>
 <li>Address questions from CRAN: - Title case: Matrices in Data Frames - <code>\dontrun{}</code> –&gt; <code>\donttest{}</code> in Roxygen examples</li>
@@ -157,110 +157,110 @@
 <li>Added code coverage</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-12-2019-01-07" class="section level1">
+    <div id="matsindf-0212-2019-01-07" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-12-2019-01-07" class="anchor"></a>matsindf 0.2.12 (2019-01-07)<small> Unreleased </small>
+<a href="#matsindf-0212-2019-01-07" class="anchor"></a>matsindf 0.2.12 (2019-01-07)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Now importing the <code>magrittr</code> pipe at a high level.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-11-2018-11-13" class="section level1">
+    <div id="matsindf-0211-2018-11-13" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-11-2018-11-13" class="anchor"></a>matsindf 0.2.11 (2018-11-13)<small> Unreleased </small>
+<a href="#matsindf-0211-2018-11-13" class="anchor"></a>matsindf 0.2.11 (2018-11-13)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Now creating README.md from README.Rmd for <code>pkgdown</code> documentation.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-10-2018-11-08" class="section level1">
+    <div id="matsindf-0210-2018-11-08" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-10-2018-11-08" class="anchor"></a>matsindf 0.2.10 (2018-11-08)<small> Unreleased </small>
+<a href="#matsindf-0210-2018-11-08" class="anchor"></a>matsindf 0.2.10 (2018-11-08)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Breaking change: Default values of <code>rowtypes</code> and <code>coltypes</code> arguments to <code>expand_to_tidy</code> and <code>collapse_to_matrices</code> functions are no longer <code>NULL</code>. Rather, they are “<code>rowtypes</code>” and “<code>coltypes</code>”.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-9-2018-11-06" class="section level1">
+    <div id="matsindf-029-2018-11-06" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-9-2018-11-06" class="anchor"></a>matsindf 0.2.9 (2018-11-06)<small> Unreleased </small>
+<a href="#matsindf-029-2018-11-06" class="anchor"></a>matsindf 0.2.9 (2018-11-06)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Extended the <code>matsindf_apply</code> primer to include sections on using <code>matsindf_apply</code> with a data frame and programming.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-8-2018-11-01" class="section level1">
+    <div id="matsindf-028-2018-11-01" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-8-2018-11-01" class="anchor"></a>matsindf 0.2.8 (2018-11-01)<small> Unreleased </small>
+<a href="#matsindf-028-2018-11-01" class="anchor"></a>matsindf 0.2.8 (2018-11-01)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added new vignette to documentation website, which required moving from .Rnw to .Rmd file.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-7-2018-10-30" class="section level1">
+    <div id="matsindf-027-2018-10-30" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-7-2018-10-30" class="anchor"></a>matsindf 0.2.7 (2018-10-30)<small> Unreleased </small>
+<a href="#matsindf-027-2018-10-30" class="anchor"></a>matsindf 0.2.7 (2018-10-30)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Added documentation website.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-6-2018-07-03" class="section level1">
+    <div id="matsindf-026-2018-07-03" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-6-2018-07-03" class="anchor"></a>matsindf 0.2.6 (2018-07-03)<small> Unreleased </small>
+<a href="#matsindf-026-2018-07-03" class="anchor"></a>matsindf 0.2.6 (2018-07-03)<small> Unreleased </small>
 </h1>
 <ul>
 <li>New function <code>index_column</code> that ratios both numbers and matrices relative to an initial time.</li>
 <li>Many documentation improvements.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-5-2018-05-23" class="section level1">
+    <div id="matsindf-025-2018-05-23" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-5-2018-05-23" class="anchor"></a>matsindf 0.2.5 (2018-05-23)<small> Unreleased </small>
+<a href="#matsindf-025-2018-05-23" class="anchor"></a>matsindf 0.2.5 (2018-05-23)<small> Unreleased </small>
 </h1>
 <ul>
 <li>
 <code>expand_to_tidy</code> now accepts a named list of matrices as input.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-4-2018-05-22" class="section level1">
+    <div id="matsindf-024-2018-05-22" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-4-2018-05-22" class="anchor"></a>matsindf 0.2.4 (2018-05-22)<small> Unreleased </small>
+<a href="#matsindf-024-2018-05-22" class="anchor"></a>matsindf 0.2.4 (2018-05-22)<small> Unreleased </small>
 </h1>
 <ul>
 <li>
 <code>matsindf_apply</code> now obtains named arguments from <code>.DF</code> when a name in <code>.DF</code> matches a name of an argument to <code>FUN</code>. This behavior is overridden by supplying a string argument in <code>...</code> of <code>matsindf_apply</code>.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-3-2018-05-22" class="section level1">
+    <div id="matsindf-023-2018-05-22" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-3-2018-05-22" class="anchor"></a>matsindf 0.2.3 (2018-05-22)<small> Unreleased </small>
+<a href="#matsindf-023-2018-05-22" class="anchor"></a>matsindf 0.2.3 (2018-05-22)<small> Unreleased </small>
 </h1>
 <ul>
 <li>
 <code>matsindf_apply</code> now accepts a list as input when arguments are all strings.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-2-2018-05-20" class="section level1">
+    <div id="matsindf-022-2018-05-20" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-2-2018-05-20" class="anchor"></a>matsindf 0.2.2 (2018-05-20)<small> Unreleased </small>
+<a href="#matsindf-022-2018-05-20" class="anchor"></a>matsindf 0.2.2 (2018-05-20)<small> Unreleased </small>
 </h1>
 <ul>
 <li>New <code>matsindf_apply</code> function.</li>
 <li>All functions now use <code>matsindf_apply</code>.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-1-2018-02-23" class="section level1">
+    <div id="matsindf-021-2018-02-23" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-1-2018-02-23" class="anchor"></a>matsindf 0.2.1 (2018-02-23)<small> Unreleased </small>
+<a href="#matsindf-021-2018-02-23" class="anchor"></a>matsindf 0.2.1 (2018-02-23)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Now uses renamed <code>matsbyname</code> package.</li>
 </ul>
 </div>
-    <div id="matsindf-0-2-2018-02-21" class="section level1">
+    <div id="matsindf-02-2018-02-21" class="section level1">
 <h1 class="page-header">
-<a href="#matsindf-0-2-2018-02-21" class="anchor"></a>matsindf 0.2 (2018-02-21)<small> Unreleased </small>
+<a href="#matsindf-02-2018-02-21" class="anchor"></a>matsindf 0.2 (2018-02-21)<small> Unreleased </small>
 </h1>
 <ul>
 <li>Initial version.</li>
@@ -272,22 +272,22 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#matsindf-0-3-2-2019-12-05">0.3.2</a></li>
-        <li><a href="#matsindf-0-3-1-2019-10-26">0.3.1</a></li>
-        <li><a href="#matsindf-0-3-0-2019-02-05">0.3.0</a></li>
-        <li><a href="#matsindf-0-2-12-2019-01-07">0.2.12</a></li>
-        <li><a href="#matsindf-0-2-11-2018-11-13">0.2.11</a></li>
-        <li><a href="#matsindf-0-2-10-2018-11-08">0.2.10</a></li>
-        <li><a href="#matsindf-0-2-9-2018-11-06">0.2.9</a></li>
-        <li><a href="#matsindf-0-2-8-2018-11-01">0.2.8</a></li>
-        <li><a href="#matsindf-0-2-7-2018-10-30">0.2.7</a></li>
-        <li><a href="#matsindf-0-2-6-2018-07-03">0.2.6</a></li>
-        <li><a href="#matsindf-0-2-5-2018-05-23">0.2.5</a></li>
-        <li><a href="#matsindf-0-2-4-2018-05-22">0.2.4</a></li>
-        <li><a href="#matsindf-0-2-3-2018-05-22">0.2.3</a></li>
-        <li><a href="#matsindf-0-2-2-2018-05-20">0.2.2</a></li>
-        <li><a href="#matsindf-0-2-1-2018-02-23">0.2.1</a></li>
-        <li><a href="#matsindf-0-2-2018-02-21">0.2</a></li>
+        <li><a href="#matsindf-032-2019-12-05">0.3.2</a></li>
+        <li><a href="#matsindf-031-2019-10-26">0.3.1</a></li>
+        <li><a href="#matsindf-030-2019-02-05">0.3.0</a></li>
+        <li><a href="#matsindf-0212-2019-01-07">0.2.12</a></li>
+        <li><a href="#matsindf-0211-2018-11-13">0.2.11</a></li>
+        <li><a href="#matsindf-0210-2018-11-08">0.2.10</a></li>
+        <li><a href="#matsindf-029-2018-11-06">0.2.9</a></li>
+        <li><a href="#matsindf-028-2018-11-01">0.2.8</a></li>
+        <li><a href="#matsindf-027-2018-10-30">0.2.7</a></li>
+        <li><a href="#matsindf-026-2018-07-03">0.2.6</a></li>
+        <li><a href="#matsindf-025-2018-05-23">0.2.5</a></li>
+        <li><a href="#matsindf-024-2018-05-22">0.2.4</a></li>
+        <li><a href="#matsindf-023-2018-05-22">0.2.3</a></li>
+        <li><a href="#matsindf-022-2018-05-20">0.2.2</a></li>
+        <li><a href="#matsindf-021-2018-02-23">0.2.1</a></li>
+        <li><a href="#matsindf-02-2018-02-21">0.2</a></li>
       </ul>
     </div>
   </div>

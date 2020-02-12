@@ -1,7 +1,7 @@
 ---
 title: "Use Cases and Examples for `matsindf`"
 author: "Matthew Kuperus Heun"
-date: "`r Sys.Date()`"
+date: "2020-01-15"
 header-includes:
    - \usepackage{amsmath}
 output: rmarkdown::html_vignette
@@ -14,18 +14,7 @@ editor_options:
 bibliography: References.bib
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-library(dplyr)
-library(ggplot2)
-library(matsbyname)
-library(matsindf)
-library(tidyr)
-library(tibble)
-```
+
 
 <!-- Establish some helpful LaTeX shortcuts for equations -->
 \newcommand{\transpose}[1]{#1^\mathrm{T}}
@@ -105,8 +94,15 @@ have been rounded to 1--2 significant digits.)
 These example data first appeared in Figures 3 and 4 
 of Heun, Owen, and Brockway [-@Heun:2018].
 
-```{r}
+
+```r
 head(UKEnergy2000, 2)
+#>   Country Year Ledger.side      Flow.aggregation.point              Flow
+#> 1      GB 2000      Supply Total primary energy supply Resources - Crude
+#> 2      GB 2000      Supply Total primary energy supply    Resources - NG
+#>   Product E.ktoe
+#> 1   Crude  50000
+#> 2      NG  43000
 ```
 
 `Country` and `Year` contain only one value each, 
@@ -172,7 +168,8 @@ Each type of network will have its own algorithm for identifying
 row names, column names, row types, and column types
 in a tidy data frame.
 
-```{r}
+
+```r
 UKEnergy2000_with_metadata <- UKEnergy2000 %>% 
   # Add a column indicating the matrix in which this entry belongs (U, V, or Y).
   matsindf:::add_UKEnergy2000_matnames(.) %>% 
@@ -188,6 +185,9 @@ UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     E.ktoe = abs(E.ktoe)
   )
 head(UKEnergy2000_with_metadata, 2)
+#>   Country Year E.ktoe matname           rowname colname  rowtype coltype
+#> 1      GB 2000  50000       V Resources - Crude   Crude Industry Product
+#> 2      GB 2000  43000       V    Resources - NG      NG Industry Product
 ```
 
 
@@ -203,7 +203,8 @@ The usual approach is to `tidyr::group_by`
 the `matnames` column and any other columns to be preserved in the output,
 in this case `Country` and `Year`.
 
-```{r}
+
+```r
 EnergyMats_2000 <- UKEnergy2000_with_metadata %>% 
   group_by(Country, Year, matname) %>% 
   collapse_to_matrices(matnames = "matname", matvals = "E.ktoe",
@@ -213,13 +214,97 @@ EnergyMats_2000 <- UKEnergy2000_with_metadata %>%
 
 # The remaining columns are Country, Year, matrix.name, and matrix
 glimpse(EnergyMats_2000)
+#> Observations: 3
+#> Variables: 4
+#> $ Country     <chr> "GB", "GB", "GB"
+#> $ Year        <int> 2000, 2000, 2000
+#> $ matrix.name <chr> "U", "V", "Y"
+#> $ matrix      <list> [<matrix[11 x 9]>, <matrix[11 x 12]>, <matrix[4 x 2]>]
 
 # To access one of the matrices, try one of these approaches:
 (EnergyMats_2000 %>% filter(matrix.name == "U"))[["matrix"]] # The U matrix
+#> [[1]]
+#>                Crude dist. Diesel dist. Elect. grid Gas wells & proc. NG dist.
+#> Crude                    0            0           0                 0        0
+#> Crude - Dist.            0            0           0                 0        0
+#> Crude - Fields       47500            0           0                 0        0
+#> Diesel                   0        15500           0                 0        0
+#> Diesel - Dist.          25            0           0                50       25
+#> Elect                    0            0        6400                 0        0
+#> Elect - Grid            25            0           0                25       25
+#> NG                       0            0           0             43000        0
+#> NG - Dist.               0            0           0                 0        0
+#> NG - Wells               0            0           0                 0    41000
+#> Petrol                   0            0           0                 0        0
+#>                Oil fields Oil refineries Petrol dist. Power plants
+#> Crude               50000              0            0            0
+#> Crude - Dist.           0          47000            0            0
+#> Crude - Fields          0              0            0            0
+#> Diesel                  0              0            0            0
+#> Diesel - Dist.         50              0          250            0
+#> Elect                   0              0            0            0
+#> Elect - Grid           25             75            0          100
+#> NG                      0              0            0            0
+#> NG - Dist.              0              0            0        16000
+#> NG - Wells              0              0            0            0
+#> Petrol                  0              0        26500            0
+#> attr(,"rowtype")
+#> [1] "Product"
+#> attr(,"coltype")
+#> [1] "Industry"
 
 EnergyMats_2000$matrix[[2]] # The V matrix
+#>                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.
+#> Crude dist.           0         47000              0      0              0
+#> Diesel dist.          0             0              0      0          15150
+#> Elect. grid           0             0              0      0              0
+#> Gas wells & proc.     0             0              0      0              0
+#> NG dist.              0             0              0      0              0
+#> Oil fields            0             0          47500      0              0
+#> Oil refineries        0             0              0  15500              0
+#> Petrol dist.          0             0              0      0              0
+#> Power plants          0             0              0      0              0
+#> Resources - Crude 50000             0              0      0              0
+#> Resources - NG        0             0              0      0              0
+#>                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol
+#> Crude dist.           0            0     0          0          0      0
+#> Diesel dist.          0            0     0          0          0      0
+#> Elect. grid           0         6275     0          0          0      0
+#> Gas wells & proc.     0            0     0          0      41000      0
+#> NG dist.              0            0     0      41000          0      0
+#> Oil fields            0            0     0          0          0      0
+#> Oil refineries        0            0     0          0          0  26500
+#> Petrol dist.          0            0     0          0          0      0
+#> Power plants       6400            0     0          0          0      0
+#> Resources - Crude     0            0     0          0          0      0
+#> Resources - NG        0            0 43000          0          0      0
+#>                   Petrol - Dist.
+#> Crude dist.                    0
+#> Diesel dist.                   0
+#> Elect. grid                    0
+#> Gas wells & proc.              0
+#> NG dist.                       0
+#> Oil fields                     0
+#> Oil refineries                 0
+#> Petrol dist.               26000
+#> Power plants                   0
+#> Resources - Crude              0
+#> Resources - NG                 0
+#> attr(,"rowtype")
+#> [1] "Industry"
+#> attr(,"coltype")
+#> [1] "Product"
 
 EnergyMats_2000$matrix[[3]] # The Y matrix
+#>                Residential Transport
+#> Diesel - Dist.           0     14750
+#> Elect - Grid          6000         0
+#> NG - Dist.           25000         0
+#> Petrol - Dist.           0     26000
+#> attr(,"rowtype")
+#> [1] "Product"
+#> attr(,"coltype")
+#> [1] "Sector"
 ```
 
 
@@ -234,7 +319,8 @@ the additional rows serve to illustrate the
 functional programming aspects 
 of the `matsindf` and `matsbyname` packages.
 
-```{r}
+
+```r
 Energy <- EnergyMats_2000 %>% 
   # Create rows for a fictitious country "AB".
   # Although the rows for "AB" are same as the "GB" rows,
@@ -250,6 +336,13 @@ Energy <- EnergyMats_2000 %>%
   spread(key = matrix.name, value = matrix)
 
 glimpse(Energy)
+#> Observations: 4
+#> Variables: 5
+#> $ Country <chr> "AB", "AB", "GB", "GB"
+#> $ Year    <chr> "2000", "2001", "2000", "2001"
+#> $ U       <list> [<matrix[11 x 9]>, <matrix[11 x 9]>, <matrix[11 x 9]>, <matr…
+#> $ V       <list> [<matrix[11 x 12]>, <matrix[11 x 12]>, <matrix[11 x 12]>, <m…
+#> $ Y       <list> [<matrix[4 x 2]>, <matrix[4 x 2]>, <matrix[4 x 2]>, <matrix[…
 ```
 
 
@@ -271,7 +364,8 @@ $$\mat{W}\colvec{i} - \mat{Y}\colvec{i} = \colvec{0}.$$
 Energy balance verification can be implemented with `matsbyname` functions
 and `tidyverse` functional programming:
 
-```{r}
+
+```r
 Check <- Energy %>% 
   mutate(
     W = difference_byname(transpose_byname(V), U),
@@ -282,7 +376,13 @@ Check <- Energy %>%
     EBalOK = iszero_byname(err)
   )
 Check %>% select(Country, Year, EBalOK)
+#>   Country Year EBalOK
+#> 1      AB 2000   TRUE
+#> 2      AB 2001   TRUE
+#> 3      GB 2000   TRUE
+#> 4      GB 2001   TRUE
 all(Check$EBalOK %>% as.logical())
+#> [1] TRUE
 ```
 
 This example demonstrates that energy balance can be verified for *all* combinations
@@ -307,7 +407,8 @@ $$\colvec{g} = \mat{V}\colvec{i}$$
 $$\colvec{\eta} = \hatinv{\transpose{\mat{U}} \colvec{i}} \colvec{g}$$
 
 
-```{r}
+
+```r
 Etas <- Energy %>% 
   mutate(
     g = rowsums_byname(V),
@@ -319,6 +420,20 @@ Etas <- Energy %>%
   select(Country, Year, eta)
 
 Etas$eta[[1]]
+#>                         eta
+#> Crude dist.       0.9884332
+#> Diesel dist.      0.9774194
+#> Elect. grid       0.9804688
+#> Gas wells & proc. 0.9518282
+#> NG dist.          0.9987820
+#> Oil fields        0.9485771
+#> Oil refineries    0.8921933
+#> Petrol dist.      0.9719626
+#> Power plants      0.3975155
+#> attr(,"rowtype")
+#> [1] "Industry"
+#> attr(,"coltype")
+#> [1] "Efficiency"
 ```
 
 Note that only a few lines of code are required to perform the same series of 
@@ -350,7 +465,8 @@ the following information must be supplied to the
 Prior to `expand`ing, it is usually 
 necessary to `gather` columns of matrices.
 
-```{r}
+
+```r
 etas_forgraphing <- Etas %>% 
   gather(key = matrix.names, value = matrix, eta) %>% 
   expand_to_tidy(matnames = "matrix.names", matvals = "matrix", 
@@ -369,6 +485,18 @@ etas_forgraphing <- Etas %>%
 
 # Compare to Figure 8 of Heun, Owen, and Brockway (2018)
 etas_forgraphing %>% filter(Country == "GB", Year == 2000)
+#> # A tibble: 9 x 4
+#>   Country Year  Industry            eta
+#>   <chr>   <chr> <chr>             <dbl>
+#> 1 GB      2000  Crude dist.       0.988
+#> 2 GB      2000  Diesel dist.      0.977
+#> 3 GB      2000  Elect. grid       0.980
+#> 4 GB      2000  Gas wells & proc. 0.952
+#> 5 GB      2000  NG dist.          0.999
+#> 6 GB      2000  Oil fields        0.949
+#> 7 GB      2000  Oil refineries    0.892
+#> 8 GB      2000  Petrol dist.      0.972
+#> 9 GB      2000  Power plants      0.398
 ```
 
 `etas_forgraphing` is a data frame of efficiencies, 
@@ -381,7 +509,8 @@ with packages such as [ggplot](http://ggplot2.tidyverse.org).
 
 The following code creates a bar graph of efficiency results for the UK in 2000:
 
-```{r}
+
+```r
 etas_UK_2000 <- etas_forgraphing %>% filter(Country == "GB", Year == 2000) 
 
 etas_UK_2000 %>% 
@@ -395,6 +524,8 @@ etas_UK_2000 %>%
   guides(fill = FALSE, colour = FALSE) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.4, hjust = 1))
 ```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 
 ## Conclusion

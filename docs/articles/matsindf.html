@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -89,7 +89,7 @@
 </h1>
                         <h4 class="author">Matthew Kuperus Heun</h4>
             
-            <h4 class="date">2019-12-04</h4>
+            <h4 class="date">2019-12-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/master/vignettes/matsindf.Rmd"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="hidden name"><code>matsindf.Rmd</code></div>
@@ -151,7 +151,7 @@
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt;   Product E.ktoe</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; 1   Crude  50000</span></a>
 <a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#&gt; 2      NG  43000</span></a></code></pre></div>
-<p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="http://www.iea.org">International Energy Agency</a>’s <a href="http://www.iea.org/statistics/relateddatabases/worldenergystatisticsandbalances/">energy balance tables</a>,</p>
+<p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="http://www.iea.org">International Energy Agency</a>’s <a href="https://www.iea.org/data-and-statistics/data-tables">energy balance tables</a>,</p>
 <ul>
 <li>
 <code>Ledger.side</code> indicates <code>Supply</code> or <code>Consumption</code>;</li>
@@ -162,7 +162,7 @@
 <li>
 <code>Product</code> indicates the energy carrier for this flow; and</li>
 <li>
-<code>E.ktoe</code> gives the magnitude of this flow in <a href="https://www.iea.org/statistics/resources/unitconverter/">units</a> of kilotons of oil equivalent (ktoe).</li>
+<code>E.ktoe</code> gives the magnitude of this flow in <a href="https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php">units</a> of kilotons of oil equivalent (ktoe).</li>
 </ul>
 <p>Each flow is its own observation (its own row) in the <code>UKEnergy2000</code> data frame, making it <a href="http://tidyr.tidyverse.org/articles/tidy-data.html">tidy</a>.</p>
 <p>The remainder of this vignette demonstrates an analysis conducted using the <code>UKEnergy2000</code> data frame as a basis. It:</p>

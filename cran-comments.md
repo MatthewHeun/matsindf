@@ -1,9 +1,9 @@
 ## Context
-`matsindf` v0.3.1 adds one new function. See `NEWS.md` for details. 
+`matsindf` v0.3.2 is a maintenance release to prepare for R4.0.0. See `NEWS.md` for details. 
 
 ## Test environments (7 in total)
 * Local: macOS X install 10.14.6 (Mojave), R3.6.1
-* TRAVIS-CI: ubuntu 16.04.6, R3.6.1
+* TRAVIS-CI: Ubuntu 16.04.6, R3.6.1
 * Windows (on win-builder):
     * `devtools::check_win_release()`, R3.6.1 (2019-07-05)
     * `devtools::check_win_devel()`, R Under development (unstable) (2019-10-24 r77329)
@@ -18,7 +18,7 @@
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs
-* TRAVIS-CI: ubuntu 16.04.6, R3.6.1
+* TRAVIS-CI: Ubuntu 16.04.6, R3.6.1
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs
@@ -33,14 +33,8 @@
         * 0 NOTEs
 * rhub:
     * `devtools::check_rhub()`
-        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-            * 4 ERRORs
-                * All four testing errors are caused by a problem with the `data.table` package
-                * Error messages are 
-                  `error: This is R 4.0.0 but data.table has been installed using R 3.6.1. The major version must match. Please reinstall data.table.`
-                * This platform (Windows Server 2008 R2 SP1, R-devel, 32/64 bit) is the only platform on which these errors appear.
-                * These errors appear to be caused by a configuration error at rhub. 
-                * These errors are unlikely the fault of the `matsindf` package.
+        * Windows Server 2008 R2 SP1, R-devel
+            * 0 ERRORs
             * 0 WARNINGs
             * 0 NOTEs
         * Ubuntu Linux 16.04 LTS, R-release, GCC
@@ -48,7 +42,10 @@
             * 0 WARNINGs
             * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
-            * 0 ERRORs
+            * 1 ERROR:
+              The error is "ERROR: dependency ‘rlist’ is not available for package ‘matsindf’.
+              This error does not appear to be the fault of the `matsindf` package. 
+              Rather, this error appears to the result of a configuration problem on rhub.
             * 0 WARNINGs
             * 0 NOTEs
 

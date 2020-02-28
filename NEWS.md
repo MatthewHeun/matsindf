@@ -1,3 +1,10 @@
+* More maintenance to prepare for R4.0.0.
+  `data.frame()` now has `stringsAsFactors = TRUE` by default.
+  But as of R4.0.0, `stringsAsFactors = FALSE` will be the default.
+  In one test ("small example works as expected"), I was relying on the current (`TRUE`) behavior.
+  That reliance has been removed.
+
+
 # matsindf 0.3.2 (2019-12-05)
 
 * Maintenance release to prepare for R4.0.0.

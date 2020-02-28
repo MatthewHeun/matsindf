@@ -1,8 +1,9 @@
 * More maintenance to prepare for R4.0.0.
-  `data.frame()` now has `stringsAsFactors = TRUE` by default.
-  But as of R4.0.0, `stringsAsFactors = FALSE` will be the default.
-  In one test ("small example works as expected"), I was relying on the current (`TRUE`) behavior.
-  That reliance has been removed in the test.
+  Prior to R4.0.0, `data.frame()` has `stringsAsFactors = TRUE` by default.
+  In R4.0.0, `stringsAsFactors = FALSE` will be the default.
+  In one test ("small example works as expected"), 
+  I was relying on the current behavior (`stringsAsFactors = TRUE`).
+  That reliance has been removed so that this test will also pass under R4.0.0.
   No package code has been changed, only test code.
 
 

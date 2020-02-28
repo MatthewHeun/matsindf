@@ -8,7 +8,9 @@ test_that("small example works as expected", {
   tidy <- data.frame(matrix = c("V1", "V1", "V1", "V2", "V2"),
                      row = c("i1", "i1", "i2", "i1", "i2"),
                      col = c("p1", "p2", "p2", "p1", "p2"),
-                     vals = c(1, 2, 3, 4, 5)) %>%
+                     vals = c(1, 2, 3, 4, 5),
+                     # In R4.0.0, stringsAsFactors = FALSE will be the default.
+                     stringsAsFactors = FALSE) %>%
     dplyr::mutate(
       rowtypes = "Industries",
       coltypes  = "Products"
@@ -50,12 +52,13 @@ test_that("small example works as expected", {
   tidy2 <- mats %>%
     expand_to_tidy(matnames = "matrix", matvals = "vals",
                    rownames = "row", colnames = "col",
-                   rowtypes = "rowtypes", coltypes = "coltypes", drop = 0) %>%
-    dplyr::mutate(
-      # The original tidy data frame had factors
-      row = as.factor(row),
-      col = as.factor(col)
-    )
+                   rowtypes = "rowtypes", coltypes = "coltypes", drop = 0) # %>%
+    # No need to convert to factors. R4.0.0 has stringsAsFactors = FALSE by default.
+    # dplyr::mutate(
+    #   # The original tidy data frame had factors
+    #   row = as.factor(row),
+    #   col = as.factor(col)
+    # )
   expect_equal(tidy2, tidy)
 
   # Try the test when we are missing the rowtype and coltype columns

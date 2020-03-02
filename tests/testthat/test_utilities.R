@@ -125,14 +125,16 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
 
   # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
   C <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
-                                          ct = c("Industries", "Industries", "Industries"))) %>%
+                                          ct = c("Industries", "Industries", "Industries"),
+                                          stringsAsFactors = FALSE)) %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rt", coltypes = "ct")
   expect_equal(C, expected_mat_with_types)
 
   # Also works for single values if both the rownames and colnames columns contain NA
   rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
-                           rowtypes = c(NA), coltypes = c(NA), vals = c(2))
+                           rowtypes = c(NA), coltypes = c(NA), vals = c(2),
+                           stringsAsFactors = FALSE)
   D <- rowcolval2 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                                        rowtypes = "rowtype", coltypes = "coltype")
   expect_equal(D, 2)
@@ -144,13 +146,15 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
 
   # Fails when rowtype or coltype not all same. In rowcolval4, column rt is not all same.
   rowcolval4 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Industries", "Products"),
-                                              ct = c("Industries", "Industries", "Industries")))
+                                              ct = c("Industries", "Industries", "Industries"),
+                                              stringsAsFactors = FALSE))
   expect_error(rowcolval_to_mat(rowcolval4,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 rowtypes = "rt", coltypes = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
   rowcolval5 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
-                                              ct = c("Industries", "Products", "Industries")))
+                                              ct = c("Industries", "Products", "Industries"),
+                                              stringsAsFactors = FALSE))
   expect_error(rowcolval_to_mat(rowcolval5,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
@@ -171,7 +175,8 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                      cols = c( "i1",  "i2", "i2"),
                      vals = c(  11  ,  12,   22 ),
                      rt = c("Products", "Products", "Products"),
-                     ct = c("Industries", "Industries", "Industries")) %>%
+                     ct = c("Industries", "Industries", "Industries"),
+                     stringsAsFactors = FALSE) %>%
     dplyr::mutate(
       rows = as.character(rows),
       cols = as.character(cols),
@@ -226,7 +231,7 @@ test_that("mat_to_rowcolval (expand) works as expected", {
 
   # This also works for single values
   expect_equal(mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtypes = "rt", coltypes = "ct", matvals = "vals"),
-               data.frame(rows = NA, cols = NA, vals = 2, rt = NA, ct = NA)
+               data.frame(rows = NA, cols = NA, vals = 2, rt = NA, ct = NA, stringsAsFactors = FALSE)
   )
   # For a 0 value when we drop 0's, we get a zero-length data frame
   B <- mat_to_rowcolval(0,
@@ -266,7 +271,7 @@ test_that("add_UKEnergy2000_row_col_meta works as expected", {
 
 
 test_that("verify_cols_missing errors as expected", {
-  DF <- data.frame(A = 1:4, B = 11:14)
+  DF <- data.frame(A = 1:4, B = 11:14, stringsAsFactors = FALSE)
   # Try with a non-vector for newcols (a data frame is not a vector)
   expect_null(verify_cols_missing(DF, newcols = DF))
   expect_error(verify_cols_missing(DF, "A"),
@@ -275,7 +280,7 @@ test_that("verify_cols_missing errors as expected", {
 
 
 test_that("everything_except works as expected for symbols", {
-  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
   expect_equal(everything_except(DF, "a"), c(as.name("b"), as.name("c")))
   expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
   # Ensure all columns of .DF are returned if ... is empty or NULL.
@@ -297,7 +302,7 @@ test_that("everything_except works as expected for symbols", {
 })
 
 test_that("everything_except works as expected for strings", {
-  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
   expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
   # Ensure all columns of .DF are returned if ... is empty or NULL.
   expect_equal(DF %>% everything_except(.symbols = FALSE), c("a", "b", "c"))
@@ -318,7 +323,7 @@ test_that("everything_except works as expected for strings", {
 })
 
 test_that("group_by_everything_except works as expected", {
-  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
   # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
   expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
   expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))

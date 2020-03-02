@@ -16,7 +16,7 @@ context("Utilities")
 ###########################################################
 
 test_that("index_column works as expected", {
-  DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
+  DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40), stringsAsFactors = FALSE)
   expected1 <- DF1 %>%
     dplyr::mutate(
       var_indexed = c(1, 2, 4)
@@ -65,7 +65,8 @@ test_that("index_column works as expected", {
     colname  = rep(c("c1", "c2"), each = 2),
     matvals  = rep(c(10, 20, 40), each = 4),
     rowtypes = "row",
-    coltypes = "col"
+    coltypes = "col",
+    stringsAsFactors = FALSE
   ) %>%
     dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals",
@@ -79,7 +80,8 @@ test_that("index_column works as expected", {
     colname = rep(c("c1", "c2"), each = 2),
     matvals_indexed = rep(c(1, 2, 4), each = 4),
     rowtypes = "row",
-    coltypes = "col"
+    coltypes = "col",
+    stringsAsFactors = FALSE
   ) %>%
     dplyr::group_by(Country, Year, matname) %>%
     collapse_to_matrices(matnames = "matname",  matvals = "matvals_indexed",
@@ -108,12 +110,13 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
   rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
                           rows = c( "p1",  "p1", "p2"),
                           cols = c( "i1",  "i2", "i2"),
-                          vals = c(  11  ,  12,   22 ))
+                          vals = c(  11  ,  12,   22 ),
+                          stringsAsFactors = FALSE)
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
   expect_true(inherits(A, "matrix"))
   expect_equal(A, expected_mat)
-  expect_null(rowtype(A)) # rowtype has not been set
-  expect_null(coltype(A)) # coltype has not been set
+  expect_null(matsbyname::rowtype(A)) # rowtype has not been set
+  expect_null(matsbyname::coltype(A)) # coltype has not been set
 
   # Provide single row and column types to be applied to all entries.
   B <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",

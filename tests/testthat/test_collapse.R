@@ -40,6 +40,8 @@ test_that("small example works as expected", {
                                rowtypes = "rowtypes", coltypes = "coltypes")
   # Check that groups are discarded.
   expect_equal(length(dplyr::group_vars(mats)), 0)
+  # Check that factors are not created for String columns.
+  expect_false(is.factor(mats$matrix))
   # Test for V1
   expect_equal(mats$vals[[1]], matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
                                             dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%

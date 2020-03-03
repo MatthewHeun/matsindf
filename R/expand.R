@@ -75,7 +75,7 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
   if (!is.data.frame(.DF) & is.list(.DF)) {
     # Create an empty 1-row data frame with row names taken from .DF and promote to a column
     tempDF <- matrix(NA, nrow = length(.DF), ncol = 1, dimnames = list(names(.DF), matvals)) %>%
-      as.data.frame() %>%
+      as.data.frame(stringsAsFactors = FALSE) %>%
       tibble::rownames_to_column(matnames)
     # Set the matvals column to be the list of items in .DF
     tempDF[[matvals]] <- I(.DF)

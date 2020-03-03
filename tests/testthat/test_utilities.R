@@ -94,7 +94,7 @@ test_that("index_column works as expected", {
     # Put in the expected order
     dplyr::select(Country, Year, matname, matvals, matvals_indexed)
 
-  expect_equal(index_column(DF3 %>% dplyr::group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(), expected3)
+  expect_equal(index_column(DF3 %>% dplyr::group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(stringsAsFactors = FALSE), expected3)
 })
 
 test_that("rowcolval_to_mat (collapse) works as expected", {
@@ -140,7 +140,7 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
   expect_equal(D, 2)
 
   # Try without rowtype or coltype columns in the data frame.
-  rowcolval3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2))
+  rowcolval3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2), stringsAsFactors = FALSE)
   E <- rowcolval3 %>% rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals")
   expect_equal(E, 2)
 

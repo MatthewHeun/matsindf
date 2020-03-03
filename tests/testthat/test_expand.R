@@ -99,7 +99,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
   df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)), stringsAsFactors = FALSE)
   class(df$m) <- class(df$m)[-match("AsIs", class(df$m))]
   tidy <- expand_to_tidy(df, matnames = "matrix", matvals = "m", rownames = "row", colnames = "col") %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
   expected_df <- data.frame(
     matnames = c(rep("m1", 4), rep("m2", 4)),
     row = rep(c("r1", "r2"), 4),

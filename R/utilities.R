@@ -49,7 +49,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              drop = NA){
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
-      data.frame(check.names = FALSE) %>%
+      data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>%
       tibble::rownames_to_column(var = rownames) %>%
       tidyr::gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
     if (!is.null(matsbyname::rowtype(.matrix))) {
@@ -60,7 +60,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
     }
   } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
-    out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA)
+    out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA, stringsAsFactors = FALSE)
     names(out) <- c(rownames, colnames, matvals, rowtypes, coltypes)
   } else {
     stop(paste("Unknown type of .matrix in mat_to_rowcolval", .matrix,
@@ -187,7 +187,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
     tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
     tibble::remove_rownames() %>%
-    data.frame(check.names = FALSE) %>% # Avoids munging names of columns
+    data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
     tibble::column_to_rownames(var = rownames) %>%
     as.matrix() %>%
     matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)

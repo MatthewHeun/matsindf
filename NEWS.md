@@ -6,7 +6,6 @@
   In one test ("small example works as expected"), 
   I was relying on the current behavior (`stringsAsFactors = TRUE`).
   That reliance has been removed so that this test will also pass under R4.0.0.
-  No package code has been changed, only test code.
 
 
 # matsindf 0.3.2 (2019-12-05)

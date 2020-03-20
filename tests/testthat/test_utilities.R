@@ -347,7 +347,7 @@ test_that("group_by_everything_except works as expected", {
     expect_equal(c("a", "c"))
   DF %>%
     dplyr::group_by(a) %>%
-    group_by_everything_except("a", add = TRUE) %>%  # Adds to groups
+    group_by_everything_except("a", .add = TRUE) %>%  # Adds to groups
     dplyr::group_vars() %>%
     expect_equal(c("a", "b", "c"))
 

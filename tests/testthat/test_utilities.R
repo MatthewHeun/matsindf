@@ -16,7 +16,7 @@ context("Utilities")
 ###########################################################
 
 test_that("index_column works as expected", {
-  DF1 <- data.frame(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40), stringsAsFactors = FALSE)
+  DF1 <- tibble::tibble(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
   expected1 <- DF1 %>%
     dplyr::mutate(
       var_indexed = c(1, 2, 4)
@@ -28,7 +28,7 @@ test_that("index_column works as expected", {
   expect_error(index_column(DF1 %>% dplyr::group_by(Year), var_to_index = "var"),
                "Time variable 'Year' in groups of .DF in index_column.")
   # Group on the correct variable to achieve success.
-  expect_equal(index_column(DF1 %>% dplyr::group_by(Country), var_to_index = "var"), expected1)
+  expect_equal(index_column(DF1 %>% dplyr::group_by(Country), var_to_index = "var") %>% dplyr::ungroup(), expected1)
 
   # Test with 2 groups.
   DF2 <- DF1 %>%
@@ -42,7 +42,7 @@ test_that("index_column works as expected", {
       var_indexed = c(1, 2, 4, 1, 2, 4)
     )
   # Index on the (default) first year in each group.
-  expect_equal(index_column(DF2 %>% dplyr::group_by(Country), var_to_index = "var"), expected2)
+  expect_equal(index_column(DF2 %>% dplyr::group_by(Country), var_to_index = "var") %>% dplyr::ungroup(), expected2)
   # Index on a specified year
   DF2half <- DF2 %>%
     dplyr::mutate(
@@ -52,7 +52,7 @@ test_that("index_column works as expected", {
     dplyr::mutate(
       var_indexed = c(0.5, 1, 2, 0.5, 1, 2)
     )
-  expect_equal(index_column(DF2half %>% dplyr::group_by(Country), var_to_index = "var", index_time = 2012),
+  expect_equal(index_column(DF2half %>% dplyr::group_by(Country), var_to_index = "var", index_time = 2012) %>% dplyr::ungroup(),
                expected2half)
 
   # Test when the variable to be indexed is a column of a data frame containing matrices.
@@ -323,7 +323,7 @@ test_that("everything_except works as expected for strings", {
 })
 
 test_that("group_by_everything_except works as expected", {
-  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
+  DF <- tibble::tibble(a = c(1, 2), b = c(3, 4), c = c(5, 6))
   # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
   expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
   expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))
@@ -347,7 +347,7 @@ test_that("group_by_everything_except works as expected", {
     expect_equal(c("a", "c"))
   DF %>%
     dplyr::group_by(a) %>%
-    group_by_everything_except("a", add = TRUE) %>%  # Adds to groups
+    group_by_everything_except("a", .add = TRUE) %>%  # Adds to groups
     dplyr::group_vars() %>%
     expect_equal(c("a", "b", "c"))
 

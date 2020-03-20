@@ -122,14 +122,13 @@ test_that("expand_to_tidy works with a list of matrices", {
                            matnames = "matnames", matvals = "matvals",
                            rownames = "rownames", colnames = "colnames",
                            rowtypes = "rt", coltypes = "ct")
-  expected <- data.frame(
+  expected <- tibble::tibble(
     matnames = c("m1", "m1", "m2", "m2"),
     rownames = c("i1", "i2", "p1", "p1"),
     colnames = c("p1", "p1", "i1", "i2"),
     matvals = c(1, 2, 10, 20),
     rt = c("industries", "industries", "products", "products"),
-    ct = c("products", "products", "industries", "industries"),
-    stringsAsFactors = FALSE
+    ct = c("products", "products", "industries", "industries")
   )
   expect_equal(result, expected)
 })

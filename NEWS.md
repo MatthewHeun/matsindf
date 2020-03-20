@@ -1,3 +1,14 @@
+* Maintenance release to prepare for `dplyr` 1.0.0.
+  Several tests in `matsindf` assumed that some `dplyr` functions returned 
+  `data.frame`s.
+  Now that `dplyr` returns `tibble`s, the `matsindf` tests needed to be rewritten.
+  All tests pass vs. `dplyr` 0.8.5.
+  One warning remains when testing `matsindf` with `dplyr` 1.0.0,
+  namely that the `add` argument of `group_buy()` is deprecated.
+  When `dplyr` 1.0.0 is released to CRAN, 
+  I will convert `add` to `.add`, per the `dplyr` authors' recommendation.
+
+
 # matsindf 0.3.3 (2020-03-03)
 
 * More maintenance to prepare for R4.0.0.

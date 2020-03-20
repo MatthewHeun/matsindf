@@ -5,12 +5,10 @@ context("Small example")
 ###########################################################
 
 test_that("small example works as expected", {
-  tidy <- data.frame(matrix = c("V1", "V1", "V1", "V2", "V2"),
-                     row = c("i1", "i1", "i2", "i1", "i2"),
-                     col = c("p1", "p2", "p2", "p1", "p2"),
-                     vals = c(1, 2, 3, 4, 5),
-                     # In R4.0.0, stringsAsFactors = FALSE will be the default.
-                     stringsAsFactors = FALSE) %>%
+  tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                 row = c("i1", "i1", "i2", "i1", "i2"),
+                 col = c("p1", "p2", "p2", "p1", "p2"),
+                 vals = c(1, 2, 3, 4, 5)) %>%
     dplyr::mutate(
       rowtypes = "Industries",
       coltypes  = "Products"

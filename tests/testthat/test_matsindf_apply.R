@@ -54,7 +54,7 @@ test_that("matsindf_apply works as expected for lists of matrices", {
 })
 
 test_that("matsindf_apply works as expected using .DF with single numbers", {
-  DF <- data.frame(a = c(4, 4, 5), b = c(4, 4, 4), stringsAsFactors = FALSE)
+  DF <- tibble::tibble(a = c(4, 4, 5), b = c(4, 4, 4))
   expect_equal(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b"),
                tibble::tibble(a = c(4, 4, 5), b = c(4, 4, 4), c = c(8, 8, 9), d = c(0, 0, 1)))
 })

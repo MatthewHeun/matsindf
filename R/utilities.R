@@ -402,7 +402,7 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 group_by_everything_except <- function(.DF, ..., .add = FALSE, .drop = FALSE){
   grouping_cols <- do.call(everything_except, list(.DF = .DF, ...))
   .DF %>%
-    dplyr::group_by(!!!grouping_cols, .add = .add, .drop = .drop)
+    dplyr::group_by(!!!grouping_cols, add = .add, .drop = .drop)
 }
 
 

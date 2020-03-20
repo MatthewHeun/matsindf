@@ -323,7 +323,7 @@ test_that("everything_except works as expected for strings", {
 })
 
 test_that("group_by_everything_except works as expected", {
-  DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
+  DF <- tibble::tibble(a = c(1, 2), b = c(3, 4), c = c(5, 6))
   # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
   expect_equal(group_by_everything_except(DF) %>% dplyr::group_vars(), c("a", "b", "c"))
   expect_equal(group_by_everything_except(DF, NULL) %>% dplyr::group_vars(), c("a", "b", "c"))

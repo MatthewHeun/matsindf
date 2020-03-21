@@ -207,10 +207,12 @@
 <p><code>.dat</code> can be a list (as shown in several examples above), but it can also be a data frame.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>df &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">a =</span> <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">b =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="kw"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span>(df, <span class="dt">FUN =</span> example_fun)</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt;   a b c d</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt; 1 2 1 3 1</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; 2 3 2 5 1</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; 3 4 3 7 1</span></span></code></pre></div>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; # A tibble: 3 x 4</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt;       a     b     c     d</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; 1     2     1     3     1</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt; 2     3     2     5     1</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; 3     4     3     7     1</span></span></code></pre></div>
 <p>Furthermore, <code>matsindf_apply</code> works with a <code>matsindf</code> data frame, a data frame wherein each entry in the data frame is a matrix. To demonstrate use of <code>matsindf_apply</code> with a data frame, we’ll construct a simple <code>matsindf</code> data frame (<code>midf</code>) using functions in this package.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Create a tidy data frame containing data for matrices</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a>tidy &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">Year =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">2017</span>, <span class="dv">4</span>), <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">2018</span>, <span class="dv">4</span>)), <span class="dv">2</span>),</span>
@@ -257,28 +259,32 @@
 <span id="cb11-43"><a href="#cb11-43"></a><span class="st">  </span><span class="kw">group_by</span>(Year, matnames) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-44"><a href="#cb11-44"></a><span class="st">  </span><span class="kw"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span>(<span class="dt">rowtypes =</span> <span class="st">"rowtypes"</span>, <span class="dt">coltypes =</span> <span class="st">"coltypes"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb11-45"><a href="#cb11-45"></a><span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> <span class="st">"matnames"</span>, <span class="dt">value =</span> <span class="st">"matvals"</span>)</span>
-<span id="cb11-46"><a href="#cb11-46"></a></span>
-<span id="cb11-47"><a href="#cb11-47"></a><span class="co"># Take a look at the midf data frame and some of the matrices it contains.</span></span>
-<span id="cb11-48"><a href="#cb11-48"></a>midf</span>
-<span id="cb11-49"><a href="#cb11-49"></a><span class="co">#&gt;   Year              U              V</span></span>
-<span id="cb11-50"><a href="#cb11-50"></a><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24</span></span>
-<span id="cb11-51"><a href="#cb11-51"></a><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34</span></span>
-<span id="cb11-52"><a href="#cb11-52"></a>midf<span class="op">$</span>U[[<span class="dv">1</span>]]</span>
-<span id="cb11-53"><a href="#cb11-53"></a><span class="co">#&gt;    i1 i2</span></span>
-<span id="cb11-54"><a href="#cb11-54"></a><span class="co">#&gt; p1  1  2</span></span>
-<span id="cb11-55"><a href="#cb11-55"></a><span class="co">#&gt; p2  3  4</span></span>
-<span id="cb11-56"><a href="#cb11-56"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb11-57"><a href="#cb11-57"></a><span class="co">#&gt; [1] "product"</span></span>
-<span id="cb11-58"><a href="#cb11-58"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb11-59"><a href="#cb11-59"></a><span class="co">#&gt; [1] "industry"</span></span>
-<span id="cb11-60"><a href="#cb11-60"></a>midf<span class="op">$</span>V[[<span class="dv">1</span>]]</span>
-<span id="cb11-61"><a href="#cb11-61"></a><span class="co">#&gt;    p1 p2</span></span>
-<span id="cb11-62"><a href="#cb11-62"></a><span class="co">#&gt; i1 21 22</span></span>
-<span id="cb11-63"><a href="#cb11-63"></a><span class="co">#&gt; i2 23 24</span></span>
-<span id="cb11-64"><a href="#cb11-64"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb11-65"><a href="#cb11-65"></a><span class="co">#&gt; [1] "industry"</span></span>
-<span id="cb11-66"><a href="#cb11-66"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb11-67"><a href="#cb11-67"></a><span class="co">#&gt; [1] "product"</span></span></code></pre></div>
+<span id="cb11-46"><a href="#cb11-46"></a><span class="co">#&gt; Warning: The `add` argument of `group_by()` is deprecated as of dplyr 1.0.0.</span></span>
+<span id="cb11-47"><a href="#cb11-47"></a><span class="co">#&gt; Please use the `.add` argument instead.</span></span>
+<span id="cb11-48"><a href="#cb11-48"></a><span class="co">#&gt; This warning is displayed once every 8 hours.</span></span>
+<span id="cb11-49"><a href="#cb11-49"></a><span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span></span>
+<span id="cb11-50"><a href="#cb11-50"></a></span>
+<span id="cb11-51"><a href="#cb11-51"></a><span class="co"># Take a look at the midf data frame and some of the matrices it contains.</span></span>
+<span id="cb11-52"><a href="#cb11-52"></a>midf</span>
+<span id="cb11-53"><a href="#cb11-53"></a><span class="co">#&gt;   Year              U              V</span></span>
+<span id="cb11-54"><a href="#cb11-54"></a><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24</span></span>
+<span id="cb11-55"><a href="#cb11-55"></a><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34</span></span>
+<span id="cb11-56"><a href="#cb11-56"></a>midf<span class="op">$</span>U[[<span class="dv">1</span>]]</span>
+<span id="cb11-57"><a href="#cb11-57"></a><span class="co">#&gt;    i1 i2</span></span>
+<span id="cb11-58"><a href="#cb11-58"></a><span class="co">#&gt; p1  1  2</span></span>
+<span id="cb11-59"><a href="#cb11-59"></a><span class="co">#&gt; p2  3  4</span></span>
+<span id="cb11-60"><a href="#cb11-60"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
+<span id="cb11-61"><a href="#cb11-61"></a><span class="co">#&gt; [1] "product"</span></span>
+<span id="cb11-62"><a href="#cb11-62"></a><span class="co">#&gt; attr(,"coltype")</span></span>
+<span id="cb11-63"><a href="#cb11-63"></a><span class="co">#&gt; [1] "industry"</span></span>
+<span id="cb11-64"><a href="#cb11-64"></a>midf<span class="op">$</span>V[[<span class="dv">1</span>]]</span>
+<span id="cb11-65"><a href="#cb11-65"></a><span class="co">#&gt;    p1 p2</span></span>
+<span id="cb11-66"><a href="#cb11-66"></a><span class="co">#&gt; i1 21 22</span></span>
+<span id="cb11-67"><a href="#cb11-67"></a><span class="co">#&gt; i2 23 24</span></span>
+<span id="cb11-68"><a href="#cb11-68"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
+<span id="cb11-69"><a href="#cb11-69"></a><span class="co">#&gt; [1] "industry"</span></span>
+<span id="cb11-70"><a href="#cb11-70"></a><span class="co">#&gt; attr(,"coltype")</span></span>
+<span id="cb11-71"><a href="#cb11-71"></a><span class="co">#&gt; [1] "product"</span></span></code></pre></div>
 <p>With <code>midf</code> in hand, we can demonstrate use of <a href="http://www.tidyverse.org"><code>tidyverse</code></a>-style functional programming to perform matrix algebra within a data frame. The functions of the <code>matsbyname</code> package (such as <code>difference_byname</code> below) can be used for this purpose.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>result &lt;-<span class="st"> </span>midf <span class="op">%&gt;%</span><span class="st"> </span></span>
 <span id="cb12-2"><a href="#cb12-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
@@ -383,9 +389,11 @@
 <span id="cb18-9"><a href="#cb18-9"></a><span class="co">#&gt; [1] "industry"</span></span></code></pre></div>
 <p><code>calc_W</code> can operate on data frames containing single numbers.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">U =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="dt">V =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">3</span>, <span class="dv">4</span>)) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">calc_W</span>()</span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="co">#&gt;   U V W</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="co">#&gt; 1 1 3 2</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co">#&gt; 2 2 4 2</span></span></code></pre></div>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="co">#&gt; # A tibble: 2 x 3</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="co">#&gt;       U     V W[,1]  [,2]</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co">#&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="co">#&gt; 1     1     3     2     2</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co">#&gt; 2     2     4     2     2</span></span></code></pre></div>
 <p>Finally, <code>calc_W</code> can be applied to single numbers, and the result is 1x1 matrix.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">calc_W</span>(<span class="dt">U =</span> <span class="dv">2</span>, <span class="dt">V =</span> <span class="dv">3</span>)</span>
 <span id="cb20-2"><a href="#cb20-2"></a><span class="co">#&gt; $W</span></span>

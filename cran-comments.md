@@ -14,8 +14,10 @@
     * 0 WARNINGs
     * 0 NOTEs
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R3.6.3 (2020-02-29)
-
+    * `devtools::check_win_release()`, R version 3.6.3 (2020-02-29)
+        * 0 ERRORs
+        * 0 WARNINGs
+        * 0 NOTEs
     * `devtools::check_win_devel()`, R Under development (unstable) (2020-03-11 r77925)
         * 0 ERRORs
         * 0 WARNINGs

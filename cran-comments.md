@@ -1,20 +1,9 @@
 ## Context
-`matsindf` v0.3.3 is a maintenance release to prepare for R4.0.0. See `NEWS.md` for details. 
+`matsindf` v0.3.4 is a maintenance release to prepare for `dplyr` 1.0.0. See `NEWS.md` for details. 
 
-## Test environments (7 in total)
-* Local: macOS X install 10.15.2 (Catalina), R3.6.2
-* TRAVIS-CI: Ubuntu 16.04.6, R3.6.2
-* Windows (on win-builder):
-    * `devtools::check_win_release()`, R3.6.3 (2020-02-29)
-    * `devtools::check_win_devel()`, R Under development (unstable) (2020-01-28 r77738)
-* rhub:
-    * `devtools::check_rhub()`
-        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-        * Ubuntu Linux 16.04 LTS, R-release, GCC
-        * Fedora Linux, R-devel, clang, gfortran
+## Test environments (7 in total) and R CMD check results
 
-## R CMD check results
-* Local: macOS X install 10.15.2 (Catalina), R3.6.2
+* Local: macOS X install 10.15.3 (Catalina), R3.6.3
     * 0 ERRORs
     * 0 WARNINGs
     * 0 NOTEs

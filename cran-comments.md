@@ -29,7 +29,9 @@
             * 0 WARNINGs
             * 0 NOTEs
         * Ubuntu Linux 16.04 LTS, R-release, GCC
-
+            * 0 ERRORs
+            * 0 WARNINGs
+            * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
 
 

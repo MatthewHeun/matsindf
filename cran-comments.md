@@ -1,5 +1,7 @@
 ## Context
-`matsindf` v0.3.4 is a maintenance release to prepare for `dplyr` 1.0.0. See `NEWS.md` for details. 
+
+`matsindf` v0.3.4 is a maintenance release to prepare for `dplyr` 1.0.0.  See `NEWS.md` for details. 
+
 
 ## Test environments (7 in total) and R CMD check results
 
@@ -27,22 +29,16 @@
             * 0 WARNINGs
             * 0 NOTEs
         * Ubuntu Linux 16.04 LTS, R-release, GCC
-            * 1 ERROR
-              The error is:    
-              #> sh: echo: I/O error    
-              #> Build step 'Execute shell' marked build as failure    
-              This error occurs early in the bootstrapping process and has nothing to do with testing the `matsindf` package.
+            * 0 ERRORs
             * 0 WARNINGs
             * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
-            * 1 ERROR:
-              The error is:    
-              #> sh: echo: I/O error    
-              #> Build step 'Execute shell' marked build as failure    
-              This error occurs early in the bootstrapping process and has nothing to do with testing the `matsindf` package.
+            * 0 ERRORs
             * 0 WARNINGs
             * 0 NOTEs
 
+
 ## Downstream dependencies
+
 * Reverse dependencies were checked with `revdepcheck::revdep_check(num_workers = 4)`.
 * There are currently no downstream dependencies for `matsindf`.

@@ -33,6 +33,9 @@
             * 0 WARNINGs
             * 0 NOTEs
         * Fedora Linux, R-devel, clang, gfortran
+            * 0 ERRORs
+            * 0 WARNINGs
+            * 0 NOTEs
 
 
 ## Downstream dependencies

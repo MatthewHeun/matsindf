@@ -67,7 +67,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -125,6 +125,22 @@
       <small>Source: <a href='https://github.com/MatthewHeun/matsindf/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="matsindf-034-2020-03-21" class="section level1">
+<h1 class="page-header">
+<a href="#matsindf-034-2020-03-21" class="anchor"></a>matsindf 0.3.4 (2020-03-21)<small> Unreleased </small>
+</h1>
+<ul>
+<li>Maintenance release to prepare for <code>dplyr</code> 1.0.0. Several tests in <code>matsindf</code> assumed that some <code>dplyr</code> functions returned <code>data.frame</code>s. Now that many <code>dplyr</code> functions return <code>tibble</code>s, the <code>matsindf</code> tests needed to be rewritten. All tests pass vs. <code>dplyr</code> 0.8.5. One warning remains when testing <code>matsindf</code> with <code>dplyr</code> 1.0.0, namely that the <code>add</code> argument of <code>group_buy()</code> is deprecated. When <code>dplyr</code> 1.0.0 is released to CRAN, I will convert <code>add</code> to <code>.add</code>, per the <code>dplyr</code> authors’ recommendation.</li>
+</ul>
+</div>
+    <div id="matsindf-033-2020-03-03" class="section level1">
+<h1 class="page-header">
+<a href="#matsindf-033-2020-03-03" class="anchor"></a>matsindf 0.3.3 (2020-03-03)<small> 2020-03-04 </small>
+</h1>
+<ul>
+<li>More maintenance to prepare for R4.0.0. Prior to R4.0.0, <code><a href="https://rdrr.io/r/base/data.frame.html">data.frame()</a></code> has <code>stringsAsFactors = TRUE</code> by default. In R4.0.0, <code>stringsAsFactors = FALSE</code> will be the default. In one test (“small example works as expected”), I was relying on the current behavior (<code>stringsAsFactors = TRUE</code>). That reliance has been removed so that this test will also pass under R4.0.0.</li>
+</ul>
+</div>
     <div id="matsindf-032-2019-12-05" class="section level1">
 <h1 class="page-header">
 <a href="#matsindf-032-2019-12-05" class="anchor"></a>matsindf 0.3.2 (2019-12-05)<small> 2019-12-06 </small>
@@ -272,6 +288,8 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#matsindf-034-2020-03-21">0.3.4</a></li>
+        <li><a href="#matsindf-033-2020-03-03">0.3.3</a></li>
         <li><a href="#matsindf-032-2019-12-05">0.3.2</a></li>
         <li><a href="#matsindf-031-2019-10-26">0.3.1</a></li>
         <li><a href="#matsindf-030-2019-02-05">0.3.0</a></li>

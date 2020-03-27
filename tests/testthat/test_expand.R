@@ -96,15 +96,16 @@ test_that("expand_to_tidy works as expected", {
 test_that("expand_to_tidy works as expected without rowtype, coltype", {
   m1 <- matrix(c(1,2,3,4), nrow = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
   m2 <- m1*10
-  df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)))
+  df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)), stringsAsFactors = FALSE)
   class(df$m) <- class(df$m)[-match("AsIs", class(df$m))]
   tidy <- expand_to_tidy(df, matnames = "matrix", matvals = "m", rownames = "row", colnames = "col") %>%
-    as.data.frame()
+    as.data.frame(stringsAsFactors = FALSE)
   expected_df <- data.frame(
     matnames = c(rep("m1", 4), rep("m2", 4)),
     row = rep(c("r1", "r2"), 4),
     col = c(rep("c1", 2), rep("c2", 2)),
-    m = c(1, 3, 2, 4, 10, 30, 20, 40)
+    m = c(1, 3, 2, 4, 10, 30, 20, 40),
+    stringsAsFactors = FALSE
   ) %>%
     dplyr::mutate(
       row = as.character(row),
@@ -121,14 +122,13 @@ test_that("expand_to_tidy works with a list of matrices", {
                            matnames = "matnames", matvals = "matvals",
                            rownames = "rownames", colnames = "colnames",
                            rowtypes = "rt", coltypes = "ct")
-  expected <- data.frame(
+  expected <- tibble::tibble(
     matnames = c("m1", "m1", "m2", "m2"),
     rownames = c("i1", "i2", "p1", "p1"),
     colnames = c("p1", "p1", "i1", "i2"),
     matvals = c(1, 2, 10, 20),
     rt = c("industries", "industries", "products", "products"),
-    ct = c("products", "products", "industries", "industries"),
-    stringsAsFactors = FALSE
+    ct = c("products", "products", "industries", "industries")
   )
   expect_equal(result, expected)
 })

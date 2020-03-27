@@ -120,5 +120,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
                                     rowtypes = rowtypes, coltypes = coltypes)
     ) %>%
     dplyr::select(!!!dplyr::group_vars(.DF), !!matvals) %>%
-    data.frame(check.names = FALSE)
+    # data.frame(check.names = FALSE)
+    # As of R 4.0.0, stringsAsFactors = FALSE will be the default.
+    data.frame(check.names = FALSE, stringsAsFactors = FALSE)
 }

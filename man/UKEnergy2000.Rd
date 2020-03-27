@@ -4,7 +4,8 @@
 \name{UKEnergy2000}
 \alias{UKEnergy2000}
 \title{Energy consumption in the UK in 2000}
-\format{A data frame with 36 rows and 7 variables:
+\format{
+A data frame with 36 rows and 7 variables:
 \describe{
   \item{Country}{country, GB (Great Britain, only one country)}
   \item{Year}{year, 2000 (only one year)}
@@ -13,7 +14,8 @@
   \item{Flow}{the Industry or Sector involved in this flow}
   \item{Product}{the energy product involved in this flow}
   \item{E.ktoe}{magnitude of the energy flow in ktoe}
-}}
+}
+}
 \source{
 \url{http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf}
 }

@@ -4,25 +4,25 @@
 \alias{group_by_everything_except}
 \title{Group by all variables except some}
 \usage{
-group_by_everything_except(.DF, ..., add = FALSE, .drop = FALSE)
+group_by_everything_except(.DF, ..., .add = FALSE, .drop = FALSE)
 }
 \arguments{
 \item{.DF}{a data frame to be grouped}
 
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping}
 
-\item{add}{When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
-To add to the existing groups, use \code{add = TRUE}.}
+\item{.add}{When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
+To add to the existing groups, use `.add = TRUE`.}
 
-\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped.}
+\item{.drop}{When `.drop = TRUE`, empty groups are dropped.}
 }
 \value{
-a grouped version of \code{.DF}
+a grouped version of `.DF`
 }
 \description{
 This is a convenience function
 that allows grouping of a data frame by all variables (columns)
-except those variables specified in \code{...}.
+except those variables specified in `...`.
 }
 \examples{
 library(dplyr)

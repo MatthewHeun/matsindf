@@ -1,3 +1,26 @@
+# matsindf 0.3.4 (2020-03-21)
+
+* Maintenance release to prepare for `dplyr` 1.0.0.
+  Several tests in `matsindf` assumed that some `dplyr` functions returned 
+  `data.frame`s.
+  Now that many `dplyr` functions return `tibble`s, the `matsindf` tests needed to be rewritten.
+  All tests pass vs. `dplyr` 0.8.5.
+  One warning remains when testing `matsindf` with `dplyr` 1.0.0,
+  namely that the `add` argument of `group_buy()` is deprecated.
+  When `dplyr` 1.0.0 is released to CRAN, 
+  I will convert `add` to `.add`, per the `dplyr` authors' recommendation.
+
+
+# matsindf 0.3.3 (2020-03-03)
+
+* More maintenance to prepare for R4.0.0.
+  Prior to R4.0.0, `data.frame()` has `stringsAsFactors = TRUE` by default.
+  In R4.0.0, `stringsAsFactors = FALSE` will be the default.
+  In one test ("small example works as expected"), 
+  I was relying on the current behavior (`stringsAsFactors = TRUE`).
+  That reliance has been removed so that this test will also pass under R4.0.0.
+
+
 # matsindf 0.3.2 (2019-12-05)
 
 * Maintenance release to prepare for R4.0.0.

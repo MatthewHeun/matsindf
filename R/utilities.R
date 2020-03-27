@@ -49,7 +49,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              drop = NA){
   if (is.matrix(.matrix)) {
     out <- .matrix %>%
-      data.frame(check.names = FALSE) %>%
+      data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>%
       tibble::rownames_to_column(var = rownames) %>%
       tidyr::gather(key = !!colnames, value = !!matvals, !!!colnames(.matrix))
     if (!is.null(matsbyname::rowtype(.matrix))) {
@@ -60,7 +60,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
     }
   } else if ((is.numeric(.matrix) | is.logical(.matrix)) & length(.matrix) == 1) {
     # We have a single value. Construct a mostly-empty data frame.
-    out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA)
+    out <- data.frame(r = NA, c = NA, v = .matrix, rt = NA, ct = NA, stringsAsFactors = FALSE)
     names(out) <- c(rownames, colnames, matvals, rowtypes, coltypes)
   } else {
     stop(paste("Unknown type of .matrix in mat_to_rowcolval", .matrix,
@@ -187,7 +187,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
     tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
     tibble::remove_rownames() %>%
-    data.frame(check.names = FALSE) %>% # Avoids munging names of columns
+    data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
     tibble::column_to_rownames(var = rownames) %>%
     as.matrix() %>%
     matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
@@ -374,15 +374,15 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 #'
 #' This is a convenience function
 #' that allows grouping of a data frame by all variables (columns)
-#' except those variables specified in \code{...}.
+#' except those variables specified in `...`.
 #'
 #' @param .DF a data frame to be grouped
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
-#' @param add When \code{add = FALSE}, the default, \code{group_by()} will override existing groups.
-#'            To add to the existing groups, use \code{add = TRUE}.
-#' @param .drop When \code{.drop = TRUE}, empty groups are dropped.
+#' @param .add When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
+#'            To add to the existing groups, use `.add = TRUE`.
+#' @param .drop When `.drop = TRUE`, empty groups are dropped.
 #'
-#' @return a grouped version of \code{.DF}
+#' @return a grouped version of `.DF`
 #'
 #' @export
 #'
@@ -399,10 +399,10 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 #' group_by_everything_except(DF, c("a", "c")) %>% group_vars()
 #' group_by_everything_except(DF, c("a")) %>% group_vars()
 #' group_by_everything_except(DF, list("a")) %>% group_vars()
-group_by_everything_except <- function(.DF, ..., add = FALSE, .drop = FALSE){
+group_by_everything_except <- function(.DF, ..., .add = FALSE, .drop = FALSE){
   grouping_cols <- do.call(everything_except, list(.DF = .DF, ...))
   .DF %>%
-    dplyr::group_by(!!!grouping_cols, add = add, .drop = .drop)
+    dplyr::group_by(!!!grouping_cols, add = .add, .drop = .drop)
 }
 
 

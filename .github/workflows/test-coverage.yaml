@@ -3,7 +3,6 @@ on:
     branches:
       - master
       - develop
-      - github_actions
   pull_request:
     branches:
       - master

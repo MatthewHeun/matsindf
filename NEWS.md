@@ -1,3 +1,5 @@
+# matsindf 0.3.5 (2020-04-13)
+
 * Now using GitHub actions for continuous integration
   and building the pkgdown site.
 

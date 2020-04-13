@@ -55,7 +55,7 @@ index_column(DF, var_to_index = "var", time_var = "Year", suffix = "_ratioed")
 index_column(DF, var_to_index = "var", time_var = "Year", indexed_var = "now.indexed")
 index_column(DF, var_to_index = "var", time_var = "Year", index_time = 2005,
              indexed_var = "now.indexed")
-\donttest{
+\dontrun{
   DF \%>\%
     ungroup() \%>\%
     group_by(name, var) \%>\%

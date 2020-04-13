@@ -21,7 +21,6 @@ Imports:
     matsbyname,
     purrr,
     rlang,
-    rlist,
     tibble,
     tidyr
 Suggests:

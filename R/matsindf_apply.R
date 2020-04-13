@@ -197,7 +197,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (is.null(.dat)) {
     dots <- list(...)
     chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
-    dots <- rlist::list.remove(dots, range = which(chars))
+    # dots <- rlist::list.remove(dots, range = which(chars))
+    dots <- dots[which(!chars)]
     if (length(dots) == 0) {
       # We have eliminated all of the arguments.
       # This is most certainly an error.

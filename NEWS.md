@@ -1,4 +1,4 @@
-* Now using GitHub actions for dontinuous integration
+* Now using GitHub actions for continuous integration
   and building the pkgdown site.
 
 

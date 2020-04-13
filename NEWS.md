@@ -1,3 +1,9 @@
+# matsindf 0.3.5 (2020-04-13)
+
+* Now using GitHub actions for continuous integration
+  and building the pkgdown site.
+
+
 # matsindf 0.3.4 (2020-03-21)
 
 * Maintenance release to prepare for `dplyr` 1.0.0.

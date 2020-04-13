@@ -187,7 +187,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # To put it another way, when there is no .dat and some arguments are specified as strings,
   # it means that the string arguments are unavailable (missing).
   # In a last-ditch effort, let's try to
-  # * elimiante all strings from ...
+  # * eliminate all strings from ...
   # * re-call this function with the remaining arguments
   # This approach will, in effect, call FUN with missing arguments.
   # If FUN can handle the missing arguments,
@@ -197,7 +197,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (is.null(.dat)) {
     dots <- list(...)
     chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
-    dots <- rlist::list.remove(dots, range = which(chars))
+    dots <- dots[which(!chars)]
     if (length(dots) == 0) {
       # We have eliminated all of the arguments.
       # This is most certainly an error.

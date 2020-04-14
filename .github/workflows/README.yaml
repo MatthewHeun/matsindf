@@ -7,11 +7,11 @@ on:
     paths:
       - README.Rmd
 
-name: Render README
+name: README
 
 jobs:
   render:
-  name: Render README
+  name: README
   runs-on: macOS-latest
   steps:
     - uses: actions/checkout@v2

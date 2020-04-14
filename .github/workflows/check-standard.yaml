@@ -1,3 +1,6 @@
+# This GitHub action builds any push on the master and develop branches.
+# It builds on several OSes to verify compatibility for a potential future release to CRAN.
+
 on:
   push:
     branches:

@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Use Cases and Examples for `matsindf` • matsindf</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Use Cases and Examples for `matsindf`">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="matsindf">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -67,7 +67,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/MatthewHeun/matsindf">
+  <a href="https://github.com/MatthewHeun/matsindf/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -85,11 +85,11 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Use Cases and Examples for <code>matsindf</code>
+      <h1 data-toc-skip>Use Cases and Examples for <code>matsindf</code>
 </h1>
                         <h4 class="author">Matthew Kuperus Heun</h4>
             
-            <h4 class="date">2020-03-21</h4>
+            <h4 class="date">2020-04-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/master/vignettes/matsindf.Rmd"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="hidden name"><code>matsindf.Rmd</code></div>
@@ -144,13 +144,13 @@
 <a href="#data-ukenergy2000" class="anchor"></a>Data: <code>UKEnergy2000</code>
 </h2>
 <p>To demonstrate the use of <code>matsindf</code> functions, consider a network of energy flows from the environment, through transformation and distribution processes, and, ultimately, to final demand. Such energy flow networks are called energy conversion chains (ECCs), and this example is based on an approximation to a portion of the UK’s ECC circa 2000. (Note that these data are to be used for demonstration purposes only and have been rounded to 1–2 significant digits.) These example data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(UKEnergy2000, <span class="dv">2</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt;   Product E.ktoe</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; 1   Crude  50000</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt; 2      NG  43000</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">UKEnergy2000</span>, <span class="fl">2</span>)
+<span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span>
+<span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span>
+<span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span>
+<span class="co">#&gt;   Product E.ktoe</span>
+<span class="co">#&gt; 1   Crude  50000</span>
+<span class="co">#&gt; 2      NG  43000</span></pre></body></html></div>
 <p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="http://www.iea.org">International Energy Agency</a>’s <a href="https://www.iea.org/data-and-statistics/data-tables">energy balance tables</a>,</p>
 <ul>
 <li>
@@ -217,156 +217,160 @@
 </tbody>
 </table>
 <p>The following code gives the approach to adding metadata, appropriate for this application, relying on <code>Ledger.side</code>, the sign of <code>E.ktoe</code>, and knowledge about the rows and columns for each matrix. Each type of network will have its own algorithm for identifying row names, column names, row types, and column types in a tidy data frame.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>UKEnergy2000_with_metadata &lt;-<span class="st"> </span>UKEnergy2000 <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span><span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="st">  </span>matsindf<span class="op">:::</span><span class="kw"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span>(.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="st">  </span><span class="co"># Add columns for row names, column names, row types, and column types.</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="st">  </span>matsindf<span class="op">:::</span><span class="kw"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span>(.) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb2-7"><a href="#cb2-7"></a>    <span class="co"># Eliminate columns we no longer need</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a>    <span class="dt">Ledger.side =</span> <span class="ot">NULL</span>,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>    <span class="dt">Flow.aggregation.point =</span> <span class="ot">NULL</span>,</span>
-<span id="cb2-10"><a href="#cb2-10"></a>    <span class="dt">Flow =</span> <span class="ot">NULL</span>,</span>
-<span id="cb2-11"><a href="#cb2-11"></a>    <span class="dt">Product =</span> <span class="ot">NULL</span>, </span>
-<span id="cb2-12"><a href="#cb2-12"></a>    <span class="co"># Ensure that all energy values are positive, as required for analysis.</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>    <span class="dt">E.ktoe =</span> <span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(E.ktoe)</span>
-<span id="cb2-14"><a href="#cb2-14"></a>  )</span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(UKEnergy2000_with_metadata, <span class="dv">2</span>)</span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">UKEnergy2000_with_metadata</span> <span class="kw">&lt;-</span> <span class="no">UKEnergy2000</span> <span class="kw">%&gt;%</span>
+  <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span>
+  <span class="kw pkg">matsindf</span><span class="kw ns">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span>(<span class="no">.</span>) <span class="kw">%&gt;%</span>
+  <span class="co"># Add columns for row names, column names, row types, and column types.</span>
+  <span class="kw pkg">matsindf</span><span class="kw ns">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span>(<span class="no">.</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">mutate</span>(
+    <span class="co"># Eliminate columns we no longer need</span>
+    <span class="kw">Ledger.side</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">Flow.aggregation.point</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">Flow</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">Product</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="co"># Ensure that all energy values are positive, as required for analysis.</span>
+    <span class="kw">E.ktoe</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">E.ktoe</span>)
+  )
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">UKEnergy2000_with_metadata</span>, <span class="fl">2</span>)
+<span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span>
+<span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span>
+<span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></pre></body></html></div>
 </div>
 <div id="collapse" class="section level3">
 <h3 class="hasAnchor">
 <a href="#collapse" class="anchor"></a>Collapse</h3>
 <p>With the metadata now in place, <code>UKEnergy2000_with_metadata</code> can be collapsed to a <code>matsindf</code> data frame by the <code>collapse_to_matrices</code> function. Much like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarise</a></code>, <code>collapse_to_matrices</code> relies on grouping to indicate which rows of the tidy data frame belong to which matrices. The usual approach is to <code>tidyr::group_by</code> the <code>matnames</code> column and any other columns to be preserved in the output, in this case <code>Country</code> and <code>Year</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>EnergyMats_<span class="dv">2000</span> &lt;-<span class="st"> </span>UKEnergy2000_with_metadata <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">group_by</span>(Country, Year, matname) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span><span class="kw"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span>(<span class="dt">matnames =</span> <span class="st">"matname"</span>, <span class="dt">matvals =</span> <span class="st">"E.ktoe"</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>                       <span class="dt">rownames =</span> <span class="st">"rowname"</span>, <span class="dt">colnames =</span> <span class="st">"colname"</span>, </span>
-<span id="cb3-5"><a href="#cb3-5"></a>                       <span class="dt">rowtypes =</span> <span class="st">"rowtype"</span>, <span class="dt">coltypes =</span> <span class="st">"coltype"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="st">  </span><span class="kw">rename</span>(<span class="dt">matrix.name =</span> matname, <span class="dt">matrix =</span> E.ktoe)</span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="kw">glimpse</span>(EnergyMats_<span class="dv">2000</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt; Observations: 3</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt; Variables: 4</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt; $ Country     &lt;chr&gt; "GB", "GB", "GB"</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt; $ matrix.name &lt;chr&gt; "U", "V", "Y"</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt; $ matrix      &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[4 x 2]&gt;]</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co"># To access one of the matrices, try one of these approaches:</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>(EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(matrix.name <span class="op">==</span><span class="st"> "U"</span>))[[<span class="st">"matrix"</span>]] <span class="co"># The U matrix</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="co">#&gt; [[1]]</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a><span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a><span class="co">#&gt; Crude                    0            0           0                 0        0</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a><span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span></span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span></span>
-<span id="cb3-24"><a href="#cb3-24"></a><span class="co">#&gt; Diesel                   0        15500           0                 0        0</span></span>
-<span id="cb3-25"><a href="#cb3-25"></a><span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span></span>
-<span id="cb3-26"><a href="#cb3-26"></a><span class="co">#&gt; Elect                    0            0        6400                 0        0</span></span>
-<span id="cb3-27"><a href="#cb3-27"></a><span class="co">#&gt; Elect - Grid            25            0           0                25       25</span></span>
-<span id="cb3-28"><a href="#cb3-28"></a><span class="co">#&gt; NG                       0            0           0             43000        0</span></span>
-<span id="cb3-29"><a href="#cb3-29"></a><span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span></span>
-<span id="cb3-30"><a href="#cb3-30"></a><span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span></span>
-<span id="cb3-31"><a href="#cb3-31"></a><span class="co">#&gt; Petrol                   0            0           0                 0        0</span></span>
-<span id="cb3-32"><a href="#cb3-32"></a><span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span></span>
-<span id="cb3-33"><a href="#cb3-33"></a><span class="co">#&gt; Crude               50000              0            0            0</span></span>
-<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt; Crude - Dist.           0          47000            0            0</span></span>
-<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; Crude - Fields          0              0            0            0</span></span>
-<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; Diesel                  0              0            0            0</span></span>
-<span id="cb3-37"><a href="#cb3-37"></a><span class="co">#&gt; Diesel - Dist.         50              0          250            0</span></span>
-<span id="cb3-38"><a href="#cb3-38"></a><span class="co">#&gt; Elect                   0              0            0            0</span></span>
-<span id="cb3-39"><a href="#cb3-39"></a><span class="co">#&gt; Elect - Grid           25             75            0          100</span></span>
-<span id="cb3-40"><a href="#cb3-40"></a><span class="co">#&gt; NG                      0              0            0            0</span></span>
-<span id="cb3-41"><a href="#cb3-41"></a><span class="co">#&gt; NG - Dist.              0              0            0        16000</span></span>
-<span id="cb3-42"><a href="#cb3-42"></a><span class="co">#&gt; NG - Wells              0              0            0            0</span></span>
-<span id="cb3-43"><a href="#cb3-43"></a><span class="co">#&gt; Petrol                  0              0        26500            0</span></span>
-<span id="cb3-44"><a href="#cb3-44"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb3-45"><a href="#cb3-45"></a><span class="co">#&gt; [1] "Product"</span></span>
-<span id="cb3-46"><a href="#cb3-46"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb3-47"><a href="#cb3-47"></a><span class="co">#&gt; [1] "Industry"</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a></span>
-<span id="cb3-49"><a href="#cb3-49"></a>EnergyMats_<span class="dv">2000</span><span class="op">$</span>matrix[[<span class="dv">2</span>]] <span class="co"># The V matrix</span></span>
-<span id="cb3-50"><a href="#cb3-50"></a><span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span></span>
-<span id="cb3-51"><a href="#cb3-51"></a><span class="co">#&gt; Crude dist.           0         47000              0      0              0</span></span>
-<span id="cb3-52"><a href="#cb3-52"></a><span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span></span>
-<span id="cb3-53"><a href="#cb3-53"></a><span class="co">#&gt; Elect. grid           0             0              0      0              0</span></span>
-<span id="cb3-54"><a href="#cb3-54"></a><span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span></span>
-<span id="cb3-55"><a href="#cb3-55"></a><span class="co">#&gt; NG dist.              0             0              0      0              0</span></span>
-<span id="cb3-56"><a href="#cb3-56"></a><span class="co">#&gt; Oil fields            0             0          47500      0              0</span></span>
-<span id="cb3-57"><a href="#cb3-57"></a><span class="co">#&gt; Oil refineries        0             0              0  15500              0</span></span>
-<span id="cb3-58"><a href="#cb3-58"></a><span class="co">#&gt; Petrol dist.          0             0              0      0              0</span></span>
-<span id="cb3-59"><a href="#cb3-59"></a><span class="co">#&gt; Power plants          0             0              0      0              0</span></span>
-<span id="cb3-60"><a href="#cb3-60"></a><span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span></span>
-<span id="cb3-61"><a href="#cb3-61"></a><span class="co">#&gt; Resources - NG        0             0              0      0              0</span></span>
-<span id="cb3-62"><a href="#cb3-62"></a><span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span></span>
-<span id="cb3-63"><a href="#cb3-63"></a><span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span></span>
-<span id="cb3-64"><a href="#cb3-64"></a><span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-65"><a href="#cb3-65"></a><span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span></span>
-<span id="cb3-66"><a href="#cb3-66"></a><span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span></span>
-<span id="cb3-67"><a href="#cb3-67"></a><span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span></span>
-<span id="cb3-68"><a href="#cb3-68"></a><span class="co">#&gt; Oil fields            0            0     0          0          0      0</span></span>
-<span id="cb3-69"><a href="#cb3-69"></a><span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span></span>
-<span id="cb3-70"><a href="#cb3-70"></a><span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span></span>
-<span id="cb3-71"><a href="#cb3-71"></a><span class="co">#&gt; Power plants       6400            0     0          0          0      0</span></span>
-<span id="cb3-72"><a href="#cb3-72"></a><span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span></span>
-<span id="cb3-73"><a href="#cb3-73"></a><span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span></span>
-<span id="cb3-74"><a href="#cb3-74"></a><span class="co">#&gt;                   Petrol - Dist.</span></span>
-<span id="cb3-75"><a href="#cb3-75"></a><span class="co">#&gt; Crude dist.                    0</span></span>
-<span id="cb3-76"><a href="#cb3-76"></a><span class="co">#&gt; Diesel dist.                   0</span></span>
-<span id="cb3-77"><a href="#cb3-77"></a><span class="co">#&gt; Elect. grid                    0</span></span>
-<span id="cb3-78"><a href="#cb3-78"></a><span class="co">#&gt; Gas wells &amp; proc.              0</span></span>
-<span id="cb3-79"><a href="#cb3-79"></a><span class="co">#&gt; NG dist.                       0</span></span>
-<span id="cb3-80"><a href="#cb3-80"></a><span class="co">#&gt; Oil fields                     0</span></span>
-<span id="cb3-81"><a href="#cb3-81"></a><span class="co">#&gt; Oil refineries                 0</span></span>
-<span id="cb3-82"><a href="#cb3-82"></a><span class="co">#&gt; Petrol dist.               26000</span></span>
-<span id="cb3-83"><a href="#cb3-83"></a><span class="co">#&gt; Power plants                   0</span></span>
-<span id="cb3-84"><a href="#cb3-84"></a><span class="co">#&gt; Resources - Crude              0</span></span>
-<span id="cb3-85"><a href="#cb3-85"></a><span class="co">#&gt; Resources - NG                 0</span></span>
-<span id="cb3-86"><a href="#cb3-86"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb3-87"><a href="#cb3-87"></a><span class="co">#&gt; [1] "Industry"</span></span>
-<span id="cb3-88"><a href="#cb3-88"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb3-89"><a href="#cb3-89"></a><span class="co">#&gt; [1] "Product"</span></span>
-<span id="cb3-90"><a href="#cb3-90"></a></span>
-<span id="cb3-91"><a href="#cb3-91"></a>EnergyMats_<span class="dv">2000</span><span class="op">$</span>matrix[[<span class="dv">3</span>]] <span class="co"># The Y matrix</span></span>
-<span id="cb3-92"><a href="#cb3-92"></a><span class="co">#&gt;                Residential Transport</span></span>
-<span id="cb3-93"><a href="#cb3-93"></a><span class="co">#&gt; Diesel - Dist.           0     14750</span></span>
-<span id="cb3-94"><a href="#cb3-94"></a><span class="co">#&gt; Elect - Grid          6000         0</span></span>
-<span id="cb3-95"><a href="#cb3-95"></a><span class="co">#&gt; NG - Dist.           25000         0</span></span>
-<span id="cb3-96"><a href="#cb3-96"></a><span class="co">#&gt; Petrol - Dist.           0     26000</span></span>
-<span id="cb3-97"><a href="#cb3-97"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb3-98"><a href="#cb3-98"></a><span class="co">#&gt; [1] "Product"</span></span>
-<span id="cb3-99"><a href="#cb3-99"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb3-100"><a href="#cb3-100"></a><span class="co">#&gt; [1] "Sector"</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">EnergyMats_2000</span> <span class="kw">&lt;-</span> <span class="no">UKEnergy2000_with_metadata</span> <span class="kw">%&gt;%</span>
+  <span class="fu">group_by</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">matname</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span>(<span class="kw">matnames</span> <span class="kw">=</span> <span class="st">"matname"</span>, <span class="kw">matvals</span> <span class="kw">=</span> <span class="st">"E.ktoe"</span>,
+                       <span class="kw">rownames</span> <span class="kw">=</span> <span class="st">"rowname"</span>, <span class="kw">colnames</span> <span class="kw">=</span> <span class="st">"colname"</span>,
+                       <span class="kw">rowtypes</span> <span class="kw">=</span> <span class="st">"rowtype"</span>, <span class="kw">coltypes</span> <span class="kw">=</span> <span class="st">"coltype"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">rename</span>(<span class="kw">matrix.name</span> <span class="kw">=</span> <span class="no">matname</span>, <span class="kw">matrix</span> <span class="kw">=</span> <span class="no">E.ktoe</span>)
+<span class="co">#&gt; Warning: The `add` argument of `group_by()` is deprecated as of dplyr 1.0.0.</span>
+<span class="co">#&gt; Please use the `.add` argument instead.</span>
+<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
+<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span>
+
+<span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span>
+<span class="fu">glimpse</span>(<span class="no">EnergyMats_2000</span>)
+<span class="co">#&gt; Rows: 3</span>
+<span class="co">#&gt; Columns: 4</span>
+<span class="co">#&gt; $ Country     &lt;chr&gt; "GB", "GB", "GB"</span>
+<span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span>
+<span class="co">#&gt; $ matrix.name &lt;chr&gt; "U", "V", "Y"</span>
+<span class="co">#&gt; $ matrix      &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[4 x 2]&gt;]</span>
+
+<span class="co"># To access one of the matrices, try one of these approaches:</span>
+(<span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">matrix.name</span> <span class="kw">==</span> <span class="st">"U"</span>))<span class="kw">[[</span><span class="st">"matrix"</span>]] <span class="co"># The U matrix</span>
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span>
+<span class="co">#&gt; Crude                    0            0           0                 0        0</span>
+<span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span>
+<span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span>
+<span class="co">#&gt; Diesel                   0        15500           0                 0        0</span>
+<span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span>
+<span class="co">#&gt; Elect                    0            0        6400                 0        0</span>
+<span class="co">#&gt; Elect - Grid            25            0           0                25       25</span>
+<span class="co">#&gt; NG                       0            0           0             43000        0</span>
+<span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span>
+<span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span>
+<span class="co">#&gt; Petrol                   0            0           0                 0        0</span>
+<span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span>
+<span class="co">#&gt; Crude               50000              0            0            0</span>
+<span class="co">#&gt; Crude - Dist.           0          47000            0            0</span>
+<span class="co">#&gt; Crude - Fields          0              0            0            0</span>
+<span class="co">#&gt; Diesel                  0              0            0            0</span>
+<span class="co">#&gt; Diesel - Dist.         50              0          250            0</span>
+<span class="co">#&gt; Elect                   0              0            0            0</span>
+<span class="co">#&gt; Elect - Grid           25             75            0          100</span>
+<span class="co">#&gt; NG                      0              0            0            0</span>
+<span class="co">#&gt; NG - Dist.              0              0            0        16000</span>
+<span class="co">#&gt; NG - Wells              0              0            0            0</span>
+<span class="co">#&gt; Petrol                  0              0        26500            0</span>
+<span class="co">#&gt; attr(,"rowtype")</span>
+<span class="co">#&gt; [1] "Product"</span>
+<span class="co">#&gt; attr(,"coltype")</span>
+<span class="co">#&gt; [1] "Industry"</span>
+
+<span class="no">EnergyMats_2000</span>$<span class="no">matrix</span><span class="kw">[[</span><span class="fl">2</span>]] <span class="co"># The V matrix</span>
+<span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span>
+<span class="co">#&gt; Crude dist.           0         47000              0      0              0</span>
+<span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span>
+<span class="co">#&gt; Elect. grid           0             0              0      0              0</span>
+<span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span>
+<span class="co">#&gt; NG dist.              0             0              0      0              0</span>
+<span class="co">#&gt; Oil fields            0             0          47500      0              0</span>
+<span class="co">#&gt; Oil refineries        0             0              0  15500              0</span>
+<span class="co">#&gt; Petrol dist.          0             0              0      0              0</span>
+<span class="co">#&gt; Power plants          0             0              0      0              0</span>
+<span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span>
+<span class="co">#&gt; Resources - NG        0             0              0      0              0</span>
+<span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span>
+<span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span>
+<span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span>
+<span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span>
+<span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span>
+<span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span>
+<span class="co">#&gt; Oil fields            0            0     0          0          0      0</span>
+<span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span>
+<span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span>
+<span class="co">#&gt; Power plants       6400            0     0          0          0      0</span>
+<span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span>
+<span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span>
+<span class="co">#&gt;                   Petrol - Dist.</span>
+<span class="co">#&gt; Crude dist.                    0</span>
+<span class="co">#&gt; Diesel dist.                   0</span>
+<span class="co">#&gt; Elect. grid                    0</span>
+<span class="co">#&gt; Gas wells &amp; proc.              0</span>
+<span class="co">#&gt; NG dist.                       0</span>
+<span class="co">#&gt; Oil fields                     0</span>
+<span class="co">#&gt; Oil refineries                 0</span>
+<span class="co">#&gt; Petrol dist.               26000</span>
+<span class="co">#&gt; Power plants                   0</span>
+<span class="co">#&gt; Resources - Crude              0</span>
+<span class="co">#&gt; Resources - NG                 0</span>
+<span class="co">#&gt; attr(,"rowtype")</span>
+<span class="co">#&gt; [1] "Industry"</span>
+<span class="co">#&gt; attr(,"coltype")</span>
+<span class="co">#&gt; [1] "Product"</span>
+
+<span class="no">EnergyMats_2000</span>$<span class="no">matrix</span><span class="kw">[[</span><span class="fl">3</span>]] <span class="co"># The Y matrix</span>
+<span class="co">#&gt;                Residential Transport</span>
+<span class="co">#&gt; Diesel - Dist.           0     14750</span>
+<span class="co">#&gt; Elect - Grid          6000         0</span>
+<span class="co">#&gt; NG - Dist.           25000         0</span>
+<span class="co">#&gt; Petrol - Dist.           0     26000</span>
+<span class="co">#&gt; attr(,"rowtype")</span>
+<span class="co">#&gt; [1] "Product"</span>
+<span class="co">#&gt; attr(,"coltype")</span>
+<span class="co">#&gt; [1] "Sector"</span></pre></body></html></div>
 </div>
 <div id="duplicate-for-purposes-of-illustration" class="section level3">
 <h3 class="hasAnchor">
 <a href="#duplicate-for-purposes-of-illustration" class="anchor"></a>Duplicate (for purposes of illustration)</h3>
 <p>Larger studies will include data for multiple countries and years. The ECC data from UK in year <code>2000</code> can be duplicated for <code>2001</code> and for a fictitious country <code>AB</code>. Although the data are unchanged, the additional rows serve to illustrate the functional programming aspects of the <code>matsindf</code> and <code>matsbyname</code> packages.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>Energy &lt;-<span class="st"> </span>EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="st">  </span><span class="co"># Create rows for a fictitious country "AB".</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="st">  </span><span class="co"># Although the rows for "AB" are same as the "GB" rows,</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="st">  </span><span class="co"># they serve to illustrate functional programming with matsindf.</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(EnergyMats_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mutate</span>(<span class="dt">Country =</span> <span class="st">"AB"</span>)) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> Year, <span class="dt">value =</span> matrix) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    <span class="co"># Create a column for a second year (2001).</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>    <span class="st">`</span><span class="dt">2001</span><span class="st">`</span> =<span class="st"> `</span><span class="dt">2000</span><span class="st">`</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> Year, <span class="dt">value =</span> matrix, <span class="st">`</span><span class="dt">2000</span><span class="st">`</span>, <span class="st">`</span><span class="dt">2001</span><span class="st">`</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="st">  </span><span class="co"># Now spread to put each matrix in a column.</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="st">  </span><span class="kw">spread</span>(<span class="dt">key =</span> matrix.name, <span class="dt">value =</span> matrix)</span>
-<span id="cb4-14"><a href="#cb4-14"></a></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">glimpse</span>(Energy)</span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; Observations: 4</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; Variables: 5</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; $ Country &lt;chr&gt; "AB", "AB", "GB", "GB"</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; $ Year    &lt;chr&gt; "2000", "2001", "2000", "2001"</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; $ U       &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matr…</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; $ V       &lt;list&gt; [&lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;m…</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; $ Y       &lt;list&gt; [&lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[…</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">Energy</span> <span class="kw">&lt;-</span> <span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span>
+  <span class="co"># Create rows for a fictitious country "AB".</span>
+  <span class="co"># Although the rows for "AB" are same as the "GB" rows,</span>
+  <span class="co"># they serve to illustrate functional programming with matsindf.</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span> <span class="fu">mutate</span>(<span class="kw">Country</span> <span class="kw">=</span> <span class="st">"AB"</span>)) <span class="kw">%&gt;%</span>
+  <span class="fu">spread</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">Year</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">mutate</span>(
+    <span class="co"># Create a column for a second year (2001).</span>
+    <span class="kw">`2001`</span> <span class="kw">=</span> <span class="no">`2000`</span>
+  ) <span class="kw">%&gt;%</span>
+  <span class="fu">gather</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">Year</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>, <span class="no">`2000`</span>, <span class="no">`2001`</span>) <span class="kw">%&gt;%</span>
+  <span class="co"># Now spread to put each matrix in a column.</span>
+  <span class="fu">spread</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">matrix.name</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>)
+
+<span class="fu">glimpse</span>(<span class="no">Energy</span>)
+<span class="co">#&gt; Rows: 4</span>
+<span class="co">#&gt; Columns: 5</span>
+<span class="co">#&gt; $ Country &lt;chr&gt; "AB", "AB", "GB", "GB"</span>
+<span class="co">#&gt; $ Year    &lt;chr&gt; "2000", "2001", "2000", "2001"</span>
+<span class="co">#&gt; $ U       &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matr…</span>
+<span class="co">#&gt; $ V       &lt;list&gt; [&lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;m…</span>
+<span class="co">#&gt; $ Y       &lt;list&gt; [&lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[…</span></pre></body></html></div>
 </div>
 <div id="verify-data" class="section level3">
 <h3 class="hasAnchor">
@@ -376,23 +380,23 @@
 <p>and</p>
 <p><span class="math display">\[\mathbf{W}\mathbf{i} - \mathbf{Y}\mathbf{i} = \mathbf{0}.\]</span></p>
 <p>Energy balance verification can be implemented with <code>matsbyname</code> functions and <code>tidyverse</code> functional programming:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>Check &lt;-<span class="st"> </span>Energy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="dt">W =</span> <span class="kw">difference_byname</span>(<span class="kw">transpose_byname</span>(V), U),</span>
-<span id="cb5-4"><a href="#cb5-4"></a>    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>    <span class="dt">err =</span> <span class="kw">difference_byname</span>(<span class="kw">rowsums_byname</span>(W), </span>
-<span id="cb5-6"><a href="#cb5-6"></a>                            <span class="kw">rowsums_byname</span>(Y) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="st">                              </span><span class="kw">setcolnames_byname</span>(<span class="st">"Industry"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setcoltype</span>(<span class="st">"Industry"</span>)),</span>
-<span id="cb5-8"><a href="#cb5-8"></a>    <span class="dt">EBalOK =</span> <span class="kw">iszero_byname</span>(err)</span>
-<span id="cb5-9"><a href="#cb5-9"></a>  )</span>
-<span id="cb5-10"><a href="#cb5-10"></a>Check <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(Country, Year, EBalOK)</span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;   Country Year EBalOK</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt; 1      AB 2000   TRUE</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 2      AB 2001   TRUE</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; 3      GB 2000   TRUE</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; 4      GB 2001   TRUE</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="kw"><a href="https://rdrr.io/r/base/all.html">all</a></span>(Check<span class="op">$</span>EBalOK <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/logical.html">as.logical</a></span>())</span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; [1] TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">Check</span> <span class="kw">&lt;-</span> <span class="no">Energy</span> <span class="kw">%&gt;%</span>
+  <span class="fu">mutate</span>(
+    <span class="kw">W</span> <span class="kw">=</span> <span class="fu">difference_byname</span>(<span class="fu">transpose_byname</span>(<span class="no">V</span>), <span class="no">U</span>),
+    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span>
+    <span class="kw">err</span> <span class="kw">=</span> <span class="fu">difference_byname</span>(<span class="fu">rowsums_byname</span>(<span class="no">W</span>),
+                            <span class="fu">rowsums_byname</span>(<span class="no">Y</span>) <span class="kw">%&gt;%</span>
+                              <span class="fu">setcolnames_byname</span>(<span class="st">"Industry"</span>) <span class="kw">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">"Industry"</span>)),
+    <span class="kw">EBalOK</span> <span class="kw">=</span> <span class="fu">iszero_byname</span>(<span class="no">err</span>)
+  )
+<span class="no">Check</span> <span class="kw">%&gt;%</span> <span class="fu">select</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">EBalOK</span>)
+<span class="co">#&gt;   Country Year EBalOK</span>
+<span class="co">#&gt; 1      AB 2000   TRUE</span>
+<span class="co">#&gt; 2      AB 2001   TRUE</span>
+<span class="co">#&gt; 3      GB 2000   TRUE</span>
+<span class="co">#&gt; 4      GB 2001   TRUE</span>
+<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span>(<span class="no">Check</span>$<span class="no">EBalOK</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html">as.logical</a></span>())
+<span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
 <p>This example demonstrates that energy balance can be verified for <em>all</em> combinations of Country and Year with a few lines of code. In fact, the exact same code can be applied to the <code>Energy</code> data frame, regardless of the number of rows in it.</p>
 <p>Secure in the knowledge that energy is conserved across all ECCs in the <code>Energy</code> data frame, other analyses can proceed.</p>
 </div>
@@ -402,31 +406,31 @@
 <p>To further illustrate the power of <code>matsbyname</code> functions in the context of <code>matsindf</code>, consider the calculation of the efficiency of every industry in the ECC as column vector <span class="math inline">\(\eta\)</span> as shown by Equation 11 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
 <p><span class="math display">\[\mathbf{g} = \mathbf{V}\mathbf{i}\]</span></p>
 <p><span class="math display">\[\mathbf{\eta} = \widehat{\mathbf{U}^\mathrm{T} \mathbf{i}}^{\mathrm{-}1} \mathbf{g}\]</span></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>Etas &lt;-<span class="st"> </span>Energy <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="dt">g =</span> <span class="kw">rowsums_byname</span>(V),</span>
-<span id="cb6-4"><a href="#cb6-4"></a>    <span class="dt">eta =</span> <span class="kw">transpose_byname</span>(U) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rowsums_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="st">      </span><span class="kw">hatize_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">invert_byname</span>() <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="st">      </span><span class="kw">matrixproduct_byname</span>(g) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="st">      </span><span class="kw">setcolnames_byname</span>(<span class="st">"eta"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">setcoltype</span>(<span class="st">"Efficiency"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="st">  </span><span class="kw">select</span>(Country, Year, eta)</span>
-<span id="cb6-10"><a href="#cb6-10"></a></span>
-<span id="cb6-11"><a href="#cb6-11"></a>Etas<span class="op">$</span>eta[[<span class="dv">1</span>]]</span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;                         eta</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; Crude dist.       0.9884332</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; Diesel dist.      0.9774194</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; Elect. grid       0.9804688</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; Gas wells &amp; proc. 0.9518282</span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; NG dist.          0.9987820</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; Oil fields        0.9485771</span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; Oil refineries    0.8921933</span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; Petrol dist.      0.9719626</span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; Power plants      0.3975155</span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="co">#&gt; [1] "Industry"</span></span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="co">#&gt; attr(,"coltype")</span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="co">#&gt; [1] "Efficiency"</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">Etas</span> <span class="kw">&lt;-</span> <span class="no">Energy</span> <span class="kw">%&gt;%</span>
+  <span class="fu">mutate</span>(
+    <span class="kw">g</span> <span class="kw">=</span> <span class="fu">rowsums_byname</span>(<span class="no">V</span>),
+    <span class="kw">eta</span> <span class="kw">=</span> <span class="fu">transpose_byname</span>(<span class="no">U</span>) <span class="kw">%&gt;%</span> <span class="fu">rowsums_byname</span>() <span class="kw">%&gt;%</span>
+      <span class="fu">hatize_byname</span>() <span class="kw">%&gt;%</span> <span class="fu">invert_byname</span>() <span class="kw">%&gt;%</span>
+      <span class="fu">matrixproduct_byname</span>(<span class="no">g</span>) <span class="kw">%&gt;%</span>
+      <span class="fu">setcolnames_byname</span>(<span class="st">"eta"</span>) <span class="kw">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">"Efficiency"</span>)
+  ) <span class="kw">%&gt;%</span>
+  <span class="fu">select</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">eta</span>)
+
+<span class="no">Etas</span>$<span class="no">eta</span><span class="kw">[[</span><span class="fl">1</span>]]
+<span class="co">#&gt;                         eta</span>
+<span class="co">#&gt; Crude dist.       0.9884332</span>
+<span class="co">#&gt; Diesel dist.      0.9774194</span>
+<span class="co">#&gt; Elect. grid       0.9804688</span>
+<span class="co">#&gt; Gas wells &amp; proc. 0.9518282</span>
+<span class="co">#&gt; NG dist.          0.9987820</span>
+<span class="co">#&gt; Oil fields        0.9485771</span>
+<span class="co">#&gt; Oil refineries    0.8921933</span>
+<span class="co">#&gt; Petrol dist.      0.9719626</span>
+<span class="co">#&gt; Power plants      0.3975155</span>
+<span class="co">#&gt; attr(,"rowtype")</span>
+<span class="co">#&gt; [1] "Industry"</span>
+<span class="co">#&gt; attr(,"coltype")</span>
+<span class="co">#&gt; [1] "Efficiency"</span></pre></body></html></div>
 <p>Note that only a few lines of code are required to perform the same series of matrix operations on every combination of <code>Country</code> and <code>Year</code>. In fact, the same code will be used to calculate the efficiency of any number of industries in any number of countries and years!</p>
 </div>
 <div id="expand" class="section level3">
@@ -471,54 +475,54 @@
 </tbody>
 </table>
 <p>Prior to <code>expand</code>ing, it is usually necessary to <code>gather</code> columns of matrices.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>etas_forgraphing &lt;-<span class="st"> </span>Etas <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="st">  </span><span class="kw">gather</span>(<span class="dt">key =</span> matrix.names, <span class="dt">value =</span> matrix, eta) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="st">  </span><span class="kw"><a href="../reference/expand_to_tidy.html">expand_to_tidy</a></span>(<span class="dt">matnames =</span> <span class="st">"matrix.names"</span>, <span class="dt">matvals =</span> <span class="st">"matrix"</span>, </span>
-<span id="cb7-4"><a href="#cb7-4"></a>                 <span class="dt">rownames =</span> <span class="st">"Industry"</span>, <span class="dt">colnames =</span> <span class="st">"etas"</span>, </span>
-<span id="cb7-5"><a href="#cb7-5"></a>                 <span class="dt">rowtypes =</span> <span class="st">"rowtype"</span>, <span class="dt">coltypes =</span> <span class="st">"Efficiencies"</span>) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="st">  </span><span class="kw">mutate</span>(</span>
-<span id="cb7-7"><a href="#cb7-7"></a>    <span class="co"># Eliminate columns we no longer need.</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    <span class="dt">matrix.names =</span> <span class="ot">NULL</span>,</span>
-<span id="cb7-9"><a href="#cb7-9"></a>    <span class="dt">etas =</span> <span class="ot">NULL</span>, </span>
-<span id="cb7-10"><a href="#cb7-10"></a>    <span class="dt">rowtype =</span> <span class="ot">NULL</span>, </span>
-<span id="cb7-11"><a href="#cb7-11"></a>    <span class="dt">Efficiencies =</span> <span class="ot">NULL</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>  ) <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="st">  </span><span class="kw">rename</span>(</span>
-<span id="cb7-14"><a href="#cb7-14"></a>    <span class="dt">eta =</span> matrix</span>
-<span id="cb7-15"><a href="#cb7-15"></a>  )</span>
-<span id="cb7-16"><a href="#cb7-16"></a></span>
-<span id="cb7-17"><a href="#cb7-17"></a><span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span></span>
-<span id="cb7-18"><a href="#cb7-18"></a>etas_forgraphing <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(Country <span class="op">==</span><span class="st"> "GB"</span>, Year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>)</span>
-<span id="cb7-19"><a href="#cb7-19"></a><span class="co">#&gt; # A tibble: 9 x 4</span></span>
-<span id="cb7-20"><a href="#cb7-20"></a><span class="co">#&gt;   Country Year  Industry            eta</span></span>
-<span id="cb7-21"><a href="#cb7-21"></a><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span></span>
-<span id="cb7-22"><a href="#cb7-22"></a><span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span></span>
-<span id="cb7-23"><a href="#cb7-23"></a><span class="co">#&gt; 2 GB      2000  Diesel dist.      0.977</span></span>
-<span id="cb7-24"><a href="#cb7-24"></a><span class="co">#&gt; 3 GB      2000  Elect. grid       0.980</span></span>
-<span id="cb7-25"><a href="#cb7-25"></a><span class="co">#&gt; 4 GB      2000  Gas wells &amp; proc. 0.952</span></span>
-<span id="cb7-26"><a href="#cb7-26"></a><span class="co">#&gt; 5 GB      2000  NG dist.          0.999</span></span>
-<span id="cb7-27"><a href="#cb7-27"></a><span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span></span>
-<span id="cb7-28"><a href="#cb7-28"></a><span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span></span>
-<span id="cb7-29"><a href="#cb7-29"></a><span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span></span>
-<span id="cb7-30"><a href="#cb7-30"></a><span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">etas_forgraphing</span> <span class="kw">&lt;-</span> <span class="no">Etas</span> <span class="kw">%&gt;%</span>
+  <span class="fu">gather</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">matrix.names</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>, <span class="no">eta</span>) <span class="kw">%&gt;%</span>
+  <span class="fu"><a href="../reference/expand_to_tidy.html">expand_to_tidy</a></span>(<span class="kw">matnames</span> <span class="kw">=</span> <span class="st">"matrix.names"</span>, <span class="kw">matvals</span> <span class="kw">=</span> <span class="st">"matrix"</span>,
+                 <span class="kw">rownames</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">colnames</span> <span class="kw">=</span> <span class="st">"etas"</span>,
+                 <span class="kw">rowtypes</span> <span class="kw">=</span> <span class="st">"rowtype"</span>, <span class="kw">coltypes</span> <span class="kw">=</span> <span class="st">"Efficiencies"</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">mutate</span>(
+    <span class="co"># Eliminate columns we no longer need.</span>
+    <span class="kw">matrix.names</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">etas</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">rowtype</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    <span class="kw">Efficiencies</span> <span class="kw">=</span> <span class="kw">NULL</span>
+  ) <span class="kw">%&gt;%</span>
+  <span class="fu">rename</span>(
+    <span class="kw">eta</span> <span class="kw">=</span> <span class="no">matrix</span>
+  )
+
+<span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span>
+<span class="no">etas_forgraphing</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">Country</span> <span class="kw">==</span> <span class="st">"GB"</span>, <span class="no">Year</span> <span class="kw">==</span> <span class="fl">2000</span>)
+<span class="co">#&gt; # A tibble: 9 x 4</span>
+<span class="co">#&gt;   Country Year  Industry            eta</span>
+<span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span>
+<span class="co">#&gt; 2 GB      2000  Diesel dist.      0.977</span>
+<span class="co">#&gt; 3 GB      2000  Elect. grid       0.980</span>
+<span class="co">#&gt; 4 GB      2000  Gas wells &amp; proc. 0.952</span>
+<span class="co">#&gt; 5 GB      2000  NG dist.          0.999</span>
+<span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span>
+<span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span>
+<span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span>
+<span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></pre></body></html></div>
 <p><code>etas_forgraphing</code> is a data frame of efficiencies, one for each Country, Year, and Industry, in a format that is amenable to plotting with packages such as <a href="http://ggplot2.tidyverse.org">ggplot</a>.</p>
 </div>
 <div id="report" class="section level3">
 <h3 class="hasAnchor">
 <a href="#report" class="anchor"></a>Report</h3>
 <p>The following code creates a bar graph of efficiency results for the UK in 2000:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>etas_UK_<span class="dv">2000</span> &lt;-<span class="st"> </span>etas_forgraphing <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(Country <span class="op">==</span><span class="st"> "GB"</span>, Year <span class="op">==</span><span class="st"> </span><span class="dv">2000</span>) </span>
-<span id="cb8-2"><a href="#cb8-2"></a></span>
-<span id="cb8-3"><a href="#cb8-3"></a>etas_UK_<span class="dv">2000</span> <span class="op">%&gt;%</span><span class="st"> </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">mapping =</span> <span class="kw">aes_string</span>(<span class="dt">x =</span> <span class="st">"Industry"</span>, <span class="dt">y =</span> <span class="st">"eta"</span>, </span>
-<span id="cb8-5"><a href="#cb8-5"></a>                              <span class="dt">fill =</span> <span class="st">"Industry"</span>, <span class="dt">colour =</span> <span class="st">"Industry"</span>)) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="st">  </span><span class="kw">geom_bar</span>(<span class="dt">stat =</span> <span class="st">"identity"</span>) <span class="op">+</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="kw"><a href="https://rdrr.io/r/base/expression.html">expression</a></span>(eta[UK<span class="op">*</span><span class="st">","</span><span class="op">*</span><span class="dv">2000</span>]), <span class="dt">fill =</span> <span class="ot">NULL</span>) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="st">  </span><span class="kw">scale_y_continuous</span>(<span class="dt">breaks =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.2</span>)) <span class="op">+</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="st">  </span><span class="kw">scale_fill_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"white"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(etas_UK_<span class="dv">2000</span>))) <span class="op">+</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="st">  </span><span class="kw">scale_colour_manual</span>(<span class="dt">values =</span> <span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"gray20"</span>, <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(etas_UK_<span class="dv">2000</span>))) <span class="op">+</span><span class="st"> </span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="ot">FALSE</span>, <span class="dt">colour =</span> <span class="ot">FALSE</span>) <span class="op">+</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">axis.text.x =</span> <span class="kw">element_text</span>(<span class="dt">angle =</span> <span class="dv">90</span>, <span class="dt">vjust =</span> <span class="fl">0.4</span>, <span class="dt">hjust =</span> <span class="dv">1</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">etas_UK_2000</span> <span class="kw">&lt;-</span> <span class="no">etas_forgraphing</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">Country</span> <span class="kw">==</span> <span class="st">"GB"</span>, <span class="no">Year</span> <span class="kw">==</span> <span class="fl">2000</span>)
+
+<span class="no">etas_UK_2000</span> <span class="kw">%&gt;%</span>
+  <span class="fu">ggplot</span>(<span class="kw">mapping</span> <span class="kw">=</span> <span class="fu">aes_string</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"eta"</span>,
+                              <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">"Industry"</span>)) +
+  <span class="fu">geom_bar</span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"identity"</span>) +
+  <span class="fu">labs</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span>(<span class="no">eta</span>[<span class="no">UK</span>*<span class="st">","</span>*<span class="fl">2000</span>]), <span class="kw">fill</span> <span class="kw">=</span> <span class="kw">NULL</span>) +
+  <span class="fu">scale_y_continuous</span>(<span class="kw">breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fl">0.2</span>)) +
+  <span class="fu">scale_fill_manual</span>(<span class="kw">values</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"white"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">etas_UK_2000</span>))) +
+  <span class="fu">scale_colour_manual</span>(<span class="kw">values</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"gray20"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">etas_UK_2000</span>))) +
+  <span class="fu">guides</span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
+  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">angle</span> <span class="kw">=</span> <span class="fl">90</span>, <span class="kw">vjust</span> <span class="kw">=</span> <span class="fl">0.4</span>, <span class="kw">hjust</span> <span class="kw">=</span> <span class="fl">1</span>))</pre></body></html></div>
 <p><img src="matsindf_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
@@ -552,20 +556,11 @@
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#introduction">Introduction</a></li>
-      <li><a href="#data-ukenergy2000">Data: <code>UKEnergy2000</code></a></li>
-      <li><a href="#suggested-workflow">Suggested workflow</a></li>
-      <li><a href="#conclusion">Conclusion</a></li>
-      <li><a href="#references">References</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -576,7 +571,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

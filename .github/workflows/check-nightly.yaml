@@ -1,7 +1,9 @@
 # This GitHub action performs a nightly build of the master branch.
 # It builds on several OSes to verify continued compatibility.
 
-on = "schedule(* 4 * * *)" # Every day at 4 AM
+on:
+  schedule:
+    - cron: "* 4 * * *" # Every day at 4 AM
 
 name: R-CMD-check-nightly
 

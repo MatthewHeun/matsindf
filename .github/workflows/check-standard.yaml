@@ -10,7 +10,7 @@ on:
     branches:
       - master
 
-name: R-CMD-check-master-develop
+name: check-standard
 
 jobs:
   R-CMD-check:

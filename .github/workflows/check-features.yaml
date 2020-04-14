@@ -12,7 +12,7 @@ on:
       - master
       - develop
 
-name: R-CMD-check-features
+name: check-features
 
 jobs:
   R-CMD-check:

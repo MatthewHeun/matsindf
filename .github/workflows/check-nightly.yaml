@@ -5,7 +5,7 @@ on:
   schedule:
     - cron: "* 4 * * *" # Every day at 4 AM
 
-name: R-CMD-check-nightly
+name: check-nightly
 
 jobs:
   R-CMD-check:

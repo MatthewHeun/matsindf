@@ -3,7 +3,7 @@
 
 on:
   schedule:
-    - cron: '0 4 * * *'' # Every morning at 4:00 AM
+    - cron: '0 4 * * *' # Every morning at 4:00 AM
 
 name: check-nightly
 

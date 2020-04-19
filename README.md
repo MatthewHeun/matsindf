@@ -7,6 +7,8 @@
 
 <!-- *********** -->
 
+<!-- badges: start -->
+
 [![CRAN
 status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.org/package=matsindf)
 [![lifecycle](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://www.tidyverse.org/lifecycle/#stable)
@@ -15,8 +17,11 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Travis-CI Build
 Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
+[![R build
+status](https://github.com/MatthewHeun/matsindf/workflows/R-CMD-check/badge.svg)](https://github.com/MatthewHeun/matsindf/actions)
 [![Coverage
 status](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/github/MatthewHeun/matsindf?branch=master)
+<!-- badges: end -->
 
 # matsindf
 

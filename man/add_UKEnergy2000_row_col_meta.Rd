@@ -64,8 +64,8 @@ Default is "\code{Sector}".}
 }
 \value{
 \code{.DF} with additional columns named
-        \code{rowname_colname}, \code{colname_colname},
-        \code{rowtype_colname}, and \code{coltype_colname}.
+\code{rowname_colname}, \code{colname_colname},
+\code{rowtype_colname}, and \code{coltype_colname}.
 }
 \description{
 Add row, column, row type, and column type metadata

@@ -11,18 +11,18 @@ group_by_everything_except(.DF, ..., .add = FALSE, .drop = FALSE)
 
 \item{...}{a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping}
 
-\item{.add}{When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
-To add to the existing groups, use `.add = TRUE`.}
+\item{.add}{When \code{.add = FALSE}, the default, \code{dplyr::group_by()} will override existing groups.
+To add to the existing groups, use \code{.add = TRUE}.}
 
-\item{.drop}{When `.drop = TRUE`, empty groups are dropped.}
+\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped.}
 }
 \value{
-a grouped version of `.DF`
+a grouped version of \code{.DF}
 }
 \description{
 This is a convenience function
 that allows grouping of a data frame by all variables (columns)
-except those variables specified in `...`.
+except those variables specified in \code{...}.
 }
 \examples{
 library(dplyr)

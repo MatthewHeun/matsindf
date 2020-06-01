@@ -110,7 +110,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
   # Thus, we need to test only for the one of them being non-NULL.
   .DF %>%
     {if (!is.null(rowtypes)) {
-      dplyr::group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), add = TRUE)
+      dplyr::group_by(.DF, !!as.name(rowtypes), !!as.name(coltypes), .add = TRUE)
     } else {
       .DF
     } } %>%

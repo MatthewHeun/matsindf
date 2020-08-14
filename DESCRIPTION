@@ -1,7 +1,7 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.3.5
+Version: 0.3.6
 Date: 2020-08-14
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),

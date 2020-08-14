@@ -44,4 +44,10 @@
 ## Downstream dependencies
 
 * Reverse dependencies were checked with `revdepcheck::revdep_check(num_workers = 4)`.
-* There are currently no downstream dependencies for `matsindf`.
+    * All reverse dependencies fine.
+    * There is currently only one CRAN package dependenent upon `matsindf`, namely one of my other packages `matsbyname`.
+      The results are:
+  
+✓ matsbyname 0.4.15                      ── E: 0     | W: 0     | N: 0                                                                
+OK: 1                                                                                                                               
+BROKEN: 0

@@ -7,6 +7,6 @@
 x := y
 }
 \description{
-See \code{rlang::\link[rlang]{:=}} for details.
+See \verb{:=} for details.
 }
 \keyword{internal}

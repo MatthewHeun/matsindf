@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See [rlang::`:=`] for details.
+#' See `:=` for details.
 #'
 #' @name :=
 #' @rdname quasi-quote-assign

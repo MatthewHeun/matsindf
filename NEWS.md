@@ -1,4 +1,4 @@
-* To comply with deprecating change in `dplyr`, 
+* To comply with a deprecating change in `dplyr`, 
   all calls to `dplyr::group_by()` now use `.add` argument
   instead of `add` argument.
 

@@ -42,7 +42,7 @@
 <meta property="og:title" content="Group by all variables except some — group_by_everything_except" />
 <meta property="og:description" content="This is a convenience function
 that allows grouping of a data frame by all variables (columns)
-except those variables specified in `...`." />
+except those variables specified in ...." />
 
 
 
@@ -74,7 +74,7 @@ except those variables specified in `...`." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -136,7 +136,7 @@ except those variables specified in `...`." />
     <div class="ref-description">
     <p>This is a convenience function
 that allows grouping of a data frame by all variables (columns)
-except those variables specified in `...`.</p>
+except those variables specified in <code>...</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>group_by_everything_except</span>(<span class='no'>.DF</span>, <span class='no'>...</span>, <span class='kw'>.add</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>.drop</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
@@ -154,18 +154,18 @@ except those variables specified in `...`.</p>
     </tr>
     <tr>
       <th>.add</th>
-      <td><p>When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
-To add to the existing groups, use `.add = TRUE`.</p></td>
+      <td><p>When <code>.add = FALSE</code>, the default, <code><a href='https://dplyr.tidyverse.org/reference/group_by.html'>dplyr::group_by()</a></code> will override existing groups.
+To add to the existing groups, use <code>.add = TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>.drop</th>
-      <td><p>When `.drop = TRUE`, empty groups are dropped.</p></td>
+      <td><p>When <code>.drop = TRUE</code>, empty groups are dropped.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a grouped version of `.DF`</p>
+    <p>a grouped version of <code>.DF</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)

@@ -1,5 +1,5 @@
 ---
-title: "Use Cases and Examples for `matsindf`"
+title: "Use Cases and Examples for matsindf"
 author: "Matthew Kuperus Heun"
 date: "2020-01-15"
 header-includes:

@@ -1,6 +1,6 @@
 ## Context
 
-`matsindf` v0.3.4 is a maintenance release to prepare for `dplyr` 1.0.0.  See `NEWS.md` for details. 
+`matsindf` v0.3.6 is a maintenance release to prepare for `dplyr` 1.0.0.  See `NEWS.md` for details.
 
 
 ## Test environments (7 in total) and R CMD check results

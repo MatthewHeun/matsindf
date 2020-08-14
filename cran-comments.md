@@ -48,6 +48,6 @@
     * There is currently only one CRAN package dependenent upon `matsindf`, namely one of my other packages `matsbyname`.
       The results are:
   
-✓ matsbyname 0.4.15                      ── E: 0     | W: 0     | N: 0                                                                
+✓ matsbyname 0.4.15                      ── E: 0     | W: 0     | N: 0
 OK: 1                                                                                                                               
 BROKEN: 0

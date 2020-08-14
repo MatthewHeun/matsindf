@@ -5,11 +5,11 @@ citEntry(entry = "Manual",
   author       = personList(as.person("Matthew Kuperus Heun")),
   year         = "2020",
   note         = "R package version 0.3.6",
-  url          = "https://MatthewHeun.github.io/matsindf",
+  url          = "https://MatthewHeun.github.io/matsindf/",
 
   textVersion  =
   paste("Matthew Kuperus Heun (2020).",
         "matsindf: Matrices in Data Frames.",
         "R package version 0.3.6.",
-        "https://MatthewHeun.github.io/matsindf")
+        "https://MatthewHeun.github.io/matsindf/")
 )

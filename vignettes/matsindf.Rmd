@@ -112,7 +112,7 @@ head(UKEnergy2000, 2)
 `Country` and `Year` contain only one value each, 
 `GB` and `2000` respectively.
 Following conventions of the [International Energy Agency](https://www.iea.org)'s 
-[energy balance tables](https://www.iea.org/data-and-statistics/data-tables), 
+[energy balance tables](https://www.iea.org/subscribe-to-data-services/world-energy-balances-and-statistics), 
 
 * `Ledger.side` indicates `Supply` or `Consumption`;
 * `Flow.aggregation.point` indicates how data are to be aggregated;

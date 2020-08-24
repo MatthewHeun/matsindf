@@ -1,4 +1,4 @@
-# matsindf 0.3.6 (2020-08-14)
+# matsindf 0.3.6 (2020-08-24)
 
 * To comply with a deprecating change in `dplyr`, 
   all calls to `dplyr::group_by()` now use `.add` argument

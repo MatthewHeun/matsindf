@@ -1,6 +1,6 @@
 #' Pipe operator
 #'
-#' See \code{rlang::\link[rlang]{:=}} for details.
+#' See `:=` for details.
 #'
 #' @name :=
 #' @rdname quasi-quote-assign

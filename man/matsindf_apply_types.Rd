@@ -2,7 +2,7 @@
 % Please edit documentation in R/matsindf_apply.R
 \name{matsindf_apply_types}
 \alias{matsindf_apply_types}
-\title{Determine types of ... argument for matsindf_apply}
+\title{Determine types of \code{...} argument for matsindf_apply}
 \usage{
 matsindf_apply_types(...)
 }
@@ -17,7 +17,7 @@ A logical list with components named \code{dots_present},
 \description{
 This is a convenience function that returns a logical list for the types of \code{...}
 with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
+\code{all_dots_list}, \verb{all_dots_vect``, and }all_dots_char`.
 }
 \details{
 When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.

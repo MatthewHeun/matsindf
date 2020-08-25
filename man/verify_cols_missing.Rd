@@ -15,7 +15,7 @@ a vector of names of new columns to be added to \code{.DF}}
 }
 \value{
 \code{NULL}. This function should be called for its side effect of checking the validity
-        of the names of \code{newcols} to be added to \code{.DF}.
+of the names of \code{newcols} to be added to \code{.DF}.
 }
 \description{
 In the \code{Recca} package, many functions add columns to an existing data frame.

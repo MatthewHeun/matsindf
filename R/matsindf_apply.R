@@ -1,58 +1,58 @@
-#' Apply a function to a \code{matsindf} data frame (and more)
+#' Apply a function to a `matsindf` data frame (and more)
 #'
-#' Applies \code{FUN} to \code{.dat} or
-#' performs the calculation specified by \code{FUN}
+#' Applies `FUN` to `.dat` or
+#' performs the calculation specified by `FUN`
 #' on numbers or matrices.
-#' \code{FUN} must return a named list.
+#' `FUN` must return a named list.
 #'
-#' If \code{is.null(.dat)} and \code{...} are all named numbers or matrices
-#' of the form \code{argname = m},
-#' \code{m}s are passed to \code{FUN} by \code{argname}s.
-#' The return value is a named list provided by \code{FUN}.
-#' The arguments in \code{...} are not included in the output.
+#' If `is.null(.dat)` and `...` are all named numbers or matrices
+#' of the form `argname = m`,
+#' `m`s are passed to `FUN` by `argname`s.
+#' The return value is a named list provided by `FUN`.
+#' The arguments in `...` are not included in the output.
 #'
-#' If \code{is.null(.dat)} and \code{...} are all lists of numbers or matrices
-#' of the form \code{argname = l},
-#' \code{FUN} is \code{Map}ped across the various \code{l}s
-#' to obtain a list of named lists returned from \code{FUN}.
+#' If `is.null(.dat)` and `...` are all lists of numbers or matrices
+#' of the form `argname = l`,
+#' `FUN` is `Map`ped across the various `l`s
+#' to obtain a list of named lists returned from `FUN`.
 #' The return value is a data frame
-#' whose rows are the top-level lists returned from \code{FUN} and
-#' whose column names are the names of the list items returned from \code{FUN}.
-#' Columns of \code{.dat} are not included in the return value.
+#' whose rows are the top-level lists returned from `FUN` and
+#' whose column names are the names of the list items returned from `FUN`.
+#' Columns of `.dat` are not included in the return value.
 #'
-#' If \code{!is.null(.dat)} and \code{...} are all named character strings
-#' of the form \code{argname = string},
-#' \code{argname}s are expected to be names of arguments to \code{FUN}, and
-#' \code{string}s are expected to be column names in \code{.dat}.
-#' The return value is \code{.dat} with additional columns (at right)
-#' whose names are the names of list items returned from \code{FUN}.
-#' When \code{.dat} contains columns whose names are same as columns added at the right,
+#' If `!is.null(.dat)` and `...` are all named character strings
+#' of the form `argname = string`,
+#' `argname`s are expected to be names of arguments to `FUN`, and
+#' `string`s are expected to be column names in `.dat`.
+#' The return value is `.dat` with additional columns (at right)
+#' whose names are the names of list items returned from `FUN`.
+#' When `.dat` contains columns whose names are same as columns added at the right,
 #' a warning is emitted.
 #'
-#' \code{.dat} can be a list of named items in which case a list will be returned.
+#' `.dat` can be a list of named items in which case a list will be returned.
 #'
-#' If items in \code{.dat} have same names are arguments to \code{FUN},
-#' it is not necessary to specify any arguments in \code{...}.
-#' \code{matsindf_apply} assumes that the appropriately-named items in \code{.dat} are
-#' intended to be arguments to \code{FUN}.
-#' When an item name appears in both \code{...} and \code{.dat},
-#' \code{...} takes precedence.
+#' If items in `.dat` have same names are arguments to `FUN`,
+#' it is not necessary to specify any arguments in `...`.
+#' `matsindf_apply` assumes that the appropriately-named items in `.dat` are
+#' intended to be arguments to `FUN`.
+#' When an item name appears in both `...` and `.dat`,
+#' `...` takes precedence.
 #'
-#' \code{NULL} arguments in ... are ignored for the purposes of deciding whether
+#' `NULL` arguments in `...` are ignored for the purposes of deciding whether
 #' all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
-#' However, all \code{NULL} arguments are passed to \code{FUN},
-#' so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
+#' However, all `NULL` arguments are passed to `FUN`,
+#' so `FUN` should be able to deal with `NULL` arguments appropriately.
 #'
-#' If \code{.dat} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
-#' of a column in \code{.dat},
-#' \code{FUN} is called WITHOUT the argument whose column is missing.
+#' If `.dat` is present, `...` contains strings, and one of the `...` strings is not the name
+#' of a column in `.dat`,
+#' `FUN` is called WITHOUT the argument whose column is missing.
 #' I.e., that argument is treated as missing.
-#' If \code{FUN} works despite the missing argument, execution proceeds.
-#' If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
+#' If `FUN` works despite the missing argument, execution proceeds.
+#' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
 #'
-#' @param .dat a list of named items or a data frame
-#' @param FUN the function to be applied to \code{.dat}
-#' @param ... named arguments to be passed by name to \code{FUN}.
+#' @param .dat a list of named items or a data frame.
+#' @param FUN the function to be applied to `.dat`.
+#' @param ... named arguments to be passed by name to `FUN`.
 #'
 #' @return a named list or a data frame. (See details.)
 #'
@@ -234,24 +234,24 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 }
 
 
-#' Determine types of ... argument for matsindf_apply
+#' Determine types of `...` argument for matsindf_apply
 #'
-#' This is a convenience function that returns a logical list for the types of \code{...}
-#' with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-#' \code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
+#' This is a convenience function that returns a logical list for the types of `...`
+#' with components named `dots_present`, `all_dots_num`, `all_dots_mats`,
+#' `all_dots_list`, `all_dots_vect``, and `all_dots_char`.
 #'
-#' When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
-#' When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
-#' When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
-#' When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
-#' When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
-#' When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
+#' When arguments are present in `...`, `dots_present` is `TRUE` but `FALSE` otherwise.
+#' When all items in `...` are single numbers, `all_dots_num` is `TRUE` and all other list members are `FALSE`.
+#' When all items in `...` are matrices, `all_dots_mats` is `TRUE` and all other list members are `FALSE`.
+#' When all items in `...` are lists, `all_dots_list` is `TRUE` and all other list members are `FALSE`.
+#' When all items in `...` are vectors (including lists), `all_dots_vect` is `TRUE`.
+#' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
 #'
 #' @param ... the list of arguments to be checked
 #'
-#' @return A logical list with components named \code{dots_present},
-#' \code{all_dot_num}, \code{all_dots_mats},
-#' \code{all_dots_list}, and \code{all_dots_char}.
+#' @return A logical list with components named `dots_present`,
+#' `all_dot_num`, `all_dots_mats`,
+#' `all_dots_list`, and `all_dots_char`.
 #'
 #' @export
 #'

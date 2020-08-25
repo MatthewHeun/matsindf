@@ -7,13 +7,13 @@
 \format{
 A data frame with 36 rows and 7 variables:
 \describe{
-  \item{Country}{country, GB (Great Britain, only one country)}
-  \item{Year}{year, 2000 (only one year)}
-  \item{Ledger.side}{Supply or Consumption}
-  \item{Flow.aggregation.point}{tells where each row should be aggregated}
-  \item{Flow}{the Industry or Sector involved in this flow}
-  \item{Product}{the energy product involved in this flow}
-  \item{E.ktoe}{magnitude of the energy flow in ktoe}
+\item{Country}{country, GB (Great Britain, only one country)}
+\item{Year}{year, 2000 (only one year)}
+\item{Ledger.side}{Supply or Consumption}
+\item{Flow.aggregation.point}{tells where each row should be aggregated}
+\item{Flow}{the Industry or Sector involved in this flow}
+\item{Product}{the energy product involved in this flow}
+\item{E.ktoe}{magnitude of the energy flow in ktoe}
 }
 }
 \source{

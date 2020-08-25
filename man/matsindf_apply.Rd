@@ -7,9 +7,9 @@
 matsindf_apply(.dat = NULL, FUN, ...)
 }
 \arguments{
-\item{.dat}{a list of named items or a data frame}
+\item{.dat}{a list of named items or a data frame.}
 
-\item{FUN}{the function to be applied to \code{.dat}}
+\item{FUN}{the function to be applied to \code{.dat}.}
 
 \item{...}{named arguments to be passed by name to \code{FUN}.}
 }
@@ -56,7 +56,7 @@ intended to be arguments to \code{FUN}.
 When an item name appears in both \code{...} and \code{.dat},
 \code{...} takes precedence.
 
-\code{NULL} arguments in ... are ignored for the purposes of deciding whether
+\code{NULL} arguments in \code{...} are ignored for the purposes of deciding whether
 all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 However, all \code{NULL} arguments are passed to \code{FUN},
 so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.

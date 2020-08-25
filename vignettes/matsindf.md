@@ -1,5 +1,5 @@
 ---
-title: "Use Cases and Examples for `matsindf`"
+title: "Use Cases and Examples for matsindf"
 author: "Matthew Kuperus Heun"
 date: "2020-01-15"
 header-includes:
@@ -53,7 +53,7 @@ of similar matrices.
 That's the reason for `matsindf`.
 It provides functions to convert 
 a suitably-formatted 
-[tidy](http://tidyr.tidyverse.org/articles/tidy-data.html) 
+[tidy](https://tidyr.tidyverse.org/articles/tidy-data.html) 
 data frame into a data frame containing a column of matrices.
 
 Furthermore, `matsbyname` is a sister package that ...
@@ -63,17 +63,17 @@ Furthermore, `matsbyname` is a sister package that ...
 to free the analyst from the task of aligning rows and columns of 
 operands (matrices) passed to matrix algebra functions and
 * ... allows matrix algebra to be conducted within data frames using 
-[dplyr](http://dplyr.tidyverse.org),
-[tidyr](http://tidyr.tidyverse.org), 
+[dplyr](https://dplyr.tidyverse.org),
+[tidyr](https://tidyr.tidyverse.org), 
 and other
-[tidyverse](http://www.tidyverse.org)
+[tidyverse](https://www.tidyverse.org)
 functions.
 
 When used together, `matsindf` and `matsbyname`
 allow analysts to wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics))
 and 
-[tidyverse](http://www.tidyverse.org) 
+[tidyverse](https://www.tidyverse.org) 
 functional programming.
 
 This vignette demonstrates the use of these packages
@@ -107,7 +107,7 @@ head(UKEnergy2000, 2)
 
 `Country` and `Year` contain only one value each, 
 `GB` and `2000` respectively.
-Following conventions of the [International Energy Agency](http://www.iea.org)'s 
+Following conventions of the [International Energy Agency](https://www.iea.org)'s 
 [energy balance tables](https://www.iea.org/data-and-statistics/data-tables), 
 
 * `Ledger.side` indicates `Supply` or `Consumption`;
@@ -121,7 +121,7 @@ of kilotons of oil equivalent (ktoe).
 Each flow is its own observation 
 (its own row)
 in the `UKEnergy2000` data frame,
-making it [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
+making it [tidy](https://tidyr.tidyverse.org/articles/tidy-data.html).
 
 The remainder of this vignette demonstrates an analysis conducted using the
 `UKEnergy2000` data frame as a basis. 
@@ -131,7 +131,7 @@ It:
 the data into appropriate matrices stored in columns of a data frame,
 * demonstrates analyzing the matrices with `matsbyname` functions,
 * illustrates *expand*ing the matrices back into a tidy data frame, and
-* uses [ggplot](http://ggplot2.tidyverse.org) to graph the results.
+* uses [ggplot](https://ggplot2.tidyverse.org) to graph the results.
 
 
 ## Suggested workflow
@@ -141,7 +141,7 @@ the data into appropriate matrices stored in columns of a data frame,
 The `EnergyUK2000` data frame is similar to 
 "cleaned" data from an external source: 
 there are no missing entries, and 
-it is [tidy](http://tidyr.tidyverse.org/articles/tidy-data.html).
+it is [tidy](https://tidyr.tidyverse.org/articles/tidy-data.html).
 But the data are not organized as matrices,
 and additional metadata is needed.
 
@@ -502,7 +502,7 @@ etas_forgraphing %>% filter(Country == "GB", Year == 2000)
 `etas_forgraphing` is a data frame of efficiencies, 
 one for each Country, Year, and Industry, 
 in a format that is amenable to plotting
-with packages such as [ggplot](http://ggplot2.tidyverse.org).
+with packages such as [ggplot](https://ggplot2.tidyverse.org).
 
 
 ### Report
@@ -563,7 +563,7 @@ in which single cells contain entire matrices.
 With this data structure, 
 analysts can wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and 
-[tidyverse](http://www.tidyverse.org) 
+[tidyverse](https://www.tidyverse.org) 
 functional programming.
 
 

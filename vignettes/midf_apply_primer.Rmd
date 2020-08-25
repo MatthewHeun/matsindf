@@ -6,7 +6,7 @@ header-includes:
    - \usepackage{amsmath}
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{matsindf_apply primer}
+  %\VignetteIndexEntry{A matsindf_apply primer}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -219,7 +219,7 @@ midf$V[[1]]
 ```
 
 With `midf` in hand, we can demonstrate use of 
-[`tidyverse`](http://www.tidyverse.org)-style
+[`tidyverse`](https://www.tidyverse.org)-style
 functional programming to perform
 matrix algebra within a data frame.
 The functions of the `matsbyname` package

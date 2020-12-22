@@ -1,3 +1,9 @@
+* Changed names of test files to "test-*.R" to conform to expectations.
+* Removed `context()` calls at top of test files.
+* Added a new test confirming that 
+  passing a list with strings works with `NULL` `.DF` in `matsindf_apply()`.
+
+
 # matsindf 0.3.6 (2020-08-24)
 
 * To comply with a deprecating change in `dplyr`, 

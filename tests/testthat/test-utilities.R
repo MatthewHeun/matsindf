@@ -11,9 +11,6 @@ library(tibble)
 library(tidyr)
 library(testthat)
 
-###########################################################
-context("Utilities")
-###########################################################
 
 test_that("index_column works as expected", {
   DF1 <- tibble::tibble(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))

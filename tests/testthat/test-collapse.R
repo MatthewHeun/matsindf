@@ -1,8 +1,5 @@
 # Contains tests for the matsindf package.
 
-###########################################################
-context("Small example")
-###########################################################
 
 test_that("small example works as expected", {
   tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
@@ -79,9 +76,6 @@ test_that("small example works as expected", {
                                               dimnames = list(c("i1", "i2"), c("p1", "p2"))))
 })
 
-###########################################################
-context("Collapse")
-###########################################################
 
 test_that("collapse_to_matrices works as expected", {
   ptype <- "Products"

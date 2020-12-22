@@ -4,9 +4,6 @@ library(dplyr)
 library(matsbyname)
 library(testthat)
 
-###########################################################
-context("Testing matsindf_apply")
-###########################################################
 
 example_fun <- function(a, b){
   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
@@ -77,19 +74,28 @@ test_that("matsindf_apply fails as expected when not all same type for ...", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2), 'argument "a" is missing, with no default')
 })
 
+
+test_that("matsindf_apply fails as expected when wrong type of data is sent in ...", {
+  expect_error(matsindf_apply(FUN = example_fun, a = list("a"), b = list(2)), "non-numeric argument to binary operator")
+})
+
+
 test_that("matsindf_apply fails gracefully when some of ... are NULL", {
   expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL), "unused argument")
 })
+
 
 test_that("matsindf_apply fails as expected when .DF argument is missing from a data frame", {
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
                ".dat was missing and all arguments were strings")
 })
 
+
 test_that("matsindf_apply fails as expected when .DF argument is not a data frame or a list", {
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
                ".dat was missing and all arguments were strings")
 })
+
 
 test_that("matsindf_apply_types works as expected", {
   expect_equal(matsindf_apply_types(a = 1, b = 2),

@@ -1,8 +1,5 @@
 # Contains tests for the matsindf package.
 
-###########################################################
-context("Expand")
-###########################################################
 
 test_that("expand_to_tidy works as expected", {
   ptype <- "Products"

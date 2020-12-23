@@ -226,7 +226,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                   2, 3,
                   4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
-  # This fails, because we go into rowmatch_fun without the string prefixes_arg argument.
+  # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
   expect_error(find_matching_rownames(prefixes = "ra", m = mat), 'argument "prefixes_arg" is missing, with no default')
 
   # Now make lists and try again.  This works fine.

@@ -1,7 +1,9 @@
+* Added new tests for `matsindf_apply()` for 
+  functions similar in form to those in `Recca`.
 * Changed names of test files to "test-*.R" to conform to expectations.
 * Removed `context()` calls at top of test files.
 * Added a new test confirming that 
-  passing a list with strings works with `NULL` `.DF` in `matsindf_apply()`.
+  passing a list with strings works with a `NULL` `.DF` in `matsindf_apply()`.
 
 
 # matsindf 0.3.6 (2020-08-24)

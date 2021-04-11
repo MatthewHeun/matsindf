@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
       </span>
     </div>
 
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -68,7 +68,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/MatthewHeun/matsindf/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -82,13 +82,13 @@
 
       
 
-      </header><script src="matsindf_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="matsindf_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Use Cases and Examples for matsindf</h1>
                         <h4 class="author">Matthew Kuperus Heun</h4>
             
-            <h4 class="date">2020-08-14</h4>
+            <h4 class="date">2021-04-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/master/vignettes/matsindf.Rmd"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="hidden name"><code>matsindf.Rmd</code></div>
@@ -98,7 +98,6 @@
     
     
 <!-- Establish some helpful LaTeX shortcuts for equations -->
-
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
@@ -143,13 +142,14 @@
 <a href="#data-ukenergy2000" class="anchor"></a>Data: <code>UKEnergy2000</code>
 </h2>
 <p>To demonstrate the use of <code>matsindf</code> functions, consider a network of energy flows from the environment, through transformation and distribution processes, and, ultimately, to final demand. Such energy flow networks are called energy conversion chains (ECCs), and this example is based on an approximation to a portion of the UK’s ECC circa 2000. (Note that these data are to be used for demonstration purposes only and have been rounded to 1–2 significant digits.) These example data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">UKEnergy2000</span>, <span class="fl">2</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">UKEnergy2000</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span>
 <span class="co">#&gt; 1      GB 2000      Supply Total primary energy supply Resources - Crude</span>
 <span class="co">#&gt; 2      GB 2000      Supply Total primary energy supply    Resources - NG</span>
 <span class="co">#&gt;   Product E.ktoe</span>
 <span class="co">#&gt; 1   Crude  50000</span>
-<span class="co">#&gt; 2      NG  43000</span></pre></body></html></div>
+<span class="co">#&gt; 2      NG  43000</span></code></pre></div>
 <p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="https://www.iea.org">International Energy Agency</a>’s <a href="http://data.iea.org/payment/products/117-world-energy-balances.aspx">energy balance tables</a>,</p>
 <ul>
 <li>
@@ -216,47 +216,49 @@
 </tbody>
 </table>
 <p>The following code gives the approach to adding metadata, appropriate for this application, relying on <code>Ledger.side</code>, the sign of <code>E.ktoe</code>, and knowledge about the rows and columns for each matrix. Each type of network will have its own algorithm for identifying row names, column names, row types, and column types in a tidy data frame.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">UKEnergy2000_with_metadata</span> <span class="kw">&lt;-</span> <span class="no">UKEnergy2000</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">UKEnergy2000_with_metadata</span> <span class="op">&lt;-</span> <span class="va">UKEnergy2000</span> <span class="op">%&gt;%</span> 
   <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span>
-  <span class="kw pkg">matsindf</span><span class="kw ns">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span>(<span class="no">.</span>) <span class="kw">%&gt;%</span>
+  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="co"># Add columns for row names, column names, row types, and column types.</span>
-  <span class="kw pkg">matsindf</span><span class="kw ns">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span>(<span class="no">.</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(
+  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     <span class="co"># Eliminate columns we no longer need</span>
-    <span class="kw">Ledger.side</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">Flow.aggregation.point</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">Flow</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">Product</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+    Ledger.side <span class="op">=</span> <span class="cn">NULL</span>,
+    Flow.aggregation.point <span class="op">=</span> <span class="cn">NULL</span>,
+    Flow <span class="op">=</span> <span class="cn">NULL</span>,
+    Product <span class="op">=</span> <span class="cn">NULL</span>, 
     <span class="co"># Ensure that all energy values are positive, as required for analysis.</span>
-    <span class="kw">E.ktoe</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="no">E.ktoe</span>)
-  )
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">UKEnergy2000_with_metadata</span>, <span class="fl">2</span>)
+    E.ktoe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">E.ktoe</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">UKEnergy2000_with_metadata</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;   Country Year E.ktoe matname           rowname colname  rowtype coltype</span>
 <span class="co">#&gt; 1      GB 2000  50000       V Resources - Crude   Crude Industry Product</span>
-<span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></pre></body></html></div>
+<span class="co">#&gt; 2      GB 2000  43000       V    Resources - NG      NG Industry Product</span></code></pre></div>
 </div>
 <div id="collapse" class="section level3">
 <h3 class="hasAnchor">
 <a href="#collapse" class="anchor"></a>Collapse</h3>
 <p>With the metadata now in place, <code>UKEnergy2000_with_metadata</code> can be collapsed to a <code>matsindf</code> data frame by the <code>collapse_to_matrices</code> function. Much like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarise</a></code>, <code>collapse_to_matrices</code> relies on grouping to indicate which rows of the tidy data frame belong to which matrices. The usual approach is to <code>tidyr::group_by</code> the <code>matnames</code> column and any other columns to be preserved in the output, in this case <code>Country</code> and <code>Year</code>.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">EnergyMats_2000</span> <span class="kw">&lt;-</span> <span class="no">UKEnergy2000_with_metadata</span> <span class="kw">%&gt;%</span>
-  <span class="fu">group_by</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">matname</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span>(<span class="kw">matnames</span> <span class="kw">=</span> <span class="st">"matname"</span>, <span class="kw">matvals</span> <span class="kw">=</span> <span class="st">"E.ktoe"</span>,
-                       <span class="kw">rownames</span> <span class="kw">=</span> <span class="st">"rowname"</span>, <span class="kw">colnames</span> <span class="kw">=</span> <span class="st">"colname"</span>,
-                       <span class="kw">rowtypes</span> <span class="kw">=</span> <span class="st">"rowtype"</span>, <span class="kw">coltypes</span> <span class="kw">=</span> <span class="st">"coltype"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">rename</span>(<span class="kw">matrix.name</span> <span class="kw">=</span> <span class="no">matname</span>, <span class="kw">matrix</span> <span class="kw">=</span> <span class="no">E.ktoe</span>)
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">EnergyMats_2000</span> <span class="op">&lt;-</span> <span class="va">UKEnergy2000_with_metadata</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">matname</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span><span class="op">(</span>matnames <span class="op">=</span> <span class="st">"matname"</span>, matvals <span class="op">=</span> <span class="st">"E.ktoe"</span>,
+                       rownames <span class="op">=</span> <span class="st">"rowname"</span>, colnames <span class="op">=</span> <span class="st">"colname"</span>, 
+                       rowtypes <span class="op">=</span> <span class="st">"rowtype"</span>, coltypes <span class="op">=</span> <span class="st">"coltype"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>matrix.name <span class="op">=</span> <span class="va">matname</span>, matrix <span class="op">=</span> <span class="va">E.ktoe</span><span class="op">)</span>
 
 <span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span>
-<span class="fu">glimpse</span>(<span class="no">EnergyMats_2000</span>)
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">EnergyMats_2000</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 3</span>
 <span class="co">#&gt; Columns: 4</span>
 <span class="co">#&gt; $ Country     &lt;chr&gt; "GB", "GB", "GB"</span>
 <span class="co">#&gt; $ Year        &lt;int&gt; 2000, 2000, 2000</span>
 <span class="co">#&gt; $ matrix.name &lt;chr&gt; "U", "V", "Y"</span>
-<span class="co">#&gt; $ matrix      &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[4 x 2]&gt;]</span>
+<span class="co">#&gt; $ matrix      &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;</span>
 
 <span class="co"># To access one of the matrices, try one of these approaches:</span>
-(<span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">matrix.name</span> <span class="kw">==</span> <span class="st">"U"</span>))<span class="kw">[[</span><span class="st">"matrix"</span>]] <span class="co"># The U matrix</span>
+<span class="op">(</span><span class="va">EnergyMats_2000</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">matrix.name</span> <span class="op">==</span> <span class="st">"U"</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">"matrix"</span><span class="op">]</span><span class="op">]</span> <span class="co"># The U matrix</span>
 <span class="co">#&gt; [[1]]</span>
 <span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span>
 <span class="co">#&gt; Crude                    0            0           0                 0        0</span>
@@ -287,7 +289,7 @@
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "Industry"</span>
 
-<span class="no">EnergyMats_2000</span>$<span class="no">matrix</span><span class="kw">[[</span><span class="fl">2</span>]] <span class="co"># The V matrix</span>
+<span class="va">EnergyMats_2000</span><span class="op">$</span><span class="va">matrix</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="co"># The V matrix</span>
 <span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span>
 <span class="co">#&gt; Crude dist.           0         47000              0      0              0</span>
 <span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span>
@@ -329,7 +331,7 @@
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "Product"</span>
 
-<span class="no">EnergyMats_2000</span>$<span class="no">matrix</span><span class="kw">[[</span><span class="fl">3</span>]] <span class="co"># The Y matrix</span>
+<span class="va">EnergyMats_2000</span><span class="op">$</span><span class="va">matrix</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="co"># The Y matrix</span>
 <span class="co">#&gt;                Residential Transport</span>
 <span class="co">#&gt; Diesel - Dist.           0     14750</span>
 <span class="co">#&gt; Elect - Grid          6000         0</span>
@@ -338,34 +340,35 @@
 <span class="co">#&gt; attr(,"rowtype")</span>
 <span class="co">#&gt; [1] "Product"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
-<span class="co">#&gt; [1] "Sector"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "Sector"</span></code></pre></div>
 </div>
 <div id="duplicate-for-purposes-of-illustration" class="section level3">
 <h3 class="hasAnchor">
 <a href="#duplicate-for-purposes-of-illustration" class="anchor"></a>Duplicate (for purposes of illustration)</h3>
 <p>Larger studies will include data for multiple countries and years. The ECC data from UK in year <code>2000</code> can be duplicated for <code>2001</code> and for a fictitious country <code>AB</code>. Although the data are unchanged, the additional rows serve to illustrate the functional programming aspects of the <code>matsindf</code> and <code>matsbyname</code> packages.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">Energy</span> <span class="kw">&lt;-</span> <span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Energy</span> <span class="op">&lt;-</span> <span class="va">EnergyMats_2000</span> <span class="op">%&gt;%</span> 
   <span class="co"># Create rows for a fictitious country "AB".</span>
   <span class="co"># Although the rows for "AB" are same as the "GB" rows,</span>
   <span class="co"># they serve to illustrate functional programming with matsindf.</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">EnergyMats_2000</span> <span class="kw">%&gt;%</span> <span class="fu">mutate</span>(<span class="kw">Country</span> <span class="kw">=</span> <span class="st">"AB"</span>)) <span class="kw">%&gt;%</span>
-  <span class="fu">spread</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">Year</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(
+  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span><span class="op">(</span><span class="va">EnergyMats_2000</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="st">"AB"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html">spread</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">Year</span>, value <span class="op">=</span> <span class="va">matrix</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     <span class="co"># Create a column for a second year (2001).</span>
-    <span class="kw">`2001`</span> <span class="kw">=</span> <span class="no">`2000`</span>
-  ) <span class="kw">%&gt;%</span>
-  <span class="fu">gather</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">Year</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>, <span class="no">`2000`</span>, <span class="no">`2001`</span>) <span class="kw">%&gt;%</span>
+    `2001` <span class="op">=</span> <span class="va">`2000`</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">Year</span>, value <span class="op">=</span> <span class="va">matrix</span>, <span class="va">`2000`</span>, <span class="va">`2001`</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="co"># Now spread to put each matrix in a column.</span>
-  <span class="fu">spread</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">matrix.name</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>)
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html">spread</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">matrix.name</span>, value <span class="op">=</span> <span class="va">matrix</span><span class="op">)</span>
 
-<span class="fu">glimpse</span>(<span class="no">Energy</span>)
+<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">Energy</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 4</span>
 <span class="co">#&gt; Columns: 5</span>
 <span class="co">#&gt; $ Country &lt;chr&gt; "AB", "AB", "GB", "GB"</span>
 <span class="co">#&gt; $ Year    &lt;chr&gt; "2000", "2001", "2000", "2001"</span>
-<span class="co">#&gt; $ U       &lt;list&gt; [&lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matrix[11 x 9]&gt;, &lt;matr…</span>
-<span class="co">#&gt; $ V       &lt;list&gt; [&lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;matrix[11 x 12]&gt;, &lt;m…</span>
-<span class="co">#&gt; $ Y       &lt;list&gt; [&lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[4 x 2]&gt;, &lt;matrix[…</span></pre></body></html></div>
+<span class="co">#&gt; $ U       &lt;list&gt; &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;matrix[11 x 9]&gt;&gt;, &lt;&lt;…</span>
+<span class="co">#&gt; $ V       &lt;list&gt; &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;, &lt;&lt;matrix[11 x 12]&gt;&gt;,…</span>
+<span class="co">#&gt; $ Y       &lt;list&gt; &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;matrix[4 x 2]&gt;&gt;, &lt;&lt;ma…</span></code></pre></div>
 </div>
 <div id="verify-data" class="section level3">
 <h3 class="hasAnchor">
@@ -375,23 +378,24 @@
 <p>and</p>
 <p><span class="math display">\[\mathbf{W}\mathbf{i} - \mathbf{Y}\mathbf{i} = \mathbf{0}.\]</span></p>
 <p>Energy balance verification can be implemented with <code>matsbyname</code> functions and <code>tidyverse</code> functional programming:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">Check</span> <span class="kw">&lt;-</span> <span class="no">Energy</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(
-    <span class="kw">W</span> <span class="kw">=</span> <span class="fu">difference_byname</span>(<span class="fu">transpose_byname</span>(<span class="no">V</span>), <span class="no">U</span>),
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Check</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span>,
     <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span>
-    <span class="kw">err</span> <span class="kw">=</span> <span class="fu">difference_byname</span>(<span class="fu">rowsums_byname</span>(<span class="no">W</span>),
-                            <span class="fu">rowsums_byname</span>(<span class="no">Y</span>) <span class="kw">%&gt;%</span>
-                              <span class="fu">setcolnames_byname</span>(<span class="st">"Industry"</span>) <span class="kw">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">"Industry"</span>)),
-    <span class="kw">EBalOK</span> <span class="kw">=</span> <span class="fu">iszero_byname</span>(<span class="no">err</span>)
-  )
-<span class="no">Check</span> <span class="kw">%&gt;%</span> <span class="fu">select</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">EBalOK</span>)
+    err <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span>, 
+                            <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+                              <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcolnames_byname.html">setcolnames_byname</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcoltype.html">setcoltype</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span><span class="op">)</span>,
+    EBalOK <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/iszero_byname.html">iszero_byname</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span>
+  <span class="op">)</span>
+<span class="va">Check</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">EBalOK</span><span class="op">)</span>
 <span class="co">#&gt;   Country Year EBalOK</span>
 <span class="co">#&gt; 1      AB 2000   TRUE</span>
 <span class="co">#&gt; 2      AB 2001   TRUE</span>
 <span class="co">#&gt; 3      GB 2000   TRUE</span>
 <span class="co">#&gt; 4      GB 2001   TRUE</span>
-<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span>(<span class="no">Check</span>$<span class="no">EBalOK</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html">as.logical</a></span>())
-<span class="co">#&gt; [1] TRUE</span></pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/base/all.html">all</a></span><span class="op">(</span><span class="va">Check</span><span class="op">$</span><span class="va">EBalOK</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html">as.logical</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] TRUE</span></code></pre></div>
 <p>This example demonstrates that energy balance can be verified for <em>all</em> combinations of Country and Year with a few lines of code. In fact, the exact same code can be applied to the <code>Energy</code> data frame, regardless of the number of rows in it.</p>
 <p>Secure in the knowledge that energy is conserved across all ECCs in the <code>Energy</code> data frame, other analyses can proceed.</p>
 </div>
@@ -401,17 +405,18 @@
 <p>To further illustrate the power of <code>matsbyname</code> functions in the context of <code>matsindf</code>, consider the calculation of the efficiency of every industry in the ECC as column vector <span class="math inline">\(\eta\)</span> as shown by Equation 11 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
 <p><span class="math display">\[\mathbf{g} = \mathbf{V}\mathbf{i}\]</span></p>
 <p><span class="math display">\[\mathbf{\eta} = \widehat{\mathbf{U}^\mathrm{T} \mathbf{i}}^{\mathrm{-}1} \mathbf{g}\]</span></p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">Etas</span> <span class="kw">&lt;-</span> <span class="no">Energy</span> <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(
-    <span class="kw">g</span> <span class="kw">=</span> <span class="fu">rowsums_byname</span>(<span class="no">V</span>),
-    <span class="kw">eta</span> <span class="kw">=</span> <span class="fu">transpose_byname</span>(<span class="no">U</span>) <span class="kw">%&gt;%</span> <span class="fu">rowsums_byname</span>() <span class="kw">%&gt;%</span>
-      <span class="fu">hatize_byname</span>() <span class="kw">%&gt;%</span> <span class="fu">invert_byname</span>() <span class="kw">%&gt;%</span>
-      <span class="fu">matrixproduct_byname</span>(<span class="no">g</span>) <span class="kw">%&gt;%</span>
-      <span class="fu">setcolnames_byname</span>(<span class="st">"eta"</span>) <span class="kw">%&gt;%</span> <span class="fu">setcoltype</span>(<span class="st">"Efficiency"</span>)
-  ) <span class="kw">%&gt;%</span>
-  <span class="fu">select</span>(<span class="no">Country</span>, <span class="no">Year</span>, <span class="no">eta</span>)
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">Etas</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
+    g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>,
+    eta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html">transpose_byname</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/hatize_byname.html">hatize_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/invert_byname.html">invert_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/matrixproduct_byname.html">matrixproduct_byname</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcolnames_byname.html">setcolnames_byname</a></span><span class="op">(</span><span class="st">"eta"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcoltype.html">setcoltype</a></span><span class="op">(</span><span class="st">"Efficiency"</span><span class="op">)</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">eta</span><span class="op">)</span>
 
-<span class="no">Etas</span>$<span class="no">eta</span><span class="kw">[[</span><span class="fl">1</span>]]
+<span class="va">Etas</span><span class="op">$</span><span class="va">eta</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 <span class="co">#&gt;                         eta</span>
 <span class="co">#&gt; Crude dist.       0.9884332</span>
 <span class="co">#&gt; Diesel dist.      0.9774194</span>
@@ -425,7 +430,7 @@
 <span class="co">#&gt; attr(,"rowtype")</span>
 <span class="co">#&gt; [1] "Industry"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
-<span class="co">#&gt; [1] "Efficiency"</span></pre></body></html></div>
+<span class="co">#&gt; [1] "Efficiency"</span></code></pre></div>
 <p>Note that only a few lines of code are required to perform the same series of matrix operations on every combination of <code>Country</code> and <code>Year</code>. In fact, the same code will be used to calculate the efficiency of any number of industries in any number of countries and years!</p>
 </div>
 <div id="expand" class="section level3">
@@ -470,24 +475,25 @@
 </tbody>
 </table>
 <p>Prior to <code>expand</code>ing, it is usually necessary to <code>gather</code> columns of matrices.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">etas_forgraphing</span> <span class="kw">&lt;-</span> <span class="no">Etas</span> <span class="kw">%&gt;%</span>
-  <span class="fu">gather</span>(<span class="kw">key</span> <span class="kw">=</span> <span class="no">matrix.names</span>, <span class="kw">value</span> <span class="kw">=</span> <span class="no">matrix</span>, <span class="no">eta</span>) <span class="kw">%&gt;%</span>
-  <span class="fu"><a href="../reference/expand_to_tidy.html">expand_to_tidy</a></span>(<span class="kw">matnames</span> <span class="kw">=</span> <span class="st">"matrix.names"</span>, <span class="kw">matvals</span> <span class="kw">=</span> <span class="st">"matrix"</span>,
-                 <span class="kw">rownames</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">colnames</span> <span class="kw">=</span> <span class="st">"etas"</span>,
-                 <span class="kw">rowtypes</span> <span class="kw">=</span> <span class="st">"rowtype"</span>, <span class="kw">coltypes</span> <span class="kw">=</span> <span class="st">"Efficiencies"</span>) <span class="kw">%&gt;%</span>
-  <span class="fu">mutate</span>(
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">etas_forgraphing</span> <span class="op">&lt;-</span> <span class="va">Etas</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html">gather</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">matrix.names</span>, value <span class="op">=</span> <span class="va">matrix</span>, <span class="va">eta</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="../reference/expand_to_tidy.html">expand_to_tidy</a></span><span class="op">(</span>matnames <span class="op">=</span> <span class="st">"matrix.names"</span>, matvals <span class="op">=</span> <span class="st">"matrix"</span>, 
+                 rownames <span class="op">=</span> <span class="st">"Industry"</span>, colnames <span class="op">=</span> <span class="st">"etas"</span>, 
+                 rowtypes <span class="op">=</span> <span class="st">"rowtype"</span>, coltypes <span class="op">=</span> <span class="st">"Efficiencies"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     <span class="co"># Eliminate columns we no longer need.</span>
-    <span class="kw">matrix.names</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">etas</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">rowtype</span> <span class="kw">=</span> <span class="kw">NULL</span>,
-    <span class="kw">Efficiencies</span> <span class="kw">=</span> <span class="kw">NULL</span>
-  ) <span class="kw">%&gt;%</span>
-  <span class="fu">rename</span>(
-    <span class="kw">eta</span> <span class="kw">=</span> <span class="no">matrix</span>
-  )
+    matrix.names <span class="op">=</span> <span class="cn">NULL</span>,
+    etas <span class="op">=</span> <span class="cn">NULL</span>, 
+    rowtype <span class="op">=</span> <span class="cn">NULL</span>, 
+    Efficiencies <span class="op">=</span> <span class="cn">NULL</span>
+  <span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html">rename</a></span><span class="op">(</span>
+    eta <span class="op">=</span> <span class="va">matrix</span>
+  <span class="op">)</span>
 
 <span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span>
-<span class="no">etas_forgraphing</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">Country</span> <span class="kw">==</span> <span class="st">"GB"</span>, <span class="no">Year</span> <span class="kw">==</span> <span class="fl">2000</span>)
+<span class="va">etas_forgraphing</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Country</span> <span class="op">==</span> <span class="st">"GB"</span>, <span class="va">Year</span> <span class="op">==</span> <span class="fl">2000</span><span class="op">)</span>
 <span class="co">#&gt; # A tibble: 9 x 4</span>
 <span class="co">#&gt;   Country Year  Industry            eta</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span>
@@ -499,25 +505,26 @@
 <span class="co">#&gt; 6 GB      2000  Oil fields        0.949</span>
 <span class="co">#&gt; 7 GB      2000  Oil refineries    0.892</span>
 <span class="co">#&gt; 8 GB      2000  Petrol dist.      0.972</span>
-<span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></pre></body></html></div>
+<span class="co">#&gt; 9 GB      2000  Power plants      0.398</span></code></pre></div>
 <p><code>etas_forgraphing</code> is a data frame of efficiencies, one for each Country, Year, and Industry, in a format that is amenable to plotting with packages such as <a href="https://ggplot2.tidyverse.org">ggplot</a>.</p>
 </div>
 <div id="report" class="section level3">
 <h3 class="hasAnchor">
 <a href="#report" class="anchor"></a>Report</h3>
 <p>The following code creates a bar graph of efficiency results for the UK in 2000:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">etas_UK_2000</span> <span class="kw">&lt;-</span> <span class="no">etas_forgraphing</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span>(<span class="no">Country</span> <span class="kw">==</span> <span class="st">"GB"</span>, <span class="no">Year</span> <span class="kw">==</span> <span class="fl">2000</span>)
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">etas_UK_2000</span> <span class="op">&lt;-</span> <span class="va">etas_forgraphing</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Country</span> <span class="op">==</span> <span class="st">"GB"</span>, <span class="va">Year</span> <span class="op">==</span> <span class="fl">2000</span><span class="op">)</span> 
 
-<span class="no">etas_UK_2000</span> <span class="kw">%&gt;%</span>
-  <span class="fu">ggplot</span>(<span class="kw">mapping</span> <span class="kw">=</span> <span class="fu">aes_string</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="st">"eta"</span>,
-                              <span class="kw">fill</span> <span class="kw">=</span> <span class="st">"Industry"</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="st">"Industry"</span>)) +
-  <span class="fu">geom_bar</span>(<span class="kw">stat</span> <span class="kw">=</span> <span class="st">"identity"</span>) +
-  <span class="fu">labs</span>(<span class="kw">x</span> <span class="kw">=</span> <span class="kw">NULL</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span>(<span class="no">eta</span>[<span class="no">UK</span>*<span class="st">","</span>*<span class="fl">2000</span>]), <span class="kw">fill</span> <span class="kw">=</span> <span class="kw">NULL</span>) +
-  <span class="fu">scale_y_continuous</span>(<span class="kw">breaks</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fl">0</span>, <span class="fl">1</span>, <span class="kw">by</span> <span class="kw">=</span> <span class="fl">0.2</span>)) +
-  <span class="fu">scale_fill_manual</span>(<span class="kw">values</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"white"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">etas_UK_2000</span>))) +
-  <span class="fu">scale_colour_manual</span>(<span class="kw">values</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="st">"gray20"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">etas_UK_2000</span>))) +
-  <span class="fu">guides</span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-  <span class="fu">theme</span>(<span class="kw">axis.text.x</span> <span class="kw">=</span> <span class="fu">element_text</span>(<span class="kw">angle</span> <span class="kw">=</span> <span class="fl">90</span>, <span class="kw">vjust</span> <span class="kw">=</span> <span class="fl">0.4</span>, <span class="kw">hjust</span> <span class="kw">=</span> <span class="fl">1</span>))</pre></body></html></div>
+<span class="va">etas_UK_2000</span> <span class="op">%&gt;%</span> 
+  <span class="fu">ggplot</span><span class="op">(</span>mapping <span class="op">=</span> <span class="fu">aes_string</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Industry"</span>, y <span class="op">=</span> <span class="st">"eta"</span>, 
+                              fill <span class="op">=</span> <span class="st">"Industry"</span>, colour <span class="op">=</span> <span class="st">"Industry"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">geom_bar</span><span class="op">(</span>stat <span class="op">=</span> <span class="st">"identity"</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">eta</span><span class="op">[</span><span class="va">UK</span><span class="op">*</span><span class="st">","</span><span class="op">*</span><span class="fl">2000</span><span class="op">]</span><span class="op">)</span>, fill <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">scale_y_continuous</span><span class="op">(</span>breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">etas_UK_2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">scale_colour_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"gray20"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">etas_UK_2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu">guides</span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">FALSE</span>, colour <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.4</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="matsindf_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>
@@ -543,9 +550,9 @@
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h2>
-<div id="refs" class="references">
-<div id="ref-Heun:2018">
-<p>Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. “A Physical Supply-Use Table Framework for Energy Analysis on the Energy Conversion Chain.” <em>Applied Energy</em> 226 (September): 1134–62. <a href="https://doi.org/10.1016/j.apenergy.2018.05.109">https://doi.org/10.1016/j.apenergy.2018.05.109</a>.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Heun:2018" class="csl-entry">
+Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. <span>“A Physical Supply-Use Table Framework for Energy Analysis on the Energy Conversion Chain.”</span> <em>Applied Energy</em> 226 (September): 1134–62. <a href="https://doi.org/10.1016/j.apenergy.2018.05.109">https://doi.org/10.1016/j.apenergy.2018.05.109</a>.
 </div>
 </div>
 </div>
@@ -566,7 +573,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

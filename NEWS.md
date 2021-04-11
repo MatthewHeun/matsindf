@@ -1,3 +1,18 @@
+# matsindf 0.3.7 (2020-04-11)
+
+* Not released to CRAN, because there are no changes in the code itself.
+* Move away from Travis to GitHub Actions for continuous integration testing.
+* Added new tests for `matsindf_apply()` for 
+  functions similar in form to those in `Recca`.
+* Changed names of test files to "test-*.R" to conform to expectations.
+* Removed `context()` calls at top of test files.
+* Added a new test confirming that 
+  passing a list with strings works with a `NULL` `.DF` in `matsindf_apply()`.
+* New tests for new features.
+    * Now at 176 tests, all passing.
+    * Test coverage remains at 100 %.
+
+
 # matsindf 0.3.6 (2020-08-24)
 
 * To comply with a deprecating change in `dplyr`, 

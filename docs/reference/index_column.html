@@ -76,7 +76,7 @@ Neither var_to_index nor time_var can be in the grouping variables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@ Neither var_to_index nor time_var can be in the grouping variables." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -113,7 +113,7 @@ Neither var_to_index nor time_var can be in the grouping variables." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MatthewHeun/matsindf/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -143,14 +143,14 @@ Groups in <code>.DF</code> are both respected and required.
 Neither <code>var_to_index</code> nor <code>time_var</code> can be in the grouping variables.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>index_column</span>(
-  <span class='no'>.DF</span>,
-  <span class='no'>var_to_index</span>,
-  <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>,
-  <span class='kw'>index_time</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>indexed_var</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='no'>var_to_index</span>, <span class='no'>suffix</span>),
-  <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_indexed"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>index_column</span><span class='op'>(</span>
+  <span class='va'>.DF</span>,
+  <span class='va'>var_to_index</span>,
+  time_var <span class='op'>=</span> <span class='st'>"Year"</span>,
+  index_time <span class='op'>=</span> <span class='cn'>NULL</span>,
+  indexed_var <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='va'>var_to_index</span>, <span class='va'>suffix</span><span class='op'>)</span>,
+  suffix <span class='op'>=</span> <span class='st'>"_indexed"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -195,12 +195,13 @@ named with the value of <code>indexed_var</code>.</p>
 a column of numbers or a column of matrices.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)
-<span class='no'>DF</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>Year</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2000</span>, <span class='fl'>2005</span>, <span class='fl'>2010</span>), <span class='kw'>a</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>20</span>), <span class='kw'>b</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5.5</span>, <span class='fl'>6</span>)) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>name</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>var</span>, <span class='no'>a</span>, <span class='no'>b</span>) <span class='kw'>%&gt;%</span>
-  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>)
-<span class='fu'>index_column</span>(<span class='no'>DF</span>, <span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='st'>"_ratioed"</span>)</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span><span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='op'>)</span>
+<span class='va'>DF</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>Year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2000</span>, <span class='fl'>2005</span>, <span class='fl'>2010</span><span class='op'>)</span>, a <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>15</span>, <span class='fl'>20</span><span class='op'>)</span>, b <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5.5</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='va'>name</span>, value <span class='op'>=</span> <span class='va'>var</span>, <span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span>
+<span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, suffix <span class='op'>=</span> <span class='st'>"_ratioed"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
 #&gt;    Year name    var var_ratioed
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -209,7 +210,8 @@ a column of numbers or a column of matrices.</p>
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20           2  
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5           1  
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5         1.1
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span>(<span class='no'>DF</span>, <span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>indexed_var</span> <span class='kw'>=</span> <span class='st'>"now.indexed"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, indexed_var <span class='op'>=</span> <span class='st'>"now.indexed"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
 #&gt;    Year name    var now.indexed
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -218,8 +220,9 @@ a column of numbers or a column of matrices.</p>
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20           2  
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5           1  
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5         1.1
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span>(<span class='no'>DF</span>, <span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>, <span class='kw'>index_time</span> <span class='kw'>=</span> <span class='fl'>2005</span>,
-             <span class='kw'>indexed_var</span> <span class='kw'>=</span> <span class='st'>"now.indexed"</span>)</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, index_time <span class='op'>=</span> <span class='fl'>2005</span>,
+             indexed_var <span class='op'>=</span> <span class='st'>"now.indexed"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
 #&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
 #&gt;    Year name    var now.indexed
 #&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
@@ -228,16 +231,17 @@ a column of numbers or a column of matrices.</p>
 #&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20         1.33 
 #&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5         0.909
 #&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5       1    
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6         1.09 </div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-  <span class='no'>DF</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>var</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>index_column</span>(<span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>) <span class='co'># Fails! Do not group on var_to_index.</span>
-  <span class='no'>DF</span> <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span>() <span class='kw'>%&gt;%</span>
-    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>name</span>, <span class='no'>Year</span>) <span class='kw'>%&gt;%</span>
-    <span class='fu'>index_column</span>(<span class='kw'>var_to_index</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>time_var</span> <span class='kw'>=</span> <span class='st'>"Year"</span>) <span class='co'># Fails! Do not group on time_var.</span>
-}</div></span></pre>
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6         1.09 </div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>DF</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>var</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>index_column</span><span class='op'>(</span>var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span><span class='op'>)</span> <span class='co'># Fails! Do not group on var_to_index.</span>
+  <span class='va'>DF</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>Year</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+    <span class='fu'>index_column</span><span class='op'>(</span>var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span><span class='op'>)</span> <span class='co'># Fails! Do not group on time_var.</span>
+<span class='op'>}</span>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -253,7 +257,7 @@ a column of numbers or a column of matrices.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

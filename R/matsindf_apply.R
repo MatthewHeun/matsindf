@@ -111,7 +111,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   if (types$all_dots_num | types$all_dots_mats) {
-    # .dat is not present, and we have numbers or matricies in the ... arguments.
+    # .dat is not present, and we have numbers or matrices in the ... arguments.
     # Simply call FUN on ... .
     return(FUN(...))
   }

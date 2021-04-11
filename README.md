@@ -1,12 +1,8 @@
 
 <!-- *********** -->
-
 <!-- Note: README.md is generated from README.Rmd.   -->
-
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
-
 <!-- *********** -->
-
 <!-- badges: start -->
 
 [![CRAN
@@ -15,12 +11,9 @@ status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.o
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Travis-CI Build
-Status](https://travis-ci.org/MatthewHeun/matsindf.svg?branch=master)](https://travis-ci.org/MatthewHeun/matsindf)
-[![R build
-status](https://github.com/MatthewHeun/matsindf/workflows/R-CMD-check/badge.svg)](https://github.com/MatthewHeun/matsindf/actions)
-[![Coverage
-status](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/github/MatthewHeun/matsindf?branch=master)
+[![R-CMD-check](https://github.com/MatthewHeun/matsindf/workflows/R-CMD-check/badge.svg)](https://github.com/MatthewHeun/matsindf/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/gh/MatthewHeun/matsindf?branch=master)
 <!-- badges: end -->
 
 # matsindf
@@ -49,8 +42,8 @@ devtools::install_github("MatthewHeun/matsindf", build_vignettes = TRUE)
 
 ## History
 
-The functions in this package were used in [Heun et
-al. (2018)](https://doi.org/10.1016/j.apenergy.2018.05.109).
+The functions in this package were used in [Heun et al.
+(2018)](https://doi.org/10.1016/j.apenergy.2018.05.109).
 
 ## More Information
 
@@ -59,9 +52,9 @@ at <https://MatthewHeun.github.io/matsindf/>.
 
 ## References
 
-<div id="refs" class="references">
+<div id="refs" class="references csl-bib-body hanging-indent">
 
-<div id="ref-Heun:2018">
+<div id="ref-Heun:2018" class="csl-entry">
 
 Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. “A
 Physical Supply-Use Table Framework for Energy Analysis on the Energy

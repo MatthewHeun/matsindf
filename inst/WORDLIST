@@ -1,6 +1,8 @@
 al
 apenergy
 Brockway
+CMD
+Codecov
 colvec
 doi
 dplyr
@@ -29,8 +31,8 @@ Rmd
 Rnw
 rowvec
 Roxygen
+TravisCI
 tidyr
 tidyverse
 transposeinverse
-TravisCI
 widehat

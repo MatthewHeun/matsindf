@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Collapse a "tidy" data frame to matrices in a data frame (<code>matsindf</code>) — collapse_to_matrices • matsindf</title>
+<title>Collapse a "tidy" data frame to matrices in a data frame (matsindf) — collapse_to_matrices • matsindf</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Collapse a "tidy" data frame to matrices in a data frame (<code>matsindf</code>) — collapse_to_matrices" />
+<meta property="og:title" content="Collapse a "tidy" data frame to matrices in a data frame (matsindf) — collapse_to_matrices" />
 <meta property="og:description" content="A &quot;tidy&quot; data frame contains information that can be collapsed into matrices,
 including columns for
 matrix names, row names, column names, row types, column types, and values (entries in matrices).
@@ -102,7 +102,7 @@ See the example." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
       </span>
     </div>
 
@@ -110,7 +110,7 @@ See the example." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -139,7 +139,7 @@ See the example." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/MatthewHeun/matsindf/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -195,15 +195,15 @@ execution is halted if that is not the case.
 See the example.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>collapse_to_matrices</span>(
-  <span class='no'>.DF</span>,
-  <span class='kw'>matnames</span> <span class='kw'>=</span> <span class='st'>"matnames"</span>,
-  <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"matvals"</span>,
-  <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"rownames"</span>,
-  <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"colnames"</span>,
-  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>,
-  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>collapse_to_matrices</span><span class='op'>(</span>
+  <span class='va'>.DF</span>,
+  matnames <span class='op'>=</span> <span class='st'>"matnames"</span>,
+  matvals <span class='op'>=</span> <span class='st'>"matvals"</span>,
+  rownames <span class='op'>=</span> <span class='st'>"rownames"</span>,
+  colnames <span class='op'>=</span> <span class='st'>"colnames"</span>,
+  rowtypes <span class='op'>=</span> <span class='st'>"rowtypes"</span>,
+  coltypes <span class='op'>=</span> <span class='st'>"coltypes"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -257,40 +257,43 @@ Default is "<code>coltypes</code>".</p></td>
     <div class='dont-index'><p><code><a href='https://tidyr.tidyverse.org/reference/nest.html'>nest</a></code> and <code><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></code>.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>dplyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://dplyr.tidyverse.org'>dplyr</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘dplyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    matches</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:stats’:</span>
 #&gt; <span class='message'></span>
 #&gt; <span class='message'>    filter, lag</span></div><div class='output co'>#&gt; <span class='message'>The following objects are masked from ‘package:base’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tidyr</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>    intersect, setdiff, setequal, union</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyr.tidyverse.org'>tidyr</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘tidyr’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:testthat’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    matches</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>tibble</span>)
-<span class='no'>ptype</span> <span class='kw'>&lt;-</span> <span class='st'>"Products"</span>
-<span class='no'>itype</span> <span class='kw'>&lt;-</span> <span class='st'>"Industries"</span>
-<span class='no'>tidy</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>Country</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,
-                                <span class='st'>"US"</span>,  <span class='st'>"US"</span>,  <span class='st'>"US"</span>,  <span class='st'>"US"</span>, <span class='st'>"GH"</span>, <span class='st'>"US"</span>),
-                  <span class='kw'>Year</span>    <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,
-                                <span class='fl'>1980</span>,  <span class='fl'>1980</span>,  <span class='fl'>1980</span>,  <span class='fl'>1980</span>, <span class='fl'>1971</span>, <span class='fl'>1980</span>),
-                  <span class='kw'>matrix</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(   <span class='st'>"U"</span>,   <span class='st'>"U"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>,   <span class='st'>"V"</span>,   <span class='st'>"V"</span>,
-                                 <span class='st'>"U"</span>,   <span class='st'>"U"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>, <span class='st'>"eta"</span>, <span class='st'>"eta"</span>),
-                  <span class='kw'>row</span>     <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='st'>"c 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>,
-                               <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>col</span>     <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 3"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>,
-                               <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>,
-                                <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>( <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>ptype</span>, <span class='no'>ptype</span>,
-                                <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='no'>itype</span>, <span class='fl'>NA</span>, <span class='fl'>NA</span>),
-                  <span class='kw'>vals</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(    <span class='fl'>11</span>  ,  <span class='fl'>22</span>,    <span class='fl'>11</span> ,   <span class='fl'>22</span> ,   <span class='fl'>23</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span> ,
-                                <span class='fl'>11</span> ,   <span class='fl'>12</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span>,   <span class='fl'>0.2</span>, <span class='fl'>0.3</span>)
-) <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>Country</span>, <span class='no'>Year</span>, <span class='no'>matrix</span>)
-<span class='no'>mats</span> <span class='kw'>&lt;-</span> <span class='fu'>collapse_to_matrices</span>(<span class='no'>tidy</span>, <span class='kw'>matnames</span> <span class='kw'>=</span> <span class='st'>"matrix"</span>, <span class='kw'>matvals</span> <span class='kw'>=</span> <span class='st'>"vals"</span>,
-                             <span class='kw'>rownames</span> <span class='kw'>=</span> <span class='st'>"row"</span>, <span class='kw'>colnames</span> <span class='kw'>=</span> <span class='st'>"col"</span>,
-                             <span class='kw'>rowtypes</span> <span class='kw'>=</span> <span class='st'>"rowtypes"</span>, <span class='kw'>coltypes</span> <span class='kw'>=</span> <span class='st'>"coltypes"</span>)
-<span class='no'>mats</span> <span class='kw'>%&gt;%</span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span>(<span class='kw'>key</span> <span class='kw'>=</span> <span class='no'>matrix</span>, <span class='kw'>value</span> <span class='kw'>=</span> <span class='no'>vals</span>)</div><div class='output co'>#&gt;   Country Year                   E eta            U            V
+#&gt; <span class='message'>    matches</span></div><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tibble.tidyverse.org/'>tibble</a></span><span class='op'>)</span>
+<span class='va'>ptype</span> <span class='op'>&lt;-</span> <span class='st'>"Products"</span>
+<span class='va'>itype</span> <span class='op'>&lt;-</span> <span class='st'>"Industries"</span>
+<span class='va'>tidy</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>Country <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,  <span class='st'>"GH"</span>,
+                                <span class='st'>"US"</span>,  <span class='st'>"US"</span>,  <span class='st'>"US"</span>,  <span class='st'>"US"</span>, <span class='st'>"GH"</span>, <span class='st'>"US"</span><span class='op'>)</span>,
+                  Year    <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,  <span class='fl'>1971</span>,
+                                <span class='fl'>1980</span>,  <span class='fl'>1980</span>,  <span class='fl'>1980</span>,  <span class='fl'>1980</span>, <span class='fl'>1971</span>, <span class='fl'>1980</span><span class='op'>)</span>,
+                  matrix  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>   <span class='st'>"U"</span>,   <span class='st'>"U"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>,   <span class='st'>"V"</span>,   <span class='st'>"V"</span>,
+                                 <span class='st'>"U"</span>,   <span class='st'>"U"</span>,   <span class='st'>"E"</span>,   <span class='st'>"E"</span>, <span class='st'>"eta"</span>, <span class='st'>"eta"</span><span class='op'>)</span>,
+                  row     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='st'>"c 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>,
+                               <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+                  col     <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 3"</span>, <span class='st'>"c 1"</span>, <span class='st'>"c 2"</span>,
+                               <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='st'>"i 1"</span>, <span class='st'>"i 2"</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+                  rowtypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>,
+                                <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+                  coltypes <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span> <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>ptype</span>, <span class='va'>ptype</span>,
+                                <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='va'>itype</span>, <span class='cn'>NA</span>, <span class='cn'>NA</span><span class='op'>)</span>,
+                  vals  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>    <span class='fl'>11</span>  ,  <span class='fl'>22</span>,    <span class='fl'>11</span> ,   <span class='fl'>22</span> ,   <span class='fl'>23</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span> ,
+                                <span class='fl'>11</span> ,   <span class='fl'>12</span> ,   <span class='fl'>11</span> ,   <span class='fl'>22</span>,   <span class='fl'>0.2</span>, <span class='fl'>0.3</span><span class='op'>)</span>
+<span class='op'>)</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>Country</span>, <span class='va'>Year</span>, <span class='va'>matrix</span><span class='op'>)</span>
+<span class='va'>mats</span> <span class='op'>&lt;-</span> <span class='fu'>collapse_to_matrices</span><span class='op'>(</span><span class='va'>tidy</span>, matnames <span class='op'>=</span> <span class='st'>"matrix"</span>, matvals <span class='op'>=</span> <span class='st'>"vals"</span>,
+                             rownames <span class='op'>=</span> <span class='st'>"row"</span>, colnames <span class='op'>=</span> <span class='st'>"col"</span>,
+                             rowtypes <span class='op'>=</span> <span class='st'>"rowtypes"</span>, coltypes <span class='op'>=</span> <span class='st'>"coltypes"</span><span class='op'>)</span>
+<span class='va'>mats</span> <span class='op'>%&gt;%</span> <span class='fu'><a href='https://tidyr.tidyverse.org/reference/spread.html'>spread</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='va'>matrix</span>, value <span class='op'>=</span> <span class='va'>vals</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   Country Year                   E eta            U            V
 #&gt; 1      GH 1971 11, 0, 0, 22, 0, 23 0.2 11, 0, 0, 22 11, 0, 0, 22
 #&gt; 2      US 1980        11, 0, 0, 22 0.3       11, 12         NULL</div></pre>
   </div>
@@ -308,7 +311,7 @@ Default is "<code>coltypes</code>".</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

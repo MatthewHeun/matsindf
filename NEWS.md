@@ -1,3 +1,5 @@
+# matsindf 0.3.7 (2020-04-11)
+
 * Move away from Travis to GitHub Actions for continuous integration testing.
 * Added new tests for `matsindf_apply()` for 
   functions similar in form to those in `Recca`.

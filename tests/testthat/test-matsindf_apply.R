@@ -253,7 +253,22 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 })
 
 
+test_that("matsindf_apply() replaces a column as expected", {
+  # Create a data frame with a matrix in a column.
+  a <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  b <- 2 * a
+  c <- a + b
+  d <- a - b
+  DF <- data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE)
 
+  replace_func <- function(c_mat, d_mat) {
+    c <- matsbyname::sum_byname(c_mat, d_mat)
+    list(c) %>%
+      magrittr::set_names(c_name)
+  }
+  matsindf_apply(DF, FUN = replace_func, c_mat = "c", d_mat = "d")
+
+})
 
 
 

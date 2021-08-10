@@ -1,3 +1,6 @@
+* Added test for name collision `matsindf_apply()`.
+
+
 # matsindf 0.3.7 (2020-04-11)
 
 * Not released to CRAN, because there are no changes in the code itself.

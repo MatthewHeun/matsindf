@@ -83,7 +83,7 @@ Etas <- Energy %>%
   mutate(
     g = rowsums_byname(V),
     eta = transpose_byname(U) %>% rowsums_byname() %>% 
-      hatize_byname() %>% invert_byname() %>% 
+      hatize_byname(keep = "rownames") %>% invert_byname() %>% 
       matrixproduct_byname(g) %>% 
       setcolnames_byname("eta") %>% setcoltype("Efficiency")
   ) %>% 

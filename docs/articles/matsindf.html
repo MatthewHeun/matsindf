@@ -82,13 +82,13 @@
 
       
 
-      </header><script src="matsindf_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="matsindf_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Use Cases and Examples for matsindf</h1>
                         <h4 class="author">Matthew Kuperus Heun</h4>
             
-            <h4 class="date">2021-04-11</h4>
+            <h4 class="date">2021-09-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/master/vignettes/matsindf.Rmd"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="hidden name"><code>matsindf.Rmd</code></div>
@@ -410,7 +410,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>
     g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>,
     eta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html">transpose_byname</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html">rowsums_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/hatize_byname.html">hatize_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/invert_byname.html">invert_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/hatize_byname.html">hatize_byname</a></span><span class="op">(</span>keep <span class="op">=</span> <span class="st">"rownames"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/invert_byname.html">invert_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
       <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/matrixproduct_byname.html">matrixproduct_byname</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op">%&gt;%</span> 
       <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcolnames_byname.html">setcolnames_byname</a></span><span class="op">(</span><span class="st">"eta"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcoltype.html">setcoltype</a></span><span class="op">(</span><span class="st">"Efficiency"</span><span class="op">)</span>
   <span class="op">)</span> <span class="op">%&gt;%</span> 
@@ -494,7 +494,7 @@
 
 <span class="co"># Compare to Figure 8 of Heun, Owen, and Brockway (2018)</span>
 <span class="va">etas_forgraphing</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">Country</span> <span class="op">==</span> <span class="st">"GB"</span>, <span class="va">Year</span> <span class="op">==</span> <span class="fl">2000</span><span class="op">)</span>
-<span class="co">#&gt; # A tibble: 9 x 4</span>
+<span class="co">#&gt; # A tibble: 9 × 4</span>
 <span class="co">#&gt;   Country Year  Industry            eta</span>
 <span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;             &lt;dbl&gt;</span>
 <span class="co">#&gt; 1 GB      2000  Crude dist.       0.988</span>
@@ -524,7 +524,9 @@
   <span class="fu">scale_fill_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"white"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">etas_UK_2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">scale_colour_manual</span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="st">"gray20"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">etas_UK_2000</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu">guides</span><span class="op">(</span>fill <span class="op">=</span> <span class="cn">FALSE</span>, colour <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.4</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">0.4</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
+<span class="co">#&gt; "none")` instead.</span></code></pre></div>
 <p><img src="matsindf_files/figure-html/unnamed-chunk-8-1.png" width="700"></p>
 </div>
 </div>

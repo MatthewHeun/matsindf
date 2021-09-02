@@ -1,3 +1,4 @@
+* `matsindf.Rmd` vignette now uses the `keep` argument on `matsbyname::hatize_byname()`.
 * Fixed a bug in the `matsindf.Rmd` vignette.
   Needed to supply the `keep` argument on `hatize_byname()`.
 * Added test for name collision `matsindf_apply()`.

@@ -27,7 +27,7 @@ See `NEWS.md` for details.
     * WARNINGs: 0
     * NOTEs: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.1.1 (2021-08-10)
+    * `devtools::check_win_release()`, R version 4.1.1 (2021-08-10)  ****
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0

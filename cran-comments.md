@@ -37,15 +37,15 @@ See `NEWS.md` for details.
         * NOTEs: 0
 * rhub:
     * `devtools::check_rhub()`
-        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit    ****
             * ERRORs: 0
             * WARNINGs: 0
             * NOTEs: 0
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC    ****
             * ERRORs: 0
             * WARNINGs: 0
             * NOTEs: 0
-        * Fedora Linux, R-devel, clang, gfortran
+        * Fedora Linux, R-devel, clang, gfortran    ****
             * ERRORs: 0
             * WARNINGs: 0
             * NOTEs: 0

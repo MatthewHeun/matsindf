@@ -380,7 +380,7 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 #' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
 #' @param .add When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
 #'            To add to the existing groups, use `.add = TRUE`.
-#' @param .drop When `.drop = TRUE`, empty groups are dropped.
+#' @param .drop When `.drop = TRUE`, empty groups are dropped. Default is `FALSE`.
 #'
 #' @return a grouped version of `.DF`
 #'

@@ -2,6 +2,9 @@
 * Fixed a bug in the `matsindf.Rmd` vignette.
   Needed to supply the `keep` argument on `hatize_byname()`.
 * Added test for name collision `matsindf_apply()`.
+* New tests for new features.
+    * Now at 177 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
 # matsindf 0.3.7 (2020-04-11)

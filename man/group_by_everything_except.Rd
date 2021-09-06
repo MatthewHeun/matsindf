@@ -14,7 +14,7 @@ group_by_everything_except(.DF, ..., .add = FALSE, .drop = FALSE)
 \item{.add}{When \code{.add = FALSE}, the default, \code{dplyr::group_by()} will override existing groups.
 To add to the existing groups, use \code{.add = TRUE}.}
 
-\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped.}
+\item{.drop}{When \code{.drop = TRUE}, empty groups are dropped. Default is \code{FALSE}.}
 }
 \value{
 a grouped version of \code{.DF}

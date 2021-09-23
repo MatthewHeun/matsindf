@@ -76,7 +76,7 @@ Neither var_to_index nor time_var can be in the grouping variables." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">matsindf</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -201,37 +201,37 @@ a column of numbers or a column of matrices.</p>
   <span class='fu'><a href='https://tidyr.tidyverse.org/reference/gather.html'>gather</a></span><span class='op'>(</span>key <span class='op'>=</span> <span class='va'>name</span>, value <span class='op'>=</span> <span class='va'>var</span>, <span class='va'>a</span>, <span class='va'>b</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span><span class='op'>)</span>
 <span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, suffix <span class='op'>=</span> <span class='st'>"_ratioed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 4</span>
+#&gt; <span style='color: #949494;'># Groups:   name [2]</span>
 #&gt;    Year name    var var_ratioed
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 a      10           1  
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 a      15           1.5
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20           2  
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5           1  
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5         1.1
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, indexed_var <span class='op'>=</span> <span class='st'>"now.indexed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  <span style='text-decoration: underline;'>2</span>000 a      10           1  
+#&gt; <span style='color: #BCBCBC;'>2</span>  <span style='text-decoration: underline;'>2</span>005 a      15           1.5
+#&gt; <span style='color: #BCBCBC;'>3</span>  <span style='text-decoration: underline;'>2</span>010 a      20           2  
+#&gt; <span style='color: #BCBCBC;'>4</span>  <span style='text-decoration: underline;'>2</span>000 b       5           1  
+#&gt; <span style='color: #BCBCBC;'>5</span>  <span style='text-decoration: underline;'>2</span>005 b       5.5         1.1
+#&gt; <span style='color: #BCBCBC;'>6</span>  <span style='text-decoration: underline;'>2</span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, indexed_var <span class='op'>=</span> <span class='st'>"now.indexed"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 4</span>
+#&gt; <span style='color: #949494;'># Groups:   name [2]</span>
 #&gt;    Year name    var now.indexed
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 a      10           1  
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 a      15           1.5
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20           2  
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5           1  
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5         1.1
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, index_time <span class='op'>=</span> <span class='fl'>2005</span>,
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  <span style='text-decoration: underline;'>2</span>000 a      10           1  
+#&gt; <span style='color: #BCBCBC;'>2</span>  <span style='text-decoration: underline;'>2</span>005 a      15           1.5
+#&gt; <span style='color: #BCBCBC;'>3</span>  <span style='text-decoration: underline;'>2</span>010 a      20           2  
+#&gt; <span style='color: #BCBCBC;'>4</span>  <span style='text-decoration: underline;'>2</span>000 b       5           1  
+#&gt; <span style='color: #BCBCBC;'>5</span>  <span style='text-decoration: underline;'>2</span>005 b       5.5         1.1
+#&gt; <span style='color: #BCBCBC;'>6</span>  <span style='text-decoration: underline;'>2</span>010 b       6           1.2</div><div class='input'><span class='fu'>index_column</span><span class='op'>(</span><span class='va'>DF</span>, var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span>, index_time <span class='op'>=</span> <span class='fl'>2005</span>,
              indexed_var <span class='op'>=</span> <span class='st'>"now.indexed"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 4</span><span>
-#&gt; </span><span style='color: #949494;'># Groups:   name [2]</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 4</span>
+#&gt; <span style='color: #949494;'># Groups:   name [2]</span>
 #&gt;    Year name    var now.indexed
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 a      10         0.667
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 a      15         1    
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 a      20         1.33 
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span>  </span><span style='text-decoration: underline;'>2</span><span>000 b       5         0.909
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span>  </span><span style='text-decoration: underline;'>2</span><span>005 b       5.5       1    
-#&gt; </span><span style='color: #BCBCBC;'>6</span><span>  </span><span style='text-decoration: underline;'>2</span><span>010 b       6         1.09 </div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span>  <span style='text-decoration: underline;'>2</span>000 a      10         0.667
+#&gt; <span style='color: #BCBCBC;'>2</span>  <span style='text-decoration: underline;'>2</span>005 a      15         1    
+#&gt; <span style='color: #BCBCBC;'>3</span>  <span style='text-decoration: underline;'>2</span>010 a      20         1.33 
+#&gt; <span style='color: #BCBCBC;'>4</span>  <span style='text-decoration: underline;'>2</span>000 b       5         0.909
+#&gt; <span style='color: #BCBCBC;'>5</span>  <span style='text-decoration: underline;'>2</span>005 b       5.5       1    
+#&gt; <span style='color: #BCBCBC;'>6</span>  <span style='text-decoration: underline;'>2</span>010 b       6         1.09 </div><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='va'>DF</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>ungroup</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>var</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
@@ -241,7 +241,7 @@ a column of numbers or a column of matrices.</p>
     <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>name</span>, <span class='va'>Year</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
     <span class='fu'>index_column</span><span class='op'>(</span>var_to_index <span class='op'>=</span> <span class='st'>"var"</span>, time_var <span class='op'>=</span> <span class='st'>"Year"</span><span class='op'>)</span> <span class='co'># Fails! Do not group on time_var.</span>
 <span class='op'>}</span>
-</div></span></pre>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -9,7 +9,7 @@ output: html_document
   because it is generally useful.
 
 
-# matsindf 0.3.8 (2020-09-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475444.svg)](https://doi.org/10.5281/zenodo.5475444)
+# matsindf 0.3.8 (2020-09-02)  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475444.svg)](https://doi.org/10.5281/zenodo.5475444)
 
 * `matsindf.Rmd` vignette now uses the `keep` argument on `matsbyname::hatize_byname()`.
 * Fixed a bug in the `matsindf.Rmd` vignette.

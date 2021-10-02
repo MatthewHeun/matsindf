@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+# matsindf 0.3.9 (2020-10-02)
+
 * New function `df_to_msg()` can assist with error messages.
   `df_to_msg()` was moved from the `SEAPSUTWorkflow` package, 
   because it is generally useful.

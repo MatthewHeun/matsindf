@@ -7,6 +7,9 @@ output: html_document
 * New function `df_to_msg()` can assist with error messages.
   `df_to_msg()` was moved from the `SEAPSUTWorkflow` package, 
   because it is generally useful.
+* New tests for new features.
+    * Now at 178 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
 # matsindf 0.3.8 (2020-09-02)  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475444.svg)](https://doi.org/10.5281/zenodo.5475444)

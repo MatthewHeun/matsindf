@@ -43,7 +43,7 @@ See `NEWS.md` for details.
             * WARNINGs: 0
             * NOTEs: 0
               The error is "Package required but not available: 'matsbyname'". 
-              This is the only test configuration that is showing this error.
+              This is the only test configuration where this error occurs.
               It appears to be a singular mis-configuration of the R environment.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * ERRORs: 0

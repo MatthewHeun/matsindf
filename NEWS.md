@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# matsindf 0.3.9 (2020-10-02)
+# matsindf 0.3.9 (2020-10-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5546359.svg)](https://doi.org/10.5281/zenodo.5546359)
 
 * New function `df_to_msg()` can assist with error messages.
   `df_to_msg()` was moved from the `SEAPSUTWorkflow` package, 

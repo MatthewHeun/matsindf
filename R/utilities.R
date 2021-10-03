@@ -530,3 +530,30 @@ add_UKEnergy2000_row_col_meta <- function(.DF,
       )
     )
 }
+
+
+#' Create a message from a data frame
+#'
+#' This function is especially helpful for cases when a data frame
+#' of missing or unset values is at hand.
+#' Trim unneeded columns, then call this function
+#' to create a string with rows separated by semicolons and entries separated by commas.
+#'
+#' @param df The data frame to be converted to a message
+#'
+#' @return A string with rows separated by semicolons and entries separated by commas.
+#'
+#' @export
+#'
+#' @examples
+#' data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) %>%
+#'   df_to_msg()
+df_to_msg <- function(df) {
+  lapply(1:nrow(df), function(r) {
+    df[r, ] %>%
+      as.list() %>%
+      paste(collapse = ", ")
+  }) %>%
+    paste(collapse = "; ")
+}
+

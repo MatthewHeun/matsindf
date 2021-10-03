@@ -358,3 +358,9 @@ test_that("group_by_everything_except works as expected", {
 })
 
 
+test_that("df_to_msg() works as expected", {
+  msg <- data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) %>%
+    df_to_msg()
+  expect_equal(msg, "1, a; 2, b; 3, c")
+})
+

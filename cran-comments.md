@@ -38,10 +38,13 @@ See `NEWS.md` for details.
         * NOTEs: 0
 * rhub:
     * `devtools::check_rhub()`
-        * Windows Server 2008 R2 SP1, R-devel, 32/64 bir
-            * ERRORs: 0
+        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+            * ERRORs: 1
             * WARNINGs: 0
             * NOTEs: 0
+              The error is "Package required but not available: 'matsbyname'". 
+              This is the only test configuration that is showing this error.
+              It appears to be a singular mis-configuration of the R environment.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * ERRORs: 0
             * WARNINGs: 0

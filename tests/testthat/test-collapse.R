@@ -77,7 +77,7 @@ test_that("small example works as expected", {
 })
 
 
-test_that("collapse_to_matrices works as expected", {
+test_that("collapse_to_matrices() works as expected", {
   ptype <- "Products"
   itype <- "Industries"
   tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
@@ -124,5 +124,24 @@ test_that("collapse_to_matrices works as expected", {
   expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "Y"))$vals[[1]], A)
   # Check that groups are discarded.
   expect_equal(length(dplyr::group_vars(mats)), 0)
+})
+
+
+test_that("collapse_to_matrices() works correctly when row and col types are NULL", {
+  tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                         row = c("i1", "i1", "i2", "i1", "i2"),
+                         col = c("p1", "p2", "p2", "p1", "p2"),
+                         vals = c(1, 2, 3, 4, 5))
+
+  # Group on the right things and expect success.
+  mats <- collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = NULL, coltypes = NULL)
+
+  expect_null(mats$vals[[1]] %>% matsbyname::rowtype())
+  expect_null(mats$vals[[1]] %>% matsbyname::coltype())
+  expect_null(mats$vals[[2]] %>% matsbyname::rowtype())
+  expect_null(mats$vals[[2]] %>% matsbyname::coltype())
 })
 

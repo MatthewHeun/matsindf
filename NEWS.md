@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+* `rowtypes` and `coltypes` arguments now have special defaults
+  to enable calling `collapse_to_matrices()` without specifying those arguments.
 * Added more tests for `collapse_to_matrices()` to check
   whether `NULL` values for `rowtype` and `coltype` arguments
   are handled correctly.

@@ -30,7 +30,7 @@
 #' `rowtypes` and `coltypes` should be the same for all rows of the same matrix in `.DF`;
 #' execution is halted if that is not the case.
 #' `tidyr::pivot_wider()`ing the output by `matnames` may be necessary before
-#' calculations are done on the collpased matrices.
+#' calculations are done on the collapsed matrices.
 #' See the example.
 #'
 #' Groups are not preserved on output.

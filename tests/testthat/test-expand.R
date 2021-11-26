@@ -96,13 +96,12 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
   df <- data.frame(matnames = c("m1", "m2"), m = I(list(m1, m2)), stringsAsFactors = FALSE)
   class(df$m) <- class(df$m)[-match("AsIs", class(df$m))]
   tidy <- expand_to_tidy(df, matnames = "matrix", matvals = "m", rownames = "row", colnames = "col") %>%
-    as.data.frame(stringsAsFactors = FALSE)
+    as.data.frame()
   expected_df <- data.frame(
     matnames = c(rep("m1", 4), rep("m2", 4)),
     row = rep(c("r1", "r2"), 4),
     col = c(rep("c1", 2), rep("c2", 2)),
-    m = c(1, 3, 2, 4, 10, 30, 20, 40),
-    stringsAsFactors = FALSE
+    m = c(1, 3, 2, 4, 10, 30, 20, 40)
   ) %>%
     dplyr::mutate(
       row = as.character(row),
@@ -110,6 +109,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
     )
   expect_equal(tidy, expected_df)
 })
+
 
 test_that("expand_to_tidy works with a list of matrices", {
   m1 <- matrix(c(1,2), nrow = 2, ncol = 1, dimnames = list(c("i1", "i2"), "p1")) %>%

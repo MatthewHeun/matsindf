@@ -111,7 +111,7 @@ test_that("expand_to_tidy works as expected without rowtype, coltype", {
 })
 
 
-test_that("expand_to_tidy works with a list of matrices", {
+test_that("expand_to_tidy() works with a list of matrices", {
   m1 <- matrix(c(1,2), nrow = 2, ncol = 1, dimnames = list(c("i1", "i2"), "p1")) %>%
     matsbyname::setrowtype("industries") %>% matsbyname::setcoltype("products")
   m2 <- matsbyname::transpose_byname(m1 * 10)

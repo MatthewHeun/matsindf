@@ -43,7 +43,7 @@
 #'                 data in the `matvals` column.
 #'                 Default is "matvals".
 #' @param rownames A string identifying the column in `.DF` containing row names for matrices to be created.
-#'                 Default is "`ownames".
+#'                 Default is "rownames".
 #' @param colnames A string identifying the column in `.DF` containing column names for matrices to be created.
 #'                 Default is "colnames".
 #' @param rowtypes An optional string identifying the column in `.DF` containing the type of values in rows of the matrices to be created.

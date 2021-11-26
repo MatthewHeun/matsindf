@@ -129,3 +129,16 @@ test_that("expand_to_tidy() works with a list of matrices", {
   )
   expect_equal(result, expected)
 })
+
+
+test_that("expand_to_tidy() works if some arguments are unspecified", {
+  m1 <- matrix(c(1,2,3,4), nrow = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  df <- data.frame(m = I(list(m1)))
+
+  tidy <- expand_to_tidy(df, matvals = "m", rownames = "row", colnames = "col")
+
+  expect_equal(tidy, data.frame(row = c("r1", "r2", "r1", "r2"),
+                                col = c("c1", "c1", "c2", "c2"),
+                                m = c(1, 3, 2 ,4)))
+
+})

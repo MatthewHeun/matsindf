@@ -178,18 +178,19 @@ test_that("new defaults for rowtypes and coltypes arguments work as expected", {
 })
 
 
-test_that("collapse_to_matrices() works with NULL matnames argument", {
+test_that("collapse_to_matrices() works with various matnames arguments", {
   tidy <- tibble::tibble(row = c("i1", "i1", "i2"),
                          col = c("p1", "p2", "p2"),
                          vals = c(1, 2, 3))
 
+  # Try wtih NULL
   mats <- collapse_to_matrices(tidy, matnames = NULL,
                                matvals = "vals", rownames = "row", colnames = "col")
   expect_equal(mats$vals[[1]], matrix(c(1, 2,
                                         0, 3), byrow = TRUE, nrow = 2, ncol = 2,
                                       dimnames = list(c("i1", "i2"), c("p1", "p2"))))
 
-  # Check that default NULL was picked up.
+  # Try with unspecified
   mats2 <- collapse_to_matrices(tidy, matvals = "vals", rownames = "row", colnames = "col")
   expect_equal(mats2$vals[[1]], matrix(c(1, 2,
                                          0, 3), byrow = TRUE, nrow = 2, ncol = 2,

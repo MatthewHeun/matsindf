@@ -26,7 +26,7 @@ data in the \code{matvals} column.
 Default is "matvals".}
 
 \item{rownames}{A string identifying the column in \code{.DF} containing row names for matrices to be created.
-Default is "`ownames".}
+Default is "rownames".}
 
 \item{colnames}{A string identifying the column in \code{.DF} containing column names for matrices to be created.
 Default is "colnames".}
@@ -72,7 +72,7 @@ Note that execution is halted if any of
 \code{rowtypes} and \code{coltypes} should be the same for all rows of the same matrix in \code{.DF};
 execution is halted if that is not the case.
 \code{tidyr::pivot_wider()}ing the output by \code{matnames} may be necessary before
-calculations are done on the collpased matrices.
+calculations are done on the collapsed matrices.
 See the example.
 }
 \details{

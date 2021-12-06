@@ -1,0 +1,78 @@
+---
+title: "Using matsindf for principal components analysis"
+author: "Alexander Davis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using matsindf for PCA}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(cowplot)
+theme_set(cowplot::theme_cowplot())
+filter <- dplyr::filter
+library(matsindf)
+```
+
+When working with tidy data, it can be challenging to use R operations that take in matrices.
+We will illustrate how to handle these cases by doing principal components analysis (PCA) on the classic Fisher iris dataset, which is often used to illustrate PCA.
+We will be using a "long" input table, in which each measurement, rather than each flower, is a single row:
+
+```{r}
+data(long_iris)
+print(long_iris, n = 5)
+```
+
+Using matsindf, we can convert to a matrix, apply PCA, and then convert back to a long format table:
+
+```{r}
+long_pca_embeddings <- long_iris %>%
+  collapse_to_matrices(
+    rownames = "flower", colnames = "dimension", matvals = "length"
+  ) %>%
+  transmute(projection = lapply(length, function(mat)
+    prcomp(mat, center = TRUE, scale = TRUE)$x
+  )) %>%
+  expand_to_tidy(
+    rownames = "flower", colnames = "component", matvals = "projection"
+  )
+print(as_tibble(long_pca_embeddings), n = 5)
+```
+
+The result are the coordinates of the iris data along the principal components, as a long format table.
+We just need to put back the species column:
+
+```{r}
+long_pca_withspecies <- long_iris %>%
+  select(flower, species) %>%
+  distinct() %>%
+  left_join(long_pca_embeddings, by = "flower")
+```
+
+And then we can make the familiar PCA plot:
+
+```{r}
+long_pca_withspecies %>%
+  pivot_wider(
+    id_cols = c(flower, species), names_from = component,
+    values_from = projection
+  ) %>%
+  ggplot(aes(x = PC1, y = PC2, colour = species)) + 
+  geom_point() +
+  coord_equal()
+```
+
+As expected, we see that the distribution of measurements differs between the three species of iris.
+
+

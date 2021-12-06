@@ -24,16 +24,3 @@
 #' }
 #' @source \url{http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf}
 "UKEnergy2000"
-
-#' Iris data, in a long table
-#' 
-#' The Edgar Anderson's iris dataset, which is included in R as "iris", but as a long table.
-#' 
-#' @format A tibble with 600 rows and four variables:
-#' \describe{
-#'   \item{flower}{An identifier for the flower being measured}
-#'   \item{species}{The species of the flower}
-#'   \item{dimension}{The part and dimension of the flower being measured (for example, sepal width or sepal length)}
-#'   \item{length}{The measurement, in cm}
-#' }
-"long_iris"

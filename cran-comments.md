@@ -29,11 +29,11 @@ See `NEWS.md` for details.
     * WARNINGs: 0
     * NOTEs: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.1.1 (2021-08-10)
+    * `devtools::check_win_release()`, R version 4.1.2 (2021-11-01)
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0
-    * `devtools::check_win_devel()`, R Under development (unstable) (2021-08-30 r80832)
+    * `devtools::check_win_devel()`, R Under development (unstable) (2021-12-03 r81290)
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0

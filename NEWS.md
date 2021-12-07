@@ -6,6 +6,7 @@ output: html_document
 
 # matsindf 0.3.10 (2020-12-06)
 
+* Move to `testthat` v3.
 * Adapt to refactoring `RCLabels` package out of `matsbyname`.
 * `rowtypes` and `coltypes` arguments now have special defaults
   to enable calling `collapse_to_matrices()` without specifying those arguments.

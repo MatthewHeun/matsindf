@@ -1,13 +1,14 @@
 ## Context
 
-`matsindf` v0.3.9 is a minor update that adds a new function `df_to_msg()`
-that assists creating helpful error messages.
+`matsindf` v0.3.10 is a minor update that adds better defaults for some arguments.
+It also adapts to refactoring several functions out of `matsbyname`
+into new package `RCLabels`, recently accepted on CRAN.
 See `NEWS.md` for details.
 
 
 ## Test environments (10 in total) and R CMD check results
 
-* local macOS X install 10.15.7 (Catalina), R4.1.1
+* local macOS X install 12.0.1 (Monterey), R4.1.2
     * ERRORs: 0
     * WARNINGs: 0
     * NOTEs: 0
@@ -61,3 +62,4 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
  * We saw 0 new problems
  * We failed to check 0 packages
+

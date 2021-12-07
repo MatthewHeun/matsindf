@@ -4,11 +4,17 @@ output: html_document
 ---
 
 
+# matsindf 0.3.10 (2020-12-06)
+
+* Adapt to refactoring `RCLabels` package out of `matsbyname`.
 * `rowtypes` and `coltypes` arguments now have special defaults
   to enable calling `collapse_to_matrices()` without specifying those arguments.
 * Added more tests for `collapse_to_matrices()` to check
   whether `NULL` values for `rowtype` and `coltype` arguments
   are handled correctly.
+* New tests for new features.
+    * Now at 195 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
 # matsindf 0.3.9 (2020-10-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5546359.svg)](https://doi.org/10.5281/zenodo.5546359)

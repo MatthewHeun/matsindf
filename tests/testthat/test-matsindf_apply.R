@@ -203,7 +203,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
     rowmatch_fun <- function(prefixes_arg, m_arg) {
       out <- m_arg %>%
         matsbyname::select_rows_byname(retain_pattern =
-                                         matsbyname::make_pattern(row_col_names = prefixes_arg, pattern_type = "leading")) %>%
+                                         RCLabels::make_or_pattern(strings = prefixes_arg, pattern_type = "leading")) %>%
         matsbyname::getrownames_byname()
       # If we don't have a list, make a list.
       if (!is.list(out)) {

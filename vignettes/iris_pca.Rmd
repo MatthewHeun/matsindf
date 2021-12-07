@@ -1,0 +1,108 @@
+---
+title: "Using matsindf for principal components analysis"
+author: "Alexander Davis"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using matsindf for principal components analysis}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+library(datasets)
+library(dplyr)
+library(ggplot2)
+library(matsindf)
+library(tidyr)
+```
+
+
+## Introduction
+
+When working with tidy data, it can be challenging to use R operations that take in matrices.
+But the functions in `matsindf` make it easier.
+
+
+## Data
+
+We will illustrate how to handle these cases with `matsindf` functions
+by doing principal components analysis (PCA) on the classic Fisher iris dataset, 
+often used to illustrate PCA.
+We will be using a "long" input table, in which each measurement, rather than each flower, is a single row.
+
+```{r}
+long_iris <- datasets::iris %>%
+  dplyr::mutate(flower = sprintf("flower_%d", 1:nrow(datasets::iris))) %>%
+  tidyr::pivot_longer(
+    cols = c(-Species, -flower), names_to = "dimension", values_to = "length"
+  ) %>%
+  dplyr::rename(species = Species) %>%
+  dplyr::select(flower, species, dimension, length) %>%
+  dplyr::mutate(species = as.character(species))
+
+head(long_iris, n = 5)
+```
+
+
+## Generate PCA results
+
+Using `matsindf`, we can convert to a matrix, apply PCA, and then convert back to a long format table.
+
+```{r}
+long_pca_embeddings <- long_iris %>%
+  collapse_to_matrices(
+    rownames = "flower", colnames = "dimension", matvals = "length"
+  ) %>%
+  dplyr::transmute(projection = lapply(length, function(mat)
+    stats::prcomp(mat, center = TRUE, scale = TRUE)$x
+  )) %>%
+  expand_to_tidy(
+    rownames = "flower", colnames = "component", matvals = "projection"
+  )
+head(long_pca_embeddings, n = 5)
+```
+
+The result are the coordinates of the iris data along the principal components, 
+as a long format table.
+We just need to add back the species column ...
+
+```{r}
+long_pca_withspecies <- long_iris %>%
+  dplyr::select(flower, species) %>%
+  dplyr::distinct() %>%
+  dplyr::left_join(long_pca_embeddings, by = "flower")
+head(long_pca_withspecies, n = 5)
+```
+
+... followed by the familiar PCA plot.
+
+```{r, fig.width=7, fig.align='center', fig.retina=2}
+long_pca_withspecies %>%
+  tidyr::pivot_wider(
+    id_cols = c(flower, species), names_from = component,
+    values_from = projection
+  ) %>%
+  ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = species)) + 
+  ggplot2::geom_point() +
+  ggplot2::labs(colour = ggplot2::element_blank()) +
+  ggplot2::theme_bw() +
+  ggplot2::coord_equal()
+```
+
+As expected, we see that the distribution of measurements differs across the three species of iris.
+
+
+## Conclusion
+
+`matsindf` simplifies tasks that are otherwise much more difficult.
+
+
+
+

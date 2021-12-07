@@ -49,6 +49,7 @@ long_pca_withspecies %>%
   ) %>%
   ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = species)) + 
   ggplot2::geom_point() +
+  ggplot2::labs(colour = ggplot2::element_blank()) +
   ggplot2::theme_bw() +
   ggplot2::coord_equal()
 

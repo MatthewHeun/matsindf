@@ -21,6 +21,7 @@ Imports:
     magrittr,
     matsbyname,
     purrr,
+    RCLabels,
     rlang,
     tibble,
     tidyr
@@ -30,8 +31,7 @@ Suggests:
     rmarkdown,
     testthat,
     covr,
-    spelling,
-    cowplot
+    spelling
 VignetteBuilder: 
     knitr
 URL: https://github.com/MatthewHeun/matsindf

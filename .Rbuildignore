@@ -11,3 +11,4 @@
 ^README\.Rmd$
 ^\.github$
 ^data-raw$
+^pkgdown$

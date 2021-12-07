@@ -23,9 +23,19 @@ library(matsindf)
 library(tidyr)
 ```
 
+
+## Introduction
+
 When working with tidy data, it can be challenging to use R operations that take in matrices.
-We will illustrate how to handle these cases by doing principal components analysis (PCA) on the classic Fisher iris dataset, which is often used to illustrate PCA.
-We will be using a "long" input table, in which each measurement, rather than each flower, is a single row:
+But the functions in `matsindf` make it easier.
+
+
+## Data
+
+We will illustrate how to handle these cases with `matsindf` functions
+by doing principal components analysis (PCA) on the classic Fisher iris dataset, 
+often used to illustrate PCA.
+We will be using a "long" input table, in which each measurement, rather than each flower, is a single row.
 
 ```{r}
 long_iris <- datasets::iris %>%
@@ -40,7 +50,10 @@ long_iris <- datasets::iris %>%
 head(long_iris, n = 5)
 ```
 
-Using matsindf, we can convert to a matrix, apply PCA, and then convert back to a long format table:
+
+## Generate PCA results
+
+Using `matsindf`, we can convert to a matrix, apply PCA, and then convert back to a long format table.
 
 ```{r}
 long_pca_embeddings <- long_iris %>%
@@ -56,8 +69,9 @@ long_pca_embeddings <- long_iris %>%
 head(long_pca_embeddings, n = 5)
 ```
 
-The result are the coordinates of the iris data along the principal components, as a long format table.
-We just need to put back the species column:
+The result are the coordinates of the iris data along the principal components, 
+as a long format table.
+We just need to add back the species column ...
 
 ```{r}
 long_pca_withspecies <- long_iris %>%
@@ -67,7 +81,7 @@ long_pca_withspecies <- long_iris %>%
 head(long_pca_withspecies, n = 5)
 ```
 
-And then we can make the familiar PCA plot:
+... followed by the familiar PCA plot.
 
 ```{r, fig.width=7, fig.align='center', fig.retina=2}
 long_pca_withspecies %>%
@@ -77,10 +91,18 @@ long_pca_withspecies %>%
   ) %>%
   ggplot2::ggplot(ggplot2::aes(x = PC1, y = PC2, colour = species)) + 
   ggplot2::geom_point() +
+  ggplot2::labs(colour = ggplot2::element_blank()) +
   ggplot2::theme_bw() +
   ggplot2::coord_equal()
 ```
 
-As expected, we see that the distribution of measurements differs between the three species of iris.
+As expected, we see that the distribution of measurements differs across the three species of iris.
+
+
+## Conclusion
+
+`matsindf` simplifies tasks that are otherwise much more difficult.
+
+
 
 

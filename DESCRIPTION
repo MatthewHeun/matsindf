@@ -25,13 +25,13 @@ Imports:
     tibble,
     tidyr
 Suggests:
+    covr,
     ggplot2,
     knitr,
     RCLabels,
     rmarkdown,
-    testthat,
-    covr,
-    spelling
+    spelling,
+    testthat
 VignetteBuilder: 
     knitr
 URL: https://github.com/MatthewHeun/matsindf

@@ -6,6 +6,8 @@ output: html_document
 
 # matsindf 0.3.10 (2020-12-06)
 
+* New vignette from Alexander Davis shows how to use `matsindf` 
+  for principal components analysis (PCA).
 * Move to `testthat` v3.
 * Adapt to refactoring `RCLabels` package out of `matsbyname`.
 * `rowtypes` and `coltypes` arguments now have special defaults

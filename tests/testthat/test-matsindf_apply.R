@@ -1,7 +1,3 @@
-# Tests for matsindf_apply
-
-
-
 
 test_that("matsindf_apply() fails with an unexpected argument", {
   example_fun <- function(a, b){
@@ -294,7 +290,6 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
   expect_equal(df$matching_rows[[1]], c("ra1", "ra2"))
   expect_equal(df$matching_rows[[2]], c("ra1", "ra2", "b3"))
   expect_equal(df$matching_rows[[3]], "b3")
-
 })
 
 
@@ -313,8 +308,16 @@ test_that("matsindf_apply() issues a warning when replacing a column", {
 
   a_name <- "a"
   d_name <- "d"
-  expect_warning(matsindf_apply(DF, FUN = replace_func, a_mat = "a", b_mat = "b"), "name collision in matsindf_apply: a")
-
+  expect_warning(
+    suppressMessages(
+      # The next call gives a warning but also a "New names:" message.
+      # The message clutters the output of the tests,
+      # so suppress it.
+      # We already know of the problem and are testing for it, anyway.
+      matsindf_apply(DF, FUN = replace_func, a_mat = "a", b_mat = "b")
+    ),
+    "name collision in matsindf_apply: a"
+  )
 })
 
 

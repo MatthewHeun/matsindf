@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# matsindf 0.3.10 (2020-12-06)
+# matsindf 0.3.10 (2020-12-17)
 
 * New vignette from Alexander Davis shows how to use `matsindf` 
   for principal components analysis (PCA).

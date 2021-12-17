@@ -11,3 +11,5 @@
 ^README\.Rmd$
 ^\.github$
 ^data-raw$
+^pkgdown$
+^CRAN-SUBMISSION$

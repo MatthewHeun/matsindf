@@ -1,16 +1,3 @@
-# Contains tests for the matsindf package.
-
-# Need to put dplyr before testthat.
-# If not, the "matches" function in dplyr overrides the "matches" function in testthat,
-# and tests containing the string "(" don't work as expected.
-
-library(dplyr)
-library(magrittr)
-library(matsbyname)
-library(tibble)
-library(tidyr)
-library(testthat)
-
 
 test_that("index_column works as expected", {
   DF1 <- tibble::tibble(Country = c("US", "US", "US"), Year = c(1980, 1981, 1982), var = c(10, 20, 40))
@@ -121,9 +108,10 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
   expect_equal(B, expected_mat_with_types)
 
   # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
-  C <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
-                                          ct = c("Industries", "Industries", "Industries"),
-                                          stringsAsFactors = FALSE)) %>%
+  C <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                ct = c("Industries", "Industries", "Industries"),
+                                stringsAsFactors = FALSE)) %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rt", coltypes = "ct")
   expect_equal(C, expected_mat_with_types)
@@ -142,16 +130,18 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
   expect_equal(E, 2)
 
   # Fails when rowtype or coltype not all same. In rowcolval4, column rt is not all same.
-  rowcolval4 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Industries", "Products"),
-                                              ct = c("Industries", "Industries", "Industries"),
-                                              stringsAsFactors = FALSE))
+  rowcolval4 <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Industries", "Products"),
+                                ct = c("Industries", "Industries", "Industries"),
+                                stringsAsFactors = FALSE))
   expect_error(rowcolval_to_mat(rowcolval4,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 rowtypes = "rt", coltypes = "ct"), "Not all values in rt \\(rowtype\\) were same as first entry: Products")
-  rowcolval5 <- rowcolval %>% bind_cols(data.frame(rt = c("Products", "Products", "Products"),
-                                              ct = c("Industries", "Products", "Industries"),
-                                              stringsAsFactors = FALSE))
+  rowcolval5 <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                ct = c("Industries", "Products", "Industries"),
+                                stringsAsFactors = FALSE))
   expect_error(rowcolval_to_mat(rowcolval5,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",

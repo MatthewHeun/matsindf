@@ -3,6 +3,7 @@ apenergy
 Brockway
 CMD
 Codecov
+coltypes
 colvec
 doi
 dplyr
@@ -21,7 +22,9 @@ Kuperus
 lifecycle
 mathbf
 mathrm
+matnames
 MatthewHeun
+matvals
 md
 newcommand
 ped
@@ -29,6 +32,7 @@ pkgdown
 README
 Rmd
 Rnw
+rowtypes
 rowvec
 Roxygen
 TravisCI

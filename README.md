@@ -13,7 +13,8 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/MatthewHeun/matsindf/workflows/R-CMD-check/badge.svg)](https://github.com/MatthewHeun/matsindf/actions)
 [![Codecov test
-coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://codecov.io/gh/MatthewHeun/matsindf?branch=master)
+coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MatthewHeun/matsindf?branch=master)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475443.svg)](https://doi.org/10.5281/zenodo.5475443)
 <!-- badges: end -->
 
 # matsindf

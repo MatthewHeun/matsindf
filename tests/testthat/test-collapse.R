@@ -77,17 +77,17 @@ test_that("small example works as expected", {
 })
 
 
-test_that("collapse_to_matrices works as expected", {
+test_that("collapse_to_matrices() works as expected", {
   ptype <- "Products"
   itype <- "Industries"
-  tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
-                     Year     = c( 1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
-                     matrix   = c(  "U",  "U",  "Y",  "Y",  "Y",  "V",  "V",  "U",  "U",  "Y",  "Y", "eta", "eta"),
-                     row      = c( "p1", "p2", "p1", "p2", "p2", "i1", "i2", "p1", "p1", "p1", "p2",   NA,    NA),
-                     col      = c( "i1", "i2", "i1", "i2", "i3", "p1", "p2", "i1", "i2", "i1", "i2",   NA,    NA),
+  tidy <- data.frame(Country  = c("GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
+                     Year     = c(1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
+                     matrix   = c("U",  "U",  "Y",  "Y",  "Y",  "V",  "V",  "U",  "U",  "Y",  "Y", "eta", "eta"),
+                     row      = c("p1", "p2", "p1", "p2", "p2", "i1", "i2", "p1", "p1", "p1", "p2",   NA,    NA),
+                     col      = c("i1", "i2", "i1", "i2", "i3", "p1", "p2", "i1", "i2", "i1", "i2",   NA,    NA),
                      rowtypes = c(ptype, ptype, ptype, ptype, ptype, itype, itype, ptype, ptype, ptype, ptype, NA, NA),
                      coltypes = c(itype, itype, itype, itype, itype, ptype, ptype, itype, itype, itype, itype, NA, NA),
-                     vals  = c(   11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3),
+                     vals     = c(11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3),
                      stringsAsFactors = FALSE) %>%
     dplyr::group_by(Country, Year, matrix)
   mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
@@ -126,3 +126,73 @@ test_that("collapse_to_matrices works as expected", {
   expect_equal(length(dplyr::group_vars(mats)), 0)
 })
 
+
+test_that("collapse_to_matrices() works correctly when row and col types are NULL", {
+  tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                         row = c("i1", "i1", "i2", "i1", "i2"),
+                         col = c("p1", "p2", "p2", "p1", "p2"),
+                         vals = c(1, 2, 3, 4, 5))
+
+  mats <- collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col",
+                               rowtypes = NULL, coltypes = NULL)
+
+  expect_null(mats$vals[[1]] %>% matsbyname::rowtype())
+  expect_null(mats$vals[[1]] %>% matsbyname::coltype())
+  expect_null(mats$vals[[2]] %>% matsbyname::rowtype())
+  expect_null(mats$vals[[2]] %>% matsbyname::coltype())
+
+  # Now rely on the new default expressions for rowtypes and coltypes.
+  mats2 <- collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
+                               matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col")
+
+  expect_null(mats2$vals[[1]] %>% matsbyname::rowtype())
+  expect_null(mats2$vals[[1]] %>% matsbyname::coltype())
+  expect_null(mats2$vals[[2]] %>% matsbyname::rowtype())
+  expect_null(mats2$vals[[2]] %>% matsbyname::coltype())
+
+})
+
+
+test_that("new defaults for rowtypes and coltypes arguments work as expected", {
+  tidy <- data.frame(Country  = c("GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "US",  "US",  "US",  "US", "GH", "US"),
+                     Year     = c(1971,  1971,  1971,  1971,  1971,  1971,  1971,  1980,  1980,  1980,  1980, 1971, 1980),
+                     matrix   = c("U",  "U",  "Y",  "Y",  "Y",  "V",  "V",  "U",  "U",  "Y",  "Y", "eta", "eta"),
+                     row      = c("p1", "p2", "p1", "p2", "p2", "i1", "i2", "p1", "p1", "p1", "p2",   NA,    NA),
+                     col      = c("i1", "i2", "i1", "i2", "i3", "p1", "p2", "i1", "i2", "i1", "i2",   NA,    NA),
+                     vals     = c(11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,   11 ,   12 ,   11 ,   22,   0.2, 0.3)) %>%
+    dplyr::group_by(Country, Year, matrix)
+  # Do not specify the rowtypes or coltypes arguments.
+  # They should default to NULL.
+  mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
+                               rownames = "row", colnames = "col") %>%
+    tidyr::pivot_wider(names_from = matrix, values_from = vals)
+  expect_null(mats$U[[1]] |> matsbyname::rowtype())
+  expect_null(mats$U[[2]] |> matsbyname::rowtype())
+  expect_null(mats$V[[1]] |> matsbyname::rowtype())
+  expect_null(mats$V[[2]])
+  expect_null(mats$Y[[1]] |> matsbyname::rowtype())
+  expect_null(mats$Y[[2]] |> matsbyname::rowtype())
+})
+
+
+test_that("collapse_to_matrices() works with various matnames arguments", {
+  tidy <- tibble::tibble(row = c("i1", "i1", "i2"),
+                         col = c("p1", "p2", "p2"),
+                         vals = c(1, 2, 3))
+
+  # Try wtih NULL
+  mats <- collapse_to_matrices(tidy, matnames = NULL,
+                               matvals = "vals", rownames = "row", colnames = "col")
+  expect_equal(mats$vals[[1]], matrix(c(1, 2,
+                                        0, 3), byrow = TRUE, nrow = 2, ncol = 2,
+                                      dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+
+  # Try with unspecified
+  mats2 <- collapse_to_matrices(tidy, matvals = "vals", rownames = "row", colnames = "col")
+  expect_equal(mats2$vals[[1]], matrix(c(1, 2,
+                                         0, 3), byrow = TRUE, nrow = 2, ncol = 2,
+                                       dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+})

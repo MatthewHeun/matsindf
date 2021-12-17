@@ -4,7 +4,23 @@ output: html_document
 ---
 
 
-# matsindf 0.3.9 (2020-10-02)
+# matsindf 0.3.10 (2020-12-17)
+
+* New vignette from Alexander Davis shows how to use `matsindf` 
+  for principal components analysis (PCA).
+* Move to `testthat` v3.
+* Adapt to refactoring `RCLabels` package out of `matsbyname`.
+* `rowtypes` and `coltypes` arguments now have special defaults
+  to enable calling `collapse_to_matrices()` without specifying those arguments.
+* Added more tests for `collapse_to_matrices()` to check
+  whether `NULL` values for `rowtype` and `coltype` arguments
+  are handled correctly.
+* New tests for new features.
+    * Now at 195 tests, all passing.
+    * Test coverage remains at 100 %.
+
+
+# matsindf 0.3.9 (2020-10-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5546359.svg)](https://doi.org/10.5281/zenodo.5546359)
 
 * New function `df_to_msg()` can assist with error messages.
   `df_to_msg()` was moved from the `SEAPSUTWorkflow` package, 

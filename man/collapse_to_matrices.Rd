@@ -2,7 +2,7 @@
 % Please edit documentation in R/collapse.R
 \name{collapse_to_matrices}
 \alias{collapse_to_matrices}
-\title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
+\title{Collapse a "tidy" data frame to matrices in a data frame \code{matsindf})}
 \usage{
 collapse_to_matrices(
   .DF,
@@ -10,67 +10,69 @@ collapse_to_matrices(
   matvals = "matvals",
   rownames = "rownames",
   colnames = "colnames",
-  rowtypes = "rowtypes",
-  coltypes = "coltypes"
+  rowtypes = if ("rowtypes" \%in\% names(.DF)) "rowtypes" else NULL,
+  coltypes = if ("coltypes" \%in\% names(.DF)) "coltypes" else NULL
 )
 }
 \arguments{
 \item{.DF}{the "tidy" data frame}
 
-\item{matnames}{a string identifying the column in \code{.DF} containing matrix names for matrices to be created.
-Default is "\code{matnames}".}
+\item{matnames}{A string identifying the column in \code{.DF} containing matrix names for matrices to be created.
+Default is "matnames".}
 
-\item{matvals}{a string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
+\item{matvals}{A string identifying the column in \code{.DF} containing values to be inserted into the matrices to be created.
 This will also be the name of the column in the output containing matrices formed from the
 data in the \code{matvals} column.
-Default is "\code{matvals}".}
+Default is "matvals".}
 
-\item{rownames}{a string identifying the column in \code{.DF} containing row names for matrices to be created.
-Default is "\code{rownames}".}
+\item{rownames}{A string identifying the column in \code{.DF} containing row names for matrices to be created.
+Default is "rownames".}
 
-\item{colnames}{a string identifying the column in \code{.DF} containing column names for matrices to be created.
-Default is "\code{colnames}".}
+\item{colnames}{A string identifying the column in \code{.DF} containing column names for matrices to be created.
+Default is "colnames".}
 
-\item{rowtypes}{optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
-Default is "\code{rowtypes}".}
+\item{rowtypes}{An optional string identifying the column in \code{.DF} containing the type of values in rows of the matrices to be created.
+Default is \code{if ("rowtypes" \%in\% names(.DF)) "rowtypes" else NULL},
+so that failure to set the rowtypes argument will give \code{NULL}, as appropriate.}
 
-\item{coltypes}{optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
-Default is "\code{coltypes}".}
+\item{coltypes}{An optional string identifying the column in \code{.DF} containing the type of values in columns of the matrices to be created
+Default is \code{if ("coltypes" \%in\% names(.DF)) "rowtypes" else NULL},
+so that failure to set the coltypes argument will give \code{NULL}, as appropriate.}
 }
 \value{
-a data frame with matrices in columns
+A data frame with matrices in the \code{matvals} column.
 }
 \description{
 A "tidy" data frame contains information that can be collapsed into matrices,
 including columns for
 matrix names, row names, column names, row types, column types, and values (entries in matrices).
 These column names are specified as strings by the \code{matnames}, \code{rownames}, \code{colnames},
-\code{rowtypes}, \code{coltypes}, and \code{values} arguments to \link{collapse_to_matrices}, respectively.
-A \pkg{matsindf}-style matrix has named rows and columns.
-In addition, \pkg{matsindf}-style matrices have "types" for row and column information,
+\code{rowtypes}, \code{coltypes}, and \code{values} arguments to \code{collapse_to_matrices()}, respectively.
+A \code{matsindf}-style matrix has named rows and columns.
+In addition, \code{matsindf}-style matrices have "types" for row and column information,
 such as "Commodities", "Industries", "Products", or "Machines".
-The row and column types for the \pkg{matsindf}-style matrices are stored as attributes on the matrix
+The row and column types for the \code{matsindf}-style matrices are stored as attributes on the matrix
 (\code{rowtype} and \code{coltype}),
-which can be accessed with the \code{\link[matsbyname]{rowtype}} and \code{\link[matsbyname]{coltype}} functions
-of the \pkg{matsbyname} package.
-Row and column types are both respected and propagated by the various \code{_byname} functions
-of the \pkg{matsbyname} package.
-Use the \code{*_byname} functions when you do operations on the \pkg{matsindf}-style matrices.
-The \pkg{matsindf}-style matrices will be stored
+which can be accessed with the functions \code{matsbyname::rowtype()} and \code{matsbyname::coltype()}.=
+Row and column types are both respected and propagated by the various \verb{*_byname} functions
+of the \code{matsbyname} package.
+Use the \verb{*_byname} functions when you do operations on the \code{matsindf}-style matrices.
+The \code{matsindf}-style matrices will be stored
 in a column with same name as the incoming \code{values} column.
-This function is similar to \code{\link[tidyr]{nest}}, which stores data frames into a cell of a data frame.
+This function is similar to \code{tidyr::nest()}, which stores data frames into a cell of a data frame.
 With \code{collapse_to_matrices}, matrices are created.
-This function is similar to \code{\link{summarise}} in that groups are respected.
+This function respects groups, like \code{dplyr::summarise()}.
 (In fact, calls to this function may not work properly unless grouping is provided.
 Errors of the form "Error: Duplicate identifiers for rows ..." are usually fixed by
 grouping \code{.DF} prior to calling this function.)
-The usual approach is to \code{\link{group_by}} the \code{matnames} column
+The usual approach is to \code{dplyr::group_by()} the \code{matnames} column
 and any other columns to be preserved in the output.
 Note that execution is halted if any of
-\code{rownames}, \code{rowtypes}, \code{colnames}, \code{coltypes}, or \code{values} is a grouping variable.
-\code{rowtypes} and \code{coltypes} should be the same for all rows of the same matrix;
+\code{rownames}, \code{colnames}, \code{rowtypes}, \code{coltypes}, or \code{values} is a grouping variable in \code{.DF}.
+\code{rowtypes} and \code{coltypes} should be the same for all rows of the same matrix in \code{.DF};
 execution is halted if that is not the case.
-\code{\link{spread}}ing the output by \code{matnames} may be necessary before calculations are done on the matrices.
+\code{tidyr::pivot_wider()}ing the output by \code{matnames} may be necessary before
+calculations are done on the collapsed matrices.
 See the example.
 }
 \details{
@@ -102,8 +104,8 @@ tidy <- data.frame(Country = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
 mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                              rownames = "row", colnames = "col",
                              rowtypes = "rowtypes", coltypes = "coltypes")
-mats \%>\% spread(key = matrix, value = vals)
+mats \%>\% pivot_wider(names_from = matrix, values_from = vals)
 }
 \seealso{
-\code{\link[tidyr]{nest}} and \code{\link[dplyr]{summarise}}.
+\code{tidyr::nest()} and \code{dplyr::summarise()}.
 }

@@ -12,8 +12,8 @@
 #' @param rowtypes A string for the name of the output column containing row types. Default is "rowtypes".
 #' @param coltypes A string for the name of the output column containing column types. Default is "coltypes".
 #' @param     drop If specified, the value to be dropped from output. Default is `NA`.
-#' For example, `drop = 0` will cause `0` entries in the matrices to be deleted from output.
-#' If `NA`, no values are dropped from output.
+#'                 For example, `drop = 0` will cause `0` entries in the matrices to be deleted from output.
+#'                 If `NA`, no values are dropped from output.
 #'
 #' @return A data frame with rows, columns, and values.
 #'
@@ -74,24 +74,24 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 
 #' Collapse a tidy data frame into a matrix with named rows and columns
 #'
-#' Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
+#' Columns not specified in one of `rownames`, `colnames`, `rowtype`, `coltype`, or `values`
 #' are silently dropped.
-#' \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
-#' (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
+#' `rowtypes` and `coltypes` are added as attributes to the resulting matrix
+#' (via `matsbyname::setrowtype()` and `matsbyname::setcoltype()`.
 #' The resulting matrix is a (under the hood) a data frame.
-#' If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
+#' If both `rownames` and `colnames` columns of `.DF` contain `NA`,
 #' it is assumed that this is a single value, not a matrix,
-#' in which case the value in the \code{values} column is returned.
+#' in which case the value in the `values` column is returned.
 #'
-#' @param .DF       a tidy data frame containing columns for row names, column names, and values
-#' @param matvals   the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
-#' @param rownames  the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
-#' @param colnames  the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
-#' @param rowtypes  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".
-#' @param coltypes  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".
-#' @param fill      the value for missing entries in the resulting matrix. default is \code{0}.
+#' @param .DF       A tidy data frame containing columns for row names, column names, and values.
+#' @param matvals   The name of the column in `.DF` containing values with which to fill the matrix (a string). Default is "matvals".
+#' @param rownames  The name of the column in `.DF` containing row names (a string). Default is "rownames".
+#' @param colnames  The name of the column in `.DF` containing column names (a string). Default is "colnames".
+#' @param rowtypes  An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".
+#' @param coltypes  An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".
+#' @param fill      The value for missing entries in the resulting matrix. default is `0`.
 #'
-#' @return a matrix with named rows and columns and, optionally, row and column types
+#' @return A matrix with named rows and columns and, optionally, row and column types.
 #'
 #' @export
 #'

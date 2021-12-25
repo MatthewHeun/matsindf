@@ -5,17 +5,17 @@
 #' factors for row names, column names, row types, and column types.
 #' Optionally, values can be dropped.
 #'
-#' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
-#' @param  matvals a string for the name of the output column containing values. Default is "\code{matvals}".
-#' @param rownames a string for the name of the output column containing row names. Default is "\code{rownames}".
-#' @param colnames a string for the name of the output column containing column names. Default is "\code{colnames}".
-#' @param rowtypes a string for the name of the output column containing row types. Default is "\code{rowtypes}".
-#' @param coltypes a string for the name of the output column containing column types. Default is "\code{coltypes}".
-#' @param     drop if specified, the value to be dropped from output. Default is \code{NA}.
-#' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
-#' If \code{NA}, no values are dropped from output.
+#' @param  .matrix The IO-style matrix to be converted to a data frame with rows, columns, and values.
+#' @param  matvals A string for the name of the output column containing values. Default is "matvals".
+#' @param rownames A string for the name of the output column containing row names. Default is "rownames".
+#' @param colnames A string for the name of the output column containing column names. Default is "colnames".
+#' @param rowtypes A string for the name of the output column containing row types. Default is "rowtypes".
+#' @param coltypes A string for the name of the output column containing column types. Default is "coltypes".
+#' @param     drop If specified, the value to be dropped from output. Default is `NA`.
+#' For example, `drop = 0` will cause `0` entries in the matrices to be deleted from output.
+#' If `NA`, no values are dropped from output.
 #'
-#' @return a data frame with rows, columns, and values
+#' @return A data frame with rows, columns, and values.
 #'
 #' @export
 #'

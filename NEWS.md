@@ -4,6 +4,13 @@ output: html_document
 ---
 
 
+* Fixed a bug in `matsindf_apply()` where the named list returned from `Map()`
+  would cause problems when later calling a binary (or n-ary) `matsbyname` function that 
+  expected the same name structure.
+  The solution was to remove the names from the result of `Map()`
+  before calling `purrr::transpose()`.
+
+
 # matsindf 0.3.10 (2020-12-17) [![DOI](https://zenodo.org/badge/112986384.svg)](https://zenodo.org/badge/latestdoi/112986384)
 
 * New vignette from Alexander Davis shows how to use `matsindf` 

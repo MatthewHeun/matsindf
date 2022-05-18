@@ -121,7 +121,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
     # But we want columns of output, so transpose.
-    out_list <- purrr::transpose(Map(f = FUN, ...))
+    # out_list <- purrr::transpose(Map(f = FUN, ...))
+    # Fixing a potential bug here.
+    # The result of Map is a named list.
+    # But when the names are present for one list but not another,
+    # binary matsbyname functions will fail.
+    out_list <- Map(f = FUN, ...) %>%
+      unname() %>%
+      purrr::transpose()
     numrows <- length(out_list[[1]])
     numcols <- length(out_list)
     # Create a data frame filled with NA values.

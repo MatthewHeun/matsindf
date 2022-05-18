@@ -331,19 +331,17 @@ verify_cols_missing <- function(.DF, newcols){
 }
 
 
-
-
 #' Get symbols for all columns except ...
 #'
 #' This convenience function performs a set difference between
-#' the columns of \code{.DF} and the variable names (or symbols) given in \code{...}.
-#' The return value is a list of symbols.
+#' the columns of `.DF` and the variable names (or symbols) given in `...`.
 #'
-#' @param .DF a data frame whose variable names are to be differenced
-#' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
-#' @param .symbols a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings
+#' @param .DF A data frame whose variable names are to be differenced.
+#' @param ... A string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of `.DF`/
+#' @param .symbols A boolean that defines the return type: `TRUE` for symbols, `FALSE` for strings.
 #'
-#' @return a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
+#' @return A vector of symbols (when `.symbols = TRUE`) or
+#'         strings (when `symbol = FALSE`) containing all variables names except those given in `...`.
 #'
 #' @export
 #'
@@ -376,13 +374,13 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 #' that allows grouping of a data frame by all variables (columns)
 #' except those variables specified in `...`.
 #'
-#' @param .DF a data frame to be grouped
-#' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
+#' @param .DF A data frame to be grouped.
+#' @param ... A string, strings, vector of strings, or list of strings representing column names to be excluded from grouping.
 #' @param .add When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
-#'            To add to the existing groups, use `.add = TRUE`.
+#'             To add to the existing groups, use `.add = TRUE`.
 #' @param .drop When `.drop = TRUE`, empty groups are dropped. Default is `FALSE`.
 #'
-#' @return a grouped version of `.DF`
+#' @return A grouped version of `.DF`.
 #'
 #' @export
 #'

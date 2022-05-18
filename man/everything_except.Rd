@@ -7,19 +7,19 @@
 everything_except(.DF, ..., .symbols = TRUE)
 }
 \arguments{
-\item{.DF}{a data frame whose variable names are to be differenced}
+\item{.DF}{A data frame whose variable names are to be differenced.}
 
-\item{...}{a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}}
+\item{...}{A string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}/}
 
-\item{.symbols}{a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings}
+\item{.symbols}{A boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings.}
 }
 \value{
-a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
+A vector of symbols (when \code{.symbols = TRUE}) or
+strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}.
 }
 \description{
 This convenience function performs a set difference between
 the columns of \code{.DF} and the variable names (or symbols) given in \code{...}.
-The return value is a list of symbols.
 }
 \examples{
 DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6))

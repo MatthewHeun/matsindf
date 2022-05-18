@@ -5,8 +5,9 @@ output: html_document
 
 
 * Fixed a bug in `matsindf_apply()` where the named list returned from `Map()`
-  would cause problems when later calling a binary (or n-ary) `matsbyname` function that 
-  expected the same name structure.
+  caused problems when later calling a binary (or n-ary) `matsbyname` function 
+  with an unnamed list. 
+  (Those functions expect the same name structure.)
   The solution was to remove the names from the result of `Map()`
   before calling `purrr::transpose()`.
 

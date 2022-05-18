@@ -33,7 +33,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="active nav-item">
   <a class="nav-link" href="../articles/matsindf.html">Get started</a>
@@ -71,12 +71,15 @@
 </nav><div class="container template-article">
 
 
+
+
 <div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>Use Cases and Examples for matsindf</h1>
-                        <h4 data-toc-skip class="author">Matthew Kuperus Heun</h4>
+                        <h4 data-toc-skip class="author">Matthew Kuperus
+Heun</h4>
             
-            <h4 data-toc-skip class="date">2021-12-17</h4>
+            <h4 data-toc-skip class="date">2022-05-18</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/matsindf.Rmd" class="external-link"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="d-none name"><code>matsindf.Rmd</code></div>
@@ -88,7 +91,9 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Matrices are important mathematical objects, and they often describe networks of flows among nodes. Example networks are given in the following table.</p>
+<p>Matrices are important mathematical objects, and they often describe
+networks of flows among nodes. Example networks are given in the
+following table.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">System type</th>
@@ -113,21 +118,43 @@
 </tr>
 </tbody>
 </table>
-<p>The power of matrices lies in their ability to organize network-wide calculations, thereby simplifying the work of analysts who study entire systems.</p>
-<p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice" class="external-link">wouldn’t it be nice</a> if there were an easy way to create data frames whose entries were not numbers but entire matrices? If that were possible, matrix algebra could be performed on columns of similar matrices.</p>
-<p>That’s the reason for <code>matsindf</code>. It provides functions to convert a suitably-formatted <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a> data frame into a data frame containing a column of matrices.</p>
+<p>The power of matrices lies in their ability to organize network-wide
+calculations, thereby simplifying the work of analysts who study entire
+systems.</p>
+<p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice" class="external-link">wouldn’t it
+be nice</a> if there were an easy way to create data frames whose
+entries were not numbers but entire matrices? If that were possible,
+matrix algebra could be performed on columns of similar matrices.</p>
+<p>That’s the reason for <code>matsindf</code>. It provides functions to
+convert a suitably-formatted <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a> data
+frame into a data frame containing a column of matrices.</p>
 <p>Furthermore, <code>matsbyname</code> is a sister package that …</p>
 <ul>
-<li>… provides matrix algebra functions that respect names of matrix rows and columns (<code>dimnames</code> in <code>R</code>) to free the analyst from the task of aligning rows and columns of operands (matrices) passed to matrix algebra functions and</li>
+<li>… provides matrix algebra functions that respect names of matrix
+rows and columns (<code>dimnames</code> in <code>R</code>) to free the
+analyst from the task of aligning rows and columns of operands
+(matrices) passed to matrix algebra functions and</li>
 <li>… allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a>, and other <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functions.</li>
 </ul>
-<p>When used together, <code>matsindf</code> and <code>matsbyname</code> allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix mathematics</a> and <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functional programming.</p>
-<p>This vignette demonstrates the use of these packages and suggests a workflow to accomplish sophisticated analyses using <em>matrices in data frames</em> (<code>matsindf</code>).</p>
+<p>When used together, <code>matsindf</code> and <code>matsbyname</code>
+allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix
+mathematics</a> and <a href="https://www.tidyverse.org" class="external-link">tidyverse</a>
+functional programming.</p>
+<p>This vignette demonstrates the use of these packages and suggests a
+workflow to accomplish sophisticated analyses using <em>matrices in data
+frames</em> (<code>matsindf</code>).</p>
 </div>
 <div class="section level2">
 <h2 id="data-ukenergy2000">Data: <code>UKEnergy2000</code><a class="anchor" aria-label="anchor" href="#data-ukenergy2000"></a>
 </h2>
-<p>To demonstrate the use of <code>matsindf</code> functions, consider a network of energy flows from the environment, through transformation and distribution processes, and, ultimately, to final demand. Such energy flow networks are called energy conversion chains (ECCs), and this example is based on an approximation to a portion of the UK’s ECC circa 2000. (Note that these data are to be used for demonstration purposes only and have been rounded to 1–2 significant digits.) These example data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
+<p>To demonstrate the use of <code>matsindf</code> functions, consider a
+network of energy flows from the environment, through transformation and
+distribution processes, and, ultimately, to final demand. Such energy
+flow networks are called energy conversion chains (ECCs), and this
+example is based on an approximation to a portion of the UK’s ECC circa
+2000. (Note that these data are to be used for demonstration purposes
+only and have been rounded to 1–2 significant digits.) These example
+data first appeared in Figures 3 and 4 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">UKEnergy2000</span>, <span class="fl">2</span><span class="op">)</span>
 <span class="co">#&gt;   Country Year Ledger.side      Flow.aggregation.point              Flow</span>
@@ -136,26 +163,41 @@
 <span class="co">#&gt;   Product E.ktoe</span>
 <span class="co">#&gt; 1   Crude  50000</span>
 <span class="co">#&gt; 2      NG  43000</span></code></pre></div>
-<p><code>Country</code> and <code>Year</code> contain only one value each, <code>GB</code> and <code>2000</code> respectively. Following conventions of the <a href="https://www.iea.org" class="external-link">International Energy Agency</a>’s <a href="https://www.iea.org/data-and-statistics/data-product/world-energy-balances" class="external-link">energy balance tables</a>,</p>
+<p><code>Country</code> and <code>Year</code> contain only one value
+each, <code>GB</code> and <code>2000</code> respectively. Following
+conventions of the <a href="https://www.iea.org" class="external-link">International Energy
+Agency</a>’s <a href="https://www.iea.org/data-and-statistics/data-product/world-energy-balances" class="external-link">energy
+balance tables</a>,</p>
 <ul>
 <li>
-<code>Ledger.side</code> indicates <code>Supply</code> or <code>Consumption</code>;</li>
+<code>Ledger.side</code> indicates <code>Supply</code> or
+<code>Consumption</code>;</li>
 <li>
-<code>Flow.aggregation.point</code> indicates how data are to be aggregated;</li>
+<code>Flow.aggregation.point</code> indicates how data are to be
+aggregated;</li>
 <li>
-<code>Flow</code> indicates the industry, machine, or final demand sector for this flow;</li>
+<code>Flow</code> indicates the industry, machine, or final demand
+sector for this flow;</li>
 <li>
-<code>Product</code> indicates the energy carrier for this flow; and</li>
+<code>Product</code> indicates the energy carrier for this flow;
+and</li>
 <li>
-<code>E.ktoe</code> gives the magnitude of this flow in <a href="https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php" class="external-link">units</a> of kilotons of oil equivalent (ktoe).</li>
+<code>E.ktoe</code> gives the magnitude of this flow in <a href="https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php" class="external-link">units</a>
+of kilotons of oil equivalent (ktoe).</li>
 </ul>
-<p>Each flow is its own observation (its own row) in the <code>UKEnergy2000</code> data frame, making it <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a>.</p>
-<p>The remainder of this vignette demonstrates an analysis conducted using the <code>UKEnergy2000</code> data frame as a basis. It:</p>
+<p>Each flow is its own observation (its own row) in the
+<code>UKEnergy2000</code> data frame, making it <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a>.</p>
+<p>The remainder of this vignette demonstrates an analysis conducted
+using the <code>UKEnergy2000</code> data frame as a basis. It:</p>
 <ul>
-<li>shows how to <em>collapse</em> and spread the data into appropriate matrices stored in columns of a data frame,</li>
-<li>demonstrates analyzing the matrices with <code>matsbyname</code> functions,</li>
-<li>illustrates <em>expand</em>ing the matrices back into a tidy data frame, and</li>
-<li>uses <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot</a> to graph the results.</li>
+<li>shows how to <em>collapse</em> and spread the data into appropriate
+matrices stored in columns of a data frame,</li>
+<li>demonstrates analyzing the matrices with <code>matsbyname</code>
+functions,</li>
+<li>illustrates <em>expand</em>ing the matrices back into a tidy data
+frame, and</li>
+<li>uses <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot</a> to graph the
+results.</li>
 </ul>
 </div>
 <div class="section level2">
@@ -164,10 +206,21 @@
 <div class="section level3">
 <h3 id="prepare-for-collapse">Prepare for <em>collapse</em><a class="anchor" aria-label="anchor" href="#prepare-for-collapse"></a>
 </h3>
-<p>The <code>EnergyUK2000</code> data frame is similar to “cleaned” data from an external source: there are no missing entries, and it is <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a>. But the data are not organized as matrices, and additional metadata is needed.</p>
-<p>The <code>collapse_to_matrices</code> function converts a tidy data frame into a <code>matsindf</code> data frame using using information within the tidy data frame. So the first task is to prepare for <em>collapse</em> by adding metadata columns.</p>
-<p><code>collapse_to_matrices</code> needs the following information:</p>
+<p>The <code>EnergyUK2000</code> data frame is similar to “cleaned” data
+from an external source: there are no missing entries, and it is <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a>. But
+the data are not organized as matrices, and additional metadata is
+needed.</p>
+<p>The <code>collapse_to_matrices</code> function converts a tidy data
+frame into a <code>matsindf</code> data frame using using information
+within the tidy data frame. So the first task is to prepare for
+<em>collapse</em> by adding metadata columns.</p>
+<p><code>collapse_to_matrices</code> needs the following
+information:</p>
 <table class="table">
+<colgroup>
+<col width="57%">
+<col width="42%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">argument to <code>collapse_to_matrices</code>
 </th>
@@ -192,15 +245,22 @@
 </tr>
 <tr class="odd">
 <td align="right"><code>rowtypes</code></td>
-<td align="left">Optional name of the input column of matrix row types</td>
+<td align="left">Optional name of the input column of matrix row
+types</td>
 </tr>
 <tr class="even">
 <td align="right"><code>coltypes</code></td>
-<td align="left">Optional name of the input column of matrix column types</td>
+<td align="left">Optional name of the input column of matrix column
+types</td>
 </tr>
 </tbody>
 </table>
-<p>The following code gives the approach to adding metadata, appropriate for this application, relying on <code>Ledger.side</code>, the sign of <code>E.ktoe</code>, and knowledge about the rows and columns for each matrix. Each type of network will have its own algorithm for identifying row names, column names, row types, and column types in a tidy data frame.</p>
+<p>The following code gives the approach to adding metadata, appropriate
+for this application, relying on <code>Ledger.side</code>, the sign of
+<code>E.ktoe</code>, and knowledge about the rows and columns for each
+matrix. Each type of network will have its own algorithm for identifying
+row names, column names, row types, and column types in a tidy data
+frame.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">UKEnergy2000_with_metadata</span> <span class="op">&lt;-</span> <span class="va">UKEnergy2000</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span>
@@ -224,7 +284,16 @@
 <div class="section level3">
 <h3 id="collapse">Collapse<a class="anchor" aria-label="anchor" href="#collapse"></a>
 </h3>
-<p>With the metadata now in place, <code>UKEnergy2000_with_metadata</code> can be collapsed to a <code>matsindf</code> data frame by the <code>collapse_to_matrices</code> function. Much like <code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarise</a></code>, <code>collapse_to_matrices</code> relies on grouping to indicate which rows of the tidy data frame belong to which matrices. The usual approach is to <code>tidyr::group_by</code> the <code>matnames</code> column and any other columns to be preserved in the output, in this case <code>Country</code> and <code>Year</code>.</p>
+<p>With the metadata now in place,
+<code>UKEnergy2000_with_metadata</code> can be collapsed to a
+<code>matsindf</code> data frame by the
+<code>collapse_to_matrices</code> function. Much like
+<code><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">dplyr::summarise</a></code>, <code>collapse_to_matrices</code> relies
+on grouping to indicate which rows of the tidy data frame belong to
+which matrices. The usual approach is to <code>tidyr::group_by</code>
+the <code>matnames</code> column and any other columns to be preserved
+in the output, in this case <code>Country</code> and
+<code>Year</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">EnergyMats_2000</span> <span class="op">&lt;-</span> <span class="va">UKEnergy2000_with_metadata</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">matname</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
@@ -234,7 +303,7 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>matrix.name <span class="op">=</span> <span class="va">matname</span>, matrix <span class="op">=</span> <span class="va">E.ktoe</span><span class="op">)</span>
 
 <span class="co"># The remaining columns are Country, Year, matrix.name, and matrix</span>
-<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EnergyMats_2000</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">EnergyMats_2000</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 3</span>
 <span class="co">#&gt; Columns: 4</span>
 <span class="co">#&gt; $ Country     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "GB", "GB", "GB"</span>
@@ -330,7 +399,12 @@
 <div class="section level3">
 <h3 id="duplicate-for-purposes-of-illustration">Duplicate (for purposes of illustration)<a class="anchor" aria-label="anchor" href="#duplicate-for-purposes-of-illustration"></a>
 </h3>
-<p>Larger studies will include data for multiple countries and years. The ECC data from UK in year <code>2000</code> can be duplicated for <code>2001</code> and for a fictitious country <code>AB</code>. Although the data are unchanged, the additional rows serve to illustrate the functional programming aspects of the <code>matsindf</code> and <code>matsbyname</code> packages.</p>
+<p>Larger studies will include data for multiple countries and years.
+The ECC data from UK in year <code>2000</code> can be duplicated for
+<code>2001</code> and for a fictitious country <code>AB</code>. Although
+the data are unchanged, the additional rows serve to illustrate the
+functional programming aspects of the <code>matsindf</code> and
+<code>matsbyname</code> packages.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Energy</span> <span class="op">&lt;-</span> <span class="va">EnergyMats_2000</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="co"># Create rows for a fictitious country "AB".</span>
@@ -346,7 +420,7 @@
   <span class="co"># Now spread to put each matrix in a column.</span>
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">matrix.name</span>, value <span class="op">=</span> <span class="va">matrix</span><span class="op">)</span>
 
-<span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">Energy</span><span class="op">)</span>
+<span class="fu"><a href="https://dplyr.tidyverse.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">Energy</span><span class="op">)</span>
 <span class="co">#&gt; Rows: 4</span>
 <span class="co">#&gt; Columns: 5</span>
 <span class="co">#&gt; $ Country <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> "AB", "AB", "GB", "GB"</span>
@@ -358,11 +432,19 @@
 <div class="section level3">
 <h3 id="verify-data">Verify data<a class="anchor" aria-label="anchor" href="#verify-data"></a>
 </h3>
-<p>An important step in any analysis is data verification. For an ECC analysis, it is important to verify that energy is conserved (i.e., energy is in balance) across all industries. Equations 1 and 2 in Heun, Owen, and Brockway <span class="citation">(2018)</span> show that energy balance is verified by</p>
-<p><span class="math display">\[\mathbf{W} = \mathbf{V}^\mathrm{T} - \mathbf{U},\]</span></p>
+<p>An important step in any analysis is data verification. For an ECC
+analysis, it is important to verify that energy is conserved (i.e.,
+energy is in balance) across all industries. Equations 1 and 2 in Heun,
+Owen, and Brockway <span class="citation">(2018)</span> show that energy
+balance is verified by</p>
+<p><span class="math display">\[\mathbf{W} = \mathbf{V}^\mathrm{T} -
+\mathbf{U},\]</span></p>
 <p>and</p>
-<p><span class="math display">\[\mathbf{W}\mathbf{i} - \mathbf{Y}\mathbf{i} = \mathbf{0}.\]</span></p>
-<p>Energy balance verification can be implemented with <code>matsbyname</code> functions and <code>tidyverse</code> functional programming:</p>
+<p><span class="math display">\[\mathbf{W}\mathbf{i} -
+\mathbf{Y}\mathbf{i} = \mathbf{0}.\]</span></p>
+<p>Energy balance verification can be implemented with
+<code>matsbyname</code> functions and <code>tidyverse</code> functional
+programming:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Check</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
@@ -381,15 +463,25 @@
 <span class="co">#&gt; 4      GB 2001   TRUE</span>
 <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="va">Check</span><span class="op">$</span><span class="va">EBalOK</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/logical.html" class="external-link">as.logical</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; [1] TRUE</span></code></pre></div>
-<p>This example demonstrates that energy balance can be verified for <em>all</em> combinations of Country and Year with a few lines of code. In fact, the exact same code can be applied to the <code>Energy</code> data frame, regardless of the number of rows in it.</p>
-<p>Secure in the knowledge that energy is conserved across all ECCs in the <code>Energy</code> data frame, other analyses can proceed.</p>
+<p>This example demonstrates that energy balance can be verified for
+<em>all</em> combinations of Country and Year with a few lines of code.
+In fact, the exact same code can be applied to the <code>Energy</code>
+data frame, regardless of the number of rows in it.</p>
+<p>Secure in the knowledge that energy is conserved across all ECCs in
+the <code>Energy</code> data frame, other analyses can proceed.</p>
 </div>
 <div class="section level3">
 <h3 id="efficiencies">Efficiencies<a class="anchor" aria-label="anchor" href="#efficiencies"></a>
 </h3>
-<p>To further illustrate the power of <code>matsbyname</code> functions in the context of <code>matsindf</code>, consider the calculation of the efficiency of every industry in the ECC as column vector <span class="math inline">\(\eta\)</span> as shown by Equation 11 of Heun, Owen, and Brockway <span class="citation">(2018)</span>.</p>
-<p><span class="math display">\[\mathbf{g} = \mathbf{V}\mathbf{i}\]</span></p>
-<p><span class="math display">\[\mathbf{\eta} = \widehat{\mathbf{U}^\mathrm{T} \mathbf{i}}^{\mathrm{-}1} \mathbf{g}\]</span></p>
+<p>To further illustrate the power of <code>matsbyname</code> functions
+in the context of <code>matsindf</code>, consider the calculation of the
+efficiency of every industry in the ECC as column vector <span class="math inline">\(\eta\)</span> as shown by Equation 11 of Heun,
+Owen, and Brockway <span class="citation">(2018)</span>.</p>
+<p><span class="math display">\[\mathbf{g} =
+\mathbf{V}\mathbf{i}\]</span></p>
+<p><span class="math display">\[\mathbf{\eta} =
+\widehat{\mathbf{U}^\mathrm{T} \mathbf{i}}^{\mathrm{-}1}
+\mathbf{g}\]</span></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">Etas</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
@@ -416,13 +508,26 @@
 <span class="co">#&gt; [1] "Industry"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "Efficiency"</span></code></pre></div>
-<p>Note that only a few lines of code are required to perform the same series of matrix operations on every combination of <code>Country</code> and <code>Year</code>. In fact, the same code will be used to calculate the efficiency of any number of industries in any number of countries and years!</p>
+<p>Note that only a few lines of code are required to perform the same
+series of matrix operations on every combination of <code>Country</code>
+and <code>Year</code>. In fact, the same code will be used to calculate
+the efficiency of any number of industries in any number of countries
+and years!</p>
 </div>
 <div class="section level3">
 <h3 id="expand">Expand<a class="anchor" aria-label="anchor" href="#expand"></a>
 </h3>
-<p>Plotting values from a <code>matsindf</code> data frame can be accomplished by <em>expand</em>ing the matrices of the <code>matsindf</code> data frame (in this example, <code>Etas</code>) back out to a tidy data frame. <em>Expand</em>ing is the reverse of <em>collapse</em>-ing, and the following information must be supplied to the <code>expand_to_tidy</code> function:</p>
+<p>Plotting values from a <code>matsindf</code> data frame can be
+accomplished by <em>expand</em>ing the matrices of the
+<code>matsindf</code> data frame (in this example, <code>Etas</code>)
+back out to a tidy data frame. <em>Expand</em>ing is the reverse of
+<em>collapse</em>-ing, and the following information must be supplied to
+the <code>expand_to_tidy</code> function:</p>
 <table class="table">
+<colgroup>
+<col width="57%">
+<col width="42%">
+</colgroup>
 <thead><tr class="header">
 <th align="right">argument to <code>expand_to_tidy</code>
 </th>
@@ -435,7 +540,8 @@
 </tr>
 <tr class="even">
 <td align="right"><code>matvals</code></td>
-<td align="left">Name of the input column of matrices to be expanded</td>
+<td align="left">Name of the input column of matrices to be
+expanded</td>
 </tr>
 <tr class="odd">
 <td align="right"><code>rownames</code></td>
@@ -447,11 +553,13 @@
 </tr>
 <tr class="odd">
 <td align="right"><code>rowtypes</code></td>
-<td align="left">Optional name of the output column of matrix row types</td>
+<td align="left">Optional name of the output column of matrix row
+types</td>
 </tr>
 <tr class="even">
 <td align="right"><code>coltypes</code></td>
-<td align="left">Optional name of the output column of matrix column types</td>
+<td align="left">Optional name of the output column of matrix column
+types</td>
 </tr>
 <tr class="odd">
 <td align="right"><code>drop</code></td>
@@ -459,7 +567,8 @@
 </tr>
 </tbody>
 </table>
-<p>Prior to <code>expand</code>ing, it is usually necessary to <code>gather</code> columns of matrices.</p>
+<p>Prior to <code>expand</code>ing, it is usually necessary to
+<code>gather</code> columns of matrices.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">etas_forgraphing</span> <span class="op">&lt;-</span> <span class="va">Etas</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">gather</a></span><span class="op">(</span>key <span class="op">=</span> <span class="va">matrix.names</span>, value <span class="op">=</span> <span class="va">matrix</span>, <span class="va">eta</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
@@ -491,12 +600,15 @@
 <span class="co">#&gt; <span style="color: #BCBCBC;">7</span> GB      2000  Oil refineries    0.892</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">8</span> GB      2000  Petrol dist.      0.972</span>
 <span class="co">#&gt; <span style="color: #BCBCBC;">9</span> GB      2000  Power plants      0.398</span></code></pre></div>
-<p><code>etas_forgraphing</code> is a data frame of efficiencies, one for each Country, Year, and Industry, in a format that is amenable to plotting with packages such as <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot</a>.</p>
+<p><code>etas_forgraphing</code> is a data frame of efficiencies, one
+for each Country, Year, and Industry, in a format that is amenable to
+plotting with packages such as <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot</a>.</p>
 </div>
 <div class="section level3">
 <h3 id="report">Report<a class="anchor" aria-label="anchor" href="#report"></a>
 </h3>
-<p>The following code creates a bar graph of efficiency results for the UK in 2000:</p>
+<p>The following code creates a bar graph of efficiency results for the
+UK in 2000:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">etas_UK_2000</span> <span class="op">&lt;-</span> <span class="va">etas_forgraphing</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">Country</span> <span class="op">==</span> <span class="st">"GB"</span>, <span class="va">Year</span> <span class="op">==</span> <span class="fl">2000</span><span class="op">)</span> 
 
@@ -518,28 +630,48 @@
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>This vignette demonstrated the use of the <code>matsindf</code> and <code>matsbyname</code> packages and suggested a workflow to accomplish sophisticated analyses using <em>matrices in data frames</em> (<code>matsindf</code>).</p>
+<p>This vignette demonstrated the use of the <code>matsindf</code> and
+<code>matsbyname</code> packages and suggested a workflow to accomplish
+sophisticated analyses using <em>matrices in data frames</em>
+(<code>matsindf</code>).</p>
 <p>The workflow is as follows:</p>
 <ul>
-<li>Reshape data into a tidy data frame with columns for matrix name, element value, row name, column name, row type, and column type, similar to <code>UKEnergy2000</code> above.</li>
-<li>Use <code>collapse_to_matrices</code> to create a data frame of matrices with columns for matrix names and matrices themselves, similar to <code>EnergyMats_2000</code> above.</li>
+<li>Reshape data into a tidy data frame with columns for matrix name,
+element value, row name, column name, row type, and column type, similar
+to <code>UKEnergy2000</code> above.</li>
+<li>Use <code>collapse_to_matrices</code> to create a data frame of
+matrices with columns for matrix names and matrices themselves, similar
+to <code>EnergyMats_2000</code> above.</li>
 <li>
-<code><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">tidyr::spread</a></code> the matrices to obtain a data frame with columns for each matrix, similar to <code>Energy</code> above.</li>
+<code><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">tidyr::spread</a></code> the matrices to obtain a data frame with
+columns for each matrix, similar to <code>Energy</code> above.</li>
 <li>Validate the data, similar to <code>Check</code> above.</li>
-<li>Perform matrix algebra operations on the columns of matrices using <code>matsbyname</code> functions in a manner similar to the process of generating the <code>Etas</code> data frame above.</li>
+<li>Perform matrix algebra operations on the columns of matrices using
+<code>matsbyname</code> functions in a manner similar to the process of
+generating the <code>Etas</code> data frame above.</li>
 <li>
-<code><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">tidyr::gather</a></code> the columns to obtain a tidy data frame of matrices.</li>
-<li>Use <code>expand_to_tidy</code> to create a tidy data frame of matrix elements, similar to <code>etas_forgraphing</code> above.</li>
+<code><a href="https://tidyr.tidyverse.org/reference/gather.html" class="external-link">tidyr::gather</a></code> the columns to obtain a tidy data frame
+of matrices.</li>
+<li>Use <code>expand_to_tidy</code> to create a tidy data frame of
+matrix elements, similar to <code>etas_forgraphing</code> above.</li>
 <li>Plot and report results as demonstrated by the graph above.</li>
 </ul>
-<p>Data frames of matrices, such as those created by <code>matsindf</code>, are like magic spreadsheets in which single cells contain entire matrices. With this data structure, analysts can wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix mathematics</a> and <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functional programming.</p>
+<p>Data frames of matrices, such as those created by
+<code>matsindf</code>, are like magic spreadsheets in which single cells
+contain entire matrices. With this data structure, analysts can wield
+simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix
+mathematics</a> and <a href="https://www.tidyverse.org" class="external-link">tidyverse</a>
+functional programming.</p>
 </div>
 <div class="section level2 unnumbered">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Heun:2018" class="csl-entry">
-Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. <span>“A Physical Supply-Use Table Framework for Energy Analysis on the Energy Conversion Chain.”</span> <em>Applied Energy</em> 226 (September): 1134–62. <a href="https://doi.org/10.1016/j.apenergy.2018.05.109" class="external-link">https://doi.org/10.1016/j.apenergy.2018.05.109</a>.
+Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. <span>“A
+Physical Supply-Use Table Framework for Energy Analysis on the Energy
+Conversion Chain.”</span> <em>Applied Energy</em> 226 (September):
+1134–62. <a href="https://doi.org/10.1016/j.apenergy.2018.05.109" class="external-link">https://doi.org/10.1016/j.apenergy.2018.05.109</a>.
 </div>
 </div>
 </div>
@@ -556,7 +688,7 @@ Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. <span>“A Physica
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer>

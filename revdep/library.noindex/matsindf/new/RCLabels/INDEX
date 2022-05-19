@@ -1,0 +1,28 @@
+arrow_notation          Arrow notation
+bracket_arrow_notation
+                        Bracket arrow notation
+bracket_notation        Bracket notation
+first_dot_notation      First dot notation
+from_notation           From notation
+get_nouns               Extract nouns from labels
+get_objects             Extract objects of prepositional phrases in row
+                        and column labels
+get_piece               Get a piece of a label
+get_pps                 Extract prepositional phrases of row and column
+                        labels
+get_prepositions        Extract prepositions from row and column labels
+make_or_pattern         Create "or" regex patterns
+modify_label_pieces     Modify pieces of row and column labels
+modify_nouns            Modify nouns in labels
+of_notation             Of notation
+paren_notation          Parenthetical notation
+paste_pieces            Recombine row and column labels
+prepositions            Prepositions
+regex_funcs             Find or replace row or column labels that match
+                        a regular expression
+remove_label_pieces     Remove a prepositional phrase in a row or
+                        column label
+row-col-notation        Row and column notation
+split_labels            Split row and column labels into nouns and
+                        prepositional phrases
+to_notation             To notation

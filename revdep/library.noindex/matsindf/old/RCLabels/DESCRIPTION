@@ -1,0 +1,30 @@
+Package: RCLabels
+Title: Manipulate Matrix Row and Column Labels with Ease
+Version: 0.1.1
+Date: 2022-03-05
+Authors@R: c(person(given = "Matthew",
+                    family = "Heun", 
+                    role = c("aut", "cre"),
+                    comment = c(ORCID = "0000-0002-7438-214X"),
+                    email = "matthew.heun@me.com"))
+Description: Functions to assist manipulation of matrix 
+             row and column labels for all types of matrix mathematics
+             where row and column labels are to be respected.
+License: MIT + file LICENSE
+Encoding: UTF-8
+RoxygenNote: 7.1.2
+Imports: assertthat, Hmisc, magrittr, purrr
+Suggests: dplyr, knitr, rmarkdown, spelling, testthat (>= 3.0.0),
+        tibble
+Config/testthat/edition: 3
+Depends: R (>= 2.10)
+LazyData: true
+VignetteBuilder: knitr
+Language: en-US
+NeedsCompilation: no
+Packaged: 2022-03-05 15:46:40 UTC; mkh2
+Author: Matthew Heun [aut, cre] (<https://orcid.org/0000-0002-7438-214X>)
+Maintainer: Matthew Heun <matthew.heun@me.com>
+Repository: CRAN
+Date/Publication: 2022-03-05 16:00:02 UTC
+Built: R 4.2.0; ; 2022-03-23 01:46:52 UTC; unix

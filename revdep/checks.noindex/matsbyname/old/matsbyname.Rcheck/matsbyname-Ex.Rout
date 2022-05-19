@@ -1,0 +1,6302 @@
+
+R version 4.2.0 (2022-04-22) -- "Vigorous Calisthenics"
+Copyright (C) 2022 The R Foundation for Statistical Computing
+Platform: aarch64-apple-darwin20 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "matsbyname"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('matsbyname')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Iminus_byname")
+> ### * Iminus_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Iminus_byname
+> ### Title: Subtract a matrix with named rows and columns from a suitably
+> ###   named and sized identity matrix ('I')
+> ### Aliases: Iminus_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(-21, -12, -21, -10), ncol = 2, dimnames = list(c("b", "a"), c("b", "a"))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> # Rows and columns are unsorted
+> diag(1, nrow = 2) - m 
+   b  a
+b 22 21
+a 12 11
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # Rows and columns are sorted prior to subtracting from the identity matrix
+> Iminus_byname(m) 
+   a  b
+a 11 12
+b 21 22
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists
+> Iminus_byname(list(m,m))
+[[1]]
+   a  b
+a 11 12
+b 21 22
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   a  b
+a 11 12
+b 21 22
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> # If the m is not square before subtracting from I,
+> # it will be made square by the function complete_and_sort.
+> m2 <- matrix(c(1,2,3,4,5,6), ncol = 2, dimnames = list(c("a", "b", "c"), c("a", "b"))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> Iminus_byname(m2)
+   a  b c
+a  0 -4 0
+b -2 -4 0
+c -3 -6 1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("abs_byname")
+> ### * abs_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: abs_byname
+> ### Title: Absolute value of matrix elements
+> ### Aliases: abs_byname
+> 
+> ### ** Examples
+> 
+> abs_byname(1)
+[1] 1
+> abs_byname(-1)
+[1] 1
+> m <- matrix(c(-10,1,1,100), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> abs_byname(m)
+   c1  c2
+i1 10   1
+i2  1 100
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Commodity"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("aggregate_byname")
+> ### * aggregate_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: aggregate_byname
+> ### Title: Aggregate rows and columns in a matrix
+> ### Aliases: aggregate_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> library(tibble)
+> m <- matrix(1:9, byrow = TRUE, nrow = 3, 
++             dimnames = list(c("r2", "r1", "r1"), c("c2", "c1", "c1"))) %>% 
++   setrowtype("rows") %>% setcoltype("cols")
+> # Aggregate all rows by establishing an aggregation map (`am`)
+> am <- list(new_row = c("r1", "r2"))
+> aggregate_byname(m, aggregation_map = am, margin = 1)
+        c2 c1 c1
+new_row 12 15 18
+attr(,"rowtype")
+[1] "rows"
+attr(,"coltype")
+[1] "cols"
+> # aggregate_byname() also works with lists and in data frames
+> m1 <- matrix(42, nrow = 1, dimnames = list(c("r1"), c("c1")))
+> m2 <- matrix(1:4, byrow = TRUE, nrow = 2, 
++              dimnames = list(c("a", "a"), c("a", "a")))
+> m3 <- matrix(1:9, byrow = TRUE, nrow = 3, 
++              dimnames = list(c("r2", "r1", "r1"), c("c2", "c1", "c1")))
+> DF <- tibble(m = list(m1, m1, m1, m2, m2, m2, m3, m3, m3), 
++              margin = list(1, 2, c(1,2), 1, 2, c(1, 2), 1, 2, c(1, 2))) %>% 
++   mutate(
++     aggregated = aggregate_byname(m, margin = margin), 
++   )
+> m1
+   c1
+r1 42
+> DF$aggregated[[1]] # by rows
+   c1
+r1 42
+> DF$aggregated[[2]] # by cols
+   c1
+r1 42
+> DF$aggregated[[3]] # by rows and cols
+   c1
+r1 42
+> m2
+  a a
+a 1 2
+a 3 4
+> DF$aggregated[[4]] # by rows
+  a a
+a 4 6
+> DF$aggregated[[5]] # by cols
+  a
+a 3
+a 7
+> DF$aggregated[[6]] # by rows and cols
+   a
+a 10
+> m3
+   c2 c1 c1
+r2  1  2  3
+r1  4  5  6
+r1  7  8  9
+> DF$aggregated[[7]] # by rows
+   c2 c1 c1
+r1 11 13 15
+r2  1  2  3
+> DF$aggregated[[8]] # by cols
+   c1 c2
+r2  5  1
+r1 11  4
+r1 17  7
+> DF$aggregated[[9]] # by rows and cols
+   c1 c2
+r1 28 11
+r2  5  1
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:tibble’, ‘package:dplyr’
+
+> nameEx("aggregate_pieces_byname")
+> ### * aggregate_pieces_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: aggregate_pieces_byname
+> ### Title: Aggregate a matrix by pieces of row and/or column names
+> ### Aliases: aggregate_pieces_byname
+> 
+> ### ** Examples
+> 
+> a <- matrix(c(1, 2, 3, 
++               4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE, 
++             dimnames = list(c("a [from b]", "c [from d]"), 
++                             c("e [from f]", "g [from h]", "i [from j]")))
+> a %>%
++   aggregate_pieces_byname(piece = "suff", 
++                           notation = RCLabels::from_notation,
++                           aggregation_map = list(rows = c("b", "d"), 
++                                                  cols = c("h", "j")))
+     cols f
+rows   16 5
+> m <- matrix(c(1, 0, 0, 
++               0, 1, 1, 
++               0, 1, 1), nrow = 3, ncol = 3, byrow = TRUE, 
++             dimnames = list(c("Gasoline [from Oil refineries]", 
++                               "Electricity [from Main activity producer electricity plants]", 
++                               "Electricity [from Hydro]"),
++                             c("Automobiles", "LED lamps", "CFL lamps"))) %>%
++   setrowtype("Product") %>% setcoltype("Industry")
+> mT <- transpose_byname(m)
+> # Aggregate the "Electricity" rows.
+> aggregate_pieces_byname(m, piece = "noun", margin = "Product",
++                         notation = RCLabels::bracket_notation)
+            Automobiles LED lamps CFL lamps
+Electricity           0         2         2
+Gasoline              1         0         0
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "Industry"
+> # Also works in a list.
+> aggregate_pieces_byname(a = list(m, mT), piece = "noun", 
++                         margin = "Product",
++                         notation = RCLabels::bracket_notation)
+[[1]]
+            Automobiles LED lamps CFL lamps
+Electricity           0         2         2
+Gasoline              1         0         0
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "Industry"
+
+[[2]]
+            Electricity Gasoline
+Automobiles           0        1
+LED lamps             2        0
+CFL lamps             2        0
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Product"
+
+> # Use an aggregation map
+> aggregate_pieces_byname(a = list(m, mT), piece = "noun", 
++                         margin = "Product",
++                         aggregation_map = list(list(final = c("Electricity", "Gasoline"))),
++                         notation = RCLabels::bracket_notation)
+[[1]]
+      Automobiles LED lamps CFL lamps
+final           1         2         2
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "Industry"
+
+[[2]]
+            final
+Automobiles     1
+LED lamps       2
+CFL lamps       2
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Product"
+
+> # Also works in a data frame.
+> df <- tibble::tibble(m = list(m, mT), 
++                      pce = "noun",
++                      mgn = "Product",
++                      agg_map = list(list(final = c("Electricity", "Gasoline"))), 
++                      notn = list(RCLabels::bracket_notation)) %>%
++   dplyr::mutate(
++     agg = aggregate_pieces_byname(a = m, piece = pce, margin = mgn, 
++                                   aggregation_map = agg_map,
++                                   notation = notn)
++   )
+> df$agg
+[[1]]
+      Automobiles LED lamps CFL lamps
+final           1         2         2
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "Industry"
+
+[[2]]
+            final
+Automobiles     1
+LED lamps       2
+CFL lamps       2
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Product"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("aggregate_to_pref_suff_byname")
+> ### * aggregate_to_pref_suff_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: aggregate_to_pref_suff_byname
+> ### Title: Aggregate a matrix to prefixes or suffixes of row and/or column
+> ###   names
+> ### Aliases: aggregate_to_pref_suff_byname
+> 
+> ### ** Examples
+> 
+> # This function is superseded. 
+> # Instead, use `aggregate_pieces_byname()`.
+> # For example:
+> m <- matrix((1:9), byrow = TRUE, nrow = 3, 
++             dimnames = list(c("r1 -> b", "r2 -> b", "r3 -> a"), c("c1 -> z", "c2 -> y", "c3 -> y")))
+> m
+        c1 -> z c2 -> y c3 -> y
+r1 -> b       1       2       3
+r2 -> b       4       5       6
+r3 -> a       7       8       9
+> aggregate_pieces_byname(m, piece = "pref", notation = RCLabels::arrow_notation)
+   c1 c2 c3
+r1  1  2  3
+r2  4  5  6
+r3  7  8  9
+> aggregate_pieces_byname(m, piece = "suff", notation = RCLabels::arrow_notation)
+   y z
+a 17 7
+b 16 5
+> 
+> # Original examples:
+> # Aggregation by prefixes does nothing more than rename, because all prefixes are different.
+> # Doing renaming like this (without also aggregating) is potentially dangerous, because  
+> # some rows and some columns could end up with same names.
+> aggregate_to_pref_suff_byname(m, keep = "pref", notation = RCLabels::arrow_notation)
+   c1 c2 c3
+r1  1  2  3
+r2  4  5  6
+r3  7  8  9
+> # Aggregation by suffix reduces the number of rows and columns, 
+> # because there are same suffixes in both rows and columns
+> aggregate_to_pref_suff_byname(m, keep = "suff", notation = RCLabels::arrow_notation)
+   y z
+a 17 7
+b 16 5
+> 
+> 
+> 
+> cleanEx()
+> nameEx("aggregation_map_helpers")
+> ### * aggregation_map_helpers
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: aggregation_map_helpers
+> ### Title: Aggregation map conversions
+> ### Aliases: aggregation_map_helpers agg_table_to_agg_map
+> ###   agg_map_to_agg_table
+> 
+> ### ** Examples
+> 
+> bands <- tibble::tribble(~band, ~members, 
++                          "The Beatles", "John", 
++                          "The Beatles", "Paul", 
++                          "The Beatles", "George", 
++                          "The Beatles", "Ringo", 
++                          # Rejects duplicates and NA
++                          "The Beatles", "Ringo",
++                          "The Beatles", NA, 
++                          "Rolling Stones", "Mick", 
++                          "Rolling Stones", "Keith",
++                          "Rolling Stones", "Ronnie",
++                          "Rolling Stones", "Bill",
++                          "Rolling Stones", "Charlie")
+> agg_map <- agg_table_to_agg_map(bands, 
++                                  few_colname = "band",
++                                  many_colname = "members")
+> agg_map
+$`Rolling Stones`
+[1] "Mick"    "Keith"   "Ronnie"  "Bill"    "Charlie"
+
+$`The Beatles`
+[1] "John"   "Paul"   "George" "Ringo" 
+
+> agg_map_to_agg_table(agg_map, few_colname = "bands", many_colname = "members")
+# A tibble: 9 × 2
+  bands          members
+  <chr>          <chr>  
+1 Rolling Stones Mick   
+2 Rolling Stones Keith  
+3 Rolling Stones Ronnie 
+4 Rolling Stones Bill   
+5 Rolling Stones Charlie
+6 The Beatles    John   
+7 The Beatles    Paul   
+8 The Beatles    George 
+9 The Beatles    Ringo  
+> 
+> 
+> 
+> cleanEx()
+> nameEx("all_byname")
+> ### * all_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: all_byname
+> ### Title: Are all matrix elements 'TRUE'?
+> ### Aliases: all_byname
+> 
+> ### ** Examples
+> 
+> all_byname(matrix(rep(TRUE, times = 4), nrow = 2, ncol = 2))
+[1] TRUE
+> all_byname(matrix(c(TRUE, FALSE), nrow = 2, ncol = 1))
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("and_byname")
+> ### * and_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: and_byname
+> ### Title: And "by name"
+> ### Aliases: and_byname
+> 
+> ### ** Examples
+> 
+> and_byname(TRUE)
+[1] TRUE
+> and_byname(FALSE)
+[1] FALSE
+> and_byname(list(TRUE, FALSE), list(TRUE, TRUE), list(TRUE, TRUE), list(TRUE, TRUE))
+[[1]]
+[1] TRUE
+
+[[2]]
+[1] FALSE
+
+> m1 <- matrix(c(TRUE, TRUE, TRUE, FALSE), nrow = 2, ncol = 2, 
++   dimnames = list(c("r1", "r2"), c("c1", "c2")))
+> m2 <- matrix(c(TRUE, FALSE, TRUE, TRUE), nrow = 2, ncol = 2,
++   dimnames = list(c("r1", "r2"), c("c1", "c2")))
+> and_byname(m1, m1)
+     c1    c2
+r1 TRUE  TRUE
+r2 TRUE FALSE
+> and_byname(m1, m2)
+      c1    c2
+r1  TRUE  TRUE
+r2 FALSE FALSE
+> and_byname(list(m1, m1), list(m1, m1), list(m2, m2))
+[[1]]
+      c1    c2
+r1  TRUE  TRUE
+r2 FALSE FALSE
+
+[[2]]
+      c1    c2
+r1  TRUE  TRUE
+r2 FALSE FALSE
+
+> and_byname(list(m1, m1), list(m1, m1), list(m2, m2), .summarise = TRUE)
+[[1]]
+     c1    c2
+r1 TRUE  TRUE
+r2 TRUE FALSE
+
+[[2]]
+     c1    c2
+r1 TRUE  TRUE
+r2 TRUE FALSE
+
+[[3]]
+      c1   c2
+r1  TRUE TRUE
+r2 FALSE TRUE
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("any_byname")
+> ### * any_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: any_byname
+> ### Title: Are any matrix elements 'TRUE'?
+> ### Aliases: any_byname
+> 
+> ### ** Examples
+> 
+> any_byname(matrix(c(TRUE, FALSE), nrow = 2, ncol = 1))
+[1] TRUE
+> any_byname(matrix(rep(FALSE, times = 4), nrow = 2, ncol = 2))
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("binaryapply_byname")
+> ### * binaryapply_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: binaryapply_byname
+> ### Title: Apply a binary function "by name"
+> ### Aliases: binaryapply_byname
+> 
+> ### ** Examples
+> 
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> Y <- matrix(1:4, ncol = 2, dimnames = list(rev(productnames), rev(industrynames))) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> sum_byname(U, Y)
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> binaryapply_byname(`+`, U, Y)
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("clean_byname")
+> ### * clean_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: clean_byname
+> ### Title: Clean (delete) rows or columns of matrices that contain
+> ###   exclusively 'clean_value'
+> ### Aliases: clean_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(-20, 1, -20, 2), nrow = 2, dimnames = list(c("r1", "r2"), c("c1", "c2")))
+> m
+    c1  c2
+r1 -20 -20
+r2   1   2
+> m %>% clean_byname(margin = 1, clean_value = -20) # Eliminates -20, -20 row
+   c1 c2
+r2  1  2
+> # Nothing cleaned, because no columns contain all 0's (the default clean_value).
+> m %>% clean_byname(margin = 2) 
+    c1  c2
+r1 -20 -20
+r2   1   2
+> # Also works with lists
+> list(m, m) %>% clean_byname(margin = 1, clean_value = -20)
+[[1]]
+   c1 c2
+r2  1  2
+
+[[2]]
+   c1 c2
+r2  1  2
+
+> # Also works with data frames
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> DF %>% clean_byname(margin = 1, clean_value = -20)
+$m
+$m[[1]]
+   c1 c2
+r2  1  2
+
+$m[[2]]
+   c1 c2
+r2  1  2
+
+
+> m2 <- matrix(c(-20, -20, 0, -20, -20, 0, -20, -20, -20), nrow = 3,
++              dimnames = list(c("r1", "r2", "r3"), c("c1", "c2", "c3")) )
+> m2
+    c1  c2  c3
+r1 -20 -20 -20
+r2 -20 -20 -20
+r3   0   0 -20
+> clean_byname(m2, margin = c(1,2), clean_value = -20)
+   c1 c2
+r3  0  0
+> DF2 <- data.frame(m2 = I(list()))
+> DF2[[1, "m2"]] <- m2
+> DF2[[2, "m2"]] <- m2
+> DF2 %>% clean_byname(margin = c(1, 2), clean_value = -20)
+$m2
+$m2[[1]]
+   c1 c2  c3
+r3  0  0 -20
+
+$m2[[2]]
+    c1  c2
+r1 -20 -20
+r2 -20 -20
+r3   0   0
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("colprods_byname")
+> ### * colprods_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: colprods_byname
+> ### Title: Column products, sorted by name
+> ### Aliases: colprods_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> M <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 3:1))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> colprods_byname(M)
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> colprods_byname(M, rowname = "E.ktoe")
+       c1 c2 c3
+E.ktoe 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> M %>% colprods_byname %>% rowprods_byname
+           Commodities
+Industries         720
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists
+> colprods_byname(list(M, M))
+[[1]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colprods_byname(list(M, M), rowname = "E.ktoe")
+[[1]]
+       c1 c2 c3
+E.ktoe 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+       c1 c2 c3
+E.ktoe 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colprods_byname(list(M, M), rowname = NA)
+[[1]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colprods_byname(list(M, M), rowname = NULL)
+[[1]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> DF <- data.frame(M = I(list()))
+> DF[[1,"M"]] <- M
+> DF[[2,"M"]] <- M
+> colprods_byname(DF$M[[1]])
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> colprods_byname(DF$M)
+[[1]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colprods_byname(DF$M, "prods")
+[[1]]
+      c1 c2 c3
+prods 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+      c1 c2 c3
+prods 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> res <- DF %>% mutate(
++   cs = colprods_byname(M),
++   cs2 = colprods_byname(M, rowname = "prod")
++ )
+> res$cs2
+[[1]]
+     c1 c2 c3
+prod 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+     c1 c2 c3
+prod 30 12  2
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("colsums_byname")
+> ### * colsums_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: colsums_byname
+> ### Title: Column sums, sorted by name
+> ### Aliases: colsums_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> m <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 3:1))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> m
+   c3 c2 c1
+i1  1  3  5
+i2  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> colsums_byname(m)
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> colsums_byname(m, rowname = "E.ktoe")
+       c1 c2 c3
+E.ktoe 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> m %>% 
++   colsums_byname() %>% 
++   rowsums_byname()
+           Commodities
+Industries          21
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists
+> colsums_byname(list(m, m))
+[[1]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colsums_byname(list(m, m), rowname = "E.ktoe")
+[[1]]
+       c1 c2 c3
+E.ktoe 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+       c1 c2 c3
+E.ktoe 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colsums_byname(list(m, m), rowname = NA)
+[[1]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colsums_byname(list(m, m), rowname = NULL)
+[[1]]
+     c1 c2 c3
+[1,] 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+     c1 c2 c3
+[1,] 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> colsums_byname(DF$m[[1]])
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> colsums_byname(DF$m)
+[[1]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3
+Industries 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> colsums_byname(DF$m, "sums")
+[[1]]
+     c1 c2 c3
+sums 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+     c1 c2 c3
+sums 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> res <- DF %>% mutate(
++   cs = colsums_byname(m),
++   cs2 = colsums_byname(m, rowname = "sum")
++ )
+> res$cs2
+[[1]]
+    c1 c2 c3
+sum 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+    c1 c2 c3
+sum 11  7  3
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("coltype")
+> ### * coltype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: coltype
+> ### Title: Column type
+> ### Aliases: coltype
+> 
+> ### ** Examples
+> 
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype(rowtype = "Commodities") %>% setcoltype("Industries")
+> coltype(U)
+[1] "Industries"
+> # This also works for lists
+> coltype(list(U,U))
+[[1]]
+[1] "Industries"
+
+[[2]]
+[1] "Industries"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("compare_byname")
+> ### * compare_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: compare_byname
+> ### Title: Compare matrix entries to a value
+> ### Aliases: compare_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(0, 1, 2, 3, 4, 0), nrow = 3, ncol = 2)
+> compare_byname(m, "<", 3)
+     [,1]  [,2]
+[1,] TRUE FALSE
+[2,] TRUE FALSE
+[3,] TRUE  TRUE
+> compare_byname(list(m,m), "<", 3)
+[[1]]
+     [,1]  [,2]
+[1,] TRUE FALSE
+[2,] TRUE FALSE
+[3,] TRUE  TRUE
+
+[[2]]
+     [,1]  [,2]
+[1,] TRUE FALSE
+[2,] TRUE FALSE
+[3,] TRUE  TRUE
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("complete_and_sort")
+> ### * complete_and_sort
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: complete_and_sort
+> ### Title: Complete matrices relative to one another and sort into same
+> ###   row, column order
+> ### Aliases: complete_and_sort
+> 
+> ### ** Examples
+> 
+> m1 <- matrix(c(1:6), nrow=3, dimnames = list(c("r1", "r2", "r3"), c("c2", "c1")))
+> m2 <- matrix(c(7:12), ncol=3, dimnames = list(c("r3", "r4"), c("c2", "c3", "c4")))
+> complete_and_sort(m1)
+   c1 c2 r1 r2 r3
+c1  0  0  0  0  0
+c2  0  0  0  0  0
+r1  4  1  0  0  0
+r2  5  2  0  0  0
+r3  6  3  0  0  0
+> complete_and_sort(m1, m2)
+$a
+   c1 c2 c3 c4
+r1  4  1  0  0
+r2  5  2  0  0
+r3  6  3  0  0
+r4  0  0  0  0
+
+$b
+   c1 c2 c3 c4
+r1  0  0  0  0
+r2  0  0  0  0
+r3  0  7  9 11
+r4  0  8 10 12
+
+> complete_and_sort(m1, m2, roworder = c("r3", "r2", "r1"))
+$a
+   c1 c2 c3 c4
+r3  6  3  0  0
+r2  5  2  0  0
+r1  4  1  0  0
+
+$b
+   c1 c2 c3 c4
+r3  0  7  9 11
+r2  0  0  0  0
+r1  0  0  0  0
+
+> complete_and_sort(m1, m2, colorder = c("c4", "c3")) # Drops un-specified columns
+$a
+   c4 c3
+r1  0  0
+r2  0  0
+r3  0  0
+r4  0  0
+
+$b
+   c4 c3
+r1  0  0
+r2  0  0
+r3 11  9
+r4 12 10
+
+> complete_and_sort(m1, m2, margin = 1)
+$a
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+r4  0  0
+
+$b
+   c2 c3 c4
+r1  0  0  0
+r2  0  0  0
+r3  7  9 11
+r4  8 10 12
+
+> complete_and_sort(m1, m2, margin = 2)
+$a
+   c1 c2 c3 c4
+r1  4  1  0  0
+r2  5  2  0  0
+r3  6  3  0  0
+
+$b
+   c1 c2 c3 c4
+r3  0  7  9 11
+r4  0  8 10 12
+
+> complete_and_sort(m1, t(m2))
+$a
+   c1 c2 r3 r4
+c2  0  0  0  0
+c3  0  0  0  0
+c4  0  0  0  0
+r1  4  1  0  0
+r2  5  2  0  0
+r3  6  3  0  0
+
+$b
+   c1 c2 r3 r4
+c2  0  0  7  8
+c3  0  0  9 10
+c4  0  0 11 12
+r1  0  0  0  0
+r2  0  0  0  0
+r3  0  0  0  0
+
+> complete_and_sort(m1, t(m2), margin = 1)
+$a
+   c2 c1
+c2  0  0
+c3  0  0
+c4  0  0
+r1  1  4
+r2  2  5
+r3  3  6
+
+$b
+   r3 r4
+c2  7  8
+c3  9 10
+c4 11 12
+r1  0  0
+r2  0  0
+r3  0  0
+
+> complete_and_sort(m1, t(m2), margin = 2)
+$a
+   c1 c2 r3 r4
+r1  4  1  0  0
+r2  5  2  0  0
+r3  6  3  0  0
+
+$b
+   c1 c2 r3 r4
+c2  0  0  7  8
+c3  0  0  9 10
+c4  0  0 11 12
+
+> v <- matrix(1:6, ncol=2, dimnames=list(c("r3", "r1", "r2"), c("c2", "c1")))
+> complete_and_sort(v, v)
+$a
+   c1 c2
+r1  5  2
+r2  6  3
+r3  4  1
+
+$b
+   c1 c2
+r1  5  2
+r2  6  3
+r3  4  1
+
+> # Also works with lists
+> complete_and_sort(list(m1,m1), list(m2,m2))
+$a
+$a[[1]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+r4  0  0
+
+$a[[2]]
+   c1 c2 c3 c4
+r1  4  1  0  0
+r2  5  2  0  0
+r3  6  3  0  0
+
+
+$b
+$b[[1]]
+   c2 c3 c4
+r1  0  0  0
+r2  0  0  0
+r3  7  9 11
+r4  8 10 12
+
+$b[[2]]
+   c1 c2 c3 c4
+r3  0  7  9 11
+r4  0  8 10 12
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("complete_rows_cols")
+> ### * complete_rows_cols
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: complete_rows_cols
+> ### Title: Complete rows and columns in one matrix relative to another
+> ### Aliases: complete_rows_cols
+> 
+> ### ** Examples
+> 
+> m1 <- matrix(c(1:6), nrow=3, dimnames = list(c("r1", "r2", "r3"), c("c1", "c2")))
+> m2 <- matrix(c(7:12), ncol=3, dimnames = list(c("r2", "r3"), c("c2", "c3", "c4")))
+> complete_rows_cols(m1, m2) # Adds empty column c4
+   c1 c2 c3 c4
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+> complete_rows_cols(m1, t(m2)) # Creates r2, r3 columns; c2, c3, c4 rows
+   c1 c2 r2 r3
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+c2  0  0  0  0
+c3  0  0  0  0
+c4  0  0  0  0
+> complete_rows_cols(m1, m2, margin = 1) # No changes because r2 and r3 already present in m1
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+> complete_rows_cols(m1, m2, margin = 2) # Adds empty columns c3 and c4
+   c1 c2 c3 c4
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+> complete_rows_cols(m1, t(m2), margin = 1) # Adds empty rows c2, c3, c4
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+c2  0  0
+c3  0  0
+c4  0  0
+> complete_rows_cols(m1, m2, fill = 100) # Adds columns c3 and c4 with 100's
+   c1 c2  c3  c4
+r1  1  4 100 100
+r2  2  5 100 100
+r3  3  6 100 100
+> complete_rows_cols(m1, m1) # Nothing added, because everything already present
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+> complete_rows_cols(m1, t(m1)) # Adds empty c1, c2 rows; Adds empty r1, r2, r3 columns
+   c1 c2 r1 r2 r3
+r1  1  4  0  0  0
+r2  2  5  0  0  0
+r3  3  6  0  0  0
+c1  0  0  0  0  0
+c2  0  0  0  0  0
+> # Same as previous. With missing matrix, complete relative to transpose of m1.
+> complete_rows_cols(m1) 
+   c1 c2 r1 r2 r3
+r1  1  4  0  0  0
+r2  2  5  0  0  0
+r3  3  6  0  0  0
+c1  0  0  0  0  0
+c2  0  0  0  0  0
+> # Adds rows r10, r11; cols c10, c11
+> complete_rows_cols(m1, matrix(0, nrow = 2, ncol = 2, 
++                               dimnames = list(c("r10", "r11"), c("c10", "c11")))) 
+    c1 c2 c10 c11
+r1   1  4   0   0
+r2   2  5   0   0
+r3   3  6   0   0
+r10  0  0   0   0
+r11  0  0   0   0
+> # Also works with lists
+> complete_rows_cols(a = list(m1,m1))
+[[1]]
+   c1 c2 r1 r2 r3
+r1  1  4  0  0  0
+r2  2  5  0  0  0
+r3  3  6  0  0  0
+c1  0  0  0  0  0
+c2  0  0  0  0  0
+
+[[2]]
+   c1 c2 r1 r2 r3
+r1  1  4  0  0  0
+r2  2  5  0  0  0
+r3  3  6  0  0  0
+c1  0  0  0  0  0
+c2  0  0  0  0  0
+
+> complete_rows_cols(a = list(m1,m1), mat = list(m2,m2))
+[[1]]
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[2]]
+   c1 c2 c3 c4
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+
+> # No changes because r2, r3 already present in m1
+> complete_rows_cols(a = list(m1,m1), mat = list(m2,m2), margin = 1) 
+[[1]]
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[2]]
+   c1 c2
+r1  1  4
+r2  2  5
+r3  3  6
+
+> complete_rows_cols(a = list(m1,m1), mat = list(m2,m2), margin = 2)
+[[1]]
+   c1 c2 c3 c4
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+
+[[2]]
+   c1 c2 c3 c4
+r1  1  4  0  0
+r2  2  5  0  0
+r3  3  6  0  0
+
+> complete_rows_cols(a = list(m1,m1), 
++                    mat = make_list(matrix(0, nrow = 2, ncol = 2, 
++                                           dimnames = list(c("r10", "r11"), c("c10", "c11"))), 
++                                    n = 2, lenx = 1))
+[[1]]
+    c1 c2
+r1   1  4
+r2   2  5
+r3   3  6
+r10  0  0
+r11  0  0
+
+[[2]]
+   c1 c2 c10 c11
+r1  1  4   0   0
+r2  2  5   0   0
+r3  3  6   0   0
+
+> # fillrow or fillcol can be specified
+> a <- matrix(c(11, 12, 21, 22), byrow = TRUE, nrow = 2, ncol = 2, 
++             dimnames = list(c("r1", "r2"), c("c1", "c2")))
+> b <- matrix(c(1:6), byrow = TRUE, nrow = 3, ncol = 2, 
++             dimnames = list(c("r1", "r2", "r3"), c("c1", "c2")))
+> fillrow <- matrix(c(31, 32), byrow = TRUE, nrow = 1, ncol = 2, 
++                   dimnames = list("r42", c("c1", "c2")))
+> complete_rows_cols(a = a, mat = b, fillrow = fillrow)
+   c1 c2
+r1 11 12
+r2 21 22
+r3 31 32
+> 
+> 
+> 
+> cleanEx()
+> nameEx("count_vals_byname")
+> ### * count_vals_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: count_vals_byname
+> ### Title: Count the number of matrix entries that meet a criterion
+> ### Aliases: count_vals_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(0, 1, 2, 3, 4, 0), nrow = 3, ncol = 2)
+> count_vals_byname(m) # uses defaults: compare_fun = "==" and val = 0
+[1] 2
+> count_vals_byname(m, compare_fun = "!=")
+[1] 4
+> count_vals_byname(m, compare_fun = `!=`)
+[1] 4
+> # Write expressions in a natural way
+> count_vals_byname(m, "<=", 1)
+[1] 3
+> # Also works for lists
+> count_vals_byname(list(m,m), "<=", 1)
+[[1]]
+[1] 3
+
+[[2]]
+[1] 3
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("count_vals_incols_byname")
+> ### * count_vals_incols_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: count_vals_incols_byname
+> ### Title: Count the number of matrix entries in columns that meet a
+> ###   criterion
+> ### Aliases: count_vals_incols_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(0, 1, 2, 3, 4, 0), nrow = 3, ncol = 2)
+> count_vals_incols_byname(m) # uses defaults: compare_fun = "==" and val = 0
+     [,1] [,2]
+[1,]    1    1
+> count_vals_incols_byname(m, compare_fun = "!=")
+     [,1] [,2]
+[1,]    2    2
+> count_vals_incols_byname(m, compare_fun = `!=`)
+     [,1] [,2]
+[1,]    2    2
+> # Write expressions in a natural way
+> count_vals_incols_byname(m, "<=", 1)
+     [,1] [,2]
+[1,]    2    1
+> # Also works for lists
+> count_vals_incols_byname(list(m,m), "<=", 1)
+[[1]]
+     [,1] [,2]
+[1,]    2    1
+
+[[2]]
+     [,1] [,2]
+[1,]    2    1
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("count_vals_inrows_byname")
+> ### * count_vals_inrows_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: count_vals_inrows_byname
+> ### Title: Count the number of matrix entries in rows that meet a criterion
+> ### Aliases: count_vals_inrows_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(0, 1, 2, 3, 4, 0), nrow = 3, ncol = 2)
+> count_vals_inrows_byname(m) # uses defaults: compare_fun = "==" and val = 0
+     [,1]
+[1,]    1
+[2,]    0
+[3,]    1
+> count_vals_inrows_byname(m, compare_fun = "!=")
+     [,1]
+[1,]    1
+[2,]    2
+[3,]    1
+> count_vals_inrows_byname(m, compare_fun = `!=`)
+     [,1]
+[1,]    1
+[2,]    2
+[3,]    1
+> # Write expressions in a natural way
+> count_vals_inrows_byname(m, "<=", 1)
+     [,1]
+[1,]    1
+[2,]    1
+[3,]    1
+> # Also works for lists
+> count_vals_inrows_byname(list(m,m), "<=", 1)
+[[1]]
+     [,1]
+[1,]    1
+[2,]    1
+[3,]    1
+
+[[2]]
+     [,1]
+[1,]    1
+[2,]    1
+[3,]    1
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_colvec_byname")
+> ### * create_colvec_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_colvec_byname
+> ### Title: Create column vectors from data
+> ### Aliases: create_colvec_byname
+> 
+> ### ** Examples
+> 
+> # Works with single numbers
+> create_colvec_byname(c(r1 = 1) %>% setrowtype("rt") %>% setcoltype("ct"), 
++                      colname = "r1")
+   r1
+r1  1
+attr(,"rowtype")
+[1] "rt"
+attr(,"coltype")
+[1] "ct"
+> # Works with vectors
+> create_colvec_byname(c(r1 = 1, r2 = 2), colname = "c1")
+   c1
+r1  1
+r2  2
+> # Works with a list
+> create_colvec_byname(list(c(r1 = 1, r2 = 2), c(R1 = 3, R2 = 4, R3 = 5)), 
++                      colname = list("c1", "C1"))
+[[1]]
+   c1
+r1  1
+r2  2
+
+[[2]]
+   C1
+R1  3
+R2  4
+R3  5
+
+> # Works in a tibble, too.
+> # (Must be a tibble, not a data frame, so that names are preserved.)
+> dat <- list(c(r1 = 1, r2 = 2),
++             c(R1 = 2, R2 = 3), 
++             c(r1 = 1, r2 = 2, r3 = 3, r4 = 4, r5 = 5, r6 = 6))
+> cnms <- list("c1", "C1", "c1")
+> df1 <- tibble::tibble(dat, cnms)
+> df1
+# A tibble: 3 × 2
+  dat       cnms     
+  <list>    <list>   
+1 <dbl [2]> <chr [1]>
+2 <dbl [2]> <chr [1]>
+3 <dbl [6]> <chr [1]>
+> df1 <- df1 %>%
++   dplyr::mutate(
++     colvec_col = create_colvec_byname(dat, colname = cnms)
++   )
+> df1$colvec_col[[1]]
+   c1
+r1  1
+r2  2
+> df1$colvec_col[[2]]
+   C1
+R1  2
+R2  3
+> df1$colvec_col[[3]]
+   c1
+r1  1
+r2  2
+r3  3
+r4  4
+r5  5
+r6  6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_matrix_byname")
+> ### * create_matrix_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_matrix_byname
+> ### Title: Create a "byname" matrix from a vector
+> ### Aliases: create_matrix_byname
+> 
+> ### ** Examples
+> 
+> create_matrix_byname(c(1, 2), nrow = 2, ncol = 1,
++                      dimnames = list(c("r1", "r2"), "c1"))
+   c1
+r1  1
+r2  2
+> create_matrix_byname(list(1, 2), nrow = list(1, 1), ncol = list(1,1), 
++                      dimnames = list(list("r1", "c1"), list("R1", "C1")))
+[[1]]
+   c1
+r1  1
+
+[[2]]
+   C1
+R1  2
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("create_rowvec_byname")
+> ### * create_rowvec_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: create_rowvec_byname
+> ### Title: Create row vectors from data
+> ### Aliases: create_rowvec_byname
+> 
+> ### ** Examples
+> 
+> # Works with single numbers
+> create_rowvec_byname(c(c1 = 1) %>% setrowtype("rt") %>% setcoltype("ct"), rowname = "r1")
+   c1
+r1  1
+attr(,"rowtype")
+[1] "rt"
+attr(,"coltype")
+[1] "ct"
+> # Works with vectors
+> create_rowvec_byname(c(c1 = 1, c2 = 2), rowname = "r1")
+   c1 c2
+r1  1  2
+> # Works with a list
+> create_rowvec_byname(list(c(c1 = 1, c2 = 2), c(C1 = 3, C2 = 4, C3 = 5)), 
++                      rowname = list("r1", "R1"))
+[[1]]
+   c1 c2
+r1  1  2
+
+[[2]]
+   C1 C2 C3
+R1  3  4  5
+
+> # Works in a tibble, too.
+> # (Must be a tibble, not a data frame, so that names are preserved.)
+> dat <- list(c(c1 = 1),
++             c(C1 = 2, C2 = 3), 
++             c(c1 = 1, c2 = 2, c3 = 3, c4 = 4, c5 = 5, c6 = 6))
+> rnms <- list("r1", "R1", "r1")
+> df1 <- tibble::tibble(dat, rnms)
+> df1
+# A tibble: 3 × 2
+  dat       rnms     
+  <list>    <list>   
+1 <dbl [1]> <chr [1]>
+2 <dbl [2]> <chr [1]>
+3 <dbl [6]> <chr [1]>
+> df1 <- df1 %>%
++   dplyr::mutate(
++     rowvec_col = create_rowvec_byname(dat, rowname = rnms)
++   )
+> df1$rowvec_col[[1]]
+   c1
+r1  1
+> df1$rowvec_col[[2]]
+   C1 C2
+R1  2  3
+> df1$rowvec_col[[3]]
+   c1 c2 c3 c4 c5 c6
+r1  1  2  3  4  5  6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cumapply_byname")
+> ### * cumapply_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: cumapply_byname
+> ### Title: Apply a function cumulatively to a list of matrices or numbers
+> ### Aliases: cumapply_byname
+> 
+> ### ** Examples
+> 
+> cumapply_byname(sum, list(1, 2, 3, 4))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 3
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 10
+
+> cumapply_byname(sum_byname, list(1, 2, 3, 4))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 3
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 10
+
+> cumapply_byname(prod, list(1, 2, 3, 4))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 24
+
+> cumapply_byname(hadamardproduct_byname, list(1, 2, 3, 4))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 24
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cumprod_byname")
+> ### * cumprod_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: cumprod_byname
+> ### Title: Cumulative element-product that respects row and column names
+> ### Aliases: cumprod_byname
+> 
+> ### ** Examples
+> 
+> cumprod_byname(list(1, 2, 3, 4, 5))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+[[3]]
+[1] 6
+
+[[4]]
+[1] 24
+
+[[5]]
+[1] 120
+
+> m1 <- matrix(c(1), nrow = 1, ncol = 1, dimnames = list("r1", "c1")) %>%
++   setrowtype("row") %>% setcoltype("col")
+> m2 <- matrix(c(2), nrow = 1, ncol = 1, dimnames = list("r2", "c2")) %>%
++   setrowtype("row") %>% setcoltype("col")
+> m3 <- matrix(c(3), nrow = 1, ncol = 1, dimnames = list("r3", "c3")) %>%
++   setrowtype("row") %>% setcoltype("col")
+> cumprod_byname(list(m1, m2, m3))
+[[1]]
+   c1
+r1  1
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[2]]
+   c1 c2
+r1  0  0
+r2  0  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[3]]
+   c1 c2 c3
+r1  0  0  0
+r2  0  0  0
+r3  0  0  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cumsum_byname")
+> ### * cumsum_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: cumsum_byname
+> ### Title: Cumulative sum that respects row and column names
+> ### Aliases: cumsum_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> library(tibble)
+> m1 <- matrix(c(1), nrow = 1, ncol = 1, dimnames = list("r1", "c1")) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> m2 <- matrix(c(2), nrow = 1, ncol = 1, dimnames = list("r2", "c2")) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> m3 <- matrix(c(3), nrow = 1, ncol = 1, dimnames = list("r3", "c3")) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> cumsum_byname(list(m1, m2, m3))
+[[1]]
+   c1
+r1  1
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[2]]
+   c1 c2
+r1  1  0
+r2  0  2
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[3]]
+   c1 c2 c3
+r1  1  0  0
+r2  0  2  0
+r3  0  0  3
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+> # Groups are respected in the context of mutate.
+> tibble(grp = c("A", "A", "B"), m = list(m1, m2, m3)) %>% group_by(grp) %>% 
++   mutate(m2 = cumsum_byname(m))
+# A tibble: 3 × 3
+# Groups:   grp [2]
+  grp   m             m2           
+  <chr> <list>        <list>       
+1 A     <dbl [1 × 1]> <dbl [1 × 1]>
+2 A     <dbl [1 × 1]> <dbl [2 × 2]>
+3 B     <dbl [1 × 1]> <dbl [1 × 1]>
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:tibble’, ‘package:dplyr’
+
+> nameEx("difference_byname")
+> ### * difference_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: difference_byname
+> ### Title: Name-wise subtraction of matrices
+> ### Aliases: difference_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> difference_byname(100, 50)
+[1] 50
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> G <- matrix(rev(1:4), ncol = 2, dimnames = list(rev(commoditynames), rev(industrynames))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> U - G # Non-sensical. Row and column names not respected.
+   i1 i2
+c1 -3  1
+c2 -1  3
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> difference_byname(U, G) # Row and column names respected! Should be all zeroes.
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> difference_byname(100, U)
+   i1 i2
+c1 99 97
+c2 98 96
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> difference_byname(10, G)
+   i1 i2
+c1  9  7
+c2  8  6
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> difference_byname(G) # When subtrahend is missing, return minuend (in this case, G).
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> difference_byname(subtrahend = G) # When minuend is missing, return - subtrahend (in this case, -G)
+   i1 i2
+c1 -1 -3
+c2 -2 -4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # This also works with lists
+> difference_byname(list(100, 100), list(50, 50))
+[[1]]
+[1] 50
+
+[[2]]
+[1] 50
+
+> difference_byname(list(U,U), list(G,G))
+[[1]]
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), G = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> difference_byname(DF$U, DF$G)
+[[1]]
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(diffs = difference_byname(U, G))
+           U          G      diffs
+1 1, 2, 3, 4 4, 3, 2, 1 0, 0, 0, 0
+2 1, 2, 3, 4 4, 3, 2, 1 0, 0, 0, 0
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("elementapply_byname")
+> ### * elementapply_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: elementapply_byname
+> ### Title: Apply a function to an element of a matrix specified by rows and
+> ###   columns
+> ### Aliases: elementapply_byname
+> 
+> ### ** Examples
+> 
+> divide <- function(x, divisor){
++   x/divisor
++ }
+> m <- matrix(c(1:4), nrow = 2, ncol = 2, dimnames = list(c("r1", "r2"), c("c1", "c2"))) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> elementapply_byname(divide, a = m, row = 1, col = 1, .FUNdots = list(divisor = 2))
+    c1 c2
+r1 0.5  3
+r2 2.0  4
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+> elementapply_byname(divide, a = m, row = 1, col = 2, .FUNdots = list(divisor = 10))
+   c1  c2
+r1  1 0.3
+r2  2 4.0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+> elementapply_byname(divide, a = m, row = "r2", col = "c2", .FUNdots = list(divisor = 100))
+   c1   c2
+r1  1 3.00
+r2  2 0.04
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("equal_byname")
+> ### * equal_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: equal_byname
+> ### Title: Compare two matrices "by name" for equality
+> ### Aliases: equal_byname
+> 
+> ### ** Examples
+> 
+> a <- matrix(1:4, nrow = 2)
+> b <- matrix(1:4, nrow = 2)
+> equal_byname(a, b)
+[1] TRUE
+> equal_byname(a, b + 1e-100)
+[1] TRUE
+> identical_byname(a, b + 1e-100)
+[1] FALSE
+> a <- a %>% setrowtype("Industries") %>% setcoltype("Commodities")
+> equal_byname(a, b) # FALSE because a has row and column types, but b does not.
+[1] FALSE
+> b <- b %>% setrowtype("Industries") %>% setcoltype("Commodities")
+> equal_byname(a, b)
+[1] TRUE
+> dimnames(a) <- list(c("i1", "i2"), c("c1", "c2"))
+> dimnames(b) <- list(c("c1", "c2"), c("i1", "i2"))
+> equal_byname(a, b) # FALSE, because row and column names are not equal
+[1] FALSE
+> dimnames(b) <- dimnames(a)
+> equal_byname(a, b)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("exp_byname")
+> ### * exp_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: exp_byname
+> ### Title: Exponential of matrix elements
+> ### Aliases: exp_byname
+> 
+> ### ** Examples
+> 
+> exp_byname(1)
+[1] 2.718282
+> m <- matrix(c(log(10),log(1),log(1),log(100)), 
++   nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> exp_byname(m)
+   c1  c2
+i1 10   1
+i2  1 100
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Commodity"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("fractionize_byname")
+> ### * fractionize_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: fractionize_byname
+> ### Title: Compute fractions of matrix entries
+> ### Aliases: fractionize_byname
+> 
+> ### ** Examples
+> 
+> M <- matrix(c(1, 5,
++               4, 5),
++             nrow = 2, ncol = 2, byrow = TRUE, 
++             dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>% 
++             setcoltype("Products") %>% setrowtype("Industries")
+> fractionize_byname(M, margin = c(1,2))
+           i1        i2
+p1 0.06666667 0.3333333
+p2 0.26666667 0.3333333
+attr(,"coltype")
+[1] "Products"
+attr(,"rowtype")
+[1] "Industries"
+> fractionize_byname(M, margin = 1)
+          i1        i2
+p1 0.1666667 0.8333333
+p2 0.4444444 0.5555556
+attr(,"coltype")
+[1] "Products"
+attr(,"rowtype")
+[1] "Industries"
+> fractionize_byname(M, margin = 2)
+    i1  i2
+p1 0.2 0.5
+p2 0.8 0.5
+attr(,"coltype")
+[1] "Products"
+attr(,"rowtype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("geometricmean_byname")
+> ### * geometricmean_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: geometricmean_byname
+> ### Title: Name- and element-wise geometric mean of two matrices.
+> ### Aliases: geometricmean_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> geometricmean_byname(10, 1000)
+[1] 100
+> geometricmean_byname(10, 1000, 100000)
+[1] 1000
+> commoditynames <- c("c1", "c2")
+> industrynames <- "i1"
+> U <- matrix(c(10, 1000), ncol = 1, nrow = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> G <- matrix(c(1e3, 1e5), ncol = 1, nrow = 2, 
++             dimnames = list(rev(commoditynames), rev(industrynames))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> # Non-sensical. Row and column names not respected.
+> sqrt(U*G)
+      i1
+c1   100
+c2 10000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # Row and column names respected!
+> geometricmean_byname(U, G)
+     i1
+c1 1000
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> geometricmean_byname(1000, U)
+     i1
+c1  100
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> geometricmean_byname(10, G)
+     i1
+c1 1000
+c2  100
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # This also works with lists
+> geometricmean_byname(list(10, 1000), list(1000, 10))
+[[1]]
+[1] 100
+
+[[2]]
+[1] 100
+
+> geometricmean_byname(list(U,U), list(G,G))
+[[1]]
+     i1
+c1 1000
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+     i1
+c1 1000
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), G = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> geometricmean_byname(DF$U, DF$G)
+[[1]]
+     i1
+c1 1000
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+     i1
+c1 1000
+c2 1000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(geomeans = geometricmean_byname(U, G))
+         U           G   geomeans
+1 10, 1000 1000, 1e+05 1000, 1000
+2 10, 1000 1000, 1e+05 1000, 1000
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("getcolnames_byname")
+> ### * getcolnames_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getcolnames_byname
+> ### Title: Gets column names
+> ### Aliases: getcolnames_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:3))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> getcolnames_byname(m)
+[1] "c1" "c2" "c3"
+> # This also works for lists
+> getcolnames_byname(list(m,m))
+[[1]]
+[1] "c1" "c2" "c3"
+
+[[2]]
+[1] "c1" "c2" "c3"
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> getcolnames_byname(DF$m)
+[[1]]
+[1] "c1" "c2" "c3"
+
+[[2]]
+[1] "c1" "c2" "c3"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("getrownames_byname")
+> ### * getrownames_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getrownames_byname
+> ### Title: Gets row names
+> ### Aliases: getrownames_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:3))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> getrownames_byname(m)
+[1] "i1" "i2"
+> # This also works for lists
+> getrownames_byname(list(m,m))
+[[1]]
+[1] "i1" "i2"
+
+[[2]]
+[1] "i1" "i2"
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> getrownames_byname(DF$m)
+[[1]]
+[1] "i1" "i2"
+
+[[2]]
+[1] "i1" "i2"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hadamardproduct_byname")
+> ### * hadamardproduct_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hadamardproduct_byname
+> ### Title: Name-wise matrix Hadamard multiplication
+> ### Aliases: hadamardproduct_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> hadamardproduct_byname(2, 2)
+[1] 4
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> G <- matrix(1:4, ncol = 2, dimnames = list(rev(commoditynames), rev(industrynames))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> U * G # Not what is desired, because names aren't aligned
+   i1 i2
+c1  1  9
+c2  4 16
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> hadamardproduct_byname(U, G)
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> hadamardproduct_byname(U, G, G)
+   i1 i2
+c1 16 12
+c2 18  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> hadamardproduct_byname(U, 0)
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> hadamardproduct_byname(0, G)
+   i1 i2
+c1  0  0
+c2  0  0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # This also works with lists
+> hadamardproduct_byname(list(U, U), list(G, G))
+[[1]]
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), G = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> hadamardproduct_byname(DF$U, DF$G)
+[[1]]
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(entrywiseprods = hadamardproduct_byname(U, G))
+           U          G entrywiseprods
+1 1, 2, 3, 4 1, 2, 3, 4     4, 6, 6, 4
+2 1, 2, 3, 4 1, 2, 3, 4     4, 6, 6, 4
+> # Also works down lists with `.summarise = TRUE`.
+> hadamardproduct_byname(list(U, G), .summarise = TRUE)
+[[1]]
+   i1 i2
+c1  4  6
+c2  6  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("hatinv_byname")
+> ### * hatinv_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hatinv_byname
+> ### Title: Hatize and invert a vector
+> ### Aliases: hatinv_byname
+> 
+> ### ** Examples
+> 
+> v <- matrix(1:10, ncol = 1, dimnames = list(c(paste0("i", 1:10)), c("c1"))) %>%
++   setrowtype("Industries") %>% setcoltype(NA)
+> r <- matrix(1:5, nrow = 1, dimnames = list(c("r1"), c(paste0("c", 1:5)))) %>%
++   setrowtype(NA) %>% setcoltype("Commodities")
+> hatinv_byname(v, keep = "rownames")
+    i1 i10  i2        i3   i4  i5        i6        i7    i8        i9
+i1   1 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i10  0 0.1 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i2   0 0.0 0.5 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i3   0 0.0 0.0 0.3333333 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i4   0 0.0 0.0 0.0000000 0.25 0.0 0.0000000 0.0000000 0.000 0.0000000
+i5   0 0.0 0.0 0.0000000 0.00 0.2 0.0000000 0.0000000 0.000 0.0000000
+i6   0 0.0 0.0 0.0000000 0.00 0.0 0.1666667 0.0000000 0.000 0.0000000
+i7   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.1428571 0.000 0.0000000
+i8   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.125 0.0000000
+i9   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.1111111
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> hatinv_byname(r, keep = "colnames")
+   c1  c2        c3   c4  c5
+c1  1 0.0 0.0000000 0.00 0.0
+c2  0 0.5 0.0000000 0.00 0.0
+c3  0 0.0 0.3333333 0.00 0.0
+c4  0 0.0 0.0000000 0.25 0.0
+c5  0 0.0 0.0000000 0.00 0.2
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Commodities"
+> # This function also works with lists.
+> hatinv_byname(list(v, v), keep = "rownames")
+[[1]]
+    i1 i10  i2        i3   i4  i5        i6        i7    i8        i9
+i1   1 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i10  0 0.1 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i2   0 0.0 0.5 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i3   0 0.0 0.0 0.3333333 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i4   0 0.0 0.0 0.0000000 0.25 0.0 0.0000000 0.0000000 0.000 0.0000000
+i5   0 0.0 0.0 0.0000000 0.00 0.2 0.0000000 0.0000000 0.000 0.0000000
+i6   0 0.0 0.0 0.0000000 0.00 0.0 0.1666667 0.0000000 0.000 0.0000000
+i7   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.1428571 0.000 0.0000000
+i8   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.125 0.0000000
+i9   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.1111111
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+    i1 i10  i2        i3   i4  i5        i6        i7    i8        i9
+i1   1 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i10  0 0.1 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i2   0 0.0 0.5 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i3   0 0.0 0.0 0.3333333 0.00 0.0 0.0000000 0.0000000 0.000 0.0000000
+i4   0 0.0 0.0 0.0000000 0.25 0.0 0.0000000 0.0000000 0.000 0.0000000
+i5   0 0.0 0.0 0.0000000 0.00 0.2 0.0000000 0.0000000 0.000 0.0000000
+i6   0 0.0 0.0 0.0000000 0.00 0.0 0.1666667 0.0000000 0.000 0.0000000
+i7   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.1428571 0.000 0.0000000
+i8   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.125 0.0000000
+i9   0 0.0 0.0 0.0000000 0.00 0.0 0.0000000 0.0000000 0.000 0.1111111
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+> # Watch out for 0 values
+> v2 <- matrix(0:1, ncol = 1, dimnames = list(c(paste0("i", 0:1)), c("p1"))) %>%
++   setrowtype("Industries") %>% setcoltype(NA)
+> # Produces singular matrix error
+> ## Not run: v2 %>% hatize_byname() %>% invert_byname
+> # Handles 0 values well
+> hatinv_byname(v2, keep = "rownames")
+              i0 i1
+i0 1.797693e+308  0
+i1  0.000000e+00  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> hatinv_byname(v2, inf_becomes = 42, keep = "rownames")
+   i0 i1
+i0 42  0
+i1  0  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> hatinv_byname(v2, inf_becomes = NA, keep = "rownames")
+   i0 i1
+i0 NA  0
+i1  0  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> # Deals with 1x1 matrices well, if the `keep` argument is set.
+> m <- matrix(42, nrow = 1, ncol = 1, dimnames = list("r1", "c1")) %>% 
++   setrowtype("Product -> Industry") %>% 
++   setcoltype("Industry -> Product")
+> m %>% 
++   hatinv_byname(keep = "rownames")
+           r1
+r1 0.02380952
+attr(,"rowtype")
+[1] "Product -> Industry"
+attr(,"coltype")
+[1] "Product -> Industry"
+> m %>% 
++   hatinv_byname(keep = "colnames")
+           c1
+c1 0.02380952
+attr(,"rowtype")
+[1] "Industry -> Product"
+attr(,"coltype")
+[1] "Industry -> Product"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("hatize_byname")
+> ### * hatize_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: hatize_byname
+> ### Title: Creates a diagonal "hat" matrix from a vector
+> ### Aliases: hatize_byname
+> 
+> ### ** Examples
+> 
+> v <- matrix(1:10, ncol = 1, dimnames = list(c(paste0("i", 1:10)), c("c1"))) %>%
++   setrowtype("Industries") %>% setcoltype(NA)
+> hatize_byname(v, keep = "rownames")
+    i1 i10 i2 i3 i4 i5 i6 i7 i8 i9
+i1   1   0  0  0  0  0  0  0  0  0
+i10  0  10  0  0  0  0  0  0  0  0
+i2   0   0  2  0  0  0  0  0  0  0
+i3   0   0  0  3  0  0  0  0  0  0
+i4   0   0  0  0  4  0  0  0  0  0
+i5   0   0  0  0  0  5  0  0  0  0
+i6   0   0  0  0  0  0  6  0  0  0
+i7   0   0  0  0  0  0  0  7  0  0
+i8   0   0  0  0  0  0  0  0  8  0
+i9   0   0  0  0  0  0  0  0  0  9
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> r <- matrix(1:5, nrow = 1, dimnames = list(c("r1"), c(paste0("c", 1:5)))) %>%
++   setrowtype(NA) %>% setcoltype("Commodities")
+> hatize_byname(r, keep = "colnames")
+   c1 c2 c3 c4 c5
+c1  1  0  0  0  0
+c2  0  2  0  0  0
+c3  0  0  3  0  0
+c4  0  0  0  4  0
+c5  0  0  0  0  5
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists.
+> hatize_byname(list(v, v), keep = "rownames")
+[[1]]
+    i1 i10 i2 i3 i4 i5 i6 i7 i8 i9
+i1   1   0  0  0  0  0  0  0  0  0
+i10  0  10  0  0  0  0  0  0  0  0
+i2   0   0  2  0  0  0  0  0  0  0
+i3   0   0  0  3  0  0  0  0  0  0
+i4   0   0  0  0  4  0  0  0  0  0
+i5   0   0  0  0  0  5  0  0  0  0
+i6   0   0  0  0  0  0  6  0  0  0
+i7   0   0  0  0  0  0  0  7  0  0
+i8   0   0  0  0  0  0  0  0  8  0
+i9   0   0  0  0  0  0  0  0  0  9
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+    i1 i10 i2 i3 i4 i5 i6 i7 i8 i9
+i1   1   0  0  0  0  0  0  0  0  0
+i10  0  10  0  0  0  0  0  0  0  0
+i2   0   0  2  0  0  0  0  0  0  0
+i3   0   0  0  3  0  0  0  0  0  0
+i4   0   0  0  0  4  0  0  0  0  0
+i5   0   0  0  0  0  5  0  0  0  0
+i6   0   0  0  0  0  0  6  0  0  0
+i7   0   0  0  0  0  0  0  7  0  0
+i8   0   0  0  0  0  0  0  0  8  0
+i9   0   0  0  0  0  0  0  0  0  9
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+> # A 1x1 column vector is a degenerate case. 
+> # Row names and rowtype are transferred to the column.
+> matrix(42, nrow = 1, ncol = 1, dimnames = list("r1")) %>% 
++   setrowtype("Product -> Industry") %>% 
++   hatize_byname(keep = "rownames")
+   r1
+r1 42
+attr(,"rowtype")
+[1] "Product -> Industry"
+attr(,"coltype")
+[1] "Product -> Industry"
+> # A 1x1 row vector is a degenerate case. 
+> # Column names and coltype are transferred to the row.
+> matrix(42, nrow = 1, ncol = 1, dimnames = list(NULL, "c1")) %>% 
++   setcoltype("Industry -> Product") %>% 
++   hatize_byname(keep = "colnames")
+   c1
+c1 42
+attr(,"coltype")
+[1] "Industry -> Product"
+attr(,"rowtype")
+[1] "Industry -> Product"
+> # A 1x1 matrix with both row and column names generates a failure.
+> ## Not run: 
+> ##D matrix(42, nrow = 1, ncol = 1, dimnames = list("r1", "c1")) %>% 
+> ##D   setrowtype("Product -> Industry") %>% 
+> ##D   setcoltype("Industry -> Product") %>% 
+> ##D   hatize_byname()
+> ## End(Not run)
+> # But you could specify which you want keep, row names or column names.
+> m <- matrix(42, nrow = 1, ncol = 1, dimnames = list("r1", "c1")) %>% 
++   setrowtype("Product -> Industry") %>% 
++   setcoltype("Industry -> Product")
+> m %>% 
++   hatize_byname(keep = "rownames")
+   r1
+r1 42
+attr(,"rowtype")
+[1] "Product -> Industry"
+attr(,"coltype")
+[1] "Product -> Industry"
+> m %>% 
++   hatize_byname(keep = "colnames")
+   c1
+c1 42
+attr(,"rowtype")
+[1] "Industry -> Product"
+attr(,"coltype")
+[1] "Industry -> Product"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("identical_byname")
+> ### * identical_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: identical_byname
+> ### Title: Compare two matrices "by name" for exact equality
+> ### Aliases: identical_byname
+> 
+> ### ** Examples
+> 
+> a <- matrix(1:4, nrow = 2)
+> b <- matrix(1:4, nrow = 2)
+> identical_byname(a, b)
+[1] TRUE
+> identical_byname(a, b + 1e-100)
+[1] FALSE
+> a <- a %>% setrowtype("Industries") %>% setcoltype("Commodities")
+> identical_byname(a, b) # FALSE because a has row and column types, but b does not.
+[1] FALSE
+> b <- b %>% setrowtype("Industries") %>% setcoltype("Commodities")
+> identical_byname(a, b)
+[1] TRUE
+> dimnames(a) <- list(c("i1", "i2"), c("c1", "c2"))
+> dimnames(b) <- list(c("c1", "c2"), c("i1", "i2"))
+> identical_byname(a, b) # FALSE, because row and column names are not equal
+[1] FALSE
+> dimnames(b) <- dimnames(a)
+> identical_byname(a, b)
+[1] TRUE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("identize_byname")
+> ### * identize_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: identize_byname
+> ### Title: Named identity matrix or vector
+> ### Aliases: identize_byname
+> 
+> ### ** Examples
+> 
+> M <- matrix(1:16, ncol = 4, dimnames=list(c(paste0("i", 1:4)), paste0("c", 1:4))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> identize_byname(M)
+   c1 c2 c3 c4
+i1  1  0  0  0
+i2  0  1  0  0
+i3  0  0  1  0
+i4  0  0  0  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> identize_byname(M, margin = c(1,2))
+   c1 c2 c3 c4
+i1  1  0  0  0
+i2  0  1  0  0
+i3  0  0  1  0
+i4  0  0  0  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> identize_byname(M, margin = 1)
+   Commodities
+i1           1
+i2           1
+i3           1
+i4           1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> identize_byname(M, margin = 2)
+           c1 c2 c3 c4
+Industries  1  1  1  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> N <- matrix(c(-21, -12, -21, -10), ncol = 2, dimnames = list(c("b", "a"), c("b", "a"))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> identize_byname(N)
+  b a
+b 1 0
+a 0 1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists
+> identize_byname(list(M, M))
+[[1]]
+   Commodities
+i1           1
+i2           1
+i3           1
+i4           1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+           c1 c2 c3 c4
+Industries  1  1  1  1
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("invert_byname")
+> ### * invert_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: invert_byname
+> ### Title: Invert a matrix
+> ### Aliases: invert_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(10,0,0,100), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> invert_byname(m)
+    i1   i2
+c1 0.1 0.00
+c2 0.0 0.01
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+> matrixproduct_byname(m, invert_byname(m))
+   i1 i2
+i1  1  0
+i2  0  1
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Industry"
+> matrixproduct_byname(invert_byname(m), m)
+   c1 c2
+c1  1  0
+c2  0  1
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Commodity"
+> invert_byname(list(m,m))
+[[1]]
+    i1   i2
+c1 0.1 0.00
+c2 0.0 0.01
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+
+[[2]]
+    i1   i2
+c1 0.1 0.00
+c2 0.0 0.01
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("iszero_byname")
+> ### * iszero_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: iszero_byname
+> ### Title: Test whether this is the zero matrix
+> ### Aliases: iszero_byname
+> 
+> ### ** Examples
+> 
+> zero <- matrix(0, nrow = 50, ncol = 50)
+> iszero_byname(zero)
+[1] TRUE
+> nonzero <- matrix(1:4, nrow = 2)
+> iszero_byname(nonzero)
+[1] FALSE
+> # Also works for lists
+> iszero_byname(list(zero, nonzero))
+[[1]]
+[1] TRUE
+
+[[2]]
+[1] FALSE
+
+> # And it works for data frames
+> DF <- data.frame(A = I(list()), B = I(list()))
+> DF[[1,"A"]] <- zero
+> DF[[2,"A"]] <- nonzero
+> DF[[1,"B"]] <- nonzero
+> DF[[2,"B"]] <- zero
+> iszero_byname(DF$A)
+[[1]]
+[1] TRUE
+
+[[2]]
+[1] FALSE
+
+> iszero_byname(DF$B)
+[[1]]
+[1] FALSE
+
+[[2]]
+[1] TRUE
+
+> iszero_byname(matrix(1e-10, nrow = 2))
+[1] TRUE
+> iszero_byname(matrix(1e-10, nrow = 2), tol = 1e-11)
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("kvec_from_template_byname")
+> ### * kvec_from_template_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: kvec_from_template_byname
+> ### Title: Create a constant vector from matrix 'a'
+> ### Aliases: kvec_from_template_byname
+> 
+> ### ** Examples
+> 
+> kvec_from_template_byname(matrix(42, nrow = 4, ncol = 2,
++                                  dimnames = list(c("r1", "r2", "r3", "r4"), c("c1", "c2"))), 
++                           colname = "new column")
+   new column
+r1          1
+r2          1
+r3          1
+r4          1
+> kvec_from_template_byname(matrix(42, nrow = 4, ncol = 2,
++                                  dimnames = list(c("r1", "r2", "r3", "r4"), c("c1", "c2"))), 
++                           colname = "new row", column = FALSE)
+        c1 c2
+new row  1  1
+> 
+> 
+> 
+> cleanEx()
+> nameEx("list_of_rows_or_cols")
+> ### * list_of_rows_or_cols
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: list_of_rows_or_cols
+> ### Title: Named list of rows or columns of matrices
+> ### Aliases: list_of_rows_or_cols
+> 
+> ### ** Examples
+> 
+> m <- matrix(data = c(1:6), 
++             nrow = 2, ncol = 3, 
++             dimnames = list(c("p1", "p2"), c("i1", "i2", "i3"))) %>%
++   setrowtype(rowtype = "Products") %>% setcoltype(coltype = "Industries")
+> list_of_rows_or_cols(m, margin = 1)
+$p1
+   p1
+i1  1
+i2  3
+i3  5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+$p2
+   p2
+i1  2
+i2  4
+i3  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> list_of_rows_or_cols(m, margin = 2)
+$i1
+   i1
+p1  1
+p2  2
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+$i2
+   i2
+p1  3
+p2  4
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+$i3
+   i3
+p1  5
+p2  6
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("log_byname")
+> ### * log_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: log_byname
+> ### Title: Logarithm of matrix elements
+> ### Aliases: log_byname
+> 
+> ### ** Examples
+> 
+> log_byname(exp(1))
+[1] 1
+> m <- matrix(c(10,1,1,100), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> log_byname(m)
+         c1      c2
+i1 2.302585 0.00000
+i2 0.000000 4.60517
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Commodity"
+> log_byname(m, base = 10)
+   c1 c2
+i1  1  0
+i2  0  2
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Commodity"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("logarithmicmean_byname")
+> ### * logarithmicmean_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: logarithmicmean_byname
+> ### Title: Name- and element-wise logarithmic mean of matrices
+> ### Aliases: logarithmicmean_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> m1 <- matrix(c(1:6), nrow = 3, ncol = 2) %>% 
++   setrownames_byname(c("r1", "r2", "r3")) %>% setcolnames_byname(c("c1", "c2")) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> m2 <- matrix(c(7:12), nrow = 3, ncol = 2) %>% 
++   setrownames_byname(c("r2", "r3", "r4")) %>% setcolnames_byname(c("c2", "c3")) %>% 
++   setrowtype("row") %>% setcoltype("col")
+> logarithmicmean_byname(m1, m2)
+   c1       c2 c3
+r1  0 0.000000  0
+r2  0 5.944027  0
+r3  0 6.952119  0
+r4  0 0.000000  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+> # This also works with lists
+> logarithmicmean_byname(list(m1, m1), list(m2, m2))
+[[1]]
+   c1       c2 c3
+r1  0 0.000000  0
+r2  0 5.944027  0
+r3  0 6.952119  0
+r4  0 0.000000  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[2]]
+   c1       c2 c3
+r1  0 0.000000  0
+r2  0 5.944027  0
+r3  0 6.952119  0
+r4  0 0.000000  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+> DF <- data.frame(m1 = I(list()), m2 = I(list()))
+> DF[[1,"m1"]] <- m1
+> DF[[2,"m1"]] <- m1
+> DF[[1,"m2"]] <- m2
+> DF[[2,"m2"]] <- m2
+> logarithmicmean_byname(DF$m1, DF$m2)
+[[1]]
+   c1       c2 c3
+r1  0 0.000000  0
+r2  0 5.944027  0
+r3  0 6.952119  0
+r4  0 0.000000  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+[[2]]
+   c1       c2 c3
+r1  0 0.000000  0
+r2  0 5.944027  0
+r3  0 6.952119  0
+r4  0 0.000000  0
+attr(,"rowtype")
+[1] "row"
+attr(,"coltype")
+[1] "col"
+
+> DF %>% mutate(logmeans = logarithmicmean_byname(m1, m2))
+            m1           m2
+1 1, 2, 3,.... 7, 8, 9,....
+2 1, 2, 3,.... 7, 8, 9,....
+                                                                                                                logmeans
+1 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 5.944027, 6.952119, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000
+2 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 5.944027, 6.952119, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("logmean")
+> ### * logmean
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: logmean
+> ### Title: Logarithmic mean of two numbers
+> ### Aliases: logmean
+> 
+> ### ** Examples
+> 
+> matsbyname:::logmean(0, 0) # 0
+[1] 0
+> matsbyname:::logmean(0, 1) # 0
+[1] 0
+> matsbyname:::logmean(1, 0) # 0
+[1] 0
+> matsbyname:::logmean(1, 1) # 1
+[1] 1
+> matsbyname:::logmean(2, 1)
+[1] 1.442695
+> matsbyname:::logmean(1, 2) # commutative
+[1] 1.442695
+> matsbyname:::logmean(1, 10) # base = exp(1), the default
+[1] 3.90865
+> matsbyname:::logmean(1, 10, base = 10)
+[1] 9
+> 
+> 
+> 
+> cleanEx()
+> nameEx("make_list")
+> ### * make_list
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: make_list
+> ### Title: Makes a list of items in x, regardless of x's type
+> ### Aliases: make_list
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1:6), nrow=3, dimnames = list(c("r1", "r2", "r3"), c("c2", "c1")))
+> make_list(m, n = 1)
+[[1]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+> make_list(m, n = 2)
+[[1]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[2]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+> make_list(m, n = 5)
+[[1]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[2]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[3]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[4]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+[[5]]
+   c2 c1
+r1  1  4
+r2  2  5
+r3  3  6
+
+> make_list(list(c(1,2), c(1,2)), n = 4)
+[[1]]
+[1] 1 2
+
+[[2]]
+[1] 1 2
+
+[[3]]
+[1] 1 2
+
+[[4]]
+[1] 1 2
+
+> m <- matrix(1:4, nrow = 2)
+> l <- list(m, m+100)
+> make_list(l, n = 4)
+[[1]]
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+[[2]]
+     [,1] [,2]
+[1,]  101  103
+[2,]  102  104
+
+[[3]]
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+[[4]]
+     [,1] [,2]
+[1,]  101  103
+[2,]  102  104
+
+> make_list(l, n = 1) # Warning because l is trimmed.
+Warning in make_list(l, n = 1) : n not evenly divisible by length(x)
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+> make_list(l, n = 5) # Warning because length(l) (i.e., 2) not evenly divisible by 5
+Warning in make_list(l, n = 5) : n not evenly divisible by length(x)
+[[1]]
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+[[2]]
+     [,1] [,2]
+[1,]  101  103
+[2,]  102  104
+
+[[3]]
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+[[4]]
+     [,1] [,2]
+[1,]  101  103
+[2,]  102  104
+
+[[5]]
+     [,1] [,2]
+[1,]    1    3
+[2,]    2    4
+
+> make_list(list(c("r10", "r11"), c("c10", "c11")), n = 2) # Confused by x being a list
+[[1]]
+[1] "r10" "r11"
+
+[[2]]
+[1] "c10" "c11"
+
+> make_list(list(c("r10", "r11"), c("c10", "c11")), n = 2, lenx = 1) # Fix by setting lenx = 1
+[[1]]
+[[1]][[1]]
+[1] "r10" "r11"
+
+[[1]][[2]]
+[1] "c10" "c11"
+
+
+[[2]]
+[[2]][[1]]
+[1] "r10" "r11"
+
+[[2]][[2]]
+[1] "c10" "c11"
+
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("margin_from_types_byname")
+> ### * margin_from_types_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: margin_from_types_byname
+> ### Title: Translate row and column types to integer margins
+> ### Aliases: margin_from_types_byname
+> 
+> ### ** Examples
+> 
+> # Works for single matrices
+> m <- matrix(1) %>%
++   setrowtype("Product") %>% setcoltype("Industry")
+> margin_from_types_byname(m, "Product")
+[1] 1
+> margin_from_types_byname(m, "Industry")
+[1] 2
+> margin_from_types_byname(m, c("Product", "Industry"))
+[1] 1 2
+> margin_from_types_byname(m, c("Industry", "Product"))
+[1] 1 2
+> # Works for lists of matrices
+> margin_from_types_byname(list(m, m), types = "Product")
+[[1]]
+[1] 1
+
+[[2]]
+[1] 1
+
+> margin_from_types_byname(list(m, m), types = "Industry")
+[[1]]
+[1] 2
+
+[[2]]
+[1] 2
+
+> margin_from_types_byname(list(m, m), types = c("Product", "Product"))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 1
+
+> margin_from_types_byname(list(m, m), types = c("Industry", "Industry"))
+[[1]]
+[1] 2
+
+[[2]]
+[1] 2
+
+> margin_from_types_byname(list(m, m), types = c("Product", "Industry"))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+> margin_from_types_byname(list(m, m), types = list("Product", "Industry"))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+> margin_from_types_byname(list(m, m), types = list(c("Product", "Industry")))
+[[1]]
+[1] 1 2
+
+[[2]]
+[1] 1 2
+
+> margin_from_types_byname(list(m, m), types = list(c("Product", "Industry"), 
++                                                   c("Product", "Industry")))
+[[1]]
+[1] 1 2
+
+[[2]]
+[1] 1 2
+
+> # Works in a data frame
+> m2 <- matrix(2) %>%
++   setrowtype("Industry") %>% setcoltype("Product")
+> df <- tibble::tibble(m = list(m, m2), types = list("Product", c("Product", "Industry")))
+> res <- df %>%
++   dplyr::mutate(
++     margin = margin_from_types_byname(m, types)
++  )
+> res$margin
+[[1]]
+[1] 1
+
+[[2]]
+[1] 1 2
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("matricize_byname")
+> ### * matricize_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: matricize_byname
+> ### Title: Matricize a vector
+> ### Aliases: matricize_byname
+> 
+> ### ** Examples
+> 
+> v <- matrix(c(1,
++               2,
++               3, 
++               4), 
++             nrow = 4, ncol = 1, dimnames = list(c("p1 -> i1", 
++                                                   "p2 -> i1", 
++                                                   "p1 -> i2", 
++                                                   "p2 -> i2"))) %>% 
++   setrowtype("Products -> Industries")
+> # Default separator is " -> ".
+> matricize_byname(v, notation = RCLabels::arrow_notation)
+   i1 i2
+p1  1  3
+p2  2  4
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("matrixproduct_byname")
+> ### * matrixproduct_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: matrixproduct_byname
+> ### Title: Name-wise matrix multiplication
+> ### Aliases: matrixproduct_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> V <- matrix(1:6, ncol = 3, dimnames = list(c("i1", "i2"), c("c1", "c2", "c3"))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> G <- matrix(1:4, ncol = 2, dimnames = list(c("c2", "c1"), c("i2", "i1"))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> Z <- matrix(11:14, ncol = 2, dimnames = list(c("i1", "i2"), c("s1", "s2"))) %>% 
++   setrowtype("Industries") %>% setcoltype("Sectors")
+> # Succeeds because G is completed to include a row named c3 (that contains zeroes).
+> matrixproduct_byname(V, G)
+   i1 i2
+i1 13  5
+i2 20  8
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+> ## Not run: V %*% G # Fails because E lacks a row named c3.
+> matrixproduct_byname(V, G, Z)
+    s1  s2
+i1 203 239
+i2 316 372
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Sectors"
+> # This also works with lists
+> matrixproduct_byname(list(V,V), list(G,G))
+[[1]]
+   i1 i2
+i1 13  5
+i2 20  8
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+i1 13  5
+i2 20  8
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(V = I(list()), G = I(list()))
+> DF[[1,"V"]] <- V
+> DF[[2,"V"]] <- V
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> matrixproduct_byname(DF$V, DF$G)
+[[1]]
+   i1 i2
+i1 13  5
+i2 20  8
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+i1 13  5
+i2 20  8
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(matprods = matrixproduct_byname(V, G))
+             V          G     matprods
+1 1, 2, 3,.... 1, 2, 3, 4 13, 20, 5, 8
+2 1, 2, 3,.... 1, 2, 3, 4 13, 20, 5, 8
+> # Also works with lists, multiplying down the lists if `.summarise = TRUE`.
+> matrixproduct_byname(list(V, G, Z), .summarise = TRUE)
+[[1]]
+    s1  s2
+i1 203 239
+i2 316 372
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Sectors"
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("mean_byname")
+> ### * mean_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: mean_byname
+> ### Title: Name- and element-wise arithmetic mean of matrices
+> ### Aliases: mean_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> mean_byname(100, 50)
+[1] 75
+> mean_byname(10, 20, 30)
+[1] 20
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> G <- matrix(rev(1:4), ncol = 2, dimnames = list(rev(commoditynames), rev(industrynames))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> (U + G) / 2 # Non-sensical. Row and column names not respected.
+    i1  i2
+c1 2.5 2.5
+c2 2.5 2.5
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> mean_byname(U, G) # Row and column names respected! Should be 1, 2, 3, and 4. 
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> mean_byname(U, G, G)
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> mean_byname(100, U)
+     i1   i2
+c1 50.5 51.5
+c2 51.0 52.0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> mean_byname(100, 50, U)
+         i1       i2
+c1 50.33333 51.00000
+c2 50.66667 51.33333
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> mean_byname(10, G)
+    i1  i2
+c1 5.5 6.5
+c2 6.0 7.0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # This also works with lists
+> mean_byname(list(100, 100), list(50, 50))
+[[1]]
+[1] 75
+
+[[2]]
+[1] 75
+
+> mean_byname(list(U,U), list(G,G))
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), G = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> mean_byname(DF$U, DF$G)
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(means = mean_byname(U, G))
+           U          G      means
+1 1, 2, 3, 4 4, 3, 2, 1 1, 2, 3, 4
+2 1, 2, 3, 4 4, 3, 2, 1 1, 2, 3, 4
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("naryapply_byname")
+> ### * naryapply_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: naryapply_byname
+> ### Title: Apply a function "by name" to any number of operands
+> ### Aliases: naryapply_byname
+> 
+> ### ** Examples
+> 
+> naryapply_byname(FUN = sum_byname, 2, 3)
+[1] 5
+> naryapply_byname(FUN = sum_byname, 2, 3, 4, -4, -3, -2)
+[1] 0
+> # Routes to unaryapply_byname
+> naryapply_byname(FUN = `^`, list(1,2,3), .FUNdots = list(2))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 4
+
+[[3]]
+[1] 9
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("naryapplylogical_byname")
+> ### * naryapplylogical_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: naryapplylogical_byname
+> ### Title: Apply a function logically to numbers, matrices, or lists of
+> ###   numbers or matrices
+> ### Aliases: naryapplylogical_byname
+> 
+> ### ** Examples
+> 
+> matsbyname:::naryapplylogical_byname(`&`, TRUE, TRUE, TRUE)
+[1] TRUE
+> matsbyname:::naryapplylogical_byname(`&`, TRUE, TRUE, FALSE)
+[1] FALSE
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ncol_byname")
+> ### * ncol_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ncol_byname
+> ### Title: Get the number of columns in a "byname" matrix.
+> ### Aliases: ncol_byname
+> 
+> ### ** Examples
+> 
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2", "i3")
+> U2 <- matrix(1:3, ncol = length(industrynames), 
++              nrow = length(productnames), dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> productnames <- c("p1", "p2", "p3")
+> industrynames <- c("i1", "i2", "i3", "i4")
+> U3 <- matrix(1:4, ncol = length(industrynames), 
++              nrow = length(productnames), dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> dfUs <- data.frame(
++   year = numeric(),
++   matrix_byname = I(list())
++ )
+>   dfUs <- data.frame(
++ year = numeric(),
++ matrix_byname = I(list())
++ )
+> dfUs[[1, "matrix_byname"]] <- U
+> dfUs[[2, "matrix_byname"]] <- U2
+> dfUs[[3, "matrix_byname"]] <- U3
+> dfUs[[1, "year"]] <- 2000
+> dfUs[[2, "year"]] <- 2001
+> dfUs[[3, "year"]] <- 2002
+> number_cols <- ncol_byname(dfUs$matrix_byname) %>% 
++ print()
+[[1]]
+[1] 2
+
+[[2]]
+[1] 3
+
+[[3]]
+[1] 4
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("nrow_byname")
+> ### * nrow_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: nrow_byname
+> ### Title: Get the number of rows in a "byname" matrix.
+> ### Aliases: nrow_byname
+> 
+> ### ** Examples
+> 
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2", "i3")
+> U2 <- matrix(1:3, ncol = length(industrynames), 
++              nrow = length(productnames), dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> productnames <- c("p1", "p2", "p3")
+> industrynames <- c("i1", "i2", "i3", "i4")
+> U3 <- matrix(1:4, ncol = length(industrynames), 
++              nrow = length(productnames), dimnames = list(productnames, industrynames)) %>% 
++   setrowtype("Products") %>% 
++   setcoltype("Industries")
+> dfUs <- data.frame(
++   year = numeric(),
++   matrix_byname = I(list())
++ )
+> dfUs[[1, "matrix_byname"]] <- U
+> dfUs[[2, "matrix_byname"]] <- U2
+> dfUs[[3, "matrix_byname"]] <- U3
+> dfUs[[1, "year"]] <- 2000
+> dfUs[[2, "year"]] <- 2001
+> dfUs[[3, "year"]] <- 2002
+> number_rows <- matsbyname::nrow_byname(dfUs$matrix_byname)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("pow_byname")
+> ### * pow_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: pow_byname
+> ### Title: Powers of matrix elements
+> ### Aliases: pow_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> pow_byname(2, 3)
+[1] 8
+> m <- matrix(2, nrow = 2, ncol = 3, dimnames = list(paste0("r", 1:2), paste0("c", 1:3))) %>% 
++   setrowtype("rows") %>% setcoltype("cols")
+> pow_byname(m, 2)
+   c1 c2 c3
+r1  4  4  4
+r2  4  4  4
+attr(,"rowtype")
+[1] "rows"
+attr(,"coltype")
+[1] "cols"
+> DF <- data.frame(m = I(list()), pow = I(list()))
+> DF[[1, "m"]] <- m
+> DF[[2, "m"]] <- m
+> DF[[1, "pow"]] <- 0.5
+> DF[[2, "pow"]] <- -1
+> DF %>% mutate(
++   sqrtm = pow_byname(m, 0.5),
++   mtopow = pow_byname(m, pow)
++ )
+             m pow                                                      sqrtm
+1 2, 2, 2,.... 0.5 1.414214, 1.414214, 1.414214, 1.414214, 1.414214, 1.414214
+2 2, 2, 2,....  -1 1.414214, 1.414214, 1.414214, 1.414214, 1.414214, 1.414214
+                                                      mtopow
+1 1.414214, 1.414214, 1.414214, 1.414214, 1.414214, 1.414214
+2                               0.5, 0.5, 0.5, 0.5, 0.5, 0.5
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("prep_vector_arg")
+> ### * prep_vector_arg
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: prep_vector_arg
+> ### Title: Prepare a vector argument
+> ### Aliases: prep_vector_arg
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(2, 2))
+> matsbyname:::prep_vector_arg(list(m, m), vector_arg = c(1,2))
+[1] 1 2
+> 
+> 
+> 
+> cleanEx()
+> nameEx("prodall_byname")
+> ### * prodall_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: prodall_byname
+> ### Title: Product of all elements in a matrix
+> ### Aliases: prodall_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> M <- matrix(2, nrow=2, ncol=2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Product")
+> prodall_byname(M)
+[1] 16
+> rowprods_byname(M) %>% colprods_byname
+         Product
+Industry      16
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Product"
+> # Also works for lists
+> prodall_byname(list(M,M))
+[[1]]
+[1] 16
+
+[[2]]
+[1] 16
+
+> DF <- data.frame(M = I(list()))
+> DF[[1,"M"]] <- M
+> DF[[2,"M"]] <- M
+> prodall_byname(DF$M[[1]])
+[1] 16
+> prodall_byname(DF$M)
+[[1]]
+[1] 16
+
+[[2]]
+[1] 16
+
+> res <- DF %>% mutate(
++   prods = prodall_byname(M)
++ )
+> res$prods
+[[1]]
+[1] 16
+
+[[2]]
+[1] 16
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("quotient_byname")
+> ### * quotient_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: quotient_byname
+> ### Title: Name-wise matrix element division
+> ### Aliases: quotient_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> quotient_byname(100, 50)
+[1] 2
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> G <- matrix(rev(1:4), ncol = 2, dimnames = list(rev(commoditynames), rev(industrynames))) %>%
++   setrowtype("Commodities") %>% setcoltype("Industries")
+> U / G # Non-sensical.  Names aren't aligned
+          i1  i2
+c1 0.2500000 1.5
+c2 0.6666667 4.0
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> quotient_byname(U, G)
+   i1 i2
+c1  1  1
+c2  1  1
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> quotient_byname(U, 10)
+    i1  i2
+c1 0.1 0.3
+c2 0.2 0.4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> quotient_byname(10, G)
+   i1       i2
+c1 10 3.333333
+c2  5 2.500000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+> # This also works with lists
+> quotient_byname(10, list(G,G))
+[[1]]
+   i1       i2
+c1 10 3.333333
+c2  5 2.500000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1       i2
+c1 10 3.333333
+c2  5 2.500000
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> quotient_byname(list(G,G), 10)
+[[1]]
+    i1  i2
+c1 0.1 0.3
+c2 0.2 0.4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+    i1  i2
+c1 0.1 0.3
+c2 0.2 0.4
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> quotient_byname(list(U, U), list(G, G))
+[[1]]
+   i1 i2
+c1  1  1
+c2  1  1
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  1
+c2  1  1
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), G = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"G"]] <- G
+> DF[[2,"G"]] <- G
+> quotient_byname(DF$U, DF$G)
+[[1]]
+   i1 i2
+c1  1  1
+c2  1  1
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  1
+c2  1  1
+attr(,"rowtype")
+[1] "Commodities"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(elementquotients = quotient_byname(U, G))
+           U          G elementquotients
+1 1, 2, 3, 4 4, 3, 2, 1       1, 1, 1, 1
+2 1, 2, 3, 4 4, 3, 2, 1       1, 1, 1, 1
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("rename_to_piece_byname")
+> ### * rename_to_piece_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rename_to_piece_byname
+> ### Title: Rename matrix rows and columns by piece of row or column names
+> ### Aliases: rename_to_piece_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1, 2, 
++               3, 4, 
++               5, 6), nrow = 3, byrow = TRUE, 
++             dimnames = list(c("a -> b", "r2", "r3"), c("a -> b", "c -> d")))
+> m
+       a -> b c -> d
+a -> b      1      2
+r2          3      4
+r3          5      6
+> rename_to_piece_byname(m, piece = "pref", notation = RCLabels::arrow_notation)
+   a c
+a  1 2
+r2 3 4
+r3 5 6
+> m2 <- m %>%
++   setrowtype("rows") %>% setcoltype("cols")
+> m2
+       a -> b c -> d
+a -> b      1      2
+r2          3      4
+r3          5      6
+attr(,"rowtype")
+[1] "rows"
+attr(,"coltype")
+[1] "cols"
+> rename_to_piece_byname(m2, piece = "pref", margin = "rows",
++                        notation = RCLabels::arrow_notation)
+   a -> b c -> d
+a       1      2
+r2      3      4
+r3      5      6
+attr(,"rowtype")
+[1] "rows"
+attr(,"coltype")
+[1] "cols"
+> rename_to_piece_byname(m2, piece = "suff", margin = "rows",
++                        notation = RCLabels::arrow_notation)
+  a -> b c -> d
+b      1      2
+       3      4
+       5      6
+attr(,"rowtype")
+[1] ""
+attr(,"coltype")
+[1] "cols"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("rename_to_pref_suff_byname")
+> ### * rename_to_pref_suff_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rename_to_pref_suff_byname
+> ### Title: Rename matrix rows and columns by prefix and suffix
+> ### Aliases: rename_to_pref_suff_byname
+> 
+> ### ** Examples
+> 
+> # This function is superseded. 
+> # Instead, use `rename_to_pieces_byname()`.
+> # For example:
+> m <- matrix(c(1, 2, 
++               3, 4, 
++               5, 6), nrow = 3, byrow = TRUE, 
++             dimnames = list(c("a -> b", "r2", "r3"), c("a -> b", "c -> d")))
+> m
+       a -> b c -> d
+a -> b      1      2
+r2          3      4
+r3          5      6
+> rename_to_piece_byname(m, piece = "pref", notation = RCLabels::arrow_notation)
+   a c
+a  1 2
+r2 3 4
+r3 5 6
+> # Note, labels are lost, because some labels are missing a suffix.
+> rename_to_piece_byname(m, piece = "suff", notation = RCLabels::arrow_notation)
+  b d
+b 1 2
+  3 4
+  5 6
+> # Original documentation:
+> rename_to_pref_suff_byname(m, keep = "pref", notation = RCLabels::arrow_notation)
+   a c
+a  1 2
+r2 3 4
+r3 5 6
+> rename_to_pref_suff_byname(m, keep = "suff", notation = RCLabels::arrow_notation)
+  b d
+b 1 2
+  3 4
+  5 6
+> 
+> 
+> 
+> cleanEx()
+> nameEx("replaceNaN_byname")
+> ### * replaceNaN_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: replaceNaN_byname
+> ### Title: Replace NaN values with a value
+> ### Aliases: replaceNaN_byname
+> 
+> ### ** Examples
+> 
+> suppressWarnings(a <- matrix(c(1, sqrt(-1))))
+> replaceNaN_byname(a)
+     [,1]
+[1,]    1
+[2,]    0
+> replaceNaN_byname(a, 42)
+     [,1]
+[1,]    1
+[2,]   42
+> 
+> 
+> 
+> cleanEx()
+> nameEx("rowprods_byname")
+> ### * rowprods_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rowprods_byname
+> ### Title: Row products, sorted by name
+> ### Aliases: rowprods_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> M <- matrix(c(1:6), ncol = 2, dimnames = list(paste0("i", 3:1), paste0("c", 1:2))) %>%
++   setrowtype("Industries") %>% setcoltype("Products")
+> rowprods_byname(M)
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+> rowprods_byname(M, "E.ktoe")
+   E.ktoe
+i1     18
+i2     10
+i3      4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+> # This also works with lists
+> rowprods_byname(list(M, M))
+[[1]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+[[2]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> rowprods_byname(list(M, M), "E.ktoe")
+[[1]]
+   E.ktoe
+i1     18
+i2     10
+i3      4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+[[2]]
+   E.ktoe
+i1     18
+i2     10
+i3      4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> rowprods_byname(list(M, M), NA)
+[[1]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+[[2]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> rowprods_byname(list(M, M), NULL)
+[[1]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+[[2]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> DF <- data.frame(M = I(list()))
+> DF[[1,"M"]] <- M
+> DF[[2,"M"]] <- M
+> rowprods_byname(DF$M[[1]])
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+> rowprods_byname(DF$M)
+[[1]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+[[2]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+
+> ans <- DF %>% mutate(rs = rowprods_byname(M))
+> ans
+             M        rs
+1 1, 2, 3,.... 18, 10, 4
+2 1, 2, 3,.... 18, 10, 4
+> ans$rs[[1]]
+   Products
+i1       18
+i2       10
+i3        4
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Products"
+> # Nonsensical
+> ## Not run: rowprods_byname(NULL)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("rowsums_byname")
+> ### * rowsums_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rowsums_byname
+> ### Title: Row sums, sorted by name
+> ### Aliases: rowsums_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> m <- matrix(c(1:6), ncol = 2, dimnames = list(paste0("i", 3:1), paste0("c", 1:2))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> m
+   c1 c2
+i3  1  4
+i2  2  5
+i1  3  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> rowsums_byname(m)
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> rowsums_byname(m, "E.ktoe")
+   E.ktoe
+i1      9
+i2      7
+i3      5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # This also works with lists
+> rowsums_byname(list(m, m))
+[[1]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> rowsums_byname(list(m, m), "E.ktoe")
+[[1]]
+   E.ktoe
+i1      9
+i2      7
+i3      5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   E.ktoe
+i1      9
+i2      7
+i3      5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> rowsums_byname(list(m, m), NA)
+[[1]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> rowsums_byname(list(m, m), NULL)
+[[1]]
+   [,1]
+i1    9
+i2    7
+i3    5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   [,1]
+i1    9
+i2    7
+i3    5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> rowsums_byname(DF$m[[1]])
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> rowsums_byname(DF$m)
+[[1]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> ans <- DF %>% mutate(rs = rowsums_byname(m))
+> ans
+             m      rs
+1 1, 2, 3,.... 9, 7, 5
+2 1, 2, 3,.... 9, 7, 5
+> ans$rs[[1]]
+   Commodities
+i1           9
+i2           7
+i3           5
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # Nonsensical
+> ## Not run: rowsums_byname(NULL)
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("rowtype")
+> ### * rowtype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: rowtype
+> ### Title: Row type
+> ### Aliases: rowtype
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames)) %>%
++   setrowtype(rowtype = "Commodities") %>% setcoltype("Industries")
+> rowtype(U)
+[1] "Commodities"
+> # This also works for lists
+> rowtype(list(U,U))
+[[1]]
+[1] "Commodities"
+
+[[2]]
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("samestructure_byname")
+> ### * samestructure_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: samestructure_byname
+> ### Title: Test whether matrices or lists of matrices have same structure
+> ### Aliases: samestructure_byname
+> 
+> ### ** Examples
+> 
+> samestructure_byname(2, 2)
+[1] TRUE
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> samestructure_byname(U, U)
+[1] TRUE
+> samestructure_byname(U, U %>% setrowtype("row"))
+[1] FALSE
+> samestructure_byname(U %>% setcoltype("col"), U)
+[1] FALSE
+> # Also works with lists
+> samestructure_byname(list(U, U), list(U, U))
+[[1]]
+[1] TRUE
+
+[[2]]
+[1] TRUE
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("select_cols_byname")
+> ### * select_cols_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: select_cols_byname
+> ### Title: Select columns of a matrix (or list of matrices) by name
+> ### Aliases: select_cols_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(1:16, ncol = 4, dimnames=list(c(paste0("i", 1:4)), paste0("p", 1:4))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> select_cols_byname(m, 
++                    retain_pattern = RCLabels::make_or_pattern(c("p1", "p4"), 
++                    pattern_type = "exact"))
+   p1 p4
+i1  1 13
+i2  2 14
+i3  3 15
+i4  4 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> select_cols_byname(m, 
++                    remove_pattern = RCLabels::make_or_pattern(c("p1", "p3"), 
++                    pattern_type = "exact"))
+   p2 p4
+i1  5 13
+i2  6 14
+i3  7 15
+i4  8 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # Also works for lists and data frames
+> select_cols_byname(list(m,m), retain_pattern = "^p1$|^p4$")
+[[1]]
+   p1 p4
+i1  1 13
+i2  2 14
+i3  3 15
+i4  4 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   p1 p4
+i1  1 13
+i2  2 14
+i3  3 15
+i4  4 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("select_rows_byname")
+> ### * select_rows_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: select_rows_byname
+> ### Title: Select (or de-select) rows of a matrix (or list of matrices) by
+> ###   name
+> ### Aliases: select_rows_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(1:16, ncol = 4, dimnames=list(c(paste0("i", 1:4)), paste0("p", 1:4))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> select_rows_byname(m, 
++                    retain_pattern = RCLabels::make_or_pattern(c("i1", "i4"),
++                    pattern_type = "exact"))
+   p1 p2 p3 p4
+i1  1  5  9 13
+i4  4  8 12 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> select_rows_byname(m, 
++                    remove_pattern = RCLabels::make_or_pattern(c("i1", "i3"), 
++                    pattern_type = "exact"))
+   p1 p2 p3 p4
+i2  2  6 10 14
+i4  4  8 12 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> # Also works for lists and data frames
+> select_rows_byname(list(m,m), retain_pattern = "^i1$|^i4$")
+[[1]]
+   p1 p2 p3 p4
+i1  1  5  9 13
+i4  4  8 12 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   p1 p2 p3 p4
+i1  1  5  9 13
+i4  4  8 12 16
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("setcolnames_byname")
+> ### * setcolnames_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: setcolnames_byname
+> ### Title: Sets column names
+> ### Aliases: setcolnames_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:3))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> setcolnames_byname(m, c("a", "b", "c"))
+   a b c
+i1 1 3 5
+i2 2 4 6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("setcoltype")
+> ### * setcoltype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: setcoltype
+> ### Title: Sets column type for a matrix or a list of matrices
+> ### Aliases: setcoltype
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames))
+> U %>% setcoltype("Industries")
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+> # This also works for lists
+> setcoltype(list(U,U), coltype = "Industries")
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+> setcoltype(list(U,U), coltype = list("Industries", "Industries"))
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> setcoltype(DF$U, "Industries")
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- DF %>% mutate(newcol = setcoltype(U, "Industries"))
+> DF$newcol[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+> DF$newcol[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"coltype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("setrownames_byname")
+> ### * setrownames_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: setrownames_byname
+> ### Title: Sets row names
+> ### Aliases: setrownames_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> m <- matrix(c(1:6), nrow = 2, dimnames = list(paste0("i", 1:2), paste0("c", 1:3))) %>%
++   setrowtype("Industries") %>% setcoltype("Commodities")
+> setrownames_byname(m, c("a", "b"))
+  c1 c2 c3
+a  1  3  5
+b  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> setrownames_byname(m %>% setrowtype("Industries") %>% setcoltype("Commodities"), c("c", "d"))
+  c1 c2 c3
+c  1  3  5
+d  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> m %>% setrownames_byname(NULL)
+     c1 c2 c3
+[1,]  1  3  5
+[2,]  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> m %>% setrownames_byname(c(NA, NA))
+     c1 c2 c3
+<NA>  1  3  5
+<NA>  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> 2 %>% setrownames_byname("row")
+    [,1]
+row    2
+> # This also works for lists
+> setrownames_byname(list(m,m), list(c("a", "b")))
+[[1]]
+  c1 c2 c3
+a  1  3  5
+b  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+  c1 c2 c3
+a  1  3  5
+b  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> setrownames_byname(DF$m, list(c("r1", "r2")))
+[[1]]
+   c1 c2 c3
+r1  1  3  5
+r2  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+   c1 c2 c3
+r1  1  3  5
+r2  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> setrownames_byname(DF$m, list(c("c", "d")))
+[[1]]
+  c1 c2 c3
+c  1  3  5
+d  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+[[2]]
+  c1 c2 c3
+c  1  3  5
+d  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+
+> DF <- DF %>% mutate(m = setrownames_byname(m, list(c("r1", "r2"))))
+> DF$m[[1]]
+   c1 c2 c3
+r1  1  3  5
+r2  2  4  6
+attr(,"rowtype")
+[1] "Industries"
+attr(,"coltype")
+[1] "Commodities"
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("setrowtype")
+> ### * setrowtype
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: setrowtype
+> ### Title: Sets row type for a matrix or a list of matrices
+> ### Aliases: setrowtype
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> commoditynames <- c("c1", "c2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(commoditynames, industrynames))
+> U %>% setrowtype("Commodities")
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+> # This also works for lists
+> setrowtype(list(U,U), rowtype = "Commodities")
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+> setrowtype(list(U,U), rowtype = list("Commodities", "Commodities"))
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+> DF <- data.frame(U = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> setrowtype(DF$U, "Commodities")
+[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+
+> DF <- DF %>% mutate(newcol = setrowtype(U, "Commodities"))
+> DF$newcol[[1]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+> DF$newcol[[2]]
+   i1 i2
+c1  1  3
+c2  2  4
+attr(,"rowtype")
+[1] "Commodities"
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("sort_rows_cols")
+> ### * sort_rows_cols
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sort_rows_cols
+> ### Title: Sorts rows and columns of a matrix
+> ### Aliases: sort_rows_cols
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1:6), nrow=3, dimnames = list(c("r3", "r5", "r1"), c("c4", "c2")))
+> sort_rows_cols(m)
+   c2 c4
+r1  6  3
+r3  4  1
+r5  5  2
+> sort_rows_cols(t(m))
+   r1 r3 r5
+c2  6  4  5
+c4  3  1  2
+> sort_rows_cols(m, margin=1) # Sorts rows
+   c4 c2
+r1  3  6
+r3  1  4
+r5  2  5
+> sort_rows_cols(m, margin=2) # Sorts columns
+   c2 c4
+r3  4  1
+r5  5  2
+r1  6  3
+> v <- matrix(c(1:5), ncol=1, dimnames=list(rev(paste0("r", 1:5)), "c1")) # Column vector
+> sort_rows_cols(v)
+   c1
+r1  5
+r2  4
+r3  3
+r4  2
+r5  1
+> sort_rows_cols(v, margin = 1) # Sorts rows
+   c1
+r1  5
+r2  4
+r3  3
+r4  2
+r5  1
+> sort_rows_cols(v, margin = 2) # No effect: only one column
+   c1
+r5  1
+r4  2
+r3  3
+r2  4
+r1  5
+> r <- matrix(c(1:4), nrow=1, dimnames=list("r1", rev(paste0("c", 1:4)))) # Row vector
+> sort_rows_cols(r) # Sorts columns
+   c1 c2 c3 c4
+r1  4  3  2  1
+> n <- matrix(c(1,2), nrow = 1, dimnames = list(NULL, c("c2", "c1"))) # No row name
+> sort_rows_cols(n) # Sorts columns, because only one row.
+     c1 c2
+[1,]  2  1
+> # Also works with lists
+> sort_rows_cols(list(m,m)) # Sorts rows and columns for both m's.
+[[1]]
+   c4 c2
+r1  3  6
+r3  1  4
+r5  2  5
+
+[[2]]
+   c2 c4
+r3  4  1
+r5  5  2
+r1  6  3
+
+> # Sort rows only for first one, sort rows and columns for second one.  
+> # Row order is applied to all m's.  Column order is natural.
+> sort_rows_cols(a = list(m,m), margin = 1, roworder = list(c("r5", "r3", "r1")))
+[[1]]
+   c4 c2
+r5  2  5
+r3  1  4
+r1  3  6
+
+[[2]]
+   c4 c2
+r5  2  5
+r3  1  4
+r1  3  6
+
+> # Columns are sorted as default, because no colorder is given.
+> # roworder is ignored. 
+> sort_rows_cols(a = list(m,m), margin = 2, roworder = list(c("r5", "r3", "r1")))
+[[1]]
+   c2 c4
+r3  4  1
+r5  5  2
+r1  6  3
+
+[[2]]
+   c2 c4
+r3  4  1
+r5  5  2
+r1  6  3
+
+> # Both columns and rows sorted, rows by the list, columns in natural order.
+> sort_rows_cols(a = list(m,m), margin = c(1,2), roworder = list(c("r5", "r3", "r1")))
+[[1]]
+   c4 c2
+r5  2  5
+r3  1  4
+r1  3  6
+
+[[2]]
+   c2 c4
+r3  4  1
+r5  5  2
+r1  6  3
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("sum_byname")
+> ### * sum_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sum_byname
+> ### Title: Name-wise addition of matrices
+> ### Aliases: sum_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> sum_byname(2, 2)
+[1] 4
+> sum_byname(2, 2, 2)
+[1] 6
+> sum_byname(2, 2, -2, -2)
+[1] 0
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> Y <- matrix(1:4, ncol = 2, dimnames = list(rev(productnames), rev(industrynames))) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> sum_byname(U, 100)
+    i1  i2
+p1 101 103
+p2 102 104
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> sum_byname(200, Y)
+    i1  i2
+p1 204 202
+p2 203 201
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> U + Y # Non-sensical.  Row and column names not respected.
+   i1 i2
+p1  2  6
+p2  4  8
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> sum_byname(U, U)
+   i1 i2
+p1  2  6
+p2  4  8
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> sum_byname(U, Y)
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> sum_byname(U, U, Y, Y)
+   i1 i2
+p1 10 10
+p2 10 10
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> V <- matrix(1:4, ncol = 2, dimnames = list(industrynames, productnames)) %>%
++   setrowtype("Industries") %>% setcoltype("Products")
+> U + V # row and column names are non-sensical and blindly taken from first argument (U)
+   i1 i2
+p1  2  6
+p2  4  8
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> ## Not run: sum_byname(U, V) # Fails, because row and column types are different
+> # This also works with lists
+> sum_byname(list(U,U), list(Y,Y))
+[[1]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> sum_byname(list(U,U), list(100,100))
+[[1]]
+    i1  i2
+p1 101 103
+p2 102 104
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+    i1  i2
+p1 101 103
+p2 102 104
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> sum_byname(list(U,U), as.list(rep_len(100, 2)))
+[[1]]
+    i1  i2
+p1 101 103
+p2 102 104
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+    i1  i2
+p1 101 103
+p2 102 104
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> DF <- data.frame(U = I(list()), Y = I(list()))
+> DF[[1,"U"]] <- U
+> DF[[2,"U"]] <- U
+> DF[[1,"Y"]] <- Y
+> DF[[2,"Y"]] <- Y
+> sum_byname(DF$U, DF$Y)
+[[1]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> DF %>% mutate(sums = sum_byname(U, Y))
+           U          Y       sums
+1 1, 2, 3, 4 1, 2, 3, 4 5, 5, 5, 5
+2 1, 2, 3, 4 1, 2, 3, 4 5, 5, 5, 5
+> sum_byname(U) # If only one argument, return it.
+   i1 i2
+p1  1  3
+p2  2  4
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> sum_byname(2, NULL) # Gives 2
+[1] 2
+> sum_byname(2, NA)   # Gives NA
+[1] NA
+> sum_byname(NULL, 1) # Gives 1
+[1] 1
+> sum_byname(list(NULL, 1), list(1, 1))
+[[1]]
+[1] 1
+
+[[2]]
+[1] 2
+
+> DF2 <- data.frame(U = I(list()), Y = I(list()))
+> DF2[[1,"U"]] <- NULL
+> DF2[[2,"U"]] <- U
+> DF2[[1,"Y"]] <- Y
+> DF2[[2,"Y"]] <- Y
+> sum_byname(DF2$U, DF2$Y)
+[[1]]
+   i1 i2
+p1  4  2
+p2  3  1
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+[[2]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+
+> DF3 <- DF2 %>% mutate(sums = sum_byname(U, Y))
+> DF3
+           U          Y       sums
+1            1, 2, 3, 4 4, 3, 2, 1
+2 1, 2, 3, 4 1, 2, 3, 4 5, 5, 5, 5
+> DF3$sums[[1]]
+   i1 i2
+p1  4  2
+p2  3  1
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> DF3$sums[[2]]
+   i1 i2
+p1  5  5
+p2  5  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("sumall_byname")
+> ### * sumall_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: sumall_byname
+> ### Title: Sum of all elements in a matrix
+> ### Aliases: sumall_byname
+> 
+> ### ** Examples
+> 
+> library(dplyr)
+
+Attaching package: ‘dplyr’
+
+The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+> m <- matrix(2, nrow=2, ncol=2, dimnames = list(paste0("i", 1:2), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> sumall_byname(m)
+[1] 8
+> rowsums_byname(m) %>% colsums_byname
+         Commodity
+Industry         8
+attr(,"rowtype")
+[1] "Industry"
+attr(,"coltype")
+[1] "Commodity"
+> # Also works for lists
+> sumall_byname(list(m,m))
+[[1]]
+[1] 8
+
+[[2]]
+[1] 8
+
+> DF <- data.frame(m = I(list()))
+> DF[[1,"m"]] <- m
+> DF[[2,"m"]] <- m
+> sumall_byname(DF$m[[1]])
+[1] 8
+> sumall_byname(DF$m)
+[[1]]
+[1] 8
+
+[[2]]
+[1] 8
+
+> res <- DF %>% mutate(
++   sums = sumall_byname(m)
++ )
+> res$sums
+[[1]]
+[1] 8
+
+[[2]]
+[1] 8
+
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:dplyr’
+
+> nameEx("switch_notation_byname")
+> ### * switch_notation_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: switch_notation_byname
+> ### Title: Change row and column name notation
+> ### Aliases: switch_notation_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1, 2, 
++               3, 4), nrow = 2, ncol = 2, byrow = TRUE, 
++             dimnames = list(c("b [a]", "d [c]"), c("f [e]", "h [g]"))) %>% 
++   setrowtype("Products [Industries]") %>% setcoltype("Industries [Products]")
+> m
+      f [e] h [g]
+b [a]     1     2
+d [c]     3     4
+attr(,"rowtype")
+[1] "Products [Industries]"
+attr(,"coltype")
+[1] "Industries [Products]"
+> switch_notation_byname(m, from = RCLabels::bracket_notation, to = RCLabels::arrow_notation, 
++                        flip = TRUE)
+       e -> f g -> h
+a -> b      1      2
+c -> d      3      4
+attr(,"rowtype")
+[1] "Industries -> Products"
+attr(,"coltype")
+[1] "Products -> Industries"
+> # Also works for lists.
+> # Note that margin must be specified as a list here.
+> switch_notation_byname(list(m, m), margin = list(c(1, 2)), 
++                        from = RCLabels::bracket_notation, 
++                        to = RCLabels::arrow_notation, flip = TRUE)
+[[1]]
+       e -> f g -> h
+a -> b      1      2
+c -> d      3      4
+attr(,"rowtype")
+[1] "Industries -> Products"
+attr(,"coltype")
+[1] "Products -> Industries"
+
+[[2]]
+       e -> f g -> h
+a -> b      1      2
+c -> d      3      4
+attr(,"rowtype")
+[1] "Industries -> Products"
+attr(,"coltype")
+[1] "Products -> Industries"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("transpose_byname")
+> ### * transpose_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: transpose_byname
+> ### Title: Transpose a matrix by name
+> ### Aliases: transpose_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(11,21,31,12,22,32), ncol = 2, dimnames = list(paste0("i", 1:3), paste0("c", 1:2))) %>%
++   setrowtype("Industry") %>% setcoltype("Commodity")
+> transpose_byname(m)
+   i1 i2 i3
+c1 11 21 31
+c2 12 22 32
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+> transpose_byname(list(m,m))
+[[1]]
+   i1 i2 i3
+c1 11 21 31
+c2 12 22 32
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+
+[[2]]
+   i1 i2 i3
+c1 11 21 31
+c2 12 22 32
+attr(,"rowtype")
+[1] "Commodity"
+attr(,"coltype")
+[1] "Industry"
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("trim_rows_cols")
+> ### * trim_rows_cols
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: trim_rows_cols
+> ### Title: Trim rows and/or columns from a matrix
+> ### Aliases: trim_rows_cols
+> 
+> ### ** Examples
+> 
+> a <- matrix(c(1, 2, 3, 
++               4, 5, 6, 
++               7, 8, 9), nrow = 3, ncol = 3, byrow = TRUE, 
++             dimnames = list(c("r1", "r2", "r3"), c("c1", "c2", "c3"))) %>% 
++  setrowtype("rowtype") %>% setcoltype("coltype")
+> mat <- matrix(c(1, 2, 3,
++                 4, 5, 6), nrow = 2, ncol = 3, byrow = TRUE, 
++             dimnames = list(c("r1", "bogus"), c("c1", "bogus", "c2"))) %>% 
++  setrowtype("rowtype") %>% setcoltype("coltype")
+> trim_rows_cols(a, mat, margin = 1)
+Warning in (function (a_mat = NULL, mat_mat = NULL, margin)  :
+  In trim_rows_cols, 'a' is missing the following rows or columns relative to 'mat': bogus
+   c1 c2 c3
+r1  1  2  3
+attr(,"rowtype")
+[1] "rowtype"
+attr(,"coltype")
+[1] "coltype"
+> trim_rows_cols(a, mat, margin = 2)
+Warning in trim_func(a_mat = transpose_byname(out), mat_mat = transpose_byname(mat_mat),  :
+  In trim_rows_cols, 'a' is missing the following rows or columns relative to 'mat': bogus
+   c1 c2
+r1  1  2
+r2  4  5
+r3  7  8
+attr(,"rowtype")
+[1] "rowtype"
+attr(,"coltype")
+[1] "coltype"
+> trim_rows_cols(a, mat)
+Warning in trim_func(a_mat = transpose_byname(out), mat_mat = transpose_byname(mat_mat),  :
+  In trim_rows_cols, 'a' is missing the following rows or columns relative to 'mat': bogus
+Warning in (function (a_mat = NULL, mat_mat = NULL, margin)  :
+  In trim_rows_cols, 'a' is missing the following rows or columns relative to 'mat': bogus
+   c1 c2
+r1  1  2
+attr(,"rowtype")
+[1] "rowtype"
+attr(,"coltype")
+[1] "coltype"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("unaryapply_byname")
+> ### * unaryapply_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: unaryapply_byname
+> ### Title: Apply a unary function by name
+> ### Aliases: unaryapply_byname
+> 
+> ### ** Examples
+> 
+> productnames <- c("p1", "p2")
+> industrynames <- c("i1", "i2")
+> U <- matrix(1:4, ncol = 2, dimnames = list(productnames, industrynames)) %>%
++   setrowtype("Products") %>% setcoltype("Industries")
+> difference_byname(0, U)
+   i1 i2
+p1 -1 -3
+p2 -2 -4
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> unaryapply_byname(`-`, U)
+   i1 i2
+p1 -1 -3
+p2 -2 -4
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("vec_from_store_byname")
+> ### * vec_from_store_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: vec_from_store_byname
+> ### Title: Create a vector with labels from a matrix and values from a
+> ###   vector store
+> ### Aliases: vec_from_store_byname
+> 
+> ### ** Examples
+> 
+> a <- matrix(42, nrow = 3, ncol = 5, 
++             dimnames = list(c("Electricity [from b in c]", 
++                               "Coal [from e in f]", 
++                               "Crude oil [from Production in USA]"), 
++                             c("Main activity producer electricity plants", 
++                               "Wind turbines", 
++                               "Oil refineries", 
++                               "Coal mines", 
++                               "Automobiles"))) %>%
++   setrowtype("Product") %>% setcoltype("Industry")
+> a
+                                   Main activity producer electricity plants
+Electricity [from b in c]                                                 42
+Coal [from e in f]                                                        42
+Crude oil [from Production in USA]                                        42
+                                   Wind turbines Oil refineries Coal mines
+Electricity [from b in c]                     42             42         42
+Coal [from e in f]                            42             42         42
+Crude oil [from Production in USA]            42             42         42
+                                   Automobiles
+Electricity [from b in c]                   42
+Coal [from e in f]                          42
+Crude oil [from Production in USA]          42
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "Industry"
+> v <- matrix(1:7, nrow = 7, ncol = 1, 
++             dimnames = list(c("Electricity", 
++                               "Peat", 
++                               "Hydro", 
++                               "Crude oil",
++                               "Coal", 
++                               "Hard coal (if no detail)", 
++                               "Brown coal"), 
++                             "phi")) %>%
++   setrowtype("Product") %>% setcoltype("phi")
+> v
+                         phi
+Electricity                1
+Peat                       2
+Hydro                      3
+Crude oil                  4
+Coal                       5
+Hard coal (if no detail)   6
+Brown coal                 7
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+> vec_from_store_byname(a, v, a_piece = "pref")
+                                   phi
+Electricity [from b in c]            1
+Coal [from e in f]                   5
+Crude oil [from Production in USA]   4
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+> vec_from_store_byname(a, v, a_piece = "noun")
+                                   phi
+Electricity [from b in c]            1
+Coal [from e in f]                   5
+Crude oil [from Production in USA]   4
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+> 
+> v2 <- matrix(1:7, nrow = 7, ncol = 1, 
++              dimnames = list(c("Electricity", 
++                                "Peat", 
++                                "USA", 
++                                "c",
++                                "Coal", 
++                                "Hard coal (if no detail)", 
++                                "f"), 
++                              "phi")) %>%
++   setrowtype("Product") %>% setcoltype("phi")
+> vec_from_store_byname(a, v2, a_piece = "in")
+                                   phi
+Electricity [from b in c]            4
+Coal [from e in f]                   7
+Crude oil [from Production in USA]   3
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+> 
+> # Works with lists
+> v3 <- matrix(1:7, nrow = 7, ncol = 1, 
++              dimnames = list(c("Electricity [from USA]", 
++                                "Peat [from nowhere]", 
++                                "Production [from GHA]", 
++                                "e [from ZAF]",
++                                "Coal [from AUS]", 
++                                "Hard coal (if no detail) [from GBR]", 
++                                "b [from Nebraska]"), 
++                              "phi")) %>%
++   setrowtype("Product") %>% setcoltype("phi")
+> a_list <- list(a, a)
+> v_list <- list(v3, v3)
+> vec_from_store_byname(a_list, v_list, a_piece = "in", v_piece = "from")
+[[1]]
+                                   phi
+Electricity [from b in c]           NA
+Coal [from e in f]                  NA
+Crude oil [from Production in USA]   1
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+
+[[2]]
+                                   phi
+Electricity [from b in c]           NA
+Coal [from e in f]                  NA
+Crude oil [from Production in USA]   1
+attr(,"rowtype")
+[1] "Product"
+attr(,"coltype")
+[1] "phi"
+
+> 
+> # Also works in a data frame
+> df <- tibble::tibble(a = list(a, a, a), 
++                      v = list(v3, v3, v3))
+> df %>%
++   dplyr::mutate(
++     actual = vec_from_store_byname(a = a, v = v, a_piece = "in", v_piece = "from")
++   )
+# A tibble: 3 × 3
+  a             v             actual       
+  <list>        <list>        <list>       
+1 <dbl [3 × 5]> <int [7 × 1]> <dbl [3 × 1]>
+2 <dbl [3 × 5]> <int [7 × 1]> <dbl [3 × 1]>
+3 <dbl [3 × 5]> <int [7 × 1]> <dbl [3 × 1]>
+> 
+> 
+> 
+> cleanEx()
+> nameEx("vectorize_byname")
+> ### * vectorize_byname
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: vectorize_byname
+> ### Title: Vectorize a matrix
+> ### Aliases: vectorize_byname
+> 
+> ### ** Examples
+> 
+> m <- matrix(c(1, 5,
++               4, 5),
++             nrow = 2, ncol = 2, byrow = TRUE, 
++             dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>% 
++   setrowtype("Products") %>% setcoltype("Industries")
+> m
+   i1 i2
+p1  1  5
+p2  4  5
+attr(,"rowtype")
+[1] "Products"
+attr(,"coltype")
+[1] "Industries"
+> vectorize_byname(m, notation = RCLabels::arrow_notation)
+         [,1]
+p1 -> i1    1
+p2 -> i1    4
+p1 -> i2    5
+p2 -> i2    5
+attr(,"rowtype")
+[1] "Products -> Industries"
+> # If a single number is provided, the number will be returned as a 1x1 column vector 
+> # with some additional attributes.
+> vectorize_byname(42, notation = RCLabels::arrow_notation)
+     [,1]
+[1,]   42
+> attributes(vectorize_byname(42, notation = RCLabels::arrow_notation))
+$dim
+[1] 1 1
+
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  1.493 0.144 3.579 0.001 0.003 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

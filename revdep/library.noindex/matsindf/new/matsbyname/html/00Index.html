@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: An Implementation of Matrix Mathematics</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+<h1> An Implementation of Matrix Mathematics
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;matsbyname&rsquo; version 0.5.0</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../doc/index.html">User guides, package vignettes and other documentation.</a></li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table width="100%">
+<tr><td style="width: 25%;"><a href="abs_byname.html">abs_byname</a></td>
+<td>Absolute value of matrix elements</td></tr>
+<tr><td style="width: 25%;"><a href="aggregate_byname.html">aggregate_byname</a></td>
+<td>Aggregate rows and columns in a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="aggregate_pieces_byname.html">aggregate_pieces_byname</a></td>
+<td>Aggregate a matrix by pieces of row and/or column names</td></tr>
+<tr><td style="width: 25%;"><a href="aggregate_to_pref_suff_byname.html">aggregate_to_pref_suff_byname</a></td>
+<td>Aggregate a matrix to prefixes or suffixes of row and/or column names</td></tr>
+<tr><td style="width: 25%;"><a href="aggregation_map_helpers.html">aggregation_map_helpers</a></td>
+<td>Aggregation map conversions</td></tr>
+<tr><td style="width: 25%;"><a href="aggregation_map_helpers.html">agg_map_to_agg_table</a></td>
+<td>Aggregation map conversions</td></tr>
+<tr><td style="width: 25%;"><a href="aggregation_map_helpers.html">agg_table_to_agg_map</a></td>
+<td>Aggregation map conversions</td></tr>
+<tr><td style="width: 25%;"><a href="all_byname.html">all_byname</a></td>
+<td>Are all matrix elements 'TRUE'?</td></tr>
+<tr><td style="width: 25%;"><a href="and_byname.html">and_byname</a></td>
+<td>And "by name"</td></tr>
+<tr><td style="width: 25%;"><a href="any_byname.html">any_byname</a></td>
+<td>Are any matrix elements 'TRUE'?</td></tr>
+<tr><td style="width: 25%;"><a href="binaryapply_byname.html">binaryapply_byname</a></td>
+<td>Apply a binary function "by name"</td></tr>
+<tr><td style="width: 25%;"><a href="clean_byname.html">clean_byname</a></td>
+<td>Clean (delete) rows or columns of matrices that contain exclusively 'clean_value'</td></tr>
+<tr><td style="width: 25%;"><a href="colprods_byname.html">colprods_byname</a></td>
+<td>Column products, sorted by name</td></tr>
+<tr><td style="width: 25%;"><a href="colsums_byname.html">colsums_byname</a></td>
+<td>Column sums, sorted by name</td></tr>
+<tr><td style="width: 25%;"><a href="coltype.html">coltype</a></td>
+<td>Column type</td></tr>
+<tr><td style="width: 25%;"><a href="compare_byname.html">compare_byname</a></td>
+<td>Compare matrix entries to a value</td></tr>
+<tr><td style="width: 25%;"><a href="complete_and_sort.html">complete_and_sort</a></td>
+<td>Complete matrices relative to one another and sort into same row, column order</td></tr>
+<tr><td style="width: 25%;"><a href="complete_rows_cols.html">complete_rows_cols</a></td>
+<td>Complete rows and columns in one matrix relative to another</td></tr>
+<tr><td style="width: 25%;"><a href="count_vals_byname.html">count_vals_byname</a></td>
+<td>Count the number of matrix entries that meet a criterion</td></tr>
+<tr><td style="width: 25%;"><a href="count_vals_incols_byname.html">count_vals_incols_byname</a></td>
+<td>Count the number of matrix entries in columns that meet a criterion</td></tr>
+<tr><td style="width: 25%;"><a href="count_vals_inrows_byname.html">count_vals_inrows_byname</a></td>
+<td>Count the number of matrix entries in rows that meet a criterion</td></tr>
+<tr><td style="width: 25%;"><a href="create_colvec_byname.html">create_colvec_byname</a></td>
+<td>Create column vectors from data</td></tr>
+<tr><td style="width: 25%;"><a href="create_matrix_byname.html">create_matrix_byname</a></td>
+<td>Create a "byname" matrix from a vector</td></tr>
+<tr><td style="width: 25%;"><a href="create_rowvec_byname.html">create_rowvec_byname</a></td>
+<td>Create row vectors from data</td></tr>
+<tr><td style="width: 25%;"><a href="cumapply_byname.html">cumapply_byname</a></td>
+<td>Apply a function cumulatively to a list of matrices or numbers</td></tr>
+<tr><td style="width: 25%;"><a href="cumprod_byname.html">cumprod_byname</a></td>
+<td>Cumulative element-product that respects row and column names</td></tr>
+<tr><td style="width: 25%;"><a href="cumsum_byname.html">cumsum_byname</a></td>
+<td>Cumulative sum that respects row and column names</td></tr>
+<tr><td style="width: 25%;"><a href="difference_byname.html">difference_byname</a></td>
+<td>Name-wise subtraction of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="elementapply_byname.html">elementapply_byname</a></td>
+<td>Apply a function to an element of a matrix specified by rows and columns</td></tr>
+<tr><td style="width: 25%;"><a href="equal_byname.html">equal_byname</a></td>
+<td>Compare two matrices "by name" for equality</td></tr>
+<tr><td style="width: 25%;"><a href="exp_byname.html">exp_byname</a></td>
+<td>Exponential of matrix elements</td></tr>
+<tr><td style="width: 25%;"><a href="fractionize_byname.html">fractionize_byname</a></td>
+<td>Compute fractions of matrix entries</td></tr>
+<tr><td style="width: 25%;"><a href="geometricmean_byname.html">geometricmean_byname</a></td>
+<td>Name- and element-wise geometric mean of two matrices.</td></tr>
+<tr><td style="width: 25%;"><a href="getcolnames_byname.html">getcolnames_byname</a></td>
+<td>Gets column names</td></tr>
+<tr><td style="width: 25%;"><a href="getrownames_byname.html">getrownames_byname</a></td>
+<td>Gets row names</td></tr>
+<tr><td style="width: 25%;"><a href="hadamardproduct_byname.html">hadamardproduct_byname</a></td>
+<td>Name-wise matrix Hadamard multiplication</td></tr>
+<tr><td style="width: 25%;"><a href="hatinv_byname.html">hatinv_byname</a></td>
+<td>Hatize and invert a vector</td></tr>
+<tr><td style="width: 25%;"><a href="hatize_byname.html">hatize_byname</a></td>
+<td>Creates a diagonal "hat" matrix from a vector</td></tr>
+<tr><td style="width: 25%;"><a href="identical_byname.html">identical_byname</a></td>
+<td>Compare two matrices "by name" for exact equality</td></tr>
+<tr><td style="width: 25%;"><a href="identize_byname.html">identize_byname</a></td>
+<td>Named identity matrix or vector</td></tr>
+<tr><td style="width: 25%;"><a href="Iminus_byname.html">Iminus_byname</a></td>
+<td>Subtract a matrix with named rows and columns from a suitably named and sized identity matrix ('I')</td></tr>
+<tr><td style="width: 25%;"><a href="invert_byname.html">invert_byname</a></td>
+<td>Invert a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="iszero_byname.html">iszero_byname</a></td>
+<td>Test whether this is the zero matrix</td></tr>
+<tr><td style="width: 25%;"><a href="kvec_from_template_byname.html">kvec_from_template_byname</a></td>
+<td>Create a constant vector from matrix 'a'</td></tr>
+<tr><td style="width: 25%;"><a href="list_of_rows_or_cols.html">list_of_rows_or_cols</a></td>
+<td>Named list of rows or columns of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="logarithmicmean_byname.html">logarithmicmean_byname</a></td>
+<td>Name- and element-wise logarithmic mean of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="logmean.html">logmean</a></td>
+<td>Logarithmic mean of two numbers</td></tr>
+<tr><td style="width: 25%;"><a href="log_byname.html">log_byname</a></td>
+<td>Logarithm of matrix elements</td></tr>
+<tr><td style="width: 25%;"><a href="make_list.html">make_list</a></td>
+<td>Makes a list of items in x, regardless of x's type</td></tr>
+<tr><td style="width: 25%;"><a href="margin_from_types_byname.html">margin_from_types_byname</a></td>
+<td>Translate row and column types to integer margins</td></tr>
+<tr><td style="width: 25%;"><a href="matricize_byname.html">matricize_byname</a></td>
+<td>Matricize a vector</td></tr>
+<tr><td style="width: 25%;"><a href="matrixproduct_byname.html">matrixproduct_byname</a></td>
+<td>Name-wise matrix multiplication</td></tr>
+<tr><td style="width: 25%;"><a href="mean_byname.html">mean_byname</a></td>
+<td>Name- and element-wise arithmetic mean of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="naryapplylogical_byname.html">naryapplylogical_byname</a></td>
+<td>Apply a function logically to numbers, matrices, or lists of numbers or matrices</td></tr>
+<tr><td style="width: 25%;"><a href="naryapply_byname.html">naryapply_byname</a></td>
+<td>Apply a function "by name" to any number of operands</td></tr>
+<tr><td style="width: 25%;"><a href="ncol_byname.html">ncol_byname</a></td>
+<td>Get the number of columns in a "byname" matrix.</td></tr>
+<tr><td style="width: 25%;"><a href="nrow_byname.html">nrow_byname</a></td>
+<td>Get the number of rows in a "byname" matrix.</td></tr>
+<tr><td style="width: 25%;"><a href="organize_args.html">organize_args</a></td>
+<td>Organize binary arguments</td></tr>
+<tr><td style="width: 25%;"><a href="pow_byname.html">pow_byname</a></td>
+<td>Powers of matrix elements</td></tr>
+<tr><td style="width: 25%;"><a href="prepare_.FUNdots.html">prepare_.FUNdots</a></td>
+<td>Prepare the '.FUNdots' argument for *apply_byname functions.</td></tr>
+<tr><td style="width: 25%;"><a href="prep_vector_arg.html">prep_vector_arg</a></td>
+<td>Prepare a vector argument</td></tr>
+<tr><td style="width: 25%;"><a href="prodall_byname.html">prodall_byname</a></td>
+<td>Product of all elements in a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="quotient_byname.html">quotient_byname</a></td>
+<td>Name-wise matrix element division</td></tr>
+<tr><td style="width: 25%;"><a href="rename_to_piece_byname.html">rename_to_piece_byname</a></td>
+<td>Rename matrix rows and columns by piece of row or column names</td></tr>
+<tr><td style="width: 25%;"><a href="rename_to_pref_suff_byname.html">rename_to_pref_suff_byname</a></td>
+<td>Rename matrix rows and columns by prefix and suffix</td></tr>
+<tr><td style="width: 25%;"><a href="replaceNaN_byname.html">replaceNaN_byname</a></td>
+<td>Replace NaN values with a value</td></tr>
+<tr><td style="width: 25%;"><a href="rowprods_byname.html">rowprods_byname</a></td>
+<td>Row products, sorted by name</td></tr>
+<tr><td style="width: 25%;"><a href="rowsums_byname.html">rowsums_byname</a></td>
+<td>Row sums, sorted by name</td></tr>
+<tr><td style="width: 25%;"><a href="rowtype.html">rowtype</a></td>
+<td>Row type</td></tr>
+<tr><td style="width: 25%;"><a href="samestructure_byname.html">samestructure_byname</a></td>
+<td>Test whether matrices or lists of matrices have same structure</td></tr>
+<tr><td style="width: 25%;"><a href="select_cols_byname.html">select_cols_byname</a></td>
+<td>Select columns of a matrix (or list of matrices) by name</td></tr>
+<tr><td style="width: 25%;"><a href="select_rows_byname.html">select_rows_byname</a></td>
+<td>Select (or de-select) rows of a matrix (or list of matrices) by name</td></tr>
+<tr><td style="width: 25%;"><a href="setcolnames_byname.html">setcolnames_byname</a></td>
+<td>Sets column names</td></tr>
+<tr><td style="width: 25%;"><a href="setcoltype.html">setcoltype</a></td>
+<td>Sets column type for a matrix or a list of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="setrownames_byname.html">setrownames_byname</a></td>
+<td>Sets row names</td></tr>
+<tr><td style="width: 25%;"><a href="setrowtype.html">setrowtype</a></td>
+<td>Sets row type for a matrix or a list of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="sort_rows_cols.html">sort_rows_cols</a></td>
+<td>Sorts rows and columns of a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="sumall_byname.html">sumall_byname</a></td>
+<td>Sum of all elements in a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="sum_byname.html">sum_byname</a></td>
+<td>Name-wise addition of matrices</td></tr>
+<tr><td style="width: 25%;"><a href="switch_notation_byname.html">switch_notation_byname</a></td>
+<td>Change row and column name notation</td></tr>
+<tr><td style="width: 25%;"><a href="transpose_byname.html">transpose_byname</a></td>
+<td>Transpose a matrix by name</td></tr>
+<tr><td style="width: 25%;"><a href="trim_rows_cols.html">trim_rows_cols</a></td>
+<td>Trim rows and/or columns from a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="unaryapply_byname.html">unaryapply_byname</a></td>
+<td>Apply a unary function by name</td></tr>
+<tr><td style="width: 25%;"><a href="vectorize_byname.html">vectorize_byname</a></td>
+<td>Vectorize a matrix</td></tr>
+<tr><td style="width: 25%;"><a href="vec_from_store_byname.html">vec_from_store_byname</a></td>
+<td>Create a vector with labels from a matrix and values from a vector store</td></tr>
+</table>
+</div></body></html>

@@ -1,0 +1,127 @@
+Iminus_byname           Subtract a matrix with named rows and columns
+                        from a suitably named and sized identity matrix
+                        ('I')
+abs_byname              Absolute value of matrix elements
+aggregate_byname        Aggregate rows and columns in a matrix
+aggregate_pieces_byname
+                        Aggregate a matrix by pieces of row and/or
+                        column names
+aggregate_to_pref_suff_byname
+                        Aggregate a matrix to prefixes or suffixes of
+                        row and/or column names
+aggregation_map_helpers
+                        Aggregation map conversions
+all_byname              Are all matrix elements 'TRUE'?
+and_byname              And "by name"
+any_byname              Are any matrix elements 'TRUE'?
+binaryapply_byname      Apply a binary function "by name"
+clean_byname            Clean (delete) rows or columns of matrices that
+                        contain exclusively 'clean_value'
+colprods_byname         Column products, sorted by name
+colsums_byname          Column sums, sorted by name
+coltype                 Column type
+compare_byname          Compare matrix entries to a value
+complete_and_sort       Complete matrices relative to one another and
+                        sort into same row, column order
+complete_rows_cols      Complete rows and columns in one matrix
+                        relative to another
+count_vals_byname       Count the number of matrix entries that meet a
+                        criterion
+count_vals_incols_byname
+                        Count the number of matrix entries in columns
+                        that meet a criterion
+count_vals_inrows_byname
+                        Count the number of matrix entries in rows that
+                        meet a criterion
+create_colvec_byname    Create column vectors from data
+create_matrix_byname    Create a "byname" matrix from a vector
+create_rowvec_byname    Create row vectors from data
+cumapply_byname         Apply a function cumulatively to a list of
+                        matrices or numbers
+cumprod_byname          Cumulative element-product that respects row
+                        and column names
+cumsum_byname           Cumulative sum that respects row and column
+                        names
+difference_byname       Name-wise subtraction of matrices
+elementapply_byname     Apply a function to an element of a matrix
+                        specified by rows and columns
+equal_byname            Compare two matrices "by name" for equality
+exp_byname              Exponential of matrix elements
+fractionize_byname      Compute fractions of matrix entries
+geometricmean_byname    Name- and element-wise geometric mean of two
+                        matrices.
+getcolnames_byname      Gets column names
+getrownames_byname      Gets row names
+hadamardproduct_byname
+                        Name-wise matrix Hadamard multiplication
+hatinv_byname           Hatize and invert a vector
+hatize_byname           Creates a diagonal "hat" matrix from a vector
+identical_byname        Compare two matrices "by name" for exact
+                        equality
+identize_byname         Named identity matrix or vector
+invert_byname           Invert a matrix
+iszero_byname           Test whether this is the zero matrix
+kvec_from_template_byname
+                        Create a constant vector from matrix 'a'
+list_of_rows_or_cols    Named list of rows or columns of matrices
+log_byname              Logarithm of matrix elements
+logarithmicmean_byname
+                        Name- and element-wise logarithmic mean of
+                        matrices
+logmean                 Logarithmic mean of two numbers
+make_list               Makes a list of items in x, regardless of x's
+                        type
+margin_from_types_byname
+                        Translate row and column types to integer
+                        margins
+matricize_byname        Matricize a vector
+matrixproduct_byname    Name-wise matrix multiplication
+mean_byname             Name- and element-wise arithmetic mean of
+                        matrices
+naryapply_byname        Apply a function "by name" to any number of
+                        operands
+naryapplylogical_byname
+                        Apply a function logically to numbers,
+                        matrices, or lists of numbers or matrices
+ncol_byname             Get the number of columns in a "byname" matrix.
+nrow_byname             Get the number of rows in a "byname" matrix.
+organize_args           Organize binary arguments
+pow_byname              Powers of matrix elements
+prep_vector_arg         Prepare a vector argument
+prepare_.FUNdots        Prepare the '.FUNdots' argument for
+                        *apply_byname functions.
+prodall_byname          Product of all elements in a matrix
+quotient_byname         Name-wise matrix element division
+rename_to_piece_byname
+                        Rename matrix rows and columns by piece of row
+                        or column names
+rename_to_pref_suff_byname
+                        Rename matrix rows and columns by prefix and
+                        suffix
+replaceNaN_byname       Replace NaN values with a value
+rowprods_byname         Row products, sorted by name
+rowsums_byname          Row sums, sorted by name
+rowtype                 Row type
+samestructure_byname    Test whether matrices or lists of matrices have
+                        same structure
+select_cols_byname      Select columns of a matrix (or list of
+                        matrices) by name
+select_rows_byname      Select (or de-select) rows of a matrix (or list
+                        of matrices) by name
+setcolnames_byname      Sets column names
+setcoltype              Sets column type for a matrix or a list of
+                        matrices
+setrownames_byname      Sets row names
+setrowtype              Sets row type for a matrix or a list of
+                        matrices
+sort_rows_cols          Sorts rows and columns of a matrix
+sum_byname              Name-wise addition of matrices
+sumall_byname           Sum of all elements in a matrix
+switch_notation_byname
+                        Change row and column name notation
+transpose_byname        Transpose a matrix by name
+trim_rows_cols          Trim rows and/or columns from a matrix
+unaryapply_byname       Apply a unary function by name
+vec_from_store_byname   Create a vector with labels from a matrix and
+                        values from a vector store
+vectorize_byname        Vectorize a matrix

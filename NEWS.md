@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+# matsindf 0.3.11 (2022-05-18)
+
 * Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`
   had names on each individual item.
   The names on individual items caused problems  

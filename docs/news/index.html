@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +54,11 @@
       <small>Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.11" id="matsindf-0311-2022-05-18">matsindf 0.3.11 (2022-05-18)<a class="anchor" aria-label="anchor" href="#matsindf-0311-2022-05-18"></a></h2>
+<ul><li>Fixed a very subtle bug in <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> where the list returned from <code><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map()</a></code> had names on each individual item. The names on individual items caused problems<br>
+only when later calling a binary (or n-ary) <code>matsbyname</code> function with both a named and an unnamed list, because those functions expect the same name structure. The solution was to remove the names from each individual item after calling <code><a href="https://rdrr.io/r/base/funprog.html" class="external-link">Map()</a></code> and before calling <code><a href="https://purrr.tidyverse.org/reference/transpose.html" class="external-link">purrr::transpose()</a></code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.10" id="matsindf-0310-2020-12-17-doi">matsindf 0.3.10 (2020-12-17) <a href="https://zenodo.org/badge/latestdoi/112986384" class="external-link"><img src="https://zenodo.org/badge/112986384.svg" alt="DOI"></a>
 <a class="anchor" aria-label="anchor" href="#matsindf-0310-2020-12-17-doi"></a></h2><p class="text-muted">CRAN release: 2021-12-17</p>

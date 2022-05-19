@@ -15,6 +15,9 @@ output: html_document
   The solution was to remove the names from each individual item
   after calling `Map()` and
   before calling `purrr::transpose()`.
+* No new tests.
+    * Still at 195 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
 # matsindf 0.3.10 (2021-12-17) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5789218.svg)](https://doi.org/10.5281/zenodo.5789218)

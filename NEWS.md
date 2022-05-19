@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-* Fixed a bug in `matsindf_apply()` where the named list returned from `Map()`
+* Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`
   had names on each individual item.
   The names on individual items caused problems  
   only when later calling a binary (or n-ary) `matsbyname` function 

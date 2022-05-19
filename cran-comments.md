@@ -36,7 +36,7 @@ See `NEWS.md` for details.
         * WARNINGs: 0
         * NOTEs: 0
         
-        
+No rhub checks were completed, because rhub appears to be down at the moment.
         
 * rhub:
     * `devtools::check_rhub()`

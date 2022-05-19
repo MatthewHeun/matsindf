@@ -4,7 +4,20 @@ output: html_document
 ---
 
 
-# matsindf 0.3.10 (2020-12-17)
+# matsindf 0.3.11 (2022-05-18)
+
+* Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`
+  had names on each individual item.
+  The names on individual items caused problems  
+  only when later calling a binary (or n-ary) `matsbyname` function 
+  with both a named and an unnamed list, because 
+  those functions expect the same name structure.
+  The solution was to remove the names from each individual item
+  after calling `Map()` and
+  before calling `purrr::transpose()`.
+
+
+# matsindf 0.3.10 (2020-12-17) [![DOI](https://zenodo.org/badge/112986384.svg)](https://zenodo.org/badge/latestdoi/112986384)
 
 * New vignette from Alexander Davis shows how to use `matsindf` 
   for principal components analysis (PCA).

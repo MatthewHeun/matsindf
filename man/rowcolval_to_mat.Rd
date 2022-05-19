@@ -15,28 +15,28 @@ rowcolval_to_mat(
 )
 }
 \arguments{
-\item{.DF}{a tidy data frame containing columns for row names, column names, and values}
+\item{.DF}{A tidy data frame containing columns for row names, column names, and values.}
 
-\item{matvals}{the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".}
+\item{matvals}{The name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "matvals".}
 
-\item{rownames}{the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".}
+\item{rownames}{The name of the column in \code{.DF} containing row names (a string). Default is "rownames".}
 
-\item{colnames}{the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".}
+\item{colnames}{The name of the column in \code{.DF} containing column names (a string). Default is "colnames".}
 
-\item{rowtypes}{an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".}
+\item{rowtypes}{An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".}
 
-\item{coltypes}{an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".}
+\item{coltypes}{An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".}
 
-\item{fill}{the value for missing entries in the resulting matrix. default is \code{0}.}
+\item{fill}{The value for missing entries in the resulting matrix. default is \code{0}.}
 }
 \value{
-a matrix with named rows and columns and, optionally, row and column types
+A matrix with named rows and columns and, optionally, row and column types.
 }
 \description{
 Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
 are silently dropped.
 \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
-(via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
+(via \code{matsbyname::setrowtype()} and \code{matsbyname::setcoltype()}.
 The resulting matrix is a (under the hood) a data frame.
 If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 it is assumed that this is a single value, not a matrix,

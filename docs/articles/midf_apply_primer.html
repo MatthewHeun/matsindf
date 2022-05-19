@@ -26,14 +26,14 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.10</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.11</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div id="navbar" class="collapse navbar-collapse ms-2">
+    <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
   <a class="nav-link" href="../articles/matsindf.html">Get started</a>
@@ -71,12 +71,15 @@
 </nav><div class="container template-article">
 
 
+
+
 <div class="row">
   <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1>A matsindf_apply primer</h1>
-                        <h4 data-toc-skip class="author">Matthew Kuperus Heun</h4>
+                        <h4 data-toc-skip class="author">Matthew Kuperus
+Heun</h4>
             
-            <h4 data-toc-skip class="date">2021-12-17</h4>
+            <h4 data-toc-skip class="date">2022-05-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/midf_apply_primer.Rmd" class="external-link"><code>vignettes/midf_apply_primer.Rmd</code></a></small>
       <div class="d-none name"><code>midf_apply_primer.Rmd</code></div>
@@ -87,18 +90,40 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p><code>matsindf_apply</code> is a powerful and versatile function that enables analysis of data frames by applying <code>FUN</code> in helpful ways. The function is called <code>matsindf_apply</code>, because it can be used to apply <code>FUN</code> to a <code>matsindf</code> data frame, a data frame that contains matrices as individual entries in a data frame. (A <code>matsindf</code> data frame can be created by calling <code>collapse_to_matrices</code>, as demonstrated below.)</p>
-<p>But <code>matsindf_apply</code> can apply <code>FUN</code> across much more: data frames of single numbers, lists of matrices, lists of single numbers, and individual numbers. This vignette demonstrates <code>matsindf_apply</code>, starting with simple examples and proceeding to sophisticated analyses.</p>
+<p><code>matsindf_apply</code> is a powerful and versatile function that
+enables analysis of data frames by applying <code>FUN</code> in helpful
+ways. The function is called <code>matsindf_apply</code>, because it can
+be used to apply <code>FUN</code> to a <code>matsindf</code> data frame,
+a data frame that contains matrices as individual entries in a data
+frame. (A <code>matsindf</code> data frame can be created by calling
+<code>collapse_to_matrices</code>, as demonstrated below.)</p>
+<p>But <code>matsindf_apply</code> can apply <code>FUN</code> across
+much more: data frames of single numbers, lists of matrices, lists of
+single numbers, and individual numbers. This vignette demonstrates
+<code>matsindf_apply</code>, starting with simple examples and
+proceeding to sophisticated analyses.</p>
 </div>
 <div class="section level2">
 <h2 id="the-basics">The basics<a class="anchor" aria-label="anchor" href="#the-basics"></a>
 </h2>
-<p>The basis of all analyses conducted with <code>matsindf_apply</code> is a function (<code>FUN</code>) to be applied across data. <code>FUN</code> must return a named list of variables, its result. Here is an example function that both adds and subtracts is arguments, <code>a</code> and <code>b</code> and returns a list containing its result, <code>c</code> and <code>d</code>.</p>
+<p>The basis of all analyses conducted with <code>matsindf_apply</code>
+is a function (<code>FUN</code>) to be applied across data.
+<code>FUN</code> must return a named list of variables, its result. Here
+is an example function that both adds and subtracts is arguments,
+<code>a</code> and <code>b</code> and returns a list containing its
+result, <code>c</code> and <code>d</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">example_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">{</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p>Similar to <code>lapply</code> and its siblings, additional argument(s) to <code>matsindf_apply</code> include the data over which <code>FUN</code> is to be applied. These arguments can, in the first instance, be supplied as named arguments to the <code>...</code> argument of <code>matsindf_apply</code>. The <code>...</code> arguments to <code>matsindf_apply</code> are passed to <code>FUN</code> according to their names. In this case, the output of <code>matsindf_apply</code> is the the named list returned by <code>FUN</code>.</p>
+<p>Similar to <code>lapply</code> and its siblings, additional
+argument(s) to <code>matsindf_apply</code> include the data over which
+<code>FUN</code> is to be applied. These arguments can, in the first
+instance, be supplied as named arguments to the <code>...</code>
+argument of <code>matsindf_apply</code>. The <code>...</code> arguments
+to <code>matsindf_apply</code> are passed to <code>FUN</code> according
+to their names. In this case, the output of <code>matsindf_apply</code>
+is the the named list returned by <code>FUN</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="co">#&gt; $c</span>
@@ -106,22 +131,33 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $d</span>
 <span class="co">#&gt; [1] 1</span></code></pre></div>
-<p>Passing an additional argument (<code>z = 2</code>) causes the familiar <code>unused argument</code> error, because <code>example_fun</code> does not have a <code>z</code> argument.</p>
+<p>Passing an additional argument (<code>z = 2</code>) causes the
+familiar <code>unused argument</code> error, because
+<code>example_fun</code> does not have a <code>z</code> argument.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, z <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
   error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; &lt;simpleError in FUN(...): unused argument (z = 2)&gt;</span></code></pre></div>
-<p>Failing to pass a needed argument (<code>b = 1</code>) causes the familiar <code>argument X is missing</code> error, because <code>example_fun</code> requires a value for <code>b</code>.</p>
+<p>Failing to pass a needed argument (<code>b = 1</code>) causes the
+familiar <code>argument X is missing</code> error, because
+<code>example_fun</code> requires a value for <code>b</code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,
   error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">}</span>
 <span class="op">)</span>
 <span class="co">#&gt; &lt;simpleError in sum_byname(a, b): argument "b" is missing, with no default&gt;</span></code></pre></div>
-<p>(If <code>example_fun</code> tolerated a missing argument, no such error would be created.)</p>
-<p>Alternatively, arguments to <code>FUN</code> can be given in a named list to the first argument to <code>matsindf_apply</code> (<code>.dat</code>). When a value is assigned to <code>.dat</code>, the return value from <code>matsindf_apply</code> contains all named variables in <code>.dat</code> (in this case both <code>a</code> and <code>b</code>) in addition to the results provided by <code>FUN</code> (in this case both <code>c</code> and <code>d</code>).</p>
+<p>(If <code>example_fun</code> tolerated a missing argument, no such
+error would be created.)</p>
+<p>Alternatively, arguments to <code>FUN</code> can be given in a named
+list to the first argument to <code>matsindf_apply</code>
+(<code>.dat</code>). When a value is assigned to <code>.dat</code>, the
+return value from <code>matsindf_apply</code> contains all named
+variables in <code>.dat</code> (in this case both <code>a</code> and
+<code>b</code>) in addition to the results provided by <code>FUN</code>
+(in this case both <code>c</code> and <code>d</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span>
 <span class="co">#&gt; $a</span>
@@ -135,7 +171,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $d</span>
 <span class="co">#&gt; [1] 1</span></code></pre></div>
-<p>Extra variables are tolerated in <code>.dat</code>, because <code>.dat</code> is considered to be a store of data from which variables can be drawn as needed.</p>
+<p>Extra variables are tolerated in <code>.dat</code>, because
+<code>.dat</code> is considered to be a store of data from which
+variables can be drawn as needed.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, z <span class="op">=</span> <span class="fl">42</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span>
 <span class="co">#&gt; $a</span>
@@ -152,12 +190,16 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $d</span>
 <span class="co">#&gt; [1] 1</span></code></pre></div>
-<p>In contrast, named arguments to <code>...</code> are specified by the user, so including an extra variable is considered an error, as shown above.</p>
+<p>In contrast, named arguments to <code>...</code> are specified by the
+user, so including an extra variable is considered an error, as shown
+above.</p>
 </div>
 <div class="section level2">
 <h2 id="some-details">Some details<a class="anchor" aria-label="anchor" href="#some-details"></a>
 </h2>
-<p>If a named argument is supplied by both <code>.dat</code> and <code>...</code>, the argument in <code>...</code> takes precedence, overriding the argument in <code>.dat</code>.</p>
+<p>If a named argument is supplied by both <code>.dat</code> and
+<code>...</code>, the argument in <code>...</code> takes precedence,
+overriding the argument in <code>.dat</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 <span class="co">#&gt; $a</span>
@@ -171,7 +213,13 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $d</span>
 <span class="co">#&gt; [1] 9</span></code></pre></div>
-<p>When supplying <strong>both</strong> <code>.dat</code> and <code>...</code>, <code>...</code> can contain named strings which are interpreted as mappings from item names in <code>.dat</code> to arguments in the signature of <code>FUN</code>. In the example below, <code>a = "z"</code> indicates that argument <code>a</code> to <code>FUN</code> should be supplied by item <code>z</code> in <code>.dat</code>.</p>
+<p>When supplying <strong>both</strong> <code>.dat</code> and
+<code>...</code>, <code>...</code> can contain named strings which are
+interpreted as mappings from item names in <code>.dat</code> to
+arguments in the signature of <code>FUN</code>. In the example below,
+<code>a = "z"</code> indicates that argument <code>a</code> to
+<code>FUN</code> should be supplied by item <code>z</code> in
+<code>.dat</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, z <span class="op">=</span> <span class="fl">42</span><span class="op">)</span>,
                FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span>
@@ -189,7 +237,9 @@
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $d</span>
 <span class="co">#&gt; [1] 41</span></code></pre></div>
-<p>If a named argument appears in both <code>.dat</code> and the output of <code>FUN</code>, a name collision occurs in the output of <code>matsindf_apply</code>, and a warning is issued.</p>
+<p>If a named argument appears in both <code>.dat</code> and the output
+of <code>FUN</code>, a name collision occurs in the output of
+<code>matsindf_apply</code>, and a warning is issued.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span>
   <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">42</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span>,
@@ -200,7 +250,8 @@
 <div class="section level2">
 <h2 id="matsindf_apply-and-data-frames">matsindf_apply and data frames<a class="anchor" aria-label="anchor" href="#matsindf_apply-and-data-frames"></a>
 </h2>
-<p><code>.dat</code> can be a list (as shown in several examples above), but it can also be a data frame.</p>
+<p><code>.dat</code> can be a list (as shown in several examples above),
+but it can also be a data frame.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="va">df</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span>
@@ -208,7 +259,12 @@
 <span class="co">#&gt; 1 2 1 3 1</span>
 <span class="co">#&gt; 2 3 2 5 1</span>
 <span class="co">#&gt; 3 4 3 7 1</span></code></pre></div>
-<p>Furthermore, <code>matsindf_apply</code> works with a <code>matsindf</code> data frame, a data frame wherein each entry in the data frame is a matrix. To demonstrate use of <code>matsindf_apply</code> with a data frame, we’ll construct a simple <code>matsindf</code> data frame (<code>midf</code>) using functions in this package.</p>
+<p>Furthermore, <code>matsindf_apply</code> works with a
+<code>matsindf</code> data frame, a data frame wherein each entry in the
+data frame is a matrix. To demonstrate use of
+<code>matsindf_apply</code> with a data frame, we’ll construct a simple
+<code>matsindf</code> data frame (<code>midf</code>) using functions in
+this package.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Create a tidy data frame containing data for matrices</span>
 <span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2017</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2018</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,
@@ -277,7 +333,10 @@
 <span class="co">#&gt; [1] "industry"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "product"</span></code></pre></div>
-<p>With <code>midf</code> in hand, we can demonstrate use of <a href="https://www.tidyverse.org" class="external-link"><code>tidyverse</code></a>-style functional programming to perform matrix algebra within a data frame. The functions of the <code>matsbyname</code> package (such as <code>difference_byname</code> below) can be used for this purpose.</p>
+<p>With <code>midf</code> in hand, we can demonstrate use of <a href="https://www.tidyverse.org" class="external-link"><code>tidyverse</code></a>-style
+functional programming to perform matrix algebra within a data frame.
+The functions of the <code>matsbyname</code> package (such as
+<code>difference_byname</code> below) can be used for this purpose.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>
@@ -303,12 +362,16 @@
 <span class="co">#&gt; [1] "product"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "industry"</span></code></pre></div>
-<p>This way of performing matrix calculations works equally well within a 2-row <code>matsindf</code> data frame (as shown above) or a 1000-row <code>matsindf</code> data frame.</p>
+<p>This way of performing matrix calculations works equally well within
+a 2-row <code>matsindf</code> data frame (as shown above) or a 1000-row
+<code>matsindf</code> data frame.</p>
 </div>
 <div class="section level2">
 <h2 id="programming-with-matsindf_apply">Programming with matsindf_apply<a class="anchor" aria-label="anchor" href="#programming-with-matsindf_apply"></a>
 </h2>
-<p>Users can write their own functions using <code>matsindf_apply</code>. A flexible <code>calc_W</code> function can be written as follows.</p>
+<p>Users can write their own functions using
+<code>matsindf_apply</code>. A flexible <code>calc_W</code> function can
+be written as follows.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">calc_W</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.DF</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">U</span> <span class="op">=</span> <span class="st">"U"</span>, <span class="va">V</span> <span class="op">=</span> <span class="st">"V"</span>, <span class="va">W</span> <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span><span class="op">{</span>
   <span class="co"># The inner function does all the work.</span>
@@ -324,21 +387,34 @@
   <span class="co"># that specifies the inner function</span>
   <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="va">.DF</span>, FUN <span class="op">=</span> <span class="va">W_func</span>, U_mat <span class="op">=</span> <span class="va">U</span>, V_mat <span class="op">=</span> <span class="va">V</span><span class="op">)</span>
 <span class="op">}</span></code></pre></div>
-<p>This style of writing <code>matsindf_apply</code> functions is incredibly versatile, leveraging the capabilities of both the <code>matsindf</code> and <code>matsbyname</code> packages. (Indeed, the <code>Recca</code> package uses <code>matsindf_apply</code> heavily and is built upon the functions in the <code>matsindf</code> and <code>matsbyname</code> packages.)</p>
-<p>Functions written like <code>calc_W</code> can operate in ways similar to <code>matsindf_apply</code> itself. To demonstrate, we’ll use <code>calc_W</code> in all the ways that <code>matsindf_apply</code> can be used, going in the reverse order to our demonstration of the capabilities of <code>matsindf_apply</code> above.</p>
-<p><code>calc_W</code> can be used as a specialized <code>mutate</code> function that operates on <code>matsindf</code> data frames.</p>
+<p>This style of writing <code>matsindf_apply</code> functions is
+incredibly versatile, leveraging the capabilities of both the
+<code>matsindf</code> and <code>matsbyname</code> packages. (Indeed, the
+<code>Recca</code> package uses <code>matsindf_apply</code> heavily and
+is built upon the functions in the <code>matsindf</code> and
+<code>matsbyname</code> packages.)</p>
+<p>Functions written like <code>calc_W</code> can operate in ways
+similar to <code>matsindf_apply</code> itself. To demonstrate, we’ll use
+<code>calc_W</code> in all the ways that <code>matsindf_apply</code> can
+be used, going in the reverse order to our demonstration of the
+capabilities of <code>matsindf_apply</code> above.</p>
+<p><code>calc_W</code> can be used as a specialized <code>mutate</code>
+function that operates on <code>matsindf</code> data frames.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;   Year              U              V              W</span>
 <span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
 <span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
-<p>The added column could be given a different name from the default (“<code>W</code>”) using the <code>W</code> argument.</p>
+<p>The added column could be given a different name from the default
+(“<code>W</code>”) using the <code>W</code> argument.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span>W <span class="op">=</span> <span class="st">"W_prime"</span><span class="op">)</span>
 <span class="co">#&gt;   Year              U              V        W_prime</span>
 <span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
 <span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
-<p>As with <code>matsindf_apply</code>, column names in <code>midf</code> can be mapped to the arguments of <code>calc_W</code> by the arguments to <code>calc_W</code>.</p>
+<p>As with <code>matsindf_apply</code>, column names in
+<code>midf</code> can be mapped to the arguments of <code>calc_W</code>
+by the arguments to <code>calc_W</code>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">U</span>, Y <span class="op">=</span> <span class="va">V</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> 
@@ -346,7 +422,12 @@
 <span class="co">#&gt;   Year              X              Y              W</span>
 <span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span>
 <span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></code></pre></div>
-<p><code>calc_W</code> can operate on lists of single matrices, too. This approach works, because the default values for the <code>U</code> and <code>V</code> arguments to <code>calc_W</code> are “<code>U</code>” and “<code>V</code>,” respectively. The input list members (in this case <code>midf$U[[1]]</code> and <code>midf$V[[1]]</code>) are returned with the output.</p>
+<p><code>calc_W</code> can operate on lists of single matrices, too.
+This approach works, because the default values for the <code>U</code>
+and <code>V</code> arguments to <code>calc_W</code> are “<code>U</code>”
+and “<code>V</code>”, respectively. The input list members (in this case
+<code>midf$U[[1]]</code> and <code>midf$V[[1]]</code>) are returned with
+the output.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">calc_W</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>U <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">U</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, V <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">V</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; $U</span>
@@ -375,7 +456,10 @@
 <span class="co">#&gt; [1] "product"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "industry"</span></code></pre></div>
-<p>It may be clearer to name the arguments as required by the <code>calc_W</code> function without wrapping in a list first, as shown below. But in this approach, the input matrices are not returned with the output.</p>
+<p>It may be clearer to name the arguments as required by the
+<code>calc_W</code> function without wrapping in a list first, as shown
+below. But in this approach, the input matrices are not returned with
+the output.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">U</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, V <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">V</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="co">#&gt; $W</span>
@@ -386,13 +470,15 @@
 <span class="co">#&gt; [1] "product"</span>
 <span class="co">#&gt; attr(,"coltype")</span>
 <span class="co">#&gt; [1] "industry"</span></code></pre></div>
-<p><code>calc_W</code> can operate on data frames containing single numbers.</p>
+<p><code>calc_W</code> can operate on data frames containing single
+numbers.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span>
 <span class="co">#&gt;   U V W.1 W.2</span>
 <span class="co">#&gt; 1 1 3   2   2</span>
 <span class="co">#&gt; 2 2 4   2   2</span></code></pre></div>
-<p>Finally, <code>calc_W</code> can be applied to single numbers, and the result is 1x1 matrix.</p>
+<p>Finally, <code>calc_W</code> can be applied to single numbers, and
+the result is 1x1 matrix.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="fl">2</span>, V <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="co">#&gt; $W</span>
@@ -402,16 +488,22 @@
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>This vignette demonstrated use of the versatile <code>matsindf_apply</code> function. Inputs to <code>matsindf_apply</code> can be</p>
+<p>This vignette demonstrated use of the versatile
+<code>matsindf_apply</code> function. Inputs to
+<code>matsindf_apply</code> can be</p>
 <ul>
 <li>single numbers,</li>
 <li>matrices, or</li>
 <li>data frames with appropriately-named columns.</li>
 </ul>
-<p><code>matsindf_apply</code> can be used for programming, and functions constructed as demonstrated above share characteristics with <code>matsindf_apply</code>:</p>
+<p><code>matsindf_apply</code> can be used for programming, and
+functions constructed as demonstrated above share characteristics with
+<code>matsindf_apply</code>:</p>
 <ul>
-<li>they can be used as specialized <code>mutate</code> operators, and</li>
-<li>they can be applied to single numbers, matrices, or data frames with appropriately-named columns.</li>
+<li>they can be used as specialized <code>mutate</code> operators,
+and</li>
+<li>they can be applied to single numbers, matrices, or data frames with
+appropriately-named columns.</li>
 </ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -427,7 +519,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer>

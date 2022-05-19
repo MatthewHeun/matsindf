@@ -5,17 +5,17 @@
 #' factors for row names, column names, row types, and column types.
 #' Optionally, values can be dropped.
 #'
-#' @param  .matrix the IO-style matrix to be converted to a data frame with rows, columns, and values
-#' @param  matvals a string for the name of the output column containing values. Default is "\code{matvals}".
-#' @param rownames a string for the name of the output column containing row names. Default is "\code{rownames}".
-#' @param colnames a string for the name of the output column containing column names. Default is "\code{colnames}".
-#' @param rowtypes a string for the name of the output column containing row types. Default is "\code{rowtypes}".
-#' @param coltypes a string for the name of the output column containing column types. Default is "\code{coltypes}".
-#' @param     drop if specified, the value to be dropped from output. Default is \code{NA}.
-#' For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
-#' If \code{NA}, no values are dropped from output.
+#' @param  .matrix The IO-style matrix to be converted to a data frame with rows, columns, and values.
+#' @param  matvals A string for the name of the output column containing values. Default is "matvals".
+#' @param rownames A string for the name of the output column containing row names. Default is "rownames".
+#' @param colnames A string for the name of the output column containing column names. Default is "colnames".
+#' @param rowtypes A string for the name of the output column containing row types. Default is "rowtypes".
+#' @param coltypes A string for the name of the output column containing column types. Default is "coltypes".
+#' @param     drop If specified, the value to be dropped from output. Default is `NA`.
+#'                 For example, `drop = 0` will cause `0` entries in the matrices to be deleted from output.
+#'                 If `NA`, no values are dropped from output.
 #'
-#' @return a data frame with rows, columns, and values
+#' @return A data frame with rows, columns, and values.
 #'
 #' @export
 #'
@@ -74,24 +74,24 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 
 #' Collapse a tidy data frame into a matrix with named rows and columns
 #'
-#' Columns not specified in one of \code{rownames}, \code{colnames}, \code{rowtype}, \code{coltype}, or \code{values}
+#' Columns not specified in one of `rownames`, `colnames`, `rowtype`, `coltype`, or `values`
 #' are silently dropped.
-#' \code{rowtypes} and \code{coltypes} are added as attributes to the resulting matrix
-#' (via \code{\link{setrowtype}} and \code{\link{setcoltype}}).
+#' `rowtypes` and `coltypes` are added as attributes to the resulting matrix
+#' (via `matsbyname::setrowtype()` and `matsbyname::setcoltype()`.
 #' The resulting matrix is a (under the hood) a data frame.
-#' If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
+#' If both `rownames` and `colnames` columns of `.DF` contain `NA`,
 #' it is assumed that this is a single value, not a matrix,
-#' in which case the value in the \code{values} column is returned.
+#' in which case the value in the `values` column is returned.
 #'
-#' @param .DF       a tidy data frame containing columns for row names, column names, and values
-#' @param matvals   the name of the column in \code{.DF} containing values with which to fill the matrix (a string). Default is "\code{matvals}".
-#' @param rownames  the name of the column in \code{.DF} containing row names (a string). Default is "\code{rownames}".
-#' @param colnames  the name of the column in \code{.DF} containing column names (a string). Default is "\code{colnames}".
-#' @param rowtypes  an optional string identifying the types of information found in rows of the matrix to be constructed. Default is "\code{rowtypes}".
-#' @param coltypes  an optional string identifying the types of information found in columns of the matrix to be constructed. Default is "\code{coltypes}".
-#' @param fill      the value for missing entries in the resulting matrix. default is \code{0}.
+#' @param .DF       A tidy data frame containing columns for row names, column names, and values.
+#' @param matvals   The name of the column in `.DF` containing values with which to fill the matrix (a string). Default is "matvals".
+#' @param rownames  The name of the column in `.DF` containing row names (a string). Default is "rownames".
+#' @param colnames  The name of the column in `.DF` containing column names (a string). Default is "colnames".
+#' @param rowtypes  An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".
+#' @param coltypes  An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".
+#' @param fill      The value for missing entries in the resulting matrix. default is `0`.
 #'
-#' @return a matrix with named rows and columns and, optionally, row and column types
+#' @return A matrix with named rows and columns and, optionally, row and column types.
 #'
 #' @export
 #'
@@ -331,19 +331,17 @@ verify_cols_missing <- function(.DF, newcols){
 }
 
 
-
-
 #' Get symbols for all columns except ...
 #'
 #' This convenience function performs a set difference between
-#' the columns of \code{.DF} and the variable names (or symbols) given in \code{...}.
-#' The return value is a list of symbols.
+#' the columns of `.DF` and the variable names (or symbols) given in `...`.
 #'
-#' @param .DF a data frame whose variable names are to be differenced
-#' @param ... a string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of \code{.DF}
-#' @param .symbols a boolean that defines the return type: \code{TRUE} for symbols, \code{FALSE} for strings
+#' @param .DF A data frame whose variable names are to be differenced.
+#' @param ... A string, strings, vector of strings, or list of strings representing column names to be subtracted from the names of `.DF`/
+#' @param .symbols A boolean that defines the return type: `TRUE` for symbols, `FALSE` for strings.
 #'
-#' @return a vector of symbols (when \code{symbols = TRUE}) or strings (when \code{symbol = FALSE}) containing all variables names except those given in \code{...}
+#' @return A vector of symbols (when `.symbols = TRUE`) or
+#'         strings (when `symbol = FALSE`) containing all variables names except those given in `...`.
 #'
 #' @export
 #'
@@ -376,13 +374,13 @@ everything_except <- function(.DF, ..., .symbols = TRUE){
 #' that allows grouping of a data frame by all variables (columns)
 #' except those variables specified in `...`.
 #'
-#' @param .DF a data frame to be grouped
-#' @param ... a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping
+#' @param .DF A data frame to be grouped.
+#' @param ... A string, strings, vector of strings, or list of strings representing column names to be excluded from grouping.
 #' @param .add When `.add = FALSE`, the default, `dplyr::group_by()` will override existing groups.
-#'            To add to the existing groups, use `.add = TRUE`.
+#'             To add to the existing groups, use `.add = TRUE`.
 #' @param .drop When `.drop = TRUE`, empty groups are dropped. Default is `FALSE`.
 #'
-#' @return a grouped version of `.DF`
+#' @return A grouped version of `.DF`.
 #'
 #' @export
 #'

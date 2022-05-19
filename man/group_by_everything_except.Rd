@@ -7,9 +7,9 @@
 group_by_everything_except(.DF, ..., .add = FALSE, .drop = FALSE)
 }
 \arguments{
-\item{.DF}{a data frame to be grouped}
+\item{.DF}{A data frame to be grouped.}
 
-\item{...}{a string, strings, vector of strings, or list of strings representing column names to be excluded from grouping}
+\item{...}{A string, strings, vector of strings, or list of strings representing column names to be excluded from grouping.}
 
 \item{.add}{When \code{.add = FALSE}, the default, \code{dplyr::group_by()} will override existing groups.
 To add to the existing groups, use \code{.add = TRUE}.}
@@ -17,7 +17,7 @@ To add to the existing groups, use \code{.add = TRUE}.}
 \item{.drop}{When \code{.drop = TRUE}, empty groups are dropped. Default is \code{FALSE}.}
 }
 \value{
-a grouped version of \code{.DF}
+A grouped version of \code{.DF}.
 }
 \description{
 This is a convenience function

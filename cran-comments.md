@@ -26,15 +26,8 @@ See `NEWS.md` for details.
     * ERRORs: 0
     * WARNINGs: 0
     * NOTEs: 0
-    
-    
-    
-    
-    
-    
-    
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.1.2 (2021-11-01)
+    * `devtools::check_win_release()`, R version 4.2.0 (2022-04-22 ucrt)
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0
@@ -42,6 +35,9 @@ See `NEWS.md` for details.
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0
+        
+        
+        
 * rhub:
     * `devtools::check_rhub()`
         * Windows Server 2008 R2 SP1, R-devel, 32/64 bit

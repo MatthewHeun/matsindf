@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+* Improved `matsindf_apply()` primer vignette.
+
+
 # matsindf 0.3.11 (2022-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6564300.svg)](https://doi.org/10.5281/zenodo.6564300)
 
 * Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`

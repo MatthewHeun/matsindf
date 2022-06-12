@@ -48,6 +48,39 @@ tryCatch(
 )
 
 ## -----------------------------------------------------------------------------
+example_fun_with_string <- function(str_a, b) {
+  a <- as.numeric(str_a)
+  list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
+}
+
+# Fails, because of mixed argument types.
+tryCatch(
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2), 
+  error = function(e) {
+    print(e)
+  }
+)
+
+# All of the following work, 
+# because arguments are wrapped in list() or 
+# supplied in .dat.
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
+matsindf_apply(FUN = example_fun_with_string, 
+               str_a = list("1", "3"), 
+               b = list(2, 4))
+matsindf_apply(.dat = list(str_a = list("1"), b = list(2)), FUN = example_fun_with_string)
+matsindf_apply(.dat = list(m = list("1"), n = list(2)), FUN = example_fun_with_string, 
+               str_a = "m", b = "n")
+matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
+               FUN = example_fun_with_string)
+matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
+               FUN = example_fun_with_string, 
+               str_a = "str_a", b = "b")
+matsindf_apply(.dat = data.frame(m = c("1", "3"), n = c(2, 4)), 
+               FUN = example_fun_with_string, 
+               str_a = "m", b = "n")
+
+## -----------------------------------------------------------------------------
 df <- data.frame(a = 2:4, b = 1:3)
 matsindf_apply(df, FUN = example_fun)
 

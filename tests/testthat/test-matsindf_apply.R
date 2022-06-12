@@ -321,6 +321,15 @@ test_that("matsindf_apply() issues a warning when replacing a column", {
 })
 
 
+test_that("matsindf_apply() works for a string and numbers", {
+  example_fun <- function(str_a, b) {
+    a <- as.numeric(str_a)
+    list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b))
+  }
+  res <- matsindf_apply(FUN = example_fun, str_a = list("1"), b = list(2))
+  expect_equal(res$c[[1]], 3)
+  expect_equal(res$d[[1]], -1)
+})
 
 
 

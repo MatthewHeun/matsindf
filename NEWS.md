@@ -4,7 +4,9 @@ output: html_document
 ---
 
 
-* Improved `matsindf_apply()` primer vignette.
+* Improved `matsindf_apply()` primer vignette
+  discussed what to do when arguments to `FUN`
+  are of heterogeneous types.
 
 
 # matsindf 0.3.11 (2022-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6564300.svg)](https://doi.org/10.5281/zenodo.6564300)

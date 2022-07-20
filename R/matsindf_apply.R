@@ -54,7 +54,7 @@
 #' @param FUN the function to be applied to `.dat`.
 #' @param ... named arguments to be passed by name to `FUN`.
 #'
-#' @return a named list or a data frame. (See details.)
+#' @return A named list or a data frame. (See details.)
 #'
 #' @export
 #'
@@ -87,7 +87,7 @@
 #' # All arguments are supplied by named arguments in ..., but mix them up.
 #' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
-#' # Warning is issued when an output item has same name as an input item.
+#' # A warning is issued when an output item has same name as an input item.
 #' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {

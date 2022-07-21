@@ -4,6 +4,14 @@ output: html_document
 ---
 
 
+* Improved `matsindf_apply()` primer vignette
+  discusses how to handle heterogeneous arguments
+  types to `FUN`.
+* New tests to verify `matsindf_apply()` when using string arguments to `FUN`.
+    * Now at 197 tests, all passing.
+    * Test coverage remains at 100 %.
+
+
 # matsindf 0.3.11 (2022-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6564300.svg)](https://doi.org/10.5281/zenodo.6564300)
 
 * Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`

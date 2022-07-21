@@ -97,7 +97,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
     }
   }
-  # .dat is NULL (the default)
   types <- matsindf_apply_types(...)
 
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.

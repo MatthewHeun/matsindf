@@ -354,3 +354,33 @@ test_that("df_to_msg() works as expected", {
   expect_equal(msg, "1, a; 2, b; 3, c")
 })
 
+
+test_that("matrix_cols() works as expected", {
+  tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                         row = c("i1", "i1", "i2", "i1", "i2"),
+                         col = c("p1", "p2", "p2", "p1", "p2"),
+                         vals = c(1, 2, 3, 4, 5)) %>%
+    dplyr::mutate(
+      rowtypes = "Industries",
+      coltypes  = "Products"
+    ) %>%
+    dplyr::group_by(matrix)
+  matsdf <- tidy %>%
+    collapse_to_matrices(matnames = "matrix", matvals = "vals",
+                         rownames = "row", colnames = "col",
+                         rowtypes = "rowtypes", coltypes = "coltypes") %>%
+    dplyr::mutate(
+      integer = 42,
+      string = "hello world"
+    )
+  expect_equal(matrix_cols(matsdf), c(vals = 2))
+
+  # Add a row without a matrix
+  df <- tibble::tribble(~matrix, ~vals,
+                        "None", list(42))
+  matsdf2 <- dplyr::bind_rows(matsdf, df)
+  expect_equal(matrix_cols(matsdf2, .drop_names = TRUE), integer())
+  expect_equal(matrix_cols(matsdf2, .drop_names = TRUE, .any = TRUE), 2)
+})
+
+

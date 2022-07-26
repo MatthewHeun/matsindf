@@ -4,11 +4,13 @@ output: html_document
 ---
 
 
+* New function `matrix_cols()` tells which columns contain matrices, 
+  either in the `any()` sense or in the `all()` sense.
 * Improved `matsindf_apply()` primer vignette
   discusses how to handle heterogeneous arguments
   types to `FUN`.
 * New tests to verify `matsindf_apply()` when using string arguments to `FUN`.
-    * Now at 197 tests, all passing.
+    * Now at 200 tests, all passing.
     * Test coverage remains at 100 %.
 
 

@@ -555,3 +555,69 @@ df_to_msg <- function(df) {
     paste(collapse = "; ")
 }
 
+
+#' Find columns that contain matrices
+#'
+#' It is often helpful to find the columns of a `matsindf`
+#' data frame that contain exclusively or some matrices.
+#' This function helps with that task.
+#'
+#' By default, a column is considered a matrix column if `all()` of the
+#' rows contain matrices.
+#' Use the `.test_any` argument to modify this behavior.
+#'
+#' By default, the vector of integers returned from this function
+#' is named by the columns.
+#' Use the `.drop_names` function to modify this behavior.
+#'
+#' @param .df The data frame to be queried for matrix columns.
+#' @param .drop_names A boolean that tells whether to remove the names from
+#'                    the returned integer vector.
+#'                    Default is `FALSE`.
+#' @param .any A boolean that tells whether a column is reported when
+#'             `any()` of the rows contain matrices
+#'             (instead of `all()` rows contain matrices).
+#'             Default is `FALSE`.
+#'
+#' @return A vector of integers saying which columns contain solely matrices.
+#'
+#' @export
+#'
+#' @examples
+#' tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+#'                          row = c("i1", "i1", "i2", "i1", "i2"),
+#'                          col = c("p1", "p2", "p2", "p1", "p2"),
+#'                          vals = c(1, 2, 3, 4, 5)) %>%
+#'   dplyr::mutate(
+#'     rowtypes = "Industries",
+#'     coltypes  = "Products"
+#'   ) %>%
+#'   dplyr::group_by(matrix)
+#' matsdf <- tidy %>%
+#'   collapse_to_matrices(matnames = "matrix", matvals = "vals",
+#'                        rownames = "row", colnames = "col",
+#'                        rowtypes = "rowtypes", coltypes = "coltypes")
+#' matsdf
+#' matrix_cols(matsdf)
+#' matrix_cols(matsdf, .drop_names = TRUE)
+matrix_cols <- function(.df, .drop_names = FALSE, .any = FALSE) {
+  cnames <- colnames(.df)
+  out <- sapply(cnames, FUN = function(this_cname) {
+    this_col <- .df[[this_cname]]
+    true_false <- sapply(this_col, FUN = function(this_item) {
+      is.matrix(this_item)
+    })
+    if (.any) {
+      return(any(true_false))
+    } else {
+      return(all(true_false))
+    }
+  }) %>%
+    which()
+  if (.drop_names) {
+    out <- unname(out)
+  }
+  return(out)
+}
+
+

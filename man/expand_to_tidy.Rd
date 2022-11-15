@@ -78,7 +78,7 @@ tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                                  ptype, ptype, ptype, ptype, NA, NA),
                   coltypes  = c(itype, itype, itype, itype, itype, ptype, ptype,
                                 itype, itype, itype, itype, NA, NA),
-                  vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
+                  vals      = c(11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)) \%>\%
   group_by(Country, Year, matrix)
 mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",

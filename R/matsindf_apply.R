@@ -128,8 +128,13 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     out_list <- Map(f = FUN, ...) %>%
       unname() %>%
       purrr::transpose()
-    numrows <- length(out_list[[1]])
+    # Work around a possible error condition here.
     numcols <- length(out_list)
+    if (numcols == 0) {
+      numrows <- 0
+    } else {
+      numrows <- length(out_list[[1]])
+    }
     # Create a data frame filled with NA values.
     out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>%
       magrittr::set_names(names(out_list))

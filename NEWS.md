@@ -4,6 +4,7 @@ output: html_document
 ---
 
 
+
 * Better docs for `expand_to_tidy()`.
 * New function `matrix_cols()` tells which columns contain matrices, 
   either in the `any()` sense or in the `all()` sense.

@@ -332,4 +332,11 @@ test_that("matsindf_apply() works for a string and numbers", {
 })
 
 
+test_that("matsindf_apply() works in degenerate case", {
+  df <- tibble::tribble(~a, ~b,
+                        1, 2,
+                        3, 4)
+  df %>%
+    matsindf_apply(FUN = `+`, d = "a", e = data.frame())
+})
 

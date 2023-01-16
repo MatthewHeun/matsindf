@@ -4,7 +4,8 @@ output: html_document
 ---
 
 
-
+* Updated to the latest version of the github actions
+  continuous integration workflow.
 * Better docs for `expand_to_tidy()`.
 * New function `matrix_cols()` tells which columns contain matrices, 
   either in the `any()` sense or in the `all()` sense.

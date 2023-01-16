@@ -337,6 +337,6 @@ test_that("matsindf_apply() works in degenerate case", {
                         1, 2,
                         3, 4)
   df %>%
-    matsindf_apply(FUN = `+`, d = "a", e = data.frame())
+    matsindf_apply(FUN = `+`, d = c(1, 2, 3), e = c(4, 5, 6), f = c("a", "b", "c"))
 })
 

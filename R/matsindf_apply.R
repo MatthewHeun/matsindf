@@ -125,6 +125,25 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # The result of Map is a named list.
     # But when the names are present for one list but not another,
     # binary matsbyname functions will fail.
+
+    # dots <- list(...)
+    # nulldots <- which(is.null(dots))
+    # notnulldots <- dots[!nulldots]
+    # lendots <- length(dots)
+    # lendots1 <- length(dots[[1]])
+    # for (i in 1:lendots) {
+    #   lendotsi <- length(dots[[i]])
+    #   if (!(lendotsi == lendots1)) {
+    #     print("dots[[1]]")
+    #     print(dots[[1]])
+    #     print(paste0("dots[[", i, "]]"))
+    #     print(dots[[i]])
+    #   }
+    # }
+
+
+
+
     out_list <- Map(f = FUN, ...) %>%
       unname() %>%
       purrr::transpose()

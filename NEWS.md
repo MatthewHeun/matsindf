@@ -4,6 +4,7 @@ output: html_document
 ---
 
 
+* Fixed a differential error message challenge for tests.
 * Move tests associated with `verify_cols_missing()`
   from the `Recca` package to `matsindf`.
   Those tests didn't belong in `Recca`.

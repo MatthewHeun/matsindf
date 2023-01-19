@@ -4,6 +4,9 @@ output: html_document
 ---
 
 
+* Move tests associated with `verify_cols_missing()`
+  from the `Recca` package to `matsindf`.
+  Those tests didn't belong in `Recca`.
 * Updated to the latest version of the github actions
   continuous integration workflow.
 * Better docs for `expand_to_tidy()`.

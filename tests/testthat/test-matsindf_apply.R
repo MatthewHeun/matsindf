@@ -333,10 +333,9 @@ test_that("matsindf_apply() works for a string and numbers", {
 
 
 test_that("matsindf_apply() works in degenerate case", {
-  df <- tibble::tribble(~a, ~b,
-                        1, 2,
-                        3, 4)
-  df %>%
-    matsindf_apply(FUN = `+`, d = c(1, 2, 3), e = c(4, 5, 6), f = c("a", "b", "c"))
+  expect_error(
+    matsindf_apply(FUN = `+`, a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL),
+    "subscript out of bounds"
+  )
 })
 

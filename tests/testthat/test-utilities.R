@@ -244,7 +244,7 @@ test_that("add_UKEnergy2000_matnames works as expected", {
 })
 
 
-test_that("add_UKEnergy2000_row_col_meta works as expected", {
+test_that("add_UKEnergy2000_row_col_meta() works as expected", {
   UKEnergy2000_with_metadata <- UKEnergy2000 %>%
     matsindf:::add_UKEnergy2000_matnames(.) %>%
     matsindf:::add_UKEnergy2000_row_col_meta(.)
@@ -257,7 +257,7 @@ test_that("add_UKEnergy2000_row_col_meta works as expected", {
 })
 
 
-test_that("verify_cols_missing errors as expected", {
+test_that("verify_cols_missing() errors as expected", {
   DF <- data.frame(A = 1:4, B = 11:14, stringsAsFactors = FALSE)
   # Try with a non-vector for newcols (a data frame is not a vector)
   expect_null(verify_cols_missing(DF, newcols = DF))
@@ -266,7 +266,43 @@ test_that("verify_cols_missing errors as expected", {
 })
 
 
-test_that("everything_except works as expected for symbols", {
+test_that("error messages about column names works as expected", {
+  df <- data.frame(a = c(1,2), b = c(3,4))
+  newcols <- c("c", "d", "a", "b")
+  expect_error(verify_cols_missing(df, newcols),
+               Hmisc::escapeRegex("column(s) 'a', 'b' is (are) already column names in data frame 'df'"))
+
+  expect_silent(verify_cols_missing(df, c("d")))
+
+  # Try with a list in newcols
+  expect_silent(verify_cols_missing(df, list("d", "e")))
+  expect_error(verify_cols_missing(df, list("a", "c")),
+               Hmisc::escapeRegex("column(s) 'a' is (are) already column names in data frame 'df'"))
+})
+
+
+test_that("verify_cols_missing() works when either strings or names are provided", {
+  df <- data.frame(a = c(1,2), b = c(3,4))
+  # Try with strings
+  newcols <- c("a", "b")
+  expect_error(verify_cols_missing(df, newcols),
+               Hmisc::escapeRegex("column(s) 'a', 'b' is (are) already column names in data frame 'df'"))
+  # Try with names
+  newcolnames <- lapply(newcols, as.name)
+  expect_error(verify_cols_missing(df, newcolnames),
+               Hmisc::escapeRegex("column(s) 'a', 'b' is (are) already column names in data frame 'df'"))
+})
+
+
+test_that("verify_cols_missing() works with a single value", {
+  df <- data.frame(a = c(1,2), b = c(3,4))
+  expect_silent(verify_cols_missing(df, as.name("c")))
+  expect_error(verify_cols_missing(df, as.name("a")),
+               Hmisc::escapeRegex("column(s) 'a' is (are) already column names in data frame 'df'"))
+})
+
+
+test_that("everything_except() works as expected for symbols", {
   DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
   expect_equal(everything_except(DF, "a"), c(as.name("b"), as.name("c")))
   expect_equal(everything_except(DF, "a"), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
@@ -288,7 +324,8 @@ test_that("everything_except works as expected for symbols", {
   expect_equal(everything_except(DF, list("a")), sapply(c("b", "c"), as.name, USE.NAMES = FALSE))
 })
 
-test_that("everything_except works as expected for strings", {
+
+test_that("everything_except() works as expected for strings", {
   DF <- data.frame(a = c(1, 2), b = c(3, 4), c = c(5, 6), stringsAsFactors = FALSE)
   expect_equal(everything_except(DF, "a", .symbols = FALSE), c("b", "c"))
   # Ensure all columns of .DF are returned if ... is empty or NULL.

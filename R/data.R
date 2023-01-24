@@ -22,5 +22,5 @@
 #'   \item{Product}{the energy product involved in this flow}
 #'   \item{E.ktoe}{magnitude of the energy flow in ktoe}
 #' }
-#' @source \url{http://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf}
+#' @source \url{https://www.see.leeds.ac.uk/fileadmin/Documents/research/sri/workingpapers/sri-wp111.pdf}
 "UKEnergy2000"

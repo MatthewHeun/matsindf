@@ -3,14 +3,12 @@
 #' A dataset containing approximations to
 #' some of the energy flows in the UK in the year 2000.
 #' These data first appeared as the example in
-#' Figures 3 and 4 of
-#' M.K. Heun, A. Owen, and P.E. Brockway.
+#' Figures 3, 7, and 11 of
+#' M.K. Heun, A. Owen, and P.E. Brockway. 2018.
 #' A physical supply-use table framework for energy analysis on the energy conversion chain.
-#' Sustainability Research Institute Paper 111,
-#' University of Leeds, School of Earth and Environment,
-#' Sustainability Research Institute,
-#' Leeds, England,
-#' 13 November 2017.
+#' Applied Energy,
+#' Vol. 226,
+#' pp. 1134-1162.
 #'
 #' @format A data frame with 36 rows and 7 variables:
 #' \describe{

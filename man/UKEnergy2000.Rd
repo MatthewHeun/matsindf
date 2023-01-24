@@ -26,7 +26,7 @@ UKEnergy2000
 A dataset containing approximations to
 some of the energy flows in the UK in the year 2000.
 These data first appeared as the example in
-Figures 3 and 4 of
+Figures 3, 7, and 11 of
 M.K. Heun, A. Owen, and P.E. Brockway. 2018.
 A physical supply-use table framework for energy analysis on the energy conversion chain.
 Applied Energy,

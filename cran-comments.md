@@ -36,7 +36,7 @@ See `NEWS.md` for details.
         * Repeated attempts all lead to the same error message:
         * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
         * Looks like win-builder is not accepting connections for win_release.
-    * `devtools::check_win_devel()`e
+    * `devtools::check_win_devel()`
         * Repeated attempts all lead to the same error message:
         * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
         * Looks like win-builder is not accepting connections for win_devel.

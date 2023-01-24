@@ -32,11 +32,15 @@ See `NEWS.md` for details.
     * warnings: 0
     * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.2.0 (2022-04-22 ucrt)
-        * errors: 0
-        * warnings: 0
-        * notes: 0
-    * `devtools::check_win_devel()`, R Under development (unstable) (2021-12-03 r81290)
+    * `devtools::check_win_release()`
+        * Repeated attempts all lead to the same error message:
+        * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
+        * Looks like win-builder is not accepting connections for win_release.
+    * `devtools::check_win_devel()`e
+        * Repeated attempts all lead to the same error message:
+        * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
+        * Looks like win-builder is not accepting connections for win_devel.
+    * `devtools::check_win_oldrelease()`, R version 4.1.3 (2022-03-10)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -45,15 +49,21 @@ See `NEWS.md` for details.
         * Windows Server 2022, R-devel, 64 bit
             * errors: 0
             * warnings: 0
-            * notes: 0
+            * notes: 1
+            * checking for detritus in the temp directory ... NOTE Found the following files/directories: 'lastMiKTeXException'
+            * This looks to be a mal-configuration of this test machine.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * errors: 0
             * warnings: 0
-            * notes: 0
+            * notes: 1
+            * checking HTML version of manual ... NOTE Skipping checking HTML validation: no command 'tidy' found
+            * This appears to be an error unique to rhub Linux environments.
         * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
-            * notes: 0
+            * notes: 1
+            * checking HTML version of manual ... NOTE Skipping checking HTML validation: no command 'tidy' found
+            * This appears to be an error unique to rhub Linux environments.
 
 
 ## revdepcheck results

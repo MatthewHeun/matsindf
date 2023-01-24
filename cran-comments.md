@@ -1,12 +1,13 @@
 ## Context
 
-`matsindf` v0.3.11 is a minor bugfix update.
+`matsindf` v0.3.12 provides a couple bug fixes, adds a couple functions,
+and cleans up several tests.
 See `NEWS.md` for details.
 
 
 ## Test environments (10 in total) and R CMD check results
 
-* local macOS X install 12.3.1 (Monterey), R4.2.0
+* local macOS X install 13.1 (Ventura), R4.2.2
     * ERRORs: 0
     * WARNINGs: 0
     * NOTEs: 0

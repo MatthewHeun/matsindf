@@ -20,5 +20,5 @@
 #'   \item{Product}{the energy product involved in this flow}
 #'   \item{E.ktoe}{magnitude of the energy flow in ktoe}
 #' }
-#' @source \url{https://doi.org/10.1016/j.apenergy.2018.05.109}
+#' @source \doi{10.1016/j.apenergy.2018.05.109}
 "UKEnergy2000"

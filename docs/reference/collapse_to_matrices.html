@@ -29,7 +29,7 @@ rowtypes and coltypes should be the same for all rows of the same matrix in .DF;
 execution is halted if that is not the case.
 tidyr::pivot_wider()ing the output by matnames may be necessary before
 calculations are done on the collapsed matrices.
-See the example.'><title>Collapse a "tidy" data frame to matrices in a data frame matsindf) — collapse_to_matrices • matsindf</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Collapse a " tidy data frame to matrices in a matsindf collapse_to_matrices><meta property="og:description" content='A "tidy" data frame contains information that can be collapsed into matrices,
+See the example.'><title>Collapse a "tidy" data frame to matrices in a data frame matsindf) — collapse_to_matrices • matsindf</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Collapse a " tidy data frame to matrices in a matsindf collapse_to_matrices><meta property="og:description" content='A "tidy" data frame contains information that can be collapsed into matrices,
 including columns for
 matrix names, row names, column names, row types, column types, and values (entries in matrices).
 These column names are specified as strings by the matnames, rownames, colnames,
@@ -70,7 +70,7 @@ See the example.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -151,47 +151,62 @@ See the example.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">collapse_to_matrices</span><span class="op">(</span>
-  <span class="va">.DF</span>,
-  matnames <span class="op">=</span> <span class="st">"matnames"</span>,
-  matvals <span class="op">=</span> <span class="st">"matvals"</span>,
-  rownames <span class="op">=</span> <span class="st">"rownames"</span>,
-  colnames <span class="op">=</span> <span class="st">"colnames"</span>,
-  rowtypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"rowtypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"rowtypes"</span> <span class="kw">else</span> <span class="cn">NULL</span>,
-  coltypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"coltypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"coltypes"</span> <span class="kw">else</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">collapse_to_matrices</span><span class="op">(</span></span>
+<span>  <span class="va">.DF</span>,</span>
+<span>  matnames <span class="op">=</span> <span class="st">"matnames"</span>,</span>
+<span>  matvals <span class="op">=</span> <span class="st">"matvals"</span>,</span>
+<span>  rownames <span class="op">=</span> <span class="st">"rownames"</span>,</span>
+<span>  colnames <span class="op">=</span> <span class="st">"colnames"</span>,</span>
+<span>  rowtypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"rowtypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"rowtypes"</span> <span class="kw">else</span> <span class="cn">NULL</span>,</span>
+<span>  coltypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"coltypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"coltypes"</span> <span class="kw">else</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.DF</dt>
 <dd><p>the "tidy" data frame</p></dd>
+
+
 <dt>matnames</dt>
 <dd><p>A string identifying the column in <code>.DF</code> containing matrix names for matrices to be created.
 Default is "matnames".</p></dd>
+
+
 <dt>matvals</dt>
 <dd><p>A string identifying the column in <code>.DF</code> containing values to be inserted into the matrices to be created.
 This will also be the name of the column in the output containing matrices formed from the
 data in the <code>matvals</code> column.
 Default is "matvals".</p></dd>
+
+
 <dt>rownames</dt>
 <dd><p>A string identifying the column in <code>.DF</code> containing row names for matrices to be created.
 Default is "rownames".</p></dd>
+
+
 <dt>colnames</dt>
 <dd><p>A string identifying the column in <code>.DF</code> containing column names for matrices to be created.
 Default is "colnames".</p></dd>
+
+
 <dt>rowtypes</dt>
 <dd><p>An optional string identifying the column in <code>.DF</code> containing the type of values in rows of the matrices to be created.
 Default is <code>if ("rowtypes" %in% names(.DF)) "rowtypes" else NULL</code>,
 so that failure to set the rowtypes argument will give <code>NULL</code>, as appropriate.</p></dd>
+
+
 <dt>coltypes</dt>
 <dd><p>An optional string identifying the column in <code>.DF</code> containing the type of values in columns of the matrices to be created
 Default is <code>if ("coltypes" %in% names(.DF)) "rowtypes" else NULL</code>,
 so that failure to set the coltypes argument will give <code>NULL</code>, as appropriate.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with matrices in the <code>matvals</code> column.</p>
+    
+
+<p>A data frame with matrices in the <code>matvals</code> column.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -204,7 +219,7 @@ so that failure to set the coltypes argument will give <code>NULL</code>, as app
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:testthat’:</span>
@@ -216,36 +231,36 @@ so that failure to set the coltypes argument will give <code>NULL</code>, as app
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘tidyr’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:testthat’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     matches</span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">ptype</span> <span class="op">&lt;-</span> <span class="st">"Products"</span></span>
-<span class="r-in"><span class="va">itype</span> <span class="op">&lt;-</span> <span class="st">"Industries"</span></span>
-<span class="r-in"><span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,</span>
-<span class="r-in">                                <span class="st">"US"</span>,  <span class="st">"US"</span>,  <span class="st">"US"</span>,  <span class="st">"US"</span>, <span class="st">"GH"</span>, <span class="st">"US"</span><span class="op">)</span>,</span>
-<span class="r-in">                  Year    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,</span>
-<span class="r-in">                                <span class="fl">1980</span>,  <span class="fl">1980</span>,  <span class="fl">1980</span>,  <span class="fl">1980</span>, <span class="fl">1971</span>, <span class="fl">1980</span><span class="op">)</span>,</span>
-<span class="r-in">                  matrix  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>   <span class="st">"U"</span>,   <span class="st">"U"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>,   <span class="st">"V"</span>,   <span class="st">"V"</span>,</span>
-<span class="r-in">                                 <span class="st">"U"</span>,   <span class="st">"U"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>, <span class="st">"eta"</span>, <span class="st">"eta"</span><span class="op">)</span>,</span>
-<span class="r-in">                  row     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="st">"c 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>,</span>
-<span class="r-in">                               <span class="st">"c 1"</span>, <span class="st">"c 1"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">                  col     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 3"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>,</span>
-<span class="r-in">                               <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">                  rowtypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">itype</span>, <span class="va">itype</span>,</span>
-<span class="r-in">                                <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">                  coltypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>,</span>
-<span class="r-in">                                <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">                  vals  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>    <span class="fl">11</span>  ,  <span class="fl">22</span>,    <span class="fl">11</span> ,   <span class="fl">22</span> ,   <span class="fl">23</span> ,   <span class="fl">11</span> ,   <span class="fl">22</span> ,</span>
-<span class="r-in">                                <span class="fl">11</span> ,   <span class="fl">12</span> ,   <span class="fl">11</span> ,   <span class="fl">22</span>,   <span class="fl">0.2</span>, <span class="fl">0.3</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">matrix</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu">collapse_to_matrices</span><span class="op">(</span><span class="va">tidy</span>, matnames <span class="op">=</span> <span class="st">"matrix"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span>
-<span class="r-in">                             rownames <span class="op">=</span> <span class="st">"row"</span>, colnames <span class="op">=</span> <span class="st">"col"</span>,</span>
-<span class="r-in">                             rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">mats</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">matrix</span>, values_from <span class="op">=</span> <span class="va">vals</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tibble.tidyverse.org/" class="external-link">tibble</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ptype</span> <span class="op">&lt;-</span> <span class="st">"Products"</span></span></span>
+<span class="r-in"><span><span class="va">itype</span> <span class="op">&lt;-</span> <span class="st">"Industries"</span></span></span>
+<span class="r-in"><span><span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,  <span class="st">"GH"</span>,</span></span>
+<span class="r-in"><span>                                <span class="st">"US"</span>,  <span class="st">"US"</span>,  <span class="st">"US"</span>,  <span class="st">"US"</span>, <span class="st">"GH"</span>, <span class="st">"US"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  Year    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,  <span class="fl">1971</span>,</span></span>
+<span class="r-in"><span>                                <span class="fl">1980</span>,  <span class="fl">1980</span>,  <span class="fl">1980</span>,  <span class="fl">1980</span>, <span class="fl">1971</span>, <span class="fl">1980</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  matrix  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>   <span class="st">"U"</span>,   <span class="st">"U"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>,   <span class="st">"V"</span>,   <span class="st">"V"</span>,</span></span>
+<span class="r-in"><span>                                 <span class="st">"U"</span>,   <span class="st">"U"</span>,   <span class="st">"E"</span>,   <span class="st">"E"</span>, <span class="st">"eta"</span>, <span class="st">"eta"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  row     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="st">"c 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>,</span></span>
+<span class="r-in"><span>                               <span class="st">"c 1"</span>, <span class="st">"c 1"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  col     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 3"</span>, <span class="st">"c 1"</span>, <span class="st">"c 2"</span>,</span></span>
+<span class="r-in"><span>                               <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="st">"i 1"</span>, <span class="st">"i 2"</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  rowtypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">itype</span>, <span class="va">itype</span>,</span></span>
+<span class="r-in"><span>                                <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  coltypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">ptype</span>, <span class="va">ptype</span>,</span></span>
+<span class="r-in"><span>                                <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="va">itype</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                  vals  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>    <span class="fl">11</span>  ,  <span class="fl">22</span>,    <span class="fl">11</span> ,   <span class="fl">22</span> ,   <span class="fl">23</span> ,   <span class="fl">11</span> ,   <span class="fl">22</span> ,</span></span>
+<span class="r-in"><span>                                <span class="fl">11</span> ,   <span class="fl">12</span> ,   <span class="fl">11</span> ,   <span class="fl">22</span>,   <span class="fl">0.2</span>, <span class="fl">0.3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">matrix</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mats</span> <span class="op">&lt;-</span> <span class="fu">collapse_to_matrices</span><span class="op">(</span><span class="va">tidy</span>, matnames <span class="op">=</span> <span class="st">"matrix"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span></span>
+<span class="r-in"><span>                             rownames <span class="op">=</span> <span class="st">"row"</span>, colnames <span class="op">=</span> <span class="st">"col"</span>,</span></span>
+<span class="r-in"><span>                             rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mats</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">matrix</span>, values_from <span class="op">=</span> <span class="va">vals</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Country  Year E             U             V             eta      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>   </span>
@@ -262,7 +277,7 @@ so that failure to set the coltypes argument will give <code>NULL</code>, as app
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

@@ -42,7 +42,7 @@ See `NEWS.md` for details.
         * notes: 0
 * rhub:
     * `devtools::check_rhub()`
-        * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
+        * Windows Server 2022, R-devel, 64 bit
             * errors: 0
             * warnings: 0
             * notes: 0

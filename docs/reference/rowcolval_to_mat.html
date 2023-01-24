@@ -6,7 +6,7 @@ rowtypes and coltypes are added as attributes to the resulting matrix
 The resulting matrix is a (under the hood) a data frame.
 If both rownames and colnames columns of .DF contain NA,
 it is assumed that this is a single value, not a matrix,
-in which case the value in the values column is returned."><title>Collapse a tidy data frame into a matrix with named rows and columns — rowcolval_to_mat • matsindf</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Collapse a tidy data frame into a matrix with named rows and columns — rowcolval_to_mat"><meta property="og:description" content="Columns not specified in one of rownames, colnames, rowtype, coltype, or values
+in which case the value in the values column is returned."><title>Collapse a tidy data frame into a matrix with named rows and columns — rowcolval_to_mat • matsindf</title><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous"><!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Collapse a tidy data frame into a matrix with named rows and columns — rowcolval_to_mat"><meta property="og:description" content="Columns not specified in one of rownames, colnames, rowtype, coltype, or values
 are silently dropped.
 rowtypes and coltypes are added as attributes to the resulting matrix
 (via matsbyname::setrowtype() and matsbyname::setcoltype().
@@ -24,7 +24,7 @@ in which case the value in the values column is returned."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.11</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,49 +82,64 @@ in which case the value in the <code>values</code> column is returned.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">rowcolval_to_mat</span><span class="op">(</span>
-  <span class="va">.DF</span>,
-  matvals <span class="op">=</span> <span class="st">"matvals"</span>,
-  rownames <span class="op">=</span> <span class="st">"rownames"</span>,
-  colnames <span class="op">=</span> <span class="st">"colnames"</span>,
-  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>,
-  coltypes <span class="op">=</span> <span class="st">"coltypes"</span>,
-  fill <span class="op">=</span> <span class="fl">0</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rowcolval_to_mat</span><span class="op">(</span></span>
+<span>  <span class="va">.DF</span>,</span>
+<span>  matvals <span class="op">=</span> <span class="st">"matvals"</span>,</span>
+<span>  rownames <span class="op">=</span> <span class="st">"rownames"</span>,</span>
+<span>  colnames <span class="op">=</span> <span class="st">"colnames"</span>,</span>
+<span>  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>,</span>
+<span>  coltypes <span class="op">=</span> <span class="st">"coltypes"</span>,</span>
+<span>  fill <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>.DF</dt>
 <dd><p>A tidy data frame containing columns for row names, column names, and values.</p></dd>
+
+
 <dt>matvals</dt>
 <dd><p>The name of the column in <code>.DF</code> containing values with which to fill the matrix (a string). Default is "matvals".</p></dd>
+
+
 <dt>rownames</dt>
 <dd><p>The name of the column in <code>.DF</code> containing row names (a string). Default is "rownames".</p></dd>
+
+
 <dt>colnames</dt>
 <dd><p>The name of the column in <code>.DF</code> containing column names (a string). Default is "colnames".</p></dd>
+
+
 <dt>rowtypes</dt>
 <dd><p>An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".</p></dd>
+
+
 <dt>coltypes</dt>
 <dd><p>An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".</p></dd>
+
+
 <dt>fill</dt>
 <dd><p>The value for missing entries in the resulting matrix. default is <code>0</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A matrix with named rows and columns and, optionally, row and column types.</p>
+    
+
+<p>A matrix with named rows and columns and, optionally, row and column types.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MatthewHeun/matsbyname" class="external-link">matsbyname</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span>, <span class="st">"GH"</span>, <span class="st">"GH"</span><span class="op">)</span>,</span>
-<span class="r-in">                   rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"c 1"</span>,  <span class="st">"c 1"</span>, <span class="st">"c 2"</span><span class="op">)</span>,</span>
-<span class="r-in">                   cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"i 1"</span>,  <span class="st">"i 2"</span>, <span class="st">"i 2"</span><span class="op">)</span>,</span>
-<span class="r-in">                   vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>   <span class="fl">11</span>  ,   <span class="fl">12</span>,    <span class="fl">22</span> <span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">A</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MatthewHeun/matsbyname" class="external-link">matsbyname</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span>, <span class="st">"GH"</span>, <span class="st">"GH"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"c 1"</span>,  <span class="st">"c 1"</span>, <span class="st">"c 2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"i 1"</span>,  <span class="st">"i 2"</span>, <span class="st">"i 2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                   vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>   <span class="fl">11</span>  ,   <span class="fl">12</span>,    <span class="fl">22</span> <span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span> <span class="op">&lt;-</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     i 1 i 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 1  11  12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 2   0  22</span>
@@ -132,13 +147,13 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "rowtypes"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"coltype")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "coltypes"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowtype.html" class="external-link">rowtype</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="co"># NULL, because types not set</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowtype.html" class="external-link">rowtype</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="co"># NULL, because types not set</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "rowtypes"</span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/coltype.html" class="external-link">coltype</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="co"># NULL, because types not set</span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/coltype.html" class="external-link">coltype</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span> <span class="co"># NULL, because types not set</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "coltypes"</span>
-<span class="r-in"><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span>
-<span class="r-in">                            rowtypes  <span class="op">=</span> <span class="st">"Commodities"</span>, coltypes  <span class="op">=</span> <span class="st">"Industries"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">B</span></span>
+<span class="r-in"><span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span></span>
+<span class="r-in"><span>                            rowtypes  <span class="op">=</span> <span class="st">"Commodities"</span>, coltypes  <span class="op">=</span> <span class="st">"Industries"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">B</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     i 1 i 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 1  11  12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 2   0  22</span>
@@ -146,11 +161,11 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Commodities"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"coltype")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Industries"</span>
-<span class="r-in"><span class="va">C</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Commodities"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span>
-<span class="r-in">                                   ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span>
-<span class="r-in">  <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span>
-<span class="r-in">                   rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">C</span></span>
+<span class="r-in"><span><span class="va">C</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Commodities"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                   ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span></span>
+<span class="r-in"><span>                   rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">C</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     i 1 i 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 1  11  12</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c 2   0  22</span>
@@ -158,20 +173,20 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Commodities"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"coltype")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Industries"</span>
-<span class="r-in"><span class="co"># Also works for single values if both the rownames and colnames columns contain NA</span></span>
-<span class="r-in"><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,</span>
-<span class="r-in">  rowtypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, coltypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data2</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span>
-<span class="r-in">  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># Also works for single values if both the rownames and colnames columns contain NA</span></span></span>
+<span class="r-in"><span><span class="va">data2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  rowtypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, coltypes <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data2</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span></span>
+<span class="r-in"><span>  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"><span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">data3</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="va">data3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Country <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"GH"</span><span class="op">)</span>, rows <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>, vals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">data3</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
-<span class="r-in"><span class="co"># Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.</span></span>
-<span class="r-in"><span class="va">data4</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Industries"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span>
-<span class="r-in">                                       ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data4</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>,</span>
-<span class="r-in">                          matvals <span class="op">=</span> <span class="st">"vals"</span>, rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="co"># Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.</span></span></span>
+<span class="r-in"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Industries"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                                       ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data4</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>,</span></span>
+<span class="r-in"><span>                          matvals <span class="op">=</span> <span class="st">"vals"</span>, rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
@@ -183,7 +198,7 @@ in which case the value in the <code>values</code> column is returned.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer></div>

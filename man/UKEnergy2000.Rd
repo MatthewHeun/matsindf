@@ -17,7 +17,7 @@ A data frame with 36 rows and 7 variables:
 }
 }
 \source{
-\url{https://doi.org/10.1016/j.apenergy.2018.05.109}
+\doi{10.1016/j.apenergy.2018.05.109}
 }
 \usage{
 UKEnergy2000

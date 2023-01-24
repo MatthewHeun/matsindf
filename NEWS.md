@@ -17,7 +17,7 @@ output: html_document
   discusses how to handle heterogeneous arguments
   types to `FUN`.
 * New tests to verify `matsindf_apply()` when using string arguments to `FUN`.
-    * Now at 200 tests, all passing.
+    * Now at 209 tests, all passing.
     * Test coverage remains at 100 %.
 
 

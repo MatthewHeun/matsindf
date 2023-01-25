@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+# matsindf 0.3.12 (2023-01-24)
+
 * Fixed a differential error message challenge for tests.
 * Move tests associated with `verify_cols_missing()`
   from the `Recca` package to `matsindf`.

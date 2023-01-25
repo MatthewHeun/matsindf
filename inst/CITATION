@@ -3,13 +3,13 @@ citHeader("To cite package ‘matsindf’ in publications use:")
 citEntry(entry = "Manual",
   title        = "matsindf: Matrices in Data Frames",
   author       = personList(as.person("Matthew Kuperus Heun")),
-  year         = "2022",
-  note         = "R package version 0.3.11",
+  year         = "2023",
+  note         = "R package version 0.3.12",
   url          = "https://MatthewHeun.github.io/matsindf/",
 
   textVersion  =
-  paste("Matthew Kuperus Heun (2022).",
+  paste("Matthew Kuperus Heun (2023).",
         "matsindf: Matrices in Data Frames.",
-        "R package version 0.3.11.",
+        "R package version 0.3.12.",
         "https://MatthewHeun.github.io/matsindf/")
 )

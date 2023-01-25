@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# matsindf 0.3.12 (2023-01-24)
+# matsindf 0.3.12 (2023-01-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7567047.svg)](https://doi.org/10.5281/zenodo.7567047)
 
 * Fixed a differential error message challenge for tests.
 * Move tests associated with `verify_cols_missing()`

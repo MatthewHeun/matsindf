@@ -5,7 +5,7 @@ and cleans up several tests.
 See `NEWS.md` for details.
 
 
-## Test environments (11 in total) and R CMD check results
+## Test environments (12 in total) and R CMD check results
 
 * local: macOS X 13.1 (Ventura), R4.2.2
     * errors: 0

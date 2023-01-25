@@ -2,7 +2,7 @@
 % Please edit documentation in R/expand.R
 \name{expand_to_tidy}
 \alias{expand_to_tidy}
-\title{Expand a "tidy" data frame with matsindf-style matrices to a "tidy" data frame with each matrix entry as an observation}
+\title{Expand a \code{matsindf} data frame}
 \usage{
 expand_to_tidy(
   .DF,
@@ -16,49 +16,48 @@ expand_to_tidy(
 )
 }
 \arguments{
-\item{.DF}{the data frame containing \pkg{matsindf}-style matrices.
+\item{.DF}{The data frame containing \pkg{matsindf}-style matrices.
 (\code{.DF} may also be a named list of matrices, in which case
 names of the matrices are taken from the names of items in the list and
 list items are expected to be matrices.)}
 
-\item{matnames}{name of the column in \code{.DF} containing matrix names (a string).
-Default is "\code{matnames}".}
+\item{matnames}{The name of the column in \code{.DF} containing matrix names (a string).
+Default is "matnames".}
 
-\item{matvals}{name of the column in \code{.DF} containing IO-style matrices or constants (a string),
+\item{matvals}{The name of the column in \code{.DF} containing IO-style matrices or constants (a string),
 This will also be the name of the column containing matrix entries in the output data frame.
-Default is "\code{matvals}".}
+Default is "matvals".}
 
-\item{rownames}{name for the output column of row names (a string).
-Default is "\code{rownames}".}
+\item{rownames}{The name for the output column of row names (a string).
+Default is "rownames".}
 
-\item{colnames}{name for the output column of column names (a string).
-Default is "\code{colnames}".}
+\item{colnames}{The name for the output column of column names (a string).
+Default is "colnames".}
 
-\item{rowtypes}{optional name for the output column of row types (a string).
-Default is "\code{rowtypes}".}
+\item{rowtypes}{An optional name for the output column of row types (a string).
+Default is "rowtypes".}
 
-\item{coltypes}{optional name for the output column of column types (a string)
-Default is "\code{coltypes}".}
+\item{coltypes}{The optional name for the output column of column types (a string)
+Default is "coltypes".}
 
-\item{drop}{if specified, the value to be dropped from output,
+\item{drop}{If specified, the value to be dropped from output,
 For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
 If \code{NA}, no values are dropped from output.
 Default is \code{NA}.}
 }
 \value{
-a tidy data frame containing expanded \pkg{matsindf}-style matrices
+A tidy data frame containing expanded \pkg{matsindf}-style matrices
 }
 \description{
-A data frame with \pkg{matsindf}-style matrices contains matrices with names \code{matnames}
-in the column specified by \code{matvals}).
-An IO-style matrix has named rows and columns.
-In addition, \pkg{matsindf}-style matrices have "types" for row and column information, such as "Commodities", "Industries",
-"Products", or "Machines".
+Any tidy data frame of matrices (in which each row represents one matrix observation)
+can also be represented as a tidy data frame
+with each non-zero matrix entry as an observation on its own row.
+This function (and \code{collapse_to_matrices()}) convert between the two representations.
 }
 \details{
 Names for output columns are specified in the \code{rownames}, \code{colnames},
 \code{rowtypes}, and \code{coltypes}, arguments.
-The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values}.
+The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values.}
 }
 \examples{
 library(dplyr)
@@ -79,7 +78,7 @@ tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                                  ptype, ptype, ptype, ptype, NA, NA),
                   coltypes  = c(itype, itype, itype, itype, itype, ptype, ptype,
                                 itype, itype, itype, itype, NA, NA),
-                  vals  = c(    11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
+                  vals      = c(11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)) \%>\%
   group_by(Country, Year, matrix)
 mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",

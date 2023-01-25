@@ -4,7 +4,26 @@ output: html_document
 ---
 
 
-# matsindf 0.3.11 (2022-05-18)
+# matsindf 0.3.12 (2023-01-24)
+
+* Fixed a differential error message challenge for tests.
+* Move tests associated with `verify_cols_missing()`
+  from the `Recca` package to `matsindf`.
+  Those tests didn't belong in `Recca`.
+* Updated to the latest version of the github actions
+  continuous integration workflow.
+* Better docs for `expand_to_tidy()`.
+* New function `matrix_cols()` tells which columns contain matrices, 
+  either in the `any()` sense or in the `all()` sense.
+* Improved `matsindf_apply()` primer vignette
+  discusses how to handle heterogeneous arguments
+  types to `FUN`.
+* New tests to verify `matsindf_apply()` when using string arguments to `FUN`.
+    * Now at 209 tests, all passing.
+    * Test coverage remains at 100 %.
+
+
+# matsindf 0.3.11 (2022-05-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6564300.svg)](https://doi.org/10.5281/zenodo.6564300)
 
 * Fixed a very subtle bug in `matsindf_apply()` where the list returned from `Map()`
   had names on each individual item.
@@ -15,9 +34,12 @@ output: html_document
   The solution was to remove the names from each individual item
   after calling `Map()` and
   before calling `purrr::transpose()`.
+* No new tests.
+    * Still at 195 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
-# matsindf 0.3.10 (2020-12-17) [![DOI](https://zenodo.org/badge/112986384.svg)](https://zenodo.org/badge/latestdoi/112986384)
+# matsindf 0.3.10 (2021-12-17) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5789218.svg)](https://doi.org/10.5281/zenodo.5789218)
 
 * New vignette from Alexander Davis shows how to use `matsindf` 
   for principal components analysis (PCA).
@@ -33,7 +55,7 @@ output: html_document
     * Test coverage remains at 100 %.
 
 
-# matsindf 0.3.9 (2020-10-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5546359.svg)](https://doi.org/10.5281/zenodo.5546359)
+# matsindf 0.3.9 (2021-10-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5546359.svg)](https://doi.org/10.5281/zenodo.5546359)
 
 * New function `df_to_msg()` can assist with error messages.
   `df_to_msg()` was moved from the `SEAPSUTWorkflow` package, 
@@ -43,7 +65,7 @@ output: html_document
     * Test coverage remains at 100 %.
 
 
-# matsindf 0.3.8 (2020-09-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475444.svg)](https://doi.org/10.5281/zenodo.5475444)
+# matsindf 0.3.8 (2021-09-02) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475444.svg)](https://doi.org/10.5281/zenodo.5475444)
 
 * `matsindf.Rmd` vignette now uses the `keep` argument on `matsbyname::hatize_byname()`.
 * Fixed a bug in the `matsindf.Rmd` vignette.
@@ -54,7 +76,7 @@ output: html_document
     * Test coverage remains at 100 %.
 
 
-# matsindf 0.3.7 (2020-04-11)
+# matsindf 0.3.7 (2021-04-11)
 
 * Not released to CRAN, because there are no changes in the code itself.
 * Move away from Travis to GitHub Actions for continuous integration testing.
@@ -71,7 +93,7 @@ output: html_document
 
 # matsindf 0.3.6 (2020-08-24)
 
-* To comply with a deprecating change in `dplyr`, 
+* To comply with a breaking change in `dplyr`, 
   all calls to `dplyr::group_by()` now use `.add` argument
   instead of `add` argument.
 

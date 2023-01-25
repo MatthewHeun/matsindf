@@ -54,7 +54,7 @@
 #' @param FUN the function to be applied to `.dat`.
 #' @param ... named arguments to be passed by name to `FUN`.
 #'
-#' @return a named list or a data frame. (See details.)
+#' @return A named list or a data frame. (See details.)
 #'
 #' @export
 #'
@@ -87,7 +87,7 @@
 #' # All arguments are supplied by named arguments in ..., but mix them up.
 #' # Note that the named arguments override the items in .dat
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
-#' # Warning is issued when an output item has same name as an input item.
+#' # A warning is issued when an output item has same name as an input item.
 #' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
@@ -97,7 +97,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
     }
   }
-  # .dat is NULL (the default)
   types <- matsindf_apply_types(...)
 
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
@@ -129,8 +128,13 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     out_list <- Map(f = FUN, ...) %>%
       unname() %>%
       purrr::transpose()
-    numrows <- length(out_list[[1]])
+    # Work around a possible error condition here.
     numcols <- length(out_list)
+    if (numcols == 0) {
+      numrows <- 0
+    } else {
+      numrows <- length(out_list[[1]])
+    }
     # Create a data frame filled with NA values.
     out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>%
       magrittr::set_names(names(out_list))
@@ -162,7 +166,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # extract a column from .dat.
     # So, eliminate all NULLs from the ... strings.
     use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
-    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){return(.dat[[colname]])})
+    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){
+      .dat[[colname]]
+    })
     # If one of the ... strings is not a name of a column in .dat,
     # it is, practically speaking, a missing argument, and we should treat it as such.
     # If an arg is not present in .dat, it will be NULL in arg_cols.

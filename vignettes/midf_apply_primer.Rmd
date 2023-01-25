@@ -28,33 +28,33 @@ library(tidyr)
 
 ## Introduction
 
-`matsindf_apply` is a powerful and versatile function
+`matsindf_apply()` is a powerful and versatile function
 that enables analysis of data frames by applying
 `FUN` in helpful ways.
-The function is called `matsindf_apply`,
+The function is called `matsindf_apply()`,
 because it can be used to apply `FUN` to a `matsindf` data frame,
 a data frame that contains matrices as individual entries in a data frame.
 (A `matsindf` data frame can be created by
-calling `collapse_to_matrices`, as demonstrated below.)
+calling `collapse_to_matrices()`, as demonstrated below.)
 
-But `matsindf_apply` can apply `FUN` across much more:
+But `matsindf_apply()` can apply `FUN` across much more:
 data frames of single numbers,
 lists of matrices,
 lists of single numbers, and
 individual numbers.
-This vignette demonstrates `matsindf_apply`,
+This vignette demonstrates `matsindf_apply()`,
 starting with simple examples and
 proceeding to sophisticated analyses.
 
 
 ## The basics
 
-The basis of all analyses conducted with `matsindf_apply`
+The basis of all analyses conducted with `matsindf_apply()`
 is a function (`FUN`) to be applied across data.
-`FUN` must return a named list of variables,
+`FUN` must return a named list of variables as
 its result.
 Here is an example function that both adds and subtracts is arguments,
-`a` and `b` and
+`a` and `b`, and
 returns a list containing its result, `c` and `d`.
 
 ```{r}
@@ -63,15 +63,15 @@ example_fun <- function(a, b){
 }
 ```
 
-Similar to `lapply` and its siblings,
-additional argument(s) to `matsindf_apply` include
+Similar to `lapply()` and its siblings,
+additional argument(s) to `matsindf_apply()` include
 the data over which `FUN` is to be applied.
 These arguments can, in the first instance,
 be supplied as named arguments to the `...` argument
-of `matsindf_apply`.
-The `...` arguments to `matsindf_apply`
+of `matsindf_apply()`.
+The `...` arguments to `matsindf_apply()`
 are passed to `FUN` according to their names.
-In this case, the output of `matsindf_apply`
+In this case, the output of `matsindf_apply()`
 is the the named list returned by `FUN`.
 
 ```{r}
@@ -104,9 +104,9 @@ tryCatch(
 no such error would be created.)
 
 Alternatively, arguments to `FUN` can be given
-in a named list to the first argument to `matsindf_apply` (`.dat`).
+in a named list to the first argument to `matsindf_apply()` (`.dat`).
 When a value is assigned to `.dat`,
-the return value from `matsindf_apply`
+the return value from `matsindf_apply()`
 contains all named variables in `.dat`
 (in this case both `a` and `b`)
 in addition to the results provided by `FUN`
@@ -155,7 +155,7 @@ matsindf_apply(list(a = 2, b = 1, z = 42),
 ```
 
 If a named argument appears in both `.dat` and the output of `FUN`,
-a name collision occurs in the output of `matsindf_apply`, and
+a name collision occurs in the output of `matsindf_apply()`, and
 a warning is issued.
 
 ```{r}
@@ -163,6 +163,44 @@ tryCatch(
   matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun),
   warning = function(w){w}
 )
+```
+
+If `FUN` accepts mixed argument types, 
+arguments to `matsindf_apply()` can be wrapped in `list()`
+for success.
+
+```{r}
+example_fun_with_string <- function(str_a, b) {
+  a <- as.numeric(str_a)
+  list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
+}
+
+# Fails, because of mixed argument types.
+tryCatch(
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2), 
+  error = function(e) {
+    print(e)
+  }
+)
+
+# All of the following work, 
+# because arguments are wrapped in list() or 
+# supplied in .dat.
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
+matsindf_apply(FUN = example_fun_with_string, 
+               str_a = list("1", "3"), 
+               b = list(2, 4))
+matsindf_apply(.dat = list(str_a = list("1"), b = list(2)), FUN = example_fun_with_string)
+matsindf_apply(.dat = list(m = list("1"), n = list(2)), FUN = example_fun_with_string, 
+               str_a = "m", b = "n")
+matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
+               FUN = example_fun_with_string)
+matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
+               FUN = example_fun_with_string, 
+               str_a = "str_a", b = "b")
+matsindf_apply(.dat = data.frame(m = c("1", "3"), n = c(2, 4)), 
+               FUN = example_fun_with_string, 
+               str_a = "m", b = "n")
 ```
 
 
@@ -176,9 +214,9 @@ df <- data.frame(a = 2:4, b = 1:3)
 matsindf_apply(df, FUN = example_fun)
 ```
 
-Furthermore, `matsindf_apply` works with a `matsindf` data frame,
+Furthermore, `matsindf_apply()` works with a `matsindf` data frame,
 a data frame wherein each entry in the data frame is a matrix.
-To demonstrate use of `matsindf_apply` with a data frame, 
+To demonstrate use of `matsindf_apply()` with a data frame, 
 we'll construct a simple `matsindf` data frame (`midf`)
 using functions in this package.
 
@@ -223,7 +261,7 @@ With `midf` in hand, we can demonstrate use of
 functional programming to perform
 matrix algebra within a data frame.
 The functions of the `matsbyname` package
-(such as `difference_byname` below)
+(such as `difference_byname()` below)
 can be used for this purpose.
 
 ```{r}
@@ -244,7 +282,7 @@ or a 1000-row `matsindf` data frame.
 
 ## Programming with matsindf_apply
 
-Users can write their own functions using `matsindf_apply`. 
+Users can write their own functions using `matsindf_apply()`. 
 A flexible `calc_W` function can be written as follows. 
 
 ```{r}
@@ -264,16 +302,16 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
 }
 ```
 
-This style of writing `matsindf_apply` functions is incredibly versatile,
+This style of writing `matsindf_apply()` functions is incredibly versatile,
 leveraging the capabilities of both the `matsindf` and `matsbyname` packages. 
 (Indeed, the `Recca` package 
-uses `matsindf_apply` heavily and
+uses `matsindf_apply()` heavily and
 is built upon the functions in the `matsindf` and `matsbyname` packages.)
 
 Functions written like `calc_W`
-can operate in ways similar to `matsindf_apply` itself.
-To demonstrate, we'll use `calc_W` in all the ways that `matsindf_apply` can be used,
-going in the reverse order to our demonstration of the capabilities of `matsindf_apply` above.
+can operate in ways similar to `matsindf_apply()` itself.
+To demonstrate, we'll use `calc_W` in all the ways that `matsindf_apply()` can be used,
+going in the reverse order to our demonstration of the capabilities of `matsindf_apply()` above.
 
 `calc_W` can be used as a specialized `mutate` function
 that operates on `matsindf` data frames.
@@ -289,7 +327,7 @@ using the `W` argument.
 midf %>% calc_W(W = "W_prime")
 ```
 
-As with `matsindf_apply`, 
+As with `matsindf_apply()`, 
 column names in `midf` can be mapped to the arguments of `calc_W`
 by the arguments to `calc_W`.
 
@@ -302,7 +340,7 @@ midf %>%
 `calc_W` can operate on lists of single matrices, too.
 This approach works, because the default values for the 
 `U` and `V` arguments to `calc_W` are 
-"`U`" and "`V`", respectively.
+"U" and "V", respectively.
 The input list members (in this case `midf$U[[1]]` and `midf$V[[1]]`)
 are returned with the output.
 
@@ -336,17 +374,17 @@ calc_W(U = 2, V = 3)
 ## Conclusion
 
 This vignette demonstrated use of
-the versatile `matsindf_apply` function.
-Inputs to `matsindf_apply` can be 
+the versatile `matsindf_apply()` function.
+Inputs to `matsindf_apply()` can be 
 
 * single numbers,
 * matrices, or
 * data frames with appropriately-named columns.
 
-`matsindf_apply` can be used for programming, and 
+`matsindf_apply()` can be used for programming, and 
 functions constructed as demonstrated above
-share characteristics with `matsindf_apply`:
+share characteristics with `matsindf_apply()`:
 
-* they can be used as specialized `mutate` operators, and
+* they can be used as specialized `dplyr::mutate()` operators, and
 * they can be applied to single numbers, matrices, or
   data frames with appropriately-named columns.

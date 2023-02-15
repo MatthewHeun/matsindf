@@ -4,7 +4,10 @@ output: html_document
 ---
 
 
-* All functions now work with both `matrix` and `Matrix` objects.
+* All functions now work with both `matrix` and `Matrix` objects,
+  thereby enabling use of sparse matrices.
+  Use `matsbyname::Matrix()` to create sparse matrices
+  as appropriate.
 * `mat_to_rowcolval()` now accepts `Matrix` objects
   in the `.matrix` argument.
 * `rowcolval_to_mat()` gains a `class` argument

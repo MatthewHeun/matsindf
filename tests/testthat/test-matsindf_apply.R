@@ -43,20 +43,6 @@ test_that("matsindf_apply() works as expected for single Matrix objects", {
 })
 
 
-
-
-
-
-
-
-########## Got to here #################
-
-
-
-
-
-
-
 test_that("matsindf_apply() works as expected for lists of single values", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
@@ -80,6 +66,27 @@ test_that("matsindf_apply() works as expected for lists of matrices", {
   b <- a
   c <- a + b
   d <- a - b
+  a <- list(a, a)
+  b <- list(b, b)
+  DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE)
+  # Because DF_expected$c and DF_expected$d are created with I(list()), their class is "AsIs".
+  # Need to set the class of DF_expected$c and DF_expected$d to NULL to get a match.
+  attr(DF_expected$c, which = "class") <- NULL
+  attr(DF_expected$d, which = "class") <- NULL
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), DF_expected)
+})
+
+
+test_that("matsindf_apply() works as expected for lists of Matrix objects", {
+  example_fun <- function(a, b){
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                          dimnames = list(c("r1", "r2"), c("c1", "c2")),
+                          rowtype = "rows", coltype = "cols")
+  b <- a
+  c <- matsbyname::sum_byname(a, b)
+  d <- matsbyname::difference_byname(a, b)
   a <- list(a, a)
   b <- list(b, b)
   DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE)
@@ -117,6 +124,42 @@ test_that("matsindf_apply() works as expected using .DF with matrices", {
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
   expect_equal(result, expected, ignore_attr = TRUE)
 })
+
+
+test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
+  example_fun <- function(a, b){
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                          dimnames = list(c("r1", "r2"), c("c1", "c2")),
+                          rowtype = "rows", coltype = "cols")
+  b <- a
+  c <- matsbyname::sum_byname(a, b)
+  d <- matsbyname::difference_byname(a, b)
+  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)), stringsAsFactors = FALSE)
+  result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
+  expect_equal(result, expected, ignore_attr = TRUE)
+  # Try with piped .DF argument
+  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
+  expect_equal(result, expected, ignore_attr = TRUE)
+})
+
+
+
+
+########## Got to here #################
+
+
+
+
+
+
+
+
+
+
+
 
 
 test_that("matsindf_apply() fails as expected when not all same type for ...", {

@@ -4,6 +4,14 @@ output: html_document
 ---
 
 
+
+* `mat_to_rowcolval()` now accepts `Matrix` objects
+  in the `.matrix` argument.
+* `rowcolval_to_mat()` gains a `class` argument
+  that specifies whether a `matrix` or a `Matrix` 
+  shoule be created.
+
+
 # matsindf 0.3.12 (2023-01-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7567047.svg)](https://doi.org/10.5281/zenodo.7567047)
 
 * Fixed a differential error message challenge for tests.

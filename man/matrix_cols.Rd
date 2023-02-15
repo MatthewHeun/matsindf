@@ -16,10 +16,12 @@ Default is \code{FALSE}.}
 \item{.any}{A boolean that tells whether a column is reported when
 \code{any()} of the rows contain matrices
 (instead of \code{all()} rows contain matrices).
-Default is \code{FALSE}.}
+Default is \code{FALSE}, in which case
+all entries in a column must be a matrix for
+the column to be reported.}
 }
 \value{
-A vector of integers saying which columns contain solely matrices.
+A vector of integers saying which columns contain matrices.
 }
 \description{
 It is often helpful to find the columns of a \code{matsindf}

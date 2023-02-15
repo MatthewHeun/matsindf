@@ -29,6 +29,34 @@ test_that("matsindf_apply() works as expected for single matrices", {
 })
 
 
+test_that("matsindf_apply() works as expected for single Matrix objects", {
+  example_fun <- function(a, b){
+    return(list(c = matsbyname::sum_byname(a, b),
+                d = matsbyname::difference_byname(a, b)))
+  }
+  a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                          dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  b <- a
+  expected_list <- list(c = a + b, d = a - b)
+  expect_equal(example_fun(a, b), expected_list)
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_list)
+})
+
+
+
+
+
+
+
+
+########## Got to here #################
+
+
+
+
+
+
+
 test_that("matsindf_apply() works as expected for lists of single values", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))

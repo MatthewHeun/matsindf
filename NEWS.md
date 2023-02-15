@@ -4,14 +4,14 @@ output: html_document
 ---
 
 
-
+* All functions now work with both `matrix` and `Matrix` objects.
 * `mat_to_rowcolval()` now accepts `Matrix` objects
   in the `.matrix` argument.
 * `rowcolval_to_mat()` gains a `class` argument
   that specifies whether a `matrix` or a `Matrix` 
   should be created.
 * Many new tests to verify that the package works with `Matrix` objects.
-    - Now at 302 tests, all passing.
+    - Now at 323 tests, all passing.
     - Test coverage remains at 100 %.
 
 

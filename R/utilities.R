@@ -142,8 +142,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
-                             fill = 0, class = c("matrix", "Matrix")){
-  class <- match.arg(class)
+                             fill = 0, matrix.class = c("matrix", "Matrix")){
+  matrix.class <- match.arg(matrix.class)
   if (!is.null(rowtypes)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
     if (rowtypes %in% colnames(.DF)) {
@@ -206,7 +206,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     tibble::column_to_rownames(var = rownames) %>%
     as.matrix() %>%
     matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
-  if (class == "Matrix") {
+  if (matrix.class == "Matrix") {
     out <- matsbyname::Matrix(out)
   }
   return(out)

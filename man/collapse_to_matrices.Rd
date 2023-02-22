@@ -12,7 +12,7 @@ collapse_to_matrices(
   colnames = "colnames",
   rowtypes = if ("rowtypes" \%in\% names(.DF)) "rowtypes" else NULL,
   coltypes = if ("coltypes" \%in\% names(.DF)) "coltypes" else NULL,
-  class = c("matrix", "Matrix")
+  matrix.class = c("matrix", "Matrix")
 )
 }
 \arguments{
@@ -40,7 +40,7 @@ so that failure to set the rowtypes argument will give \code{NULL}, as appropria
 Default is \code{if ("coltypes" \%in\% names(.DF)) "rowtypes" else NULL},
 so that failure to set the coltypes argument will give \code{NULL}, as appropriate.}
 
-\item{class}{The type of matrix to be created, one of "matrix" or "Matrix".
+\item{matrix.class}{The type of matrix to be created, one of "matrix" or "Matrix".
 Default is "matrix".}
 }
 \value{

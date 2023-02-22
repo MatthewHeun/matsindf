@@ -12,7 +12,7 @@ rowcolval_to_mat(
   rowtypes = "rowtypes",
   coltypes = "coltypes",
   fill = 0,
-  class = c("matrix", "Matrix")
+  matrix.class = c("matrix", "Matrix")
 )
 }
 \arguments{

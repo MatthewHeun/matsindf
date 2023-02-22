@@ -30,7 +30,7 @@ rowcolval_to_mat(
 
 \item{fill}{The value for missing entries in the resulting matrix. default is \code{0}.}
 
-\item{class}{The type of matrix to be created, one of "matrix" or "Matrix".
+\item{matrix.class}{The type of matrix to be created, one of "matrix" or "Matrix".
 Default is "matrix".}
 }
 \value{

@@ -101,8 +101,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @param rowtypes  An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".
 #' @param coltypes  An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".
 #' @param fill      The value for missing entries in the resulting matrix. default is `0`.
-#' @param class     The type of matrix to be created, one of "matrix" or "Matrix".
-#'                  Default is "matrix".
+#' @param matrix.class The type of matrix to be created, one of "matrix" or "Matrix".
+#'                     Default is "matrix".
 #'
 #' @return A matrix with named rows and columns and, optionally, row and column types.
 #'

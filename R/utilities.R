@@ -47,7 +47,13 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
                              drop = NA){
-  if (is.matrix(.matrix)) {
+  if (matsbyname::is_matrix_or_Matrix(.matrix)) {
+    if (matsbyname::is.Matrix(.matrix)) {
+      temp <- as.matrix(.matrix) %>%
+        matsbyname::setrowtype(matsbyname::rowtype(.matrix)) %>%
+        matsbyname::setcoltype(matsbyname::coltype(.matrix))
+      .matrix <- temp
+    }
     out <- .matrix %>%
       data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>%
       tibble::rownames_to_column(var = rownames) %>%
@@ -83,6 +89,11 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' it is assumed that this is a single value, not a matrix,
 #' in which case the value in the `values` column is returned.
 #'
+#' Note that two types of matrices can be created, a `matrix` or a `Matrix`.
+#' `Matrix` has the advantage of representing sparse matrices with less memory
+#' (and disk space).
+#' `Matrix` objects are created by `matsbyname::Matrix()`.
+#'
 #' @param .DF       A tidy data frame containing columns for row names, column names, and values.
 #' @param matvals   The name of the column in `.DF` containing values with which to fill the matrix (a string). Default is "matvals".
 #' @param rownames  The name of the column in `.DF` containing row names (a string). Default is "rownames".
@@ -90,6 +101,8 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @param rowtypes  An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".
 #' @param coltypes  An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".
 #' @param fill      The value for missing entries in the resulting matrix. default is `0`.
+#' @param matrix.class The type of matrix to be created, one of "matrix" or "Matrix".
+#'                     Default is "matrix".
 #'
 #' @return A matrix with named rows and columns and, optionally, row and column types.
 #'
@@ -128,7 +141,9 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #'                           matvals = "vals", rowtypes = "rt", coltypes = "ct")}
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
-                             rowtypes = "rowtypes", coltypes = "coltypes", fill = 0){
+                             rowtypes = "rowtypes", coltypes = "coltypes",
+                             fill = 0, matrix.class = c("matrix", "Matrix")){
+  matrix.class <- match.arg(matrix.class)
   if (!is.null(rowtypes)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
     if (rowtypes %in% colnames(.DF)) {
@@ -174,7 +189,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   # The remainder of the rows have matrix information stored in the columns
   # rownames, colnames, rowtype, coltype
   # Put that data in a matrix and return it.
-  .DF %>%
+  out <- .DF %>%
     dplyr::select(!!rownames, !!colnames, !!matvals) %>%
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
@@ -191,7 +206,12 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     tibble::column_to_rownames(var = rownames) %>%
     as.matrix() %>%
     matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
+  if (matrix.class == "Matrix") {
+    out <- matsbyname::Matrix(out)
+  }
+  return(out)
 }
+
 
 #' Index a column in a data frame by groups relative to an initial year
 #'
@@ -577,9 +597,11 @@ df_to_msg <- function(df) {
 #' @param .any A boolean that tells whether a column is reported when
 #'             `any()` of the rows contain matrices
 #'             (instead of `all()` rows contain matrices).
-#'             Default is `FALSE`.
+#'             Default is `FALSE`, in which case
+#'             all entries in a column must be a matrix for
+#'             the column to be reported.
 #'
-#' @return A vector of integers saying which columns contain solely matrices.
+#' @return A vector of integers saying which columns contain matrices.
 #'
 #' @export
 #'
@@ -605,7 +627,7 @@ matrix_cols <- function(.df, .drop_names = FALSE, .any = FALSE) {
   out <- sapply(cnames, FUN = function(this_cname) {
     this_col <- .df[[this_cname]]
     true_false <- sapply(this_col, FUN = function(this_item) {
-      is.matrix(this_item)
+      matsbyname::is_matrix_or_Matrix(this_item)
     })
     if (.any) {
       return(any(true_false))

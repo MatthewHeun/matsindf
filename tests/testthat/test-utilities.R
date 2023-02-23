@@ -81,7 +81,8 @@ test_that("index_column works as expected", {
   expect_equal(index_column(DF3 %>% dplyr::group_by(Country, matname), var_to_index = "matvals") %>% as.data.frame(stringsAsFactors = FALSE), expected3)
 })
 
-test_that("rowcolval_to_mat (collapse) works as expected", {
+
+test_that("rowcolval_to_mat() (collapse) works as expected", {
   # Establish some matrices that we expect to see.
   expected_mat <- matrix(c(11, 12,
                            0,  22),
@@ -149,12 +150,92 @@ test_that("rowcolval_to_mat (collapse) works as expected", {
 })
 
 
-test_that("mat_to_rowcolval (expand) works as expected", {
+test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
+  # Establish some matrices that we expect to see.
+  expected_mat <- matsbyname::Matrix(c(11, 12,
+                                       0,  22),
+                                     nrow = 2, ncol = 2, byrow = TRUE,
+                                     dimnames = list(c("p1", "p2"), c("i1", "i2")))
+  expected_mat_with_types <- expected_mat %>%
+    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
+
+  # Create a data frame that can be converted to a matrix.
+  rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
+                          rows = c( "p1",  "p1", "p2"),
+                          cols = c( "i1",  "i2", "i2"),
+                          vals = c(  11  ,  12,   22 ),
+                          stringsAsFactors = FALSE)
+  A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+                        rowtypes = NULL, coltypes = NULL, matrix.class = "Matrix")
+  expect_true(inherits(A, "Matrix"))
+  expect_equal(A, expected_mat)
+  expect_null(matsbyname::rowtype(A)) # rowtype has not been set
+  expect_null(matsbyname::coltype(A)) # coltype has not been set
+
+  # Provide single row and column types to be applied to all entries.
+  B <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+                        rowtypes  = "Products", coltypes  = "Industries",
+                        matrix.class = "Matrix")
+  expect_true(matsbyname::is.Matrix(B))
+  expect_equal(B, expected_mat_with_types)
+
+  # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
+  C <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                ct = c("Industries", "Industries", "Industries"),
+                                stringsAsFactors = FALSE)) %>%
+    rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
+                     rowtypes = "rt", coltypes = "ct",
+                     matrix.class = "Matrix")
+  expect_equal(C, expected_mat_with_types)
+
+  # Also works for single values if both the rownames and colnames columns contain NA
+  rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
+                           rowtypes = c(NA), coltypes = c(NA), vals = c(2),
+                           stringsAsFactors = FALSE)
+  D <- rowcolval2 %>%
+    rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
+                     rowtypes = "rowtype", coltypes = "coltype",
+                     matrix.class = "Matrix")
+  expect_equal(D, 2)
+
+  # Try without rowtype or coltype columns in the data frame.
+  rowcolval3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2), stringsAsFactors = FALSE)
+  E <- rowcolval3 %>%
+    rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
+                     matrix.class = "Matrix")
+  expect_equal(E, 2)
+
+  # Fails when rowtype or coltype not all same. In rowcolval4, column rt is not all same.
+  rowcolval4 <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Industries", "Products"),
+                                ct = c("Industries", "Industries", "Industries"),
+                                stringsAsFactors = FALSE))
+  expect_error(rowcolval_to_mat(rowcolval4,
+                                rownames = "rows", colnames = "cols",
+                                matvals = "vals",
+                                rowtypes = "rt", coltypes = "ct",
+                                matrix.class = "Matrix"),
+               "Not all values in rt \\(rowtype\\) were same as first entry: Products")
+  rowcolval5 <- rowcolval %>%
+    dplyr::bind_cols(data.frame(rt = c("Products", "Products", "Products"),
+                                ct = c("Industries", "Products", "Industries"),
+                                stringsAsFactors = FALSE))
+  expect_error(rowcolval_to_mat(rowcolval5,
+                                rownames = "rows", colnames = "cols",
+                                matvals = "vals",
+                                rowtypes = "rt", coltypes = "ct",
+                                matrix.class = "Matrix"),
+               "Not all values in ct \\(coltype\\) were same as first entry: Industries")
+})
+
+
+test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   # This is the matrix we expect to obtain.
-  expected_mat <- matrix(c(11, 12,
-                           0,  22),
-                         nrow = 2, ncol = 2, byrow = TRUE,
-                         dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
+  expected_mat <- matsbyname::Matrix(c(11, 12,
+                                       0,  22),
+                                     nrow = 2, ncol = 2, byrow = TRUE,
+                                     dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
     matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # This is the data frame that we'll use the construct the matrix
@@ -175,18 +256,20 @@ test_that("mat_to_rowcolval (expand) works as expected", {
   # Construct the matrix that we'll convert later to a data frame.
   A <- data %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols",
-                     rowtypes = "rt",   coltypes = "ct", matvals = "vals")
+                     rowtypes = "rt",   coltypes = "ct", matvals = "vals",
+                     matrix.class = "Matrix")
+  expect_true(matsbyname::is.Matrix(A))
   expect_equal(A, expected_mat)
 
   # Verify that if we feed garbage into the function, we obtain an error
   expect_error(mat_to_rowcolval("A",
-                   rownames = "rows", colnames = "cols",
-                   rowtypes = "rt", coltypes = "ct",
-                   matvals = "vals",
-                   drop = 0) %>% magrittr::set_rownames(NULL),
+                                rownames = "rows", colnames = "cols",
+                                rowtypes = "rt", coltypes = "ct",
+                                matvals = "vals",
+                                drop = 0) %>% magrittr::set_rownames(NULL),
                "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
-  # Veryfy that we can convert the matrix to a data frame.
+  # Verify that we can convert the matrix to a data frame.
   expect_equal(mat_to_rowcolval(A,
                                 rownames = "rows", colnames = "cols",
                                 rowtypes = "rt", coltypes = "ct",
@@ -196,7 +279,8 @@ test_that("mat_to_rowcolval (expand) works as expected", {
                data)
 
   # Try when rowtype and coltype are not specified.
-  A_trimmed <- A %>% matsbyname::setrowtype(NULL) %>% matsbyname::setcoltype(NULL)
+  A_trimmed <- A %>%
+    matsbyname::setrowtype(NULL) %>% matsbyname::setcoltype(NULL)
   expect_equal(mat_to_rowcolval(A_trimmed,
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
@@ -215,25 +299,12 @@ test_that("mat_to_rowcolval (expand) works as expected", {
       rownames() %>% as.numeric(),
     # Rownames are 1, 3, 4, because row 2 (p2, i1) has an entry of 0.
     c(1, 3, 4))
-
-  # This also works for single values
-  expect_equal(mat_to_rowcolval(2, rownames = "rows", colnames = "cols", rowtypes = "rt", coltypes = "ct", matvals = "vals"),
-               data.frame(rows = NA, cols = NA, vals = 2, rt = NA, ct = NA, stringsAsFactors = FALSE)
-  )
-  # For a 0 value when we drop 0's, we get a zero-length data frame
-  B <- mat_to_rowcolval(0,
-                        rownames = "rows", colnames = "cols",
-                        rowtypes = "rt", coltypes = "ct",
-                        matvals = "vals",
-                        drop = 0)
-  expect_equal(B %>% nrow(), 0)
-  expect_equal(names(B), c("rows", "cols", "vals", "rt", "ct"))
-
 })
 
 
-test_that("add_UKEnergy2000_matnames works as expected", {
-  UKEnergy2000_withUVY <- UKEnergy2000 %>% matsindf:::add_UKEnergy2000_matnames(.)
+test_that("add_UKEnergy2000_matnames() works as expected", {
+  UKEnergy2000_withUVY <- UKEnergy2000 %>%
+    matsindf:::add_UKEnergy2000_matnames()
   # We have saved a previous result for the add_UKEnergy2000_matnames function
   # with the following code:
   # UKEnergy2000_with_UVY <- UKEnergy2000 %>% add_matnames()
@@ -246,8 +317,8 @@ test_that("add_UKEnergy2000_matnames works as expected", {
 
 test_that("add_UKEnergy2000_row_col_meta() works as expected", {
   UKEnergy2000_with_metadata <- UKEnergy2000 %>%
-    matsindf:::add_UKEnergy2000_matnames(.) %>%
-    matsindf:::add_UKEnergy2000_row_col_meta(.)
+    matsindf:::add_UKEnergy2000_matnames() %>%
+    matsindf:::add_UKEnergy2000_row_col_meta()
   # We have saved a previous result for the add_row_col_meta function with the following code:
   # UKEnergy2000_with_metadata <- UKEnergy2000_with_UVY %>% add_row_col_meta()
   # saveRDS(UKEnergy2000_with_metadata, file = "tests/UKEnergy2000_with_metadata.rds")
@@ -346,6 +417,7 @@ test_that("everything_except() works as expected for strings", {
   expect_equal(everything_except(DF, list("a"), .symbols = FALSE), c("b", "c"))
 })
 
+
 test_that("group_by_everything_except works as expected", {
   DF <- tibble::tibble(a = c(1, 2), b = c(3, 4), c = c(5, 6))
   # Ensure everything is in the grouping variables grouped if ... is empty or NULL.
@@ -419,5 +491,36 @@ test_that("matrix_cols() works as expected", {
   expect_equal(matrix_cols(matsdf2, .drop_names = TRUE), integer())
   expect_equal(matrix_cols(matsdf2, .drop_names = TRUE, .any = TRUE), 2)
 })
+
+
+test_that("matrix_cols() works with Matrix objects", {
+  tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                         row = c("i1", "i1", "i2", "i1", "i2"),
+                         col = c("p1", "p2", "p2", "p1", "p2"),
+                         vals = c(1, 2, 3, 4, 5)) %>%
+    dplyr::mutate(
+      rowtypes = "Industries",
+      coltypes  = "Products"
+    ) %>%
+    dplyr::group_by(matrix)
+  matsdf <- tidy %>%
+    collapse_to_matrices(matnames = "matrix", matvals = "vals",
+                         rownames = "row", colnames = "col",
+                         rowtypes = "rowtypes", coltypes = "coltypes",
+                         matrix.class = "Matrix") %>%
+    dplyr::mutate(
+      integer = 42,
+      string = "hello world"
+    )
+  expect_equal(matrix_cols(matsdf), c(vals = 2))
+
+  # Add a row without a matrix
+  df <- tibble::tribble(~matrix, ~vals,
+                        "None", list(42))
+  matsdf2 <- dplyr::bind_rows(matsdf, df)
+  expect_equal(matrix_cols(matsdf2, .drop_names = TRUE), integer())
+  expect_equal(matrix_cols(matsdf2, .drop_names = TRUE, .any = TRUE), 2)
+})
+
 
 

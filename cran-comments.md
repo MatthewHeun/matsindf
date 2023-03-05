@@ -1,7 +1,7 @@
 ## Context
 
-`matsindf` v0.3.12 provides a couple bug fixes, adds a couple functions,
-and cleans up several tests.
+`matsindf` v0.4.0 now works with `Matrix` objects,
+thereby enabling sparse matrix representation of data.
 See `NEWS.md` for details.
 
 

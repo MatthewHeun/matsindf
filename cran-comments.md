@@ -12,9 +12,13 @@ See `NEWS.md` for details.
     * warnings: 0
     * notes: 0
 * GitHub Actions: windows-latest (release)
-
+    * errors: 0
+    * warnings: 0
+    * notes: 0
 * GitHub Actions: macos-latest (release)
-
+    * errors: 0
+    * warnings: 0
+    * notes: 0
 * GitHub Actions: ubuntu-latest (release)
     * errors: 0
     * warnings: 0

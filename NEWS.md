@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# matsindf 0.4.0 (2023-03-04)
+# matsindf 0.4.0 (2023-03-05)
 
 * All functions now work with both `matrix` and `Matrix` objects,
   thereby enabling use of sparse matrices.

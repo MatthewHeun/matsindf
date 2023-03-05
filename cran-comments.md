@@ -7,18 +7,14 @@ See `NEWS.md` for details.
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.1 (Ventura), R4.2.2
+* local: macOS X 13.2.1 (Ventura), R4.2.2
     * errors: 0
     * warnings: 0
     * notes: 0
 * GitHub Actions: windows-latest (release)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
+
 * GitHub Actions: macos-latest (release)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
+
 * GitHub Actions: ubuntu-latest (release)
     * errors: 0
     * warnings: 0
@@ -32,14 +28,14 @@ See `NEWS.md` for details.
     * warnings: 0
     * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`
-        * Repeated attempts all lead to the same error message:
-        * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
-        * Looks like win-builder is not accepting connections for win_release.
-    * `devtools::check_win_devel()`
-        * Repeated attempts all lead to the same error message:
-        * Error in curl::curl_fetch_memory(url, handle = h) : Failed FTP upload: 550
-        * Looks like win-builder is not accepting connections for win_devel.
+    * `devtools::check_win_release()`, R version 4.2.2 (2022-10-31 ucrt)
+        * errors: 0
+        * warnings: 0
+        * notes: 0
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-03-04 r83937 ucrt)
+        * errors: 0
+        * warnings: 0
+        * notes: 0
     * `devtools::check_win_oldrelease()`, R version 4.1.3 (2022-03-10)
         * errors: 0
         * warnings: 0
@@ -50,20 +46,22 @@ See `NEWS.md` for details.
             * errors: 0
             * warnings: 0
             * notes: 1
-            * checking for detritus in the temp directory ... NOTE Found the following files/directories: 'lastMiKTeXException'
-            * This looks to be a mal-configuration of this test machine.
+                - checking for detritus in the temp directory ... NOTE
+                - Found the following files/directories:
+                - 'lastMiKTeXException'
+                - This note appears to be a minor problem with the cleanup process, not caused by the `matsindf` package itself.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * errors: 0
             * warnings: 0
-            * notes: 1
-            * checking HTML version of manual ... NOTE Skipping checking HTML validation: no command 'tidy' found
-            * This appears to be an error unique to rhub Linux environments.
+            * notes: 0
+            * Although this test setp reports a `PREPERROR`, R CMD check reports `OK`.
         * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
             * notes: 1
-            * checking HTML version of manual ... NOTE Skipping checking HTML validation: no command 'tidy' found
-            * This appears to be an error unique to rhub Linux environments.
+                - checking HTML version of manual ... NOTE
+                - Skipping checking HTML validation: no command 'tidy' found
+                - This NOTE appears to be an anomaly, as it occurs only in this test setup.
 
 
 ## revdepcheck results

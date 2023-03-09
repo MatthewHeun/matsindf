@@ -4,7 +4,23 @@ output: html_document
 ---
 
 
-# matsindf 0.3.12 (2023-01-24)
+# matsindf 0.4.0 (2023-03-07)
+
+* All functions now work with both `matrix` and `Matrix` objects,
+  thereby enabling use of sparse matrices.
+  Use `matsbyname::Matrix()` to create sparse matrices
+  as appropriate.
+* `mat_to_rowcolval()` now accepts `Matrix` objects
+  in the `.matrix` argument.
+* `rowcolval_to_mat()` gains a `matrix.class` argument
+  that specifies whether a `matrix` or a `Matrix` 
+  should be created.
+* Many new tests to verify that the package works with `Matrix` objects.
+    - Now at 323 tests, all passing.
+    - Test coverage remains at 100 %.
+
+
+# matsindf 0.3.12 (2023-01-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7567047.svg)](https://doi.org/10.5281/zenodo.7567047)
 
 * Fixed a differential error message challenge for tests.
 * Move tests associated with `verify_cols_missing()`

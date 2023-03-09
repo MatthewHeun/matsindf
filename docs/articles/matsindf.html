@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-01-24</h4>
+            <h4 data-toc-skip class="date">2023-03-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/matsindf.Rmd" class="external-link"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="d-none name"><code>matsindf.Rmd</code></div>
@@ -264,9 +264,9 @@ frame.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">UKEnergy2000_with_metadata</span> <span class="op">&lt;-</span> <span class="va">UKEnergy2000</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Add a column indicating the matrix in which this entry belongs (U, V, or Y).</span></span>
-<span>  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_matnames.html">add_UKEnergy2000_matnames</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Add columns for row names, column names, row types, and column types.</span></span>
-<span>  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">matsindf</span><span class="fu">:::</span><span class="fu"><a href="../reference/add_UKEnergy2000_row_col_meta.html">add_UKEnergy2000_row_col_meta</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    <span class="co"># Eliminate columns we no longer need</span></span>
 <span>    Ledger.side <span class="op">=</span> <span class="cn">NULL</span>,</span>

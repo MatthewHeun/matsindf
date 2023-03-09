@@ -11,7 +11,8 @@ rowcolval_to_mat(
   colnames = "colnames",
   rowtypes = "rowtypes",
   coltypes = "coltypes",
-  fill = 0
+  fill = 0,
+  matrix.class = c("matrix", "Matrix")
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ rowcolval_to_mat(
 \item{coltypes}{An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".}
 
 \item{fill}{The value for missing entries in the resulting matrix. default is \code{0}.}
+
+\item{matrix.class}{The type of matrix to be created, one of "matrix" or "Matrix".
+Default is "matrix".}
 }
 \value{
 A matrix with named rows and columns and, optionally, row and column types.
@@ -41,6 +45,12 @@ The resulting matrix is a (under the hood) a data frame.
 If both \code{rownames} and \code{colnames} columns of \code{.DF} contain \code{NA},
 it is assumed that this is a single value, not a matrix,
 in which case the value in the \code{values} column is returned.
+}
+\details{
+Note that two types of matrices can be created, a \code{matrix} or a \code{Matrix}.
+\code{Matrix} has the advantage of representing sparse matrices with less memory
+(and disk space).
+\code{Matrix} objects are created by \code{matsbyname::Matrix()}.
 }
 \examples{
 library(matsbyname)

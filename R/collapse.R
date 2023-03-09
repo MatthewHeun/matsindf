@@ -35,6 +35,11 @@
 #'
 #' Groups are not preserved on output.
 #'
+#' Note that two types of matrices can be created, a `matrix` or a `Matrix`.
+#' `Matrix` has the advantage of representing sparse matrices with less memory
+#' (and disk space).
+#' `Matrix` objects are created by `matsbyname::Matrix()`.
+#'
 #' @param .DF the "tidy" data frame
 #' @param matnames A string identifying the column in `.DF` containing matrix names for matrices to be created.
 #'                 Default is "matnames".
@@ -52,6 +57,8 @@
 #' @param coltypes An optional string identifying the column in `.DF` containing the type of values in columns of the matrices to be created
 #'                 Default is `if ("coltypes" %in% names(.DF)) "rowtypes" else NULL`,
 #'                 so that failure to set the coltypes argument will give `NULL`, as appropriate.
+#' @param matrix.class    The type of matrix to be created, one of "matrix" or "Matrix".
+#'                        Default is "matrix".
 #'
 #' @return A data frame with matrices in the `matvals` column.
 #'
@@ -88,7 +95,9 @@
 #' mats %>% pivot_wider(names_from = matrix, values_from = vals)
 collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals", rownames = "rownames", colnames = "colnames",
                                  rowtypes = if ("rowtypes" %in% names(.DF)) "rowtypes" else NULL,
-                                 coltypes = if ("coltypes" %in% names(.DF)) "coltypes" else NULL) {
+                                 coltypes = if ("coltypes" %in% names(.DF)) "coltypes" else NULL,
+                                 matrix.class = c("matrix", "Matrix")) {
+  matrix.class <- match.arg(matrix.class)
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
@@ -104,7 +113,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
     # xor is TRUE when is.null(rowtypes) is different from is.null(coltypes).
     # When is.null(rowtypes) is different from is.null(coltypes),
     # this is almost surely an error.
-    # Why would anyone set rowtype but not coltype, or vice versa.
+    # Why would anyone set rowtype but not coltype, or vice versa?
     # Identify this error.
     stop(paste("One of rowtypes or coltypes was non-NULL while the other was NULL.",
                "Both need to be NULL or both need to be non-NULL in collapse_to_matrices."))
@@ -119,8 +128,9 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
     } } %>%
     dplyr::do(
       # Convert .DF to matrices
-      !!matvals := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
-                                    rowtypes = rowtypes, coltypes = coltypes)
+      "{matvals}" := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
+                                      rowtypes = rowtypes, coltypes = coltypes,
+                                      matrix.class = matrix.class)
     ) %>%
     dplyr::select(!!!dplyr::group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)

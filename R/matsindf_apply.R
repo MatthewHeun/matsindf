@@ -287,7 +287,7 @@ matsindf_apply_types <- function(...){
     # arguments are present in the ... argument.
     dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
     all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
-    all_dots_mats <- all(lapply(dots_except_NULL, FUN = is.matrix) %>% as.logical())
+    all_dots_mats <- all(lapply(dots_except_NULL, FUN = matsbyname::is_matrix_or_Matrix) %>% as.logical())
     all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
     all_dots_vect <- all(lapply(dots_except_NULL, FUN = function(x){
       (!"matrix" %in% class(x)) & (length(x) > 1)

@@ -70,7 +70,7 @@ See the example.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -158,7 +158,8 @@ See the example.</p>
 <span>  rownames <span class="op">=</span> <span class="st">"rownames"</span>,</span>
 <span>  colnames <span class="op">=</span> <span class="st">"colnames"</span>,</span>
 <span>  rowtypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"rowtypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"rowtypes"</span> <span class="kw">else</span> <span class="cn">NULL</span>,</span>
-<span>  coltypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"coltypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"coltypes"</span> <span class="kw">else</span> <span class="cn">NULL</span></span>
+<span>  coltypes <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="st">"coltypes"</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">.DF</span><span class="op">)</span><span class="op">)</span> <span class="st">"coltypes"</span> <span class="kw">else</span> <span class="cn">NULL</span>,</span>
+<span>  matrix.class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -201,6 +202,11 @@ so that failure to set the rowtypes argument will give <code>NULL</code>, as app
 Default is <code>if ("coltypes" %in% names(.DF)) "rowtypes" else NULL</code>,
 so that failure to set the coltypes argument will give <code>NULL</code>, as appropriate.</p></dd>
 
+
+<dt>matrix.class</dt>
+<dd><p>The type of matrix to be created, one of "matrix" or "Matrix".
+Default is "matrix".</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -211,6 +217,10 @@ so that failure to set the coltypes argument will give <code>NULL</code>, as app
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Groups are not preserved on output.</p>
+<p>Note that two types of matrices can be created, a <code>matrix</code> or a <code>Matrix</code>.
+<code>Matrix</code> has the advantage of representing sparse matrices with less memory
+(and disk space).
+<code>Matrix</code> objects are created by <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

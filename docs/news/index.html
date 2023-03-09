@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,7 +55,20 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.3.12" id="matsindf-0312-2023-01-24">matsindf 0.3.12 (2023-01-24)<a class="anchor" aria-label="anchor" href="#matsindf-0312-2023-01-24"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.4.0" id="matsindf-040-2023-03-07">matsindf 0.4.0 (2023-03-07)<a class="anchor" aria-label="anchor" href="#matsindf-040-2023-03-07"></a></h2>
+<ul><li>All functions now work with both <code>matrix</code> and <code>Matrix</code> objects, thereby enabling use of sparse matrices. Use <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code> to create sparse matrices as appropriate.</li>
+<li>
+<code><a href="../reference/mat_to_rowcolval.html">mat_to_rowcolval()</a></code> now accepts <code>Matrix</code> objects in the <code>.matrix</code> argument.</li>
+<li>
+<code><a href="../reference/rowcolval_to_mat.html">rowcolval_to_mat()</a></code> gains a <code>matrix.class</code> argument that specifies whether a <code>matrix</code> or a <code>Matrix</code> should be created.</li>
+<li>Many new tests to verify that the package works with <code>Matrix</code> objects.
+<ul><li>Now at 323 tests, all passing.</li>
+<li>Test coverage remains at 100 %.</li>
+</ul></li>
+</ul></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.12" id="matsindf-0312-2023-01-24-doi">matsindf 0.3.12 (2023-01-24) <a href="https://doi.org/10.5281/zenodo.7567047" class="external-link"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.7567047.svg" alt="DOI"></a>
+<a class="anchor" aria-label="anchor" href="#matsindf-0312-2023-01-24-doi"></a></h2><p class="text-muted">CRAN release: 2023-01-24</p>
 <ul><li>Fixed a differential error message challenge for tests.</li>
 <li>Move tests associated with <code><a href="../reference/verify_cols_missing.html">verify_cols_missing()</a></code> from the <code>Recca</code> package to <code>matsindf</code>. Those tests didn’t belong in <code>Recca</code>.</li>
 <li>Updated to the latest version of the github actions continuous integration workflow.</li>

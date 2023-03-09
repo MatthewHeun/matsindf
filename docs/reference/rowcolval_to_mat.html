@@ -24,7 +24,7 @@ in which case the value in the values column is returned."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.12</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,7 +89,8 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span>  colnames <span class="op">=</span> <span class="st">"colnames"</span>,</span>
 <span>  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>,</span>
 <span>  coltypes <span class="op">=</span> <span class="st">"coltypes"</span>,</span>
-<span>  fill <span class="op">=</span> <span class="fl">0</span></span>
+<span>  fill <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  matrix.class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -122,12 +123,24 @@ in which case the value in the <code>values</code> column is returned.</p>
 <dt>fill</dt>
 <dd><p>The value for missing entries in the resulting matrix. default is <code>0</code>.</p></dd>
 
+
+<dt>matrix.class</dt>
+<dd><p>The type of matrix to be created, one of "matrix" or "Matrix".
+Default is "matrix".</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
 <p>A matrix with named rows and columns and, optionally, row and column types.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Note that two types of matrices can be created, a <code>matrix</code> or a <code>Matrix</code>.
+<code>Matrix</code> has the advantage of representing sparse matrices with less memory
+(and disk space).
+<code>Matrix</code> objects are created by <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code>.</p>
     </div>
 
     <div class="section level2">
@@ -161,7 +174,7 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Commodities"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"coltype")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Industries"</span>
-<span class="r-in"><span><span class="va">C</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Commodities"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">C</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Commodities"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                   ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span>,</span></span>
 <span class="r-in"><span>                   rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span></span>
@@ -183,7 +196,7 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span class="r-in"><span><span class="va">data3</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span>rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>, matvals <span class="op">=</span> <span class="st">"vals"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2</span>
 <span class="r-in"><span><span class="co"># Fails when rowtypes or coltypes not all same. In data3, column rt is not all same.</span></span></span>
-<span class="r-in"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Industries"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span><span class="va">data4</span> <span class="op">&lt;-</span> <span class="va">data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_cols.html" class="external-link">bind_cols</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rt <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Commodities"</span>, <span class="st">"Industries"</span>, <span class="st">"Commodities"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                                       ct <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Industries"</span>, <span class="st">"Industries"</span>, <span class="st">"Industries"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="fu">rowcolval_to_mat</span><span class="op">(</span><span class="va">data4</span>, rownames <span class="op">=</span> <span class="st">"rows"</span>, colnames <span class="op">=</span> <span class="st">"cols"</span>,</span></span>
 <span class="r-in"><span>                          matvals <span class="op">=</span> <span class="st">"vals"</span>, rowtypes <span class="op">=</span> <span class="st">"rt"</span>, coltypes <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span></span></span>

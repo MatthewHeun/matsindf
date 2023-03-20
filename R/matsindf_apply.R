@@ -50,6 +50,10 @@
 #' If `FUN` works despite the missing argument, execution proceeds.
 #' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
 #'
+#' If the input data (in `.dat` or in `...`) contains lists or vectors of zero length,
+#' `.dat` (if present) is returned unmodified.
+#' If `.dat` is not present, `...` is returned wrapped in a `list()`.
+#'
 #' @param .dat a list of named items or a data frame.
 #' @param FUN the function to be applied to `.dat`.
 #' @param ... named arguments to be passed by name to `FUN`.
@@ -125,18 +129,23 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # The result of Map is a named list.
     # But when the names are present for one list but not another,
     # binary matsbyname functions will fail.
-    out_list <- Map(f = FUN, ...) %>%
+    out_list <- Map(f = FUN, ...) |>
       unname() %>%
       purrr::transpose()
     # Work around a possible error condition here.
     numcols <- length(out_list)
     if (numcols == 0) {
-      numrows <- 0
+      # We got nothing back from FUN.
+      # Return the original input.
+      if (!missing(.dat)) {
+        return(.dat)
+      }
+      return(list(...))
     } else {
       numrows <- length(out_list[[1]])
     }
     # Create a data frame filled with NA values.
-    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) %>%
+    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) |>
       magrittr::set_names(names(out_list))
     # Fill the data frame with new columns.
     for (j in 1:numcols) {
@@ -156,7 +165,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
     .dat_names_in_FUN <- (names(.dat) %>%
-                            magrittr::set_names(names(.dat)) %>%
+                            magrittr::set_names(names(.dat)) |>
                             as.list())[FUN_arg_names]
     # Create a list of arguments to use when extracting information from .dat
     # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.

@@ -67,6 +67,10 @@ of a column in \code{.dat},
 I.e., that argument is treated as missing.
 If \code{FUN} works despite the missing argument, execution proceeds.
 If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
+
+If the input data (in \code{.dat} or in \code{...}) contains lists or vectors of zero length,
+\code{.dat} (if present) is returned unmodified.
+If \code{.dat} is not present, \code{...} is returned wrapped in a \code{list()}.
 }
 \examples{
 library(matsbyname)

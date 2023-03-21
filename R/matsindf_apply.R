@@ -4,6 +4,8 @@
 #' performs the calculation specified by `FUN`
 #' on numbers or matrices.
 #' `FUN` must return a named list.
+#' The names become columns in the return data frame.
+#' The values become entries in columns in the return data frame.
 #'
 #' If `is.null(.dat)` and `...` are all named numbers or matrices
 #' of the form `argname = m`,
@@ -31,7 +33,7 @@
 #'
 #' `.dat` can be a list of named items in which case a list will be returned.
 #'
-#' If items in `.dat` have same names are arguments to `FUN`,
+#' If items in `.dat` have same names as arguments to `FUN`,
 #' it is not necessary to specify any arguments in `...`.
 #' `matsindf_apply` assumes that the appropriately-named items in `.dat` are
 #' intended to be arguments to `FUN`.
@@ -52,7 +54,7 @@
 #'
 #' If `.dat` is a zero-row data frame, `.dat` is returned unmodified.
 #' If `.dat` is a list of items with zero length, `.dat` is returned unmodified.
-#' If `.dat` is `NULL` and items in `...` have zero length,
+#' If `.dat` is `NULL` (the default) and items in `...` have zero length,
 #' `...` is wrapped in a list and returned.
 #'
 #' @param .dat A list of named items or a data frame.

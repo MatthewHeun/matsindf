@@ -50,13 +50,14 @@
 #' If `FUN` works despite the missing argument, execution proceeds.
 #' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
 #'
-#' If the input data (in `.dat` or in `...`) contains lists or vectors of zero length,
-#' `.dat` (if present) is returned unmodified.
-#' If `.dat` is not present, `...` is returned wrapped in a `list()`.
+#' If `.dat` is a zero-row data frame, `.dat` is returned unmodified.
+#' If `.dat` is a list of items with zero length, `.dat` is returned unmodified.
+#' If `.dat` is `NULL` and items in `...` have zero length,
+#' `...` is wrapped in a list and returned.
 #'
-#' @param .dat a list of named items or a data frame.
-#' @param FUN the function to be applied to `.dat`.
-#' @param ... named arguments to be passed by name to `FUN`.
+#' @param .dat A list of named items or a data frame.
+#' @param FUN The function to be applied to `.dat`.
+#' @param ... Named arguments to be passed by name to `FUN`.
 #'
 #' @return A named list or a data frame. (See details.)
 #'

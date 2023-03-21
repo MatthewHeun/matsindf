@@ -508,7 +508,7 @@ test_that("matsindf_apply() works in degenerate case", {
 })
 
 
-test_that("matsindf_apply() works with zero-row data frames", {
+test_that("matsindf_apply() works as desired with zero-row data frames", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -534,11 +534,37 @@ test_that("matsindf_apply() works with zero-row data frames", {
   # Now try with no rows in df
   dfzero <- df[0, ]
   res <- matsindf_apply(dfzero, FUN = example_fun, a_var = "acol", b_var = "bcol")
+  # Should return the input data frame unmodified.
   expect_equal(res, dfzero)
 })
 
 
-test_that("matsindf_apply() works with zero-length lists", {
+test_that("matsindf_apply() works as desired with zero-length lists and matrix objects", {
+  example_fun <- function(a_var, b_var){
+    return(list(c = matsbyname::sum_byname(a_var, b_var),
+                d = matsbyname::difference_byname(a_var, b_var)))
+  }
+  a <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+              dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  b <- a + 1
+  c <- a + b
+  d <- a - b
+  expected_df <- tibble::tribble(~c, ~d,
+                                 c, d,
+                                 c, d) |>
+    as.data.frame()
+
+  res <- matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
+
+  expect_equal(res, expected_df)
+
+  # Now try with zero-length lists
+  res_zero <- matsindf_apply(FUN = example_fun, a = list(), b = list())
+  expect_equal(res_zero, list(a = list(), b = list()))
+})
+
+
+test_that("matsindf_apply() works as desired with zero-length lists and Matrix objects", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -546,7 +572,19 @@ test_that("matsindf_apply() works with zero-length lists", {
   a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
                           dimnames = list(c("r1", "r2"), c("c1", "c2")))
   b <- a + 1
+  c <- a + b
+  d <- a - b
+  expected_df <- tibble::tribble(~c, ~d,
+                                 c, d,
+                                 c, d) |>
+    as.data.frame()
 
-  res <- matsindf_apply(FUN = example_fun, list(a, a), list(b, b))
+  res <- matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
+
+  expect_equal(res, expected_df)
+
+  # Now try with zero-length lists
+  res_zero <- matsindf_apply(FUN = example_fun, a = list(), b = list())
+  expect_equal(res_zero, list(a = list(), b = list()))
 })
 

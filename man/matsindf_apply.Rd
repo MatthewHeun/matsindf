@@ -7,11 +7,11 @@
 matsindf_apply(.dat = NULL, FUN, ...)
 }
 \arguments{
-\item{.dat}{a list of named items or a data frame.}
+\item{.dat}{A list of named items or a data frame.}
 
-\item{FUN}{the function to be applied to \code{.dat}.}
+\item{FUN}{The function to be applied to \code{.dat}.}
 
-\item{...}{named arguments to be passed by name to \code{FUN}.}
+\item{...}{Named arguments to be passed by name to \code{FUN}.}
 }
 \value{
 A named list or a data frame. (See details.)
@@ -68,9 +68,10 @@ I.e., that argument is treated as missing.
 If \code{FUN} works despite the missing argument, execution proceeds.
 If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 
-If the input data (in \code{.dat} or in \code{...}) contains lists or vectors of zero length,
-\code{.dat} (if present) is returned unmodified.
-If \code{.dat} is not present, \code{...} is returned wrapped in a \code{list()}.
+If \code{.dat} is a zero-row data frame, \code{.dat} is returned unmodified.
+If \code{.dat} is a list of items with zero length, \code{.dat} is returned unmodified.
+If \code{.dat} is \code{NULL} and items in \code{...} have zero length,
+\code{...} is wrapped in a list and returned.
 }
 \examples{
 library(matsbyname)

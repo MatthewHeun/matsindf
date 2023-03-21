@@ -68,7 +68,8 @@
 #' @examples
 #' library(matsbyname)
 #' example_fun <- function(a, b){
-#'   return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+#'   return(list(c = sum_byname(a, b),
+#'               d = difference_byname(a, b)))
 #' }
 #' # Single values for arguments
 #' matsindf_apply(FUN = example_fun, a = 2, b = 2)
@@ -96,6 +97,11 @@
 #' matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 #' # A warning is issued when an output item has same name as an input item.
 #' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
+#' # When a zero-row data frame supplied to .dat,
+#' # .dat is returned unmodified.
+#' DF3 <- DF2[0, ]
+#' DF3
+#' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {

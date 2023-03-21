@@ -21,6 +21,8 @@ Applies \code{FUN} to \code{.dat} or
 performs the calculation specified by \code{FUN}
 on numbers or matrices.
 \code{FUN} must return a named list.
+The names become columns in the return data frame.
+The values become entries in columns in the return data frame.
 }
 \details{
 If \code{is.null(.dat)} and \code{...} are all named numbers or matrices
@@ -49,7 +51,7 @@ a warning is emitted.
 
 \code{.dat} can be a list of named items in which case a list will be returned.
 
-If items in \code{.dat} have same names are arguments to \code{FUN},
+If items in \code{.dat} have same names as arguments to \code{FUN},
 it is not necessary to specify any arguments in \code{...}.
 \code{matsindf_apply} assumes that the appropriately-named items in \code{.dat} are
 intended to be arguments to \code{FUN}.
@@ -70,13 +72,14 @@ If \code{FUN} cannot handle the missing argument, an error will occur in \code{F
 
 If \code{.dat} is a zero-row data frame, \code{.dat} is returned unmodified.
 If \code{.dat} is a list of items with zero length, \code{.dat} is returned unmodified.
-If \code{.dat} is \code{NULL} and items in \code{...} have zero length,
+If \code{.dat} is \code{NULL} (the default) and items in \code{...} have zero length,
 \code{...} is wrapped in a list and returned.
 }
 \examples{
 library(matsbyname)
 example_fun <- function(a, b){
-  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+  return(list(c = sum_byname(a, b),
+              d = difference_byname(a, b)))
 }
 # Single values for arguments
 matsindf_apply(FUN = example_fun, a = 2, b = 2)
@@ -104,4 +107,9 @@ matsindf_apply(list(a = 1, b = 2), FUN = example_fun)
 matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 # A warning is issued when an output item has same name as an input item.
 matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
+# When a zero-row data frame supplied to .dat,
+# .dat is returned unmodified.
+DF3 <- DF2[0, ]
+DF3
+matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
 }

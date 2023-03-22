@@ -4,7 +4,10 @@ output: html_document
 ---
 
 
-* Zero-length inputs now return their original input.
+* `matsbyname_apply()` now returns the original input 
+  unmodified (except possibly wrapped in a `list()`) when 
+  the input has zero rows (in the case of a data frame)
+  or zero length (in the case of lists).
 
 
 # matsindf 0.4.0 (2023-03-07) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7713764.svg)](https://doi.org/10.5281/zenodo.7713764)

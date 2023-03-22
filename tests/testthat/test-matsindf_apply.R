@@ -498,13 +498,14 @@ test_that("matsindf_apply() works for a string and numbers", {
 })
 
 
-test_that("matsindf_apply() works in degenerate case", {
-  expect_error(
+test_that("matsindf_apply() works as desired in degenerate case", {
+
+  expected <- list(a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL)
+
+  expect_equal(
     matsindf_apply(FUN = `+`, a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL),
-    # The first error (out of bounds) is provided by newer versions of R.
-    # The second error (zero-length) is provided by older versions of R.
-    "subscript out of bounds|zero-length inputs cannot be mixed with those of non-zero length"
-  )
+    expected
+    )
 })
 
 

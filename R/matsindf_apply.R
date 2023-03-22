@@ -250,7 +250,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # resulting in code coverage less than 100%.
   # But, it is actually impossible to get here.
   # By commenting this code,
-  # the package will get to 100% testing coverage.
+  # the package obtains 100% testing coverage.
   #
   # If we get here, we don't know how to deal with our inputs.
   # Try our best to give a meaningful error message.

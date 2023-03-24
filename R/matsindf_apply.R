@@ -192,7 +192,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # If an arg is not present in .dat, it will be NULL in arg_cols.
     # To treat it as "missing," we remove it from the arg_cols.
     arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
-    # Then, we call FUN, possibly with the missing argument.
+    # Then, we call FUN, possibly with the missing argument(s).
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
     result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
@@ -231,9 +231,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     dots <- dots[which(!chars)]
     if (length(dots) == 0) {
       # We have eliminated all of the arguments.
-      # This is most certainly an error.
+      # This is possibly an error.
       # And calling ourselves again would result in a stack overflow.
-      stop(".dat was missing and all arguments were strings")
+      # But we will die trying.
+      # So just try to call FUN without any arguments.
+      return(do.call(FUN, args = list()))
+      # stop(".dat was missing and all arguments were strings")
     }
     # Now that we have eliminated the missing string arguments,
     # call ourselves again.

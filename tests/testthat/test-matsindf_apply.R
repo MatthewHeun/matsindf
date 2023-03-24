@@ -607,4 +607,16 @@ test_that("matsindf_apply() works with empty lists", {
   # Try with zero-length lists
   res_zero <- matsindf_apply(FUN = example_fun, a = a_list_0, b = b_list_0)
   expect_equal(res_zero, list(a = a_list[0], b = b_list[0]))
+
+  # Try with a zero-length variable store
+  var_store <- list(a = a_list_0, b = b_list_0)
+  res_zero_2 <- matsindf_apply(var_store, FUN = example_fun)
+  expect_equal(res_zero_2, list(a = a_list[0], b = b_list[0]))
+})
+
+
+test_that("matsindf_apply() works with a no-argument function", {
+  example_fun <- function() {42}
+
+  expect_equal(matsindf_apply(FUN = example_fun), 42)
 })

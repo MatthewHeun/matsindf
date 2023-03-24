@@ -589,3 +589,22 @@ test_that("matsindf_apply() works as desired with zero-length lists and Matrix o
   expect_equal(res_zero, list(a = list(), b = list()))
 })
 
+
+test_that("matsindf_apply() works with empty lists", {
+  example_fun <- function(a_var, b_var){
+    return(list(c = matsbyname::sum_byname(a_var, b_var),
+                d = matsbyname::difference_byname(a_var, b_var)))
+  }
+  a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                          dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  b <- a + 1
+
+  a_list <- list(a = a)
+  b_list <- list(b = b)
+  a_list_0 <- a_list[0]
+  b_list_0 <- b_list[0]
+
+  # Try with zero-length lists
+  res_zero <- matsindf_apply(FUN = example_fun, a = a_list_0, b = b_list_0)
+  expect_equal(res_zero, list(a = a_list[0], b = b_list[0]))
+})

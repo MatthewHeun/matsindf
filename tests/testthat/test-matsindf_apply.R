@@ -180,6 +180,9 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
 
 
 test_that("matsindf_apply() fails as expected when .DF argument is not a data frame or a list", {
+  example_fun <- function(a, b){
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
                ".dat was missing and all arguments were strings")
 })

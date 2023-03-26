@@ -105,6 +105,7 @@
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {
+      # is.list(.dat) covers the cases where .dat is either a list or a data frame.
       # If we get here, we have a value for .dat that doesn't make sense.
       # Throw an error.
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
@@ -112,7 +113,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
   types <- matsindf_apply_types(...)
 
-  # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
+  # is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
     # Get the names of the arguments to FUN
     FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))

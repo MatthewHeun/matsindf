@@ -551,13 +551,13 @@ test_that("matsindf_apply() works as desired with zero-length lists and matrix o
                                  c, d) |>
     as.data.frame()
 
-  res <- matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
+  res <- matsindf_apply(FUN = example_fun, a_var = list(a, a), b_var = list(b, b))
 
   expect_equal(res, expected_df)
 
   # Now try with zero-length lists
-  res_zero <- matsindf_apply(FUN = example_fun, a = list(), b = list())
-  expect_equal(res_zero, list(a = list(), b = list()))
+  res_zero <- matsindf_apply(FUN = example_fun, a_var = list(), b_var = list())
+  expect_equal(res_zero, list(a_var = list(), b_var = list(), c = list(), d = list()))
 })
 
 
@@ -576,13 +576,13 @@ test_that("matsindf_apply() works as desired with zero-length lists and Matrix o
                                  c, d) |>
     as.data.frame()
 
-  res <- matsindf_apply(FUN = example_fun, a = list(a, a), b = list(b, b))
+  res <- matsindf_apply(FUN = example_fun, a_var = list(a, a), b_var = list(b, b))
 
   expect_equal(res, expected_df)
 
   # Now try with zero-length lists
-  res_zero <- matsindf_apply(FUN = example_fun, a = list(), b = list())
-  expect_equal(res_zero, list(a = list(), b = list()))
+  res_zero <- matsindf_apply(FUN = example_fun, a_var = list(), b_var = list())
+  expect_equal(res_zero, list(a_var = list(), b_var = list(), c = list(), d = list()))
 })
 
 
@@ -601,13 +601,13 @@ test_that("matsindf_apply() works with empty lists (Cases 5 and 15)", {
   b_list_0 <- b_list[0]
 
   # Try with zero-length lists (Case 5)
-  res_zero <- matsindf_apply(FUN = example_fun, a = a_list_0, b = b_list_0)
-  expect_equal(res_zero, list(a = a_list[0], b = b_list[0]))
+  res_zero <- matsindf_apply(FUN = example_fun, a_var = a_list_0, b_var = b_list_0)
+  expect_equal(res_zero, list(a_var = a_list[0], b_var = b_list[0], c = list(), d = list()))
 
   # Try with a zero-length variable store (Case 15)
-  var_store <- list(a = a_list_0, b = b_list_0)
+  var_store <- list(a_var = a_list_0, b_var = b_list_0)
   res_zero_2 <- matsindf_apply(var_store, FUN = example_fun)
-  expect_equal(res_zero_2, list(a = a_list[0], b = b_list[0]))
+  expect_equal(res_zero_2, list(a_var = a_list[0], b_var = b_list[0], c = list(), d = list()))
 })
 
 

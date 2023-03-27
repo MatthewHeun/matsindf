@@ -103,7 +103,7 @@
 #' DF3
 #' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
-  types <- matsindf_apply_types(.dat, ...)
+  types <- matsindf_apply_types(.dat, FUN, ...)
 
   if (!types$.dat_null) {
     if (!types$.dat_list) {
@@ -117,7 +117,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (types$.dat_list & types$dots_present & !types$all_dots_char) {
     # Case 14
     # Get the names of the arguments to FUN
-    FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+    FUN_arg_names <- types$FUN_arg_names
     # Combine the arguments in ... and .dat, keeping arguments in ... when the same name is present in both.
     new_dots <- c(list(...), .dat)[FUN_arg_names]
     # Re-call with the new arguments (neglecting the arguments to .dat)
@@ -174,14 +174,16 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Cases 11 and 13
     dots <- list(...)
     # Get the names of arguments to FUN.
-    FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+    FUN_arg_names <- types$FUN_arg_names
     # Get arguments in dots whose names are also names of arguments to FUN
     dot_names_in_FUN <- dots[FUN_arg_names]
+    # Get the names in .dat
+    .dat_names <- types$.dat_names
     # Get the names of items or columns in .dat that are also arguments to FUN,
     # but do this in a way that assumes the names of the items or columns are the names
     # to be used for the arguments.
-    .dat_names_in_FUN <- (names(.dat) %>%
-                            magrittr::set_names(names(.dat)) |>
+    .dat_names_in_FUN <- (.dat_names %>%
+                            magrittr::set_names(.dat_names) |>
                             as.list())[FUN_arg_names]
     # Create a list of arguments to use when extracting information from .dat
     # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
@@ -277,9 +279,10 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
 #' Determine types of `.dat` and `...` arguments for matsindf_apply()
 #'
-#' This is a convenience function that returns a logical list
-#' for the types of `.dat` and `...`
-#' with components named `.dat_null`, `.dat_df`, `.dat_list`,
+#' This is a convenience function that returns a list
+#' for the types of `.dat` and `...` as well as names in `.dat` and `...`,
+#' with components named `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
+#' `FUN_arg_names`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
 #' `all_dots_list`, `all_dots_vect`, and `all_dots_char`.
 #'
@@ -293,10 +296,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
 #'
 #' @param .dat The `.dat` argument to be checked.
+#' @param FUN The function sent to `matsindf_apply()`.
 #' @param ... The list of arguments to be checked.
 #'
 #' @return A logical list with components named
-#' `.dat_null`, `.dat_df`, `.dat_list`,
+#' `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
+#' `FUN_arg_names`,
 #' `dots_present`,
 #' `all_dot_num`, `all_dots_mats`,
 #' `all_dots_list`, and `all_dots_char`.
@@ -304,12 +309,18 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' @export
 #'
 #' @examples
-#' matsindf_apply_types(.dat = NULL, a = 1, b = 2)
-#' matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)))
-#' matsindf_apply_types(.dat = list(), a = c(1, 2), b = c(3, 4), c = c(5, 6))
-#' matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
-#' matsindf_apply_types(a = "a", b = "b", c = "c")
-matsindf_apply_types <- function(.dat, ...) {
+#' identity_fun <- function(a, b) {list(a = a, b = b)}
+#' matsindf_apply_types(.dat = NULL, FUN = identity_fun, a = 1, b = 2)
+#' matsindf_apply_types(.dat = data.frame(), FUN = identity_fun,
+#'                      a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+#' matsindf_apply_types(.dat = list(), FUN = identity_fun,
+#'                      a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
+#'                      a = list(1, 2), b = list(3, 4), c = list(5, 6))
+#' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
+#'                      a = "a", b = "b", c = "c")
+matsindf_apply_types <- function(.dat, FUN, ...) {
+  # Check .dat
   if (is.null(.dat)) {
     .dat_null <- TRUE
     .dat_df <- FALSE
@@ -327,6 +338,13 @@ matsindf_apply_types <- function(.dat, ...) {
       .dat_list <- FALSE
     }
   }
+  .dat_names <- names(.dat)
+
+  # Check FUN
+  # Arg names to FUN
+  FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
+
+  # Check ...
   dots <- list(...)
   dots_present <- length(dots) > 0
   if (!dots_present) {
@@ -355,6 +373,8 @@ matsindf_apply_types <- function(.dat, ...) {
   list(.dat_null = .dat_null,
        .dat_df = .dat_df,
        .dat_list = .dat_list,
+       .dat_names = .dat_names,
+       FUN_arg_names = FUN_arg_names,
        dots_present = dots_present,
        all_dots_num = all_dots_num,
        all_dots_mats = all_dots_mats,

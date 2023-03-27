@@ -4,24 +4,28 @@
 \alias{matsindf_apply_types}
 \title{Determine types of \code{.dat} and \code{...} arguments for matsindf_apply()}
 \usage{
-matsindf_apply_types(.dat, ...)
+matsindf_apply_types(.dat, FUN, ...)
 }
 \arguments{
 \item{.dat}{The \code{.dat} argument to be checked.}
+
+\item{FUN}{The function sent to \code{matsindf_apply()}.}
 
 \item{...}{The list of arguments to be checked.}
 }
 \value{
 A logical list with components named
-\code{.dat_null}, \code{.dat_df}, \code{.dat_list},
+\code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
+\code{FUN_arg_names},
 \code{dots_present},
 \code{all_dot_num}, \code{all_dots_mats},
 \code{all_dots_list}, and \code{all_dots_char}.
 }
 \description{
-This is a convenience function that returns a logical list
-for the types of \code{.dat} and \code{...}
-with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list},
+This is a convenience function that returns a list
+for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and \code{...},
+with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
+\code{FUN_arg_names},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
 \code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
 }
@@ -36,9 +40,14 @@ When all items in \code{...} are vectors (including lists), \code{all_dots_vect}
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 }
 \examples{
-matsindf_apply_types(.dat = NULL, a = 1, b = 2)
-matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)))
-matsindf_apply_types(.dat = list(), a = c(1, 2), b = c(3, 4), c = c(5, 6))
-matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
-matsindf_apply_types(a = "a", b = "b", c = "c")
+identity_fun <- function(a, b) {list(a = a, b = b)}
+matsindf_apply_types(.dat = NULL, FUN = identity_fun, a = 1, b = 2)
+matsindf_apply_types(.dat = data.frame(), FUN = identity_fun,
+                     a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+matsindf_apply_types(.dat = list(), FUN = identity_fun,
+                     a = c(1, 2), b = c(3, 4), c = c(5, 6))
+matsindf_apply_types(.dat = NULL, FUN = identity_fun,
+                     a = list(1, 2), b = list(3, 4), c = list(5, 6))
+matsindf_apply_types(.dat = NULL, FUN = identity_fun,
+                     a = "a", b = "b", c = "c")
 }

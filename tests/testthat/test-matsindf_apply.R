@@ -616,24 +616,36 @@ test_that("matsindf_apply() works with a no-argument function (Case 2)", {
 
 
 test_that("matsindf_apply_types() works as expected", {
-  expect_equal(matsindf_apply_types(.dat = NULL, a = 1, b = 2),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+  example_fun <- function(a, b) {c(a, b)}
+  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
+                                    a = 1, b = 2),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_names = c("a", "b"),
                     dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
-               list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE,
+  expect_equal(matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
+                                    a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
+               list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
+                    FUN_arg_names = c("a", "b"),
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(.dat = list(), a = list(1, 2), b = list(3, 4), c = list(5, 6)),
-               list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE,
+  expect_equal(matsindf_apply_types(.dat = list(a = 1, b = 2), FUN = example_fun,
+                                    a = list(1, 2), b = list(3, 4), c = list(5, 6)),
+               list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE, .dat_names = c("a", "b"),
+                    FUN_arg_names = c("a", "b"),
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(.dat = NULL, a = "a", b = "b", c = "c"),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
+                                    a = "a", b = "b", c = "c"),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_names = c("a", "b"),
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
-  expect_equal(matsindf_apply_types(.dat = NULL),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_names = c("a", "b"),
                     dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
   # Try with Matrix objects
-  expect_equal(matsindf_apply_types(.dat = NULL, a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
+                                    a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_names = c("a", "b"),
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
 })
 

@@ -205,6 +205,30 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
     result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+
+
+    # This code is probably what I want.
+    # But not sure yet. Need more testing.
+    # Will comment for now.
+    # dots_cols_could_be_strings <- dots[types$arg_source$dots]
+    # if (types$all_dots_char) {
+    #   dots_cols <- .dat[unlist(dots_cols_could_be_strings)]
+    # } else {
+    #   dots_cols <- dots_cols_could_be_strings
+    # }
+    # .dat_cols <- .dat[types$arg_source$.dat]
+    # default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
+    #
+    # arg_cols <- c(dots_cols, .dat_cols, default_cols)
+    #
+    #
+    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+
+
+
+
+
+
     # Check to see if the names of result are the same as any names of .dat.
     # If so, emit a warning.
     common_names <- intersect(names(.dat), names(result))

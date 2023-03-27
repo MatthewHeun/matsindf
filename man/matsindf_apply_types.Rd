@@ -19,7 +19,8 @@ A logical list with components named
 \code{FUN_arg_names},
 \code{dots_present},
 \code{all_dot_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_char}, and \code{dots_names}.
+\code{all_dots_list}, \code{all_dots_char}, \code{dots_names}, and
+\code{arg_source}.
 }
 \description{
 This is a convenience function that returns a list
@@ -27,7 +28,8 @@ for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and 
 with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
 \code{FUN_arg_names},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}, \code{dots_names}.
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
+\code{arg_source}.
 }
 \details{
 When \code{.dat} is a \code{data.frame}, both \code{.dat_list} and \code{.dat_df} are \code{TRUE}.
@@ -38,6 +40,11 @@ When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} a
 When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
+
+\code{arg_source} is a \code{list()} with two named member vectors, \code{.dat} and \code{dots}.
+When \code{TRUE}, parameters should be taken from the named location.
+Corresponding names will never both be \code{TRUE}.
+An error occurs if a parameter needed by \code{FUN} is available from neither \code{.dat} nor \code{...}.
 }
 \examples{
 identity_fun <- function(a, b) {list(a = a, b = b)}

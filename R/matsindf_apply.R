@@ -103,18 +103,18 @@
 #' DF3
 #' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
 matsindf_apply <- function(.dat = NULL, FUN, ...){
-  if (!is.null(.dat)) {
-    if (!is.list(.dat)) {
+  types <- matsindf_apply_types(.dat, ...)
+
+  if (!types$.dat_null) {
+    if (!types$.dat_list) {
       # Cases 6, 7, 8, 9, and 10
       # If we get here, we have a value for .dat that doesn't make sense.
       # Throw an error.
-      stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
+      stop(".dat must be NULL, a data frame, or a list in matsindf_apply(), was ", class(.dat))
     }
   }
-  types <- matsindf_apply_types(...)
 
-  # is.list(.dat) covers the cases where .dat is either a list or a data frame.
-  if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
+  if (types$.dat_list & types$dots_present & !types$all_dots_char) {
     # Case 14
     # Get the names of the arguments to FUN
     FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
@@ -170,7 +170,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
-  if (is.list(.dat) & (!types$dots_present | types$all_dots_char)) {
+  if (types$.dat_list & (!types$dots_present | types$all_dots_char)) {
     # Cases 11 and 13
     dots <- list(...)
     # Get the names of arguments to FUN.
@@ -232,7 +232,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # we'll get a result.
   # If FUN can't handle the missing arguments,
   # an error will occur.
-  if (is.null(.dat)) {
+  if (types$.dat_null) {
     dots <- list(...)
     chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
     dots <- dots[which(!chars)]
@@ -275,11 +275,15 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 }
 
 
-#' Determine types of `...` argument for matsindf_apply
+#' Determine types of `.dat` and `...` arguments for matsindf_apply()
 #'
-#' This is a convenience function that returns a logical list for the types of `...`
-#' with components named `dots_present`, `all_dots_num`, `all_dots_mats`,
-#' `all_dots_list`, `all_dots_vect``, and `all_dots_char`.
+#' This is a convenience function that returns a logical list
+#' for the types of `.dat` and `...`
+#' with components named `.dat_null`, `.dat_df`, `.dat_list`,
+#'  `dots_present`, `all_dots_num`, `all_dots_mats`,
+#' `all_dots_list`, `all_dots_vect`, and `all_dots_char`.
+#'
+#' When `.dat` is a `data.frame`, both `.dat_list` and `.dat_df` are `TRUE`.
 #'
 #' When arguments are present in `...`, `dots_present` is `TRUE` but `FALSE` otherwise.
 #' When all items in `...` are single numbers, `all_dots_num` is `TRUE` and all other list members are `FALSE`.
@@ -288,21 +292,41 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' When all items in `...` are vectors (including lists), `all_dots_vect` is `TRUE`.
 #' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
 #'
-#' @param ... the list of arguments to be checked
+#' @param .dat The `.dat` argument to be checked.
+#' @param ... The list of arguments to be checked.
 #'
-#' @return A logical list with components named `dots_present`,
+#' @return A logical list with components named
+#' `.dat_null`, `.dat_df`, `.dat_list`,
+#' `dots_present`,
 #' `all_dot_num`, `all_dots_mats`,
 #' `all_dots_list`, and `all_dots_char`.
 #'
 #' @export
 #'
 #' @examples
-#' matsindf_apply_types(a = 1, b = 2)
-#' matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)))
-#' matsindf_apply_types(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#' matsindf_apply_types(.dat = NULL, a = 1, b = 2)
+#' matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+#' matsindf_apply_types(.dat = list(), a = c(1, 2), b = c(3, 4), c = c(5, 6))
 #' matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
 #' matsindf_apply_types(a = "a", b = "b", c = "c")
-matsindf_apply_types <- function(...){
+matsindf_apply_types <- function(.dat, ...) {
+  if (is.null(.dat)) {
+    .dat_null <- TRUE
+    .dat_df <- FALSE
+    .dat_list <- FALSE
+  } else {
+    .dat_null <- FALSE
+    if (is.data.frame(.dat)) {
+      .dat_df <- TRUE
+      .dat_list <- TRUE
+    } else if (is.list(.dat)) {
+      .dat_df <- FALSE
+      .dat_list <- TRUE
+    } else {
+      .dat_df <- FALSE
+      .dat_list <- FALSE
+    }
+  }
   dots <- list(...)
   dots_present <- length(dots) > 0
   if (!dots_present) {
@@ -328,7 +352,10 @@ matsindf_apply_types <- function(...){
       all_dots_num <- FALSE
     }
   }
-  list(dots_present = dots_present,
+  list(.dat_null = .dat_null,
+       .dat_df = .dat_df,
+       .dat_list = .dat_list,
+       dots_present = dots_present,
        all_dots_num = all_dots_num,
        all_dots_mats = all_dots_mats,
        all_dots_list = all_dots_list,

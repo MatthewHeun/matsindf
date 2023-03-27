@@ -2,24 +2,32 @@
 % Please edit documentation in R/matsindf_apply.R
 \name{matsindf_apply_types}
 \alias{matsindf_apply_types}
-\title{Determine types of \code{...} argument for matsindf_apply}
+\title{Determine types of \code{.dat} and \code{...} arguments for matsindf_apply()}
 \usage{
-matsindf_apply_types(...)
+matsindf_apply_types(.dat, ...)
 }
 \arguments{
-\item{...}{the list of arguments to be checked}
+\item{.dat}{The \code{.dat} argument to be checked.}
+
+\item{...}{The list of arguments to be checked.}
 }
 \value{
-A logical list with components named \code{dots_present},
+A logical list with components named
+\code{.dat_null}, \code{.dat_df}, \code{.dat_list},
+\code{dots_present},
 \code{all_dot_num}, \code{all_dots_mats},
 \code{all_dots_list}, and \code{all_dots_char}.
 }
 \description{
-This is a convenience function that returns a logical list for the types of \code{...}
-with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \verb{all_dots_vect``, and }all_dots_char`.
+This is a convenience function that returns a logical list
+for the types of \code{.dat} and \code{...}
+with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list},
+\code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
 }
 \details{
+When \code{.dat} is a \code{data.frame}, both \code{.dat_list} and \code{.dat_df} are \code{TRUE}.
+
 When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
 When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
@@ -28,9 +36,9 @@ When all items in \code{...} are vectors (including lists), \code{all_dots_vect}
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 }
 \examples{
-matsindf_apply_types(a = 1, b = 2)
-matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)))
-matsindf_apply_types(a = c(1, 2), b = c(3, 4), c = c(5, 6))
+matsindf_apply_types(.dat = NULL, a = 1, b = 2)
+matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+matsindf_apply_types(.dat = list(), a = c(1, 2), b = c(3, 4), c = c(5, 6))
 matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
 matsindf_apply_types(a = "a", b = "b", c = "c")
 }

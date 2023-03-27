@@ -4,7 +4,7 @@ test_that("matsindf_apply() fails with an unexpected argument (Case 1)", {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(.dat = "a string", FUN = example_fun, a = 2, b = 2),
-               ".dat must be a data frame or a list in matsindf_apply, was character")
+               ".dat must be NULL, a data frame, or a list in matsindf_apply\\(\\), was character")
 })
 
 
@@ -616,18 +616,24 @@ test_that("matsindf_apply() works with a no-argument function (Case 2)", {
 
 
 test_that("matsindf_apply_types() works as expected", {
-  expect_equal(matsindf_apply_types(a = 1, b = 2),
-               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6)),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = "a", b = "b", c = "c"),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
-  expect_equal(matsindf_apply_types(),
-               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(.dat = NULL, a = 1, b = 2),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+                    dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(.dat = data.frame(), a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
+               list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE,
+                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(.dat = list(), a = list(1, 2), b = list(3, 4), c = list(5, 6)),
+               list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE,
+                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(.dat = NULL, a = "a", b = "b", c = "c"),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
+  expect_equal(matsindf_apply_types(.dat = NULL),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+                    dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
   # Try with Matrix objects
-  expect_equal(matsindf_apply_types(a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(.dat = NULL, a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE,
+                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
 })
 

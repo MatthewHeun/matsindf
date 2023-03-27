@@ -1,5 +1,5 @@
 
-test_that("matsindf_apply() fails with an unexpected argument", {
+test_that("matsindf_apply() fails with an unexpected argument (Case 1)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -8,16 +8,17 @@ test_that("matsindf_apply() fails with an unexpected argument", {
 })
 
 
-test_that("matsindf_apply() works as expected for single values", {
+test_that("matsindf_apply() works as expected for single values (Case 2)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_equal(example_fun(a = 2, b = 2), list(c = 4, d = 0))
-  expect_equal(matsindf_apply(FUN = example_fun, a = 2, b = 2), list(c = 4, d = 0))
+  expect_equal(matsindf_apply(FUN = example_fun, a = 2, b = 2),
+               list(c = 4, d = 0))
 })
 
 
-test_that("matsindf_apply() works as expected for single matrices", {
+test_that("matsindf_apply() works as expected for single matrices (Case 2)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -25,11 +26,12 @@ test_that("matsindf_apply() works as expected for single matrices", {
   b <- a
   expected_list <- list(c = a + b, d = a - b)
   expect_equal(example_fun(a, b), expected_list)
-  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_list)
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b),
+               expected_list)
 })
 
 
-test_that("matsindf_apply() works as expected for single Matrix objects", {
+test_that("matsindf_apply() works as expected for single Matrix objects (Case 2)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b),
                 d = matsbyname::difference_byname(a, b)))
@@ -43,22 +45,22 @@ test_that("matsindf_apply() works as expected for single Matrix objects", {
 })
 
 
-test_that("matsindf_apply() works as expected for lists of single values", {
+test_that("matsindf_apply() works as expected for lists of single values (Case 5)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_equal(example_fun(a = list(2, 2), b = list(2, 2)), list(c = list(4, 4), d = list(0, 0)))
 
   expect_equal(matsindf_apply(FUN = example_fun, a = list(2, 2, 2), b = list(2, 2, 2)),
-               data.frame(c = I(list(4, 4, 4)), d = I(list(0, 0, 0)), stringsAsFactors = FALSE),
+               data.frame(c = I(list(4, 4, 4)), d = I(list(0, 0, 0))),
                ignore_attr = TRUE)
   expect_equal(matsindf_apply(FUN = example_fun, a = list(2, 2), b = list(1, 2)),
-               data.frame(c = I(list(3, 4)), d = I(list(1, 0)), stringsAsFactors = FALSE),
+               data.frame(c = I(list(3, 4)), d = I(list(1, 0))),
                ignore_attr = TRUE)
 })
 
 
-test_that("matsindf_apply() works as expected for lists of matrices", {
+test_that("matsindf_apply() works as expected for lists of matrices (Case 5)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -68,16 +70,17 @@ test_that("matsindf_apply() works as expected for lists of matrices", {
   d <- a - b
   a <- list(a, a)
   b <- list(b, b)
-  DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE)
+  DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)))
   # Because DF_expected$c and DF_expected$d are created with I(list()), their class is "AsIs".
   # Need to set the class of DF_expected$c and DF_expected$d to NULL to get a match.
   attr(DF_expected$c, which = "class") <- NULL
   attr(DF_expected$d, which = "class") <- NULL
-  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), DF_expected)
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b),
+               DF_expected)
 })
 
 
-test_that("matsindf_apply() works as expected for lists of Matrix objects", {
+test_that("matsindf_apply() works as expected for lists of Matrix objects (Case 5)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -98,7 +101,7 @@ test_that("matsindf_apply() works as expected for lists of Matrix objects", {
 })
 
 
-test_that("matsindf_apply() works as expected using .DF with single numbers", {
+test_that("matsindf_apply() works as expected using .dat with single numbers (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -108,7 +111,7 @@ test_that("matsindf_apply() works as expected using .DF with single numbers", {
 })
 
 
-test_that("matsindf_apply() works as expected using .DF with matrices", {
+test_that("matsindf_apply() works as expected using .DF with matrices (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -116,17 +119,18 @@ test_that("matsindf_apply() works as expected using .DF with matrices", {
   b <- a
   c <- a + b
   d <- a - b
-  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)), stringsAsFactors = FALSE)
+  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
-  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equal(result, expected, ignore_attr = TRUE)
   # Try with piped .DF argument
-  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
+  result <- DF |>
+    matsindf_apply(FUN = example_fun, a = "a", b = "b")
   expect_equal(result, expected, ignore_attr = TRUE)
 })
 
 
-test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
+test_that("matsindf_apply() works as expected using .DF with Matrix objects (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -141,7 +145,8 @@ test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
   expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
   expect_equal(result, expected, ignore_attr = TRUE)
   # Try with piped .DF argument
-  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b")
+  result <- DF |>
+    matsindf_apply(FUN = example_fun, a = "a", b = "b")
   expect_equal(result, expected, ignore_attr = TRUE)
 })
 
@@ -162,7 +167,7 @@ test_that("matsindf_apply() fails as expected when wrong type of data is sent in
 })
 
 
-test_that("matsindf_apply() fails gracefully when some of ... are NULL", {
+test_that("matsindf_apply() fails gracefully when some of ... are NULL (Case 2)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -170,7 +175,7 @@ test_that("matsindf_apply() fails gracefully when some of ... are NULL", {
 })
 
 
-test_that("matsindf_apply() fails as expected when .DF argument is missing from a data frame", {
+test_that("matsindf_apply() fails as expected when .DF argument is missing from a data frame (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -179,7 +184,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
 })
 
 
-test_that("matsindf_apply() fails as expected when .DF argument is not a data frame or a list", {
+test_that("matsindf_apply() fails as expected when .DF argument is not a data frame or a list (Case 6)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -188,24 +193,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
 })
 
 
-test_that("matsindf_apply_types() works as expected", {
-  expect_equal(matsindf_apply_types(a = 1, b = 2),
-               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6)),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
-  expect_equal(matsindf_apply_types(a = "a", b = "b", c = "c"),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
-  expect_equal(matsindf_apply_types(),
-               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-  # Try with Matrix objects
-  expect_equal(matsindf_apply_types(a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
-               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
-})
-
-
-test_that("matsindf_apply() works with a NULL argument", {
+test_that("matsindf_apply() works with a NULL argument (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -213,10 +201,10 @@ test_that("matsindf_apply() works with a NULL argument", {
   b <- a
   c <- a + b
   d <- a - b
-  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)), stringsAsFactors = FALSE)
+  DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
   # Here is where the NULL is given as an argument to matsindp_apply.
   result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
-  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
   expect_equal(result, expected, ignore_attr = TRUE)
   # Try with piped .DF argument
   result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
@@ -224,7 +212,7 @@ test_that("matsindf_apply() works with a NULL argument", {
 })
 
 
-test_that("matsindf_apply() works with a NULL argument and Matrix objects", {
+test_that("matsindf_apply() works with a NULL argument and Matrix objects (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -243,7 +231,7 @@ test_that("matsindf_apply() works with a NULL argument and Matrix objects", {
 })
 
 
-test_that("matsindf_apply() works when .DF is a list", {
+test_that("matsindf_apply() works when .dat is a list (Case 13)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -252,28 +240,28 @@ test_that("matsindf_apply() works when .DF is a list", {
 })
 
 
-test_that("matsindf_apply() works when .DF supplies some or all argument names", {
+test_that("matsindf_apply() works when .dat supplies some or all argument names (Cases 11, 3 )", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
-  # All arguments to FUN are supplied by named items in .DF
+  # All arguments to FUN are supplied by named items in .dat (Case 11)
   expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun),
                list(a = 1, b = 2, c = 3, d = -1))
-  # All arguments are supplied by named arguments in ...
+  # All arguments are supplied by named arguments in ... (Case 3)
   expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b"),
                list(a = 1, b = 2, c = 3, d = -1))
-  # All arguments are supplied by named arguments in ..., but mix them up.
+  # All arguments are supplied by named arguments in ..., but mix them up. (Case 3)
   # Note that the named arguments override the items in .DF
   expect_equal(matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b"),
                list(a = 1, b = 2, z = 10, c = 12, d = 8))
-  # Try when one of the output names is same as an input name
+  # Try when one of the output names is same as an input name (Case 3)
   expect_warning(res <- matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b"),
                  "name collision in matsindf_apply: c")
   expect_equal(res, c(list(a = 1, b = 2, c = 10), list(c = 12, d = 8)))
 })
 
 
-test_that("matsindf_apply() works for single numbers in data frame columns", {
+test_that("matsindf_apply() works for single numbers in data frame columns (Case 12)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -286,7 +274,7 @@ test_that("matsindf_apply() works for single numbers in data frame columns", {
 })
 
 
-test_that("override works() for single numbers supplied in a list", {
+test_that("override works() for single numbers supplied in a list (Case 12)", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -295,7 +283,7 @@ test_that("override works() for single numbers supplied in a list", {
 })
 
 
-test_that("matsindf_apply() works when an argument is missing", {
+test_that("matsindf_apply() works when an argument is missing (Case 2)", {
   outer_fun <- function(.DF = NULL, a = "a", b = "b"){
     inner_fun <- function(a_num, b_num = NULL){
       return(list(c = matsbyname::sum_byname(a_num, b_num),
@@ -304,16 +292,18 @@ test_that("matsindf_apply() works when an argument is missing", {
     matsindf_apply(.DF, FUN = inner_fun, a_num = a, b_num = b)
   }
   # Make sure it works when all arguments are present.
-  expect_equal(outer_fun(a = 2, b = 2), list(c = 4, d = 0))
+  expect_equal(outer_fun(a = 2, b = 2),
+               list(c = 4, d = 0))
   # Now try when an argument is missing and the inner function can handle it.
-  expect_equal(outer_fun(a = 2), list(c = 2, d = 2))
+  expect_equal(outer_fun(a = 2),
+               list(c = 2, d = 2))
   # Try when an argument is missing and the inner function can't handle it.
   expect_error(outer_fun(b = 2),
                'argument "a_num" is missing, with no default')
 })
 
 
-test_that("matsindf_apply() works with functions similar in form to those in `Recca`", {
+test_that("matsindf_apply() works with functions similar in form to those in `Recca` (Cases 13 and 15)", {
 
   # This function is similar in form to functions in `Recca`.
   find_matching_rownames <- function(.DF = NULL,
@@ -350,13 +340,13 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
   # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
   expect_error(find_matching_rownames(prefixes = "ra", m = mat), 'argument "prefixes_arg" is missing, with no default')
 
-  # Now make lists and try again.  This works fine.
+  # Now make lists and try again.  This works fine. (Case 15)
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
   expect_type(res2, type = "list")
   expect_s3_class(res2, class = "data.frame")
   expect_equal(res2[["matching_rows"]][[1]], c("ra1", "ra2"))
 
-  # Use with lists and 2 items in each list.
+  # Use with lists and 2 items in each list. (Case 15)
   res3 <- find_matching_rownames(prefixes = list("ra", "ra"), m = list(mat, mat))
   expect_type(res3, type = "list")
   expect_s3_class(res3, class = "data.frame")
@@ -364,7 +354,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
   expect_equal(res3[["matching_rows"]][[2]], c("ra1", "ra2"))
   expect_equal(ncol(res3), 1)
 
-  # Try in a data frame.
+  # Try in a data frame. (Case 13)
   df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) %>%
     find_matching_rownames(prefixes = "prefixes")
   expect_equal(df$matching_rows[[1]], c("ra1", "ra2"))
@@ -373,7 +363,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 })
 
 
-test_that("matsindf_apply() works with functions similar in form to those in `Recca` with Matrix objects", {
+test_that("matsindf_apply() works with functions similar in form to those in `Recca` with Matrix objects (Cases 13 and 15)", {
 
   # This function is similar in form to functions in `Recca`.
   find_matching_rownames <- function(.DF = NULL,
@@ -433,7 +423,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 })
 
 
-test_that("matsindf_apply() issues a warning when replacing a column", {
+test_that("matsindf_apply() issues a warning when replacing a column (Case 13)", {
   # Create a data frame with a matrix in a column.
   a <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
   b <- 2 * a
@@ -461,7 +451,7 @@ test_that("matsindf_apply() issues a warning when replacing a column", {
 })
 
 
-test_that("matsindf_apply() issues a warning when replacing a column with Matrix objects", {
+test_that("matsindf_apply() issues a warning when replacing a column with Matrix objects (Case 13)", {
   # Create a data frame with a matrix in a column.
   a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
                           dimnames = list(c("r1", "r2"), c("c1", "c2")))
@@ -490,7 +480,7 @@ test_that("matsindf_apply() issues a warning when replacing a column with Matrix
 })
 
 
-test_that("matsindf_apply() works for a string and numbers", {
+test_that("matsindf_apply() works for a string and numbers (Case 5)", {
   example_fun <- function(str_a, b) {
     a <- as.numeric(str_a)
     list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b))
@@ -501,7 +491,7 @@ test_that("matsindf_apply() works for a string and numbers", {
 })
 
 
-test_that("matsindf_apply() works as desired in degenerate case", {
+test_that("matsindf_apply() works as desired in degenerate case (Case 5)", {
 
   expected <- list(a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL)
 
@@ -512,7 +502,7 @@ test_that("matsindf_apply() works as desired in degenerate case", {
 })
 
 
-test_that("matsindf_apply() works as desired with zero-row data frames", {
+test_that("matsindf_apply() works as desired with zero-row data frames (Case 13)", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -543,7 +533,7 @@ test_that("matsindf_apply() works as desired with zero-row data frames", {
 })
 
 
-test_that("matsindf_apply() works as desired with zero-length lists and matrix objects", {
+test_that("matsindf_apply() works as desired with zero-length lists and matrix objects (Case 5)", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -568,7 +558,7 @@ test_that("matsindf_apply() works as desired with zero-length lists and matrix o
 })
 
 
-test_that("matsindf_apply() works as desired with zero-length lists and Matrix objects", {
+test_that("matsindf_apply() works as desired with zero-length lists and Matrix objects (Case 5)", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -593,7 +583,7 @@ test_that("matsindf_apply() works as desired with zero-length lists and Matrix o
 })
 
 
-test_that("matsindf_apply() works with empty lists", {
+test_that("matsindf_apply() works with empty lists (Cases 5 and 15)", {
   example_fun <- function(a_var, b_var){
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -607,19 +597,37 @@ test_that("matsindf_apply() works with empty lists", {
   a_list_0 <- a_list[0]
   b_list_0 <- b_list[0]
 
-  # Try with zero-length lists
+  # Try with zero-length lists (Case 5)
   res_zero <- matsindf_apply(FUN = example_fun, a = a_list_0, b = b_list_0)
   expect_equal(res_zero, list(a = a_list[0], b = b_list[0]))
 
-  # Try with a zero-length variable store
+  # Try with a zero-length variable store (Case 15)
   var_store <- list(a = a_list_0, b = b_list_0)
   res_zero_2 <- matsindf_apply(var_store, FUN = example_fun)
   expect_equal(res_zero_2, list(a = a_list[0], b = b_list[0]))
 })
 
 
-test_that("matsindf_apply() works with a no-argument function", {
+test_that("matsindf_apply() works with a no-argument function (Case 2)", {
   example_fun <- function() {42}
 
   expect_equal(matsindf_apply(FUN = example_fun), 42)
 })
+
+
+test_that("matsindf_apply_types() works as expected", {
+  expect_equal(matsindf_apply_types(a = 1, b = 2),
+               list(dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6)),
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE))
+  expect_equal(matsindf_apply_types(a = "a", b = "b", c = "c"),
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE))
+  expect_equal(matsindf_apply_types(),
+               list(dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+  # Try with Matrix objects
+  expect_equal(matsindf_apply_types(a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
+               list(dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE))
+})
+

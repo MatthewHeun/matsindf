@@ -105,7 +105,7 @@
 matsindf_apply <- function(.dat = NULL, FUN, ...){
   if (!is.null(.dat)) {
     if (!is.list(.dat)) {
-      # is.list(.dat) covers the cases where .dat is either a list or a data frame.
+      # Cases 6, 7, 8, 9, and 10
       # If we get here, we have a value for .dat that doesn't make sense.
       # Throw an error.
       stop(".dat must be a data frame or a list in matsindf_apply, was ", class(.dat))
@@ -115,6 +115,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & types$dots_present & !types$all_dots_char) {
+    # Case 14
     # Get the names of the arguments to FUN
     FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))
     # Combine the arguments in ... and .dat, keeping arguments in ... when the same name is present in both.
@@ -124,12 +125,16 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   if (types$all_dots_num | types$all_dots_mats) {
+    # Cases 2 and 12
+    # ************** This probably isn't right.
+    # ************** Need to account for .dat somehow!
     # .dat is not present, and we have numbers or matrices in the ... arguments.
     # Simply call FUN on ... .
     return(FUN(...))
   }
 
   if (types$all_dots_list | types$all_dots_vect) {
+    # Cases 5 and 15
     # All arguments are coming in as lists or vectors across which FUN should be mapped.
     # Map FUN across the lists.
     # The result of Map is a list containing all the rows of output.
@@ -166,6 +171,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
   if (is.list(.dat) & (!types$dots_present | types$all_dots_char)) {
+    # Cases 11 and 13
     dots <- list(...)
     # Get the names of arguments to FUN.
     FUN_arg_names <- names(formals(get(deparse(substitute(FUN, env = .GlobalEnv)))))

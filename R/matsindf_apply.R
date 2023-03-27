@@ -284,7 +284,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' with components named `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
 #' `FUN_arg_names`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
-#' `all_dots_list`, `all_dots_vect`, and `all_dots_char`.
+#' `all_dots_list`, `all_dots_vect`, and `all_dots_char`, `dots_names`.
 #'
 #' When `.dat` is a `data.frame`, both `.dat_list` and `.dat_df` are `TRUE`.
 #'
@@ -304,7 +304,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' `FUN_arg_names`,
 #' `dots_present`,
 #' `all_dot_num`, `all_dots_mats`,
-#' `all_dots_list`, and `all_dots_char`.
+#' `all_dots_list`, `all_dots_char`, and `dots_names`.
 #'
 #' @export
 #'
@@ -370,6 +370,8 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
       all_dots_num <- FALSE
     }
   }
+  dots_names <- names(dots)
+
   list(.dat_null = .dat_null,
        .dat_df = .dat_df,
        .dat_list = .dat_list,
@@ -380,7 +382,8 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
        all_dots_mats = all_dots_mats,
        all_dots_list = all_dots_list,
        all_dots_vect = all_dots_vect,
-       all_dots_char = all_dots_char)
+       all_dots_char = all_dots_char,
+       dots_names = dots_names)
 }
 
 

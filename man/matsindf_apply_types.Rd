@@ -19,7 +19,7 @@ A logical list with components named
 \code{FUN_arg_names},
 \code{dots_present},
 \code{all_dot_num}, \code{all_dots_mats},
-\code{all_dots_list}, and \code{all_dots_char}.
+\code{all_dots_list}, \code{all_dots_char}, and \code{dots_names}.
 }
 \description{
 This is a convenience function that returns a list
@@ -27,7 +27,7 @@ for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and 
 with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
 \code{FUN_arg_names},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}.
+\code{all_dots_list}, \code{all_dots_vect}, and \code{all_dots_char}, \code{dots_names}.
 }
 \details{
 When \code{.dat} is a \code{data.frame}, both \code{.dat_list} and \code{.dat_df} are \code{TRUE}.

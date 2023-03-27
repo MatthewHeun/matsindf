@@ -181,7 +181,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
-               ".dat was missing and all arguments were strings")
+               'argument "a" is missing, with no default')
 })
 
 
@@ -190,7 +190,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
-               ".dat was missing and all arguments were strings")
+               'argument "a" is missing, with no default')
 })
 
 

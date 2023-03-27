@@ -156,7 +156,7 @@ test_that("matsindf_apply() fails as expected when not all same type for ...", {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat nor in ...: a")
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: a")
 })
 
 
@@ -300,7 +300,7 @@ test_that("matsindf_apply() works when an argument is missing (Case 2)", {
                list(c = 2, d = 2))
   # Try when an argument is missing and the inner function can't handle it.
   expect_error(outer_fun(b = 2),
-               'argument "a_num" is missing, with no default')
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: a_num")
 })
 
 
@@ -339,7 +339,8 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                   4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
   # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
-  expect_error(find_matching_rownames(prefixes = "ra", m = mat), 'argument "prefixes_arg" is missing, with no default')
+  expect_error(find_matching_rownames(prefixes = "ra", m = mat),
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: prefixes_arg")
 
   # Now make lists and try again.  This works fine. (Case 15)
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
@@ -399,7 +400,8 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                               4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
   # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
-  expect_error(find_matching_rownames(prefixes = "ra", m = mat), 'argument "prefixes_arg" is missing, with no default')
+  expect_error(find_matching_rownames(prefixes = "ra", m = mat),
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: prefixes_arg")
 
   # Now make lists and try again.  This works fine.
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))

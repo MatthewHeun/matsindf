@@ -389,8 +389,12 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   .dat_names <- names(.dat)
 
   # Check FUN
-  FUN_arg_default_values <- get_useable_default_args(FUN, which = "values")
+  # Names of all arguments
+  FUN_arg_all_names <- names(formals(FUN))
+  # Names of only those argument with defaul values
   FUN_arg_default_names <- get_useable_default_args(FUN, which = "names")
+  # The default values for the default arguments
+  FUN_arg_default_values <- get_useable_default_args(FUN, which = "values")
 
   # Check ...
   dots <- list(...)
@@ -494,12 +498,21 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
                  paste(repeat_values, collapse = ", "))
     stop(msg)
   }
+  # Double-check that all args needed for FUN are available.
+  all_required_args_present <- all(FUN_arg_all_names %in% unlist(keep_args))
+  if (!all_required_args_present) {
+    missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% unlist(keep_args))]
+    msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults:",
+                 paste(missing_args, collapse = ", "))
+    stop(msg)
+  }
 
   # Return everything.
   list(.dat_null = .dat_null,
        .dat_df = .dat_df,
        .dat_list = .dat_list,
        .dat_names = .dat_names,
+       FUN_arg_all_names = FUN_arg_all_names,
        FUN_arg_default_names = FUN_arg_default_names,
        FUN_arg_default_values = FUN_arg_default_values,
        dots_present = dots_present,

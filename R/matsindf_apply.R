@@ -439,6 +439,13 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
                                           return(NULL)
                                         }
                                       })
+  if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
+    # If the whole array is empty, set to NULL.
+    dot_args_to_pull_from_dat <- NULL
+  } else {
+    # Keep only non-NULL elements
+    dot_args_to_pull_from_dat <- dot_args_to_pull_from_dat[!sapply(dot_args_to_pull_from_dat, is.null)]
+  }
   # But don't keep arguments in dots that we'll pull from .dat.
   keep_args_dots <- setdiff(keep_args_dots, names(dot_args_to_pull_from_dat))
   # Keep all args in .dat, unless they also exist in ... ,
@@ -448,16 +455,22 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   # Now put names back on dot_args_to_pull_from_dat
   # Find matches
   new_names_keep_args_dat <- character(length(keep_args_dat))
-  for (i in 1:length(keep_args_dat)) {
-    if (keep_args_dat[i] %in% dot_args_to_pull_from_dat) {
-      # Needs a name.
-      # Find the corresponding item in dot_args_to_pull_from_dat, if it exists.
-      this_arg_has_a_name <- which(dot_args_to_pull_from_dat == keep_args_dat[i])
-      new_names_keep_args_dat[i] <- names(dot_args_to_pull_from_dat[this_arg_has_a_name])
-    } else {
-      # Nothing special here. Just name the argument by its value.
-      new_names_keep_args_dat[i] <- keep_args_dat[i]
+  if (length(new_names_keep_args_dat) > 0) {
+    # We have some new names to figure out.
+    for (i in 1:length(new_names_keep_args_dat)) {
+      if (keep_args_dat[i] %in% dot_args_to_pull_from_dat) {
+        # Needs a name.
+        # Find the corresponding item in dot_args_to_pull_from_dat, if it exists.
+        this_arg_has_a_name <- which(dot_args_to_pull_from_dat == keep_args_dat[i])
+        new_names_keep_args_dat[i] <- names(dot_args_to_pull_from_dat[this_arg_has_a_name])
+      } else {
+        # Nothing special here. Just name the argument by its value.
+        new_names_keep_args_dat[i] <- keep_args_dat[i]
+      }
     }
+  } else {
+    # We don't have any renaming to do.
+    new_names_keep_args_dat <- NULL
   }
   # Set the names on keep_args_dat.
   # The names on keep_args_dat are the names to which we will rename these columns
@@ -475,7 +488,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   args_ok <- !any(duplicated(unlist(keep_args)))
   if (!args_ok) {
     # Give a helpful error message
-    repeat_values <- all_keep_args[duplicated(all_keep_args)] |>
+    repeat_values <- keep_args[duplicated(keep_args)] |>
       unique()
     msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
                  paste(repeat_values, collapse = ", "))
@@ -522,6 +535,8 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
 #'
 #' @export
 build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {
+
+  # types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
 
   dots_df <- list(...) |>
     # Make a tibble out of the ... arguments

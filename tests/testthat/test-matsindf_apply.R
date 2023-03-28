@@ -697,12 +697,13 @@ test_that("matsindf_apply_types() works with functions that have default values"
   expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
                                     a = 1, b = 2),
                list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_names = c("a", "b", "c"),
+                    FUN_arg_default_names = c("a", "c"),
+                    FUN_arg_default_values = list(a = 2, c = "string"),
                     dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE,
                     dots_names = c("a", "b"),
-                    arg_source = list(dots = c(a = TRUE, b = TRUE, c = FALSE),
-                                      .dat = c(a = FALSE, b = FALSE, c = FALSE),
-                                      defaults = c(a = FALSE, b = FALSE, c = TRUE))))
+                    keep_args = list(dots = c("a", "b"),
+                                     .dat = NULL,
+                                     fun_defaults = "c")))
 })
 
 
@@ -714,28 +715,24 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
   DF <- tibble::tribble(~a, ~b, ~z,
                         1, 2, 3,
                         4, 5, NULL)
-
   types <- matsindf_apply_types(DF, FUN = example_fun, a_var = "a", b_var = "b")
-
   expected_df <- DF |>
     dplyr::rename(
       a_var = "a", b_var = "b"
     )
-
   res_df <- build_matsindf_apply_data_frame(types = types, .dat = DF, FUN = example_fun, a_var = "a", b_var = "b")
-
   expect_equal(names(res_df), c("a_var", "b_var", "z"))
   expect_equal(res_df, expected_df)
 
   DF_2 <- DF |>
     dplyr::select(-b)
-  types_2 <- matsindf_apply_types(DF_2, FUN = example_fun, a_var = "a", b_var = "b")
+  types_2 <- matsindf_apply_types(DF_2, FUN = example_fun, a_var = "a")
   expected_df_2 <- DF |>
     dplyr::mutate(
       b_var = c(42, 43),
       b = NULL) |>
     dplyr::rename(a_var = "a") |>
-    dplyr::select(a_var, b_var, z)
+    dplyr::select(a_var, z, b_var)
   res_df_2 <- build_matsindf_apply_data_frame(types = types_2, .dat = DF_2, FUN = example_fun)
   expect_equal(res_df_2, expected_df_2)
 })

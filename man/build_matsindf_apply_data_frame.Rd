@@ -18,7 +18,7 @@ build_matsindf_apply_data_frame(types, .dat, FUN, ...)
 \value{
 A data frame (actually, a \code{tibble})
 with columns from \code{dots}, \code{.dat}, and the default values to \code{FUN},
-according to precedence rules for \code{matsindf_apply()}..
+according to precedence rules for \code{matsindf_apply()}.
 }
 \description{
 This is an internal helper function that takes the types list

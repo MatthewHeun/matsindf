@@ -323,7 +323,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' `FUN_arg_names`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
 #' `all_dots_list`, `all_dots_vect`, `all_dots_char`, `dots_names`, and
-#' `arg_source`.
+#' `keep_args`.
 #'
 #' When `.dat` is a `data.frame`, both `.dat_list` and `.dat_df` are `TRUE`.
 #'
@@ -334,14 +334,17 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' When all items in `...` are vectors (including lists), `all_dots_vect` is `TRUE`.
 #' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
 #'
-#' `arg_source` is a `list()` with two named member vectors, `.dat` and `dots`.
-#' When `TRUE`, parameters should be taken from the named location.
-#' Corresponding names will never both be `TRUE`.
-#' An error occurs if a parameter needed by `FUN` is available from neither `.dat` nor `...`.
+#' `keep_args` is a named `list()` of arguments,
+#' which indicates which arguments to keep from which source
+#' (`...`, `.dat`, or default args to `FUN`)
+#' by order of preference,
+#' `...` over `.dat` over default arguments to `FUN`.
+#' Arguments not used by `FUN` are kept,
+#' again according to the rules of preference.
 #'
 #' @param .dat The `.dat` argument to be checked.
 #' @param FUN The function sent to `matsindf_apply()`.
-#' @param ... The list of arguments to be checked.
+#' @param ... The list of arguments to `matsindf_apply()` to be checked.
 #'
 #' @return A logical list with components named
 #' `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
@@ -349,7 +352,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' `dots_present`,
 #' `all_dot_num`, `all_dots_mats`,
 #' `all_dots_list`, `all_dots_char`, `dots_names`, and
-#' `arg_source`.
+#' `keep_args`.
 #'
 #' @export
 #'
@@ -386,12 +389,8 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   .dat_names <- names(.dat)
 
   # Check FUN
-  FUN_arg_default_values <- formals(FUN) |> as.list()
-  FUN_arg_names <- names(FUN_arg_default_values)
-  # Tell which arguments have default values for FUN.
-  # It appears that when a default is missing, the class of the argument is name.
-  # So this test figures out which ones are present or not.
-  defaults_present <- !sapply(FUN_arg_default_values, FUN = is.name)
+  FUN_arg_default_values <- get_useable_default_args(FUN, which = "values")
+  FUN_arg_default_names <- get_useable_default_args(FUN, which = "names")
 
   # Check ...
   dots <- list(...)
@@ -423,47 +422,62 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
 
   # Figure out where to pull needed parameters from, dots, .dat, or defaults.
   # Precedence is given to ... over .dat over defaults when there are conflicts.
-  args_present <- list(dots = FUN_arg_names %in% dots_names |>
-                         magrittr::set_names(FUN_arg_names),
-                       .dat = FUN_arg_names %in% .dat_names |>
-                         magrittr::set_names(FUN_arg_names),
-                       defaults = defaults_present)
+  # We take care to keep all variables that we can from each source.
+  args_present <- list(dots = dots_names,
+                       .dat = .dat_names,
+                       defaults = FUN_arg_default_names)
   # If an argument is present in ..., we use it from ... .
-  use_from_dots <- args_present$dots
-  # If an argument is NOT present in ... but is present in .dat, use it from .dat.
-  use_from_dat <- mapply(args_present$dots, args_present$.dat,
-                         FUN = function(apdots, apdat) {
-                           # We use parameters from .dat only
-                           # when the corresponding parameter is NOT in dots.
-                           !apdots & apdat
-                         })
-  # If an argument is NOT present in ... and NOT present in .dat, we use it from defaults, if possible.
-  use_from_defaults <- mapply(args_present$dots, use_from_dat, args_present$defaults,
-                              FUN = function(apdots, ufdat, apdef) {
-                                !apdots & !ufdat & apdef
-                              })
-  arg_source <- list(dots = use_from_dots, .dat = use_from_dat, defaults = use_from_defaults)
-  # Double check that each parameter has only one and only one source.
-  args_ok <- mapply(arg_source$dots, arg_source$.dat, arg_source$defaults,
-                    FUN = function(asdots, asdat, asdef) {
-                      if (!asdat & !asdots) {
-                        # We don't have the argument in .dat or ... .
-                        # The argument needs to come from defaults.
-                        # So return TRUE iff the arg is available from defaults
-                        return(asdef)
-                      }
-                      if (asdat | asdots) {
-                        # If the argument is available from .dat or ... .
-                        # We should obtain the arg from defaults.
-                        # So this arg is OK when asdef is FALSE.
-                        # Therefore, return the not of asdef.
-                        return(!asdef)
-                      }
-                    })
-  if (!all(args_ok)) {
+  keep_args_dots <- args_present$dots
+  # Check if any of these arguments have values that are single strings.
+  # If so, we actually want to keep arguments in .dat with names of these values.
+  dot_args_to_pull_from_dat <- sapply(keep_args_dots,
+                                      FUN = function(this_arg) {
+                                        if (length(this_arg) == 1 &
+                                            dots[[this_arg]] %in% args_present$.dat) {
+                                          return(dots[[this_arg]])
+                                        } else {
+                                          return(NULL)
+                                        }
+                                      })
+  # But don't keep arguments we need to pull from .dat
+  keep_args_dots <- setdiff(keep_args_dots, names(dot_args_to_pull_from_dat))
+  # Keep all args in .dat, unless they also exist in ... ,
+  keep_args_dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
+    # But be sure to keep those de-referenced arguments from ... ,
+    union(dot_args_to_pull_from_dat)
+  # Now put names back on dot_args_to_pull_from_dat
+  # Find matches
+  new_names_keep_args_dat <- character(length(keep_args_dat))
+  for (i in 1:length(keep_args_dat)) {
+    if (keep_args_dat[i] %in% dot_args_to_pull_from_dat) {
+      # Needs a name.
+      # Find the corresponding item in dot_args_to_pull_from_dat, if it exists.
+      this_arg_has_a_name <- which(dot_args_to_pull_from_dat == keep_args_dat[i])
+      new_names_keep_args_dat[i] <- names(dot_args_to_pull_from_dat[this_arg_has_a_name])
+    } else {
+      new_names_keep_args_dat[i] <- ""
+    }
+  }
+
+  keep_args_dat <- keep_args_dat |>
+    magrittr::set_names(new_names_keep_args_dat)
+
+  unnamed_keep_args_dat <- keep_args_dat[names(keep_args_dat) == ""]
+  named_keep_args_dat <- keep_args_dat[names(keep_args_dat) != ""]
+
+  # Keep all args in defaults, unless they also exist in ... or .dat.
+  keep_args_defaults <- setdiff(args_present$defaults, union(keep_args_dots, keep_args_dat)) |>
+    # Subtract off the names from keep_args_dat
+    setdiff(names(named_keep_args_dat))
+  keep_args <- list(dots = keep_args_dots, .dat = keep_args_dat, defaults = keep_args_defaults)
+  # Double check that each named argument has only one and only one source.
+  args_ok <- !any(duplicated(unlist(keep_args)))
+  if (!args_ok) {
     # Give a helpful error message
-    msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults:",
-                 paste(names(args_ok[!args_ok]), collapse = ", "))
+    repeat_values <- all_keep_args[duplicated(all_keep_args)] |>
+      unique()
+    msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
+                 paste(repeat_values, collapse = ", "))
     stop(msg)
   }
 
@@ -472,7 +486,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
        .dat_df = .dat_df,
        .dat_list = .dat_list,
        .dat_names = .dat_names,
-       FUN_arg_names = FUN_arg_names,
+       FUN_arg_default_names = FUN_arg_default_names,
        dots_present = dots_present,
        all_dots_num = all_dots_num,
        all_dots_mats = all_dots_mats,
@@ -480,7 +494,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
        all_dots_vect = all_dots_vect,
        all_dots_char = all_dots_char,
        dots_names = dots_names,
-       arg_source = arg_source)
+       keep_args = keep_args)
 }
 
 
@@ -510,11 +524,46 @@ build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {
   dots <- list(...)
   dots_df <- tibble::as_tibble(dots)
   .dat_df <- tibble::as_tibble(.dat)
-  FUN_arg_default_values <- formals(FUN) |> as.list()
+  FUN_arg_default_values <- get_useable_default_args(FUN, no_default = character(0))
   .defaults_df <- tibble::as_tibble(FUN_arg_default_values)
 
 
 }
 
 
+#' Create a usable list of default arguments to a function
+#'
+#' `formals(FUN)` does not handle arguments without a default well,
+#' returning a `name` vector of length `1`,
+#' which when converted to character is "".
+#' This function detects that condition and replaces the no-default argument with
+#' the value of `.no_default`, by default `NULL`.
+#'
+#' @param FUN A function from which values of default arguments are to be extracted.
+#' @param which Tells whether to get "names" of arguments or "values" of arguments.
+#'              Default is "values".
+#' @param no_default The placeholder value for arguments with no default.
+#'
+#' @return
+#'
+#' @examples
+#' f <- function(a = 42, b) {
+#'   return(a + b)
+#' }
+#' matsindf:::get_useable_default_args(f)
+#' matsindf:::get_useable_default_args(f, no_default = logical())
+get_useable_default_args <- function(FUN, which = c("values", "names"), no_default = NULL) {
+  which <- match.arg(which)
+  out <- formals(FUN)
+  delete_these <- sapply(out, FUN = function(x) {
+    all(is.name(x)) & all(as.character(x) == "")
+  })
+  out <- out[!delete_these]
+  if (which == "values") {
+     out <- lapply(out, FUN = eval)
+  } else if (which == "names") {
+    out <- names(out)
+  }
+  out
+}
 

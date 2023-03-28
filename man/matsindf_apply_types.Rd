@@ -11,7 +11,7 @@ matsindf_apply_types(.dat, FUN, ...)
 
 \item{FUN}{The function sent to \code{matsindf_apply()}.}
 
-\item{...}{The list of arguments to be checked.}
+\item{...}{The list of arguments to \code{matsindf_apply()} to be checked.}
 }
 \value{
 A logical list with components named
@@ -20,7 +20,7 @@ A logical list with components named
 \code{dots_present},
 \code{all_dot_num}, \code{all_dots_mats},
 \code{all_dots_list}, \code{all_dots_char}, \code{dots_names}, and
-\code{arg_source}.
+\code{keep_args}.
 }
 \description{
 This is a convenience function that returns a list
@@ -29,7 +29,7 @@ with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{
 \code{FUN_arg_names},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
 \code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
-\code{arg_source}.
+\code{keep_args}.
 }
 \details{
 When \code{.dat} is a \code{data.frame}, both \code{.dat_list} and \code{.dat_df} are \code{TRUE}.
@@ -41,10 +41,13 @@ When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and 
 When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 
-\code{arg_source} is a \code{list()} with two named member vectors, \code{.dat} and \code{dots}.
-When \code{TRUE}, parameters should be taken from the named location.
-Corresponding names will never both be \code{TRUE}.
-An error occurs if a parameter needed by \code{FUN} is available from neither \code{.dat} nor \code{...}.
+\code{keep_args} is a named \code{list()} of arguments,
+which indicates which arguments to keep from which source
+(\code{...}, \code{.dat}, or default args to \code{FUN})
+by order of preference,
+\code{...} over \code{.dat} over default arguments to \code{FUN}.
+Arguments not used by \code{FUN} are kept,
+again according to the rules of preference.
 }
 \examples{
 identity_fun <- function(a, b) {list(a = a, b = b)}

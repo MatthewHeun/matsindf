@@ -707,7 +707,7 @@ test_that("matsindf_apply_types() works with functions that have default values"
 
 
 test_that("build_matsindf_apply_data_frame() works as expected", {
-  example_fun <- function(a_var, b_var = 42) {
+  example_fun <- function(a_var, b_var = c(42, 43)) {
     c(a_var, b_var)
   }
 

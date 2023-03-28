@@ -518,7 +518,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
 #'
 #' @return A data frame (actually, a `tibble`)
 #'         with columns from `dots`, `.dat`, and the default values to `FUN`,
-#'         according to precedence rules for `matsindf_apply()`..
+#'         according to precedence rules for `matsindf_apply()`.
 #'
 #' @export
 build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {

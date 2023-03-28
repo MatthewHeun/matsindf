@@ -715,24 +715,22 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
   DF <- tibble::tribble(~a, ~b, ~z,
                         1, 2, 3,
                         4, 5, NULL)
-  types <- matsindf_apply_types(DF, FUN = example_fun, a_var = "a", b_var = "b")
   expected_df <- DF |>
     dplyr::rename(
       a_var = "a", b_var = "b"
     )
-  res_df <- build_matsindf_apply_data_frame(types = types, .dat = DF, FUN = example_fun, a_var = "a", b_var = "b")
+  res_df <- build_matsindf_apply_data_frame(.dat = DF, FUN = example_fun, a_var = "a", b_var = "b")
   expect_equal(names(res_df), c("a_var", "b_var", "z"))
   expect_equal(res_df, expected_df)
 
   DF_2 <- DF |>
     dplyr::select(-b)
-  types_2 <- matsindf_apply_types(DF_2, FUN = example_fun, a_var = "a")
   expected_df_2 <- DF |>
     dplyr::mutate(
       b_var = c(42, 43),
       b = NULL) |>
     dplyr::rename(a_var = "a") |>
     dplyr::select(a_var, z, b_var)
-  res_df_2 <- build_matsindf_apply_data_frame(types = types_2, .dat = DF_2, FUN = example_fun)
+  res_df_2 <- build_matsindf_apply_data_frame(.dat = DF_2, FUN = example_fun, a_var = "a")
   expect_equal(res_df_2, expected_df_2)
 })

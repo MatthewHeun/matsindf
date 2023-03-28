@@ -4,12 +4,12 @@
 \alias{build_matsindf_apply_data_frame}
 \title{Create a data frame consisting of the input data for matsindf_apply()}
 \usage{
-build_matsindf_apply_data_frame(types, .dat, FUN, ...)
+build_matsindf_apply_data_frame(.dat, FUN, ...)
 }
 \arguments{
-\item{types}{The output of \code{matsindf_apply_types()}.}
-
 \item{.dat}{The value of the \code{.dat} argument to \code{matsindf_apply()}, as a list or a data frame.}
+
+\item{types}{The output of \code{matsindf_apply_types()}.}
 
 \item{dots}{The contents of the \code{...} argument to \code{matsindf_apply()}, as a list or a data frame.}
 

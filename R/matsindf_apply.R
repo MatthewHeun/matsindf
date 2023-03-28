@@ -534,9 +534,9 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
 #'         according to precedence rules for `matsindf_apply()`.
 #'
 #' @export
-build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {
+build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
 
-  # types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
+  types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
 
   dots_df <- list(...) |>
     # Make a tibble out of the ... arguments

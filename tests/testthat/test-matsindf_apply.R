@@ -717,6 +717,14 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
 
   types <- matsindf_apply_types(DF, FUN = example_fun, a_var = "a", b_var = "b")
 
-  build_matsindf_apply_data_frame(types = types, .dat = DF, FUN = example_fun)
+  expected_df <- DF |>
+    dplyr::rename(
+      a_var = "a", b_var = "b"
+    )
+
+  res_df <- build_matsindf_apply_data_frame(types = types, .dat = DF, FUN = example_fun)
+
+  expect_equal(names(res_df), c("a_var", "b_var", "z"))
+  expect_equal(res_df, expected_df)
 
 })

@@ -420,16 +420,16 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   }
   dots_names <- names(dots)
 
-  # Figure out where to pull needed parameters from, dots, .dat, or defaults.
+  # Figure out where to pull needed parameters from: ..., .dat, or defaults.
   # Precedence is given to ... over .dat over defaults when there are conflicts.
   # We take care to keep all variables that we can from each source.
   args_present <- list(dots = dots_names,
                        .dat = .dat_names,
-                       defaults = FUN_arg_default_names)
+                       fun_defaults = FUN_arg_default_names)
   # If an argument is present in ..., we use it from ... .
   keep_args_dots <- args_present$dots
-  # Check if any of these arguments have values that are single strings.
-  # If so, we actually want to keep arguments in .dat with names of these values.
+  # Check if any of the arguments in ... have values that are single strings.
+  # If so, we actually want to keep arguments in .dat whose name is the value of a ... argument.
   dot_args_to_pull_from_dat <- sapply(keep_args_dots,
                                       FUN = function(this_arg) {
                                         if (length(this_arg) == 1 &
@@ -439,7 +439,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
                                           return(NULL)
                                         }
                                       })
-  # But don't keep arguments we need to pull from .dat
+  # But don't keep arguments in dots that we'll pull from .dat.
   keep_args_dots <- setdiff(keep_args_dots, names(dot_args_to_pull_from_dat))
   # Keep all args in .dat, unless they also exist in ... ,
   keep_args_dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
@@ -455,21 +455,22 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
       this_arg_has_a_name <- which(dot_args_to_pull_from_dat == keep_args_dat[i])
       new_names_keep_args_dat[i] <- names(dot_args_to_pull_from_dat[this_arg_has_a_name])
     } else {
-      new_names_keep_args_dat[i] <- ""
+      # Nothing special here. Just name the argument by its value.
+      new_names_keep_args_dat[i] <- keep_args_dat[i]
     }
   }
-
+  # Set the names on keep_args_dat.
+  # The names on keep_args_dat are the names to which we will rename these columns
+  # when we do the calcualtions.
   keep_args_dat <- keep_args_dat |>
     magrittr::set_names(new_names_keep_args_dat)
 
-  unnamed_keep_args_dat <- keep_args_dat[names(keep_args_dat) == ""]
-  named_keep_args_dat <- keep_args_dat[names(keep_args_dat) != ""]
-
   # Keep all args in defaults, unless they also exist in ... or .dat.
-  keep_args_defaults <- setdiff(args_present$defaults, union(keep_args_dots, keep_args_dat)) |>
-    # Subtract off the names from keep_args_dat
-    setdiff(names(named_keep_args_dat))
-  keep_args <- list(dots = keep_args_dots, .dat = keep_args_dat, defaults = keep_args_defaults)
+  keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_dat)) |>
+    # or in the names of keep_args_dat.
+    setdiff(names(keep_args_dat))
+  # Bundle all keep_args together in a list.
+  keep_args <- list(dots = keep_args_dots, .dat = keep_args_dat, fun_defaults = keep_args_fun_defaults)
   # Double check that each named argument has only one and only one source.
   args_ok <- !any(duplicated(unlist(keep_args)))
   if (!args_ok) {
@@ -481,12 +482,13 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
     stop(msg)
   }
 
-
+  # Return everything.
   list(.dat_null = .dat_null,
        .dat_df = .dat_df,
        .dat_list = .dat_list,
        .dat_names = .dat_names,
        FUN_arg_default_names = FUN_arg_default_names,
+       FUN_arg_default_values = FUN_arg_default_values,
        dots_present = dots_present,
        all_dots_num = all_dots_num,
        all_dots_mats = all_dots_mats,
@@ -521,13 +523,43 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
 #' @export
 build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {
 
-  dots <- list(...)
-  dots_df <- tibble::as_tibble(dots)
-  .dat_df <- tibble::as_tibble(.dat)
-  FUN_arg_default_values <- get_useable_default_args(FUN, no_default = character(0))
-  .defaults_df <- tibble::as_tibble(FUN_arg_default_values)
+  dots_df <- list(...) |>
+    # Make a tibble out of the ... arguments
+    tibble::as_tibble() |>
+    # And select only those columns that we want to keep
+    dplyr::select(dplyr::all_of(types$keep_args$dots))
 
+  # Make a tibble out of the .dat argument (list or data frame)
+  .dat_df <- tibble::as_tibble(.dat) |>
+    # Keep only the arguments we want.
+    dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
+    # And set to their new names
+    magrittr::set_names(names(types$keep_args$.dat))
 
+  # Make a tibble out of the default arguments
+  defaults_df <- tibble::as_tibble(types$FUN_arg_default_values) |>
+    dplyr::select(dplyr::all_of(types$keep_args$fun_defaults))
+
+  df_list <- list(dots_df, .dat_df, defaults_df)
+  df_list_length <- length(df_list)
+
+  # Cycle through all data frames, looking for the first one.
+  for (i in 1:df_list_length) {
+    if (nrow(df_list[[i]]) > 0) {
+      out <- df_list[[i]]
+      next_i <- i+1
+      break
+    }
+  }
+  # Start after the one we just found and
+  # cbind the other tibbles.
+  for (i in next_i:df_list_length) {
+    if (nrow(df_list[[i]]) > 0) {
+      out <- dplyr::bind_cols(out, df_list[[i]])
+    }
+  }
+  # Now return the full data frame.
+  out
 }
 
 

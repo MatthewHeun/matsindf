@@ -207,22 +207,36 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
 
 
+
+
+
+
+
+
     # This code is probably what I want.
     # But not sure yet. Need more testing.
     # Will comment for now.
-    # dots_cols_could_be_strings <- dots[types$arg_source$dots]
-    # if (types$all_dots_char) {
-    #   dots_cols <- .dat[unlist(dots_cols_could_be_strings)]
-    # } else {
-    #   dots_cols <- dots_cols_could_be_strings
-    # }
-    # .dat_cols <- .dat[types$arg_source$.dat]
-    # default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
-    #
-    # arg_cols <- c(dots_cols, .dat_cols, default_cols)
-    #
-    #
-    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+    dots_cols_could_be_strings <- dots[types$arg_source$dots]
+    if (types$all_dots_char) {
+      dots_cols <- .dat[unlist(dots_cols_could_be_strings)] |>
+        magrittr::set_names(names(dots_cols_could_be_strings))
+    } else {
+      dots_cols <- dots_cols_could_be_strings
+    }
+    .dat_cols <- .dat[types$arg_source$.dat]
+    default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
+
+    arg_cols <- c(dots_cols, .dat_cols, default_cols)
+
+
+    result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+
+
+
+
+
+
+
 
 
 
@@ -467,6 +481,39 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
        all_dots_char = all_dots_char,
        dots_names = dots_names,
        arg_source = arg_source)
+}
+
+
+#' Create a data frame consisting of the input data for matsindf_apply()
+#'
+#' This is an internal helper function that takes the types list
+#' and creates a data frame from which calculations
+#' can proceed.
+#'
+#' This function enforces the precedence rules for `matsindf_apply()`, namely that
+#' variables found in `...` take priority over
+#' variables found in `.dat`, which take priority over
+#' variables found in the default values of `FUN`.
+#'
+#' @param types The output of `matsindf_apply_types()`.
+#' @param dots The contents of the `...` argument to `matsindf_apply()`, as a list or a data frame.
+#' @param .dat The value of the `.dat` argument to `matsindf_apply()`, as a list or a data frame.
+#' @param defaults The values of the default arguments for the `FUN` argument to `matsindf_apply()`.
+#'
+#' @return A data frame (actually, a `tibble`)
+#'         with columns from `dots`, `.dat`, and the default values to `FUN`,
+#'         according to precedence rules for `matsindf_apply()`..
+#'
+#' @export
+build_matsindf_apply_data_frame <- function(types, .dat, FUN, ...) {
+
+  dots <- list(...)
+  dots_df <- tibble::as_tibble(dots)
+  .dat_df <- tibble::as_tibble(.dat)
+  FUN_arg_default_values <- formals(FUN) |> as.list()
+  .defaults_df <- tibble::as_tibble(FUN_arg_default_values)
+
+
 }
 
 

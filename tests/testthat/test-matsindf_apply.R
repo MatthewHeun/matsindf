@@ -705,3 +705,18 @@ test_that("matsindf_apply_types() works with functions that have default values"
                                       defaults = c(a = FALSE, b = FALSE, c = TRUE))))
 })
 
+
+test_that("build_matsindf_apply_data_frame() works as expected", {
+  example_fun <- function(a_var, b_var = 42) {
+    c(a_var, b_var)
+  }
+
+  DF <- tibble::tribble(~a, ~b, ~z,
+                        1, 2, 3,
+                        4, 5, NULL)
+
+  types <- matsindf_apply_types(DF, FUN = example_fun, a_var = "a", b_var = "b")
+
+  build_matsindf_apply_data_frame(types = types, .dat = DF, FUN = example_fun)
+
+})

@@ -337,8 +337,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' The various `FUN_arg_*` components give information about the arguments to `FUN`.
 #' `FUN_arg_all_names` gives the names of all arguments to `FUN`,
 #' regardless of whether they have default values.
-#' `FUN_arg_default_names` gives the names of arguments that have default values.
-#' `FUN_arg_default_values` gives the values of the default arguments.
+#' `FUN_arg_default_names` gives the names of only those arguments with default values.
+#' `FUN_arg_default_values` gives the values of the default arguments,
+#' already `eval()`ed in the global environment.
+#' When there are no values in a category, `NULL` is returned.
+#' thus, if `FUN` has no arguments with default values assigned in the signature of the function,
+#' both `FUN_arg_default_names` and `FUN_arg_default_values` will be `NULL`.
+#' If `FUN` has no arguments, all of
+#' `FUN_arg_all_names`, `FUN_arg_default_names` and `FUN_arg_default_values` will be `NULL`.
 #'
 #' `keep_args` is a named `list()` of arguments,
 #' which indicates which arguments to keep from which source
@@ -630,6 +636,9 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
   out <- out[!delete_these]
   if (which == "values") {
      out <- lapply(out, FUN = eval)
+     if (length(out) == 0) {
+       out <- NULL
+     }
   } else if (which == "names") {
     out <- names(out)
   }

@@ -43,8 +43,14 @@ When all items in \code{...} are character strings, \code{all_dots_char} is \cod
 The various \verb{FUN_arg_*} components give information about the arguments to \code{FUN}.
 \code{FUN_arg_all_names} gives the names of all arguments to \code{FUN},
 regardless of whether they have default values.
-\code{FUN_arg_default_names} gives the names of arguments that have default values.
-\code{FUN_arg_default_values} gives the values of the default arguments.
+\code{FUN_arg_default_names} gives the names of only those arguments with default values.
+\code{FUN_arg_default_values} gives the values of the default arguments,
+already \code{eval()}ed in the global environment.
+When there are no values in a category, \code{NULL} is returned.
+thus, if \code{FUN} has no arguments with default values assigned in the signature of the function,
+both \code{FUN_arg_default_names} and \code{FUN_arg_default_values} will be \code{NULL}.
+If \code{FUN} has no arguments, all of
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names} and \code{FUN_arg_default_values} will be \code{NULL}.
 
 \code{keep_args} is a named \code{list()} of arguments,
 which indicates which arguments to keep from which source

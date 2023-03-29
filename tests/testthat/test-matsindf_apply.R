@@ -699,6 +699,7 @@ test_that("matsindf_apply_types() works with functions that have default values"
   expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
                                     a = 1, b = 2),
                list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_all_names = c("a", "b", "c"),
                     FUN_arg_default_names = c("a", "c"),
                     FUN_arg_default_values = list(a = 2, c = "string"),
                     dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE,

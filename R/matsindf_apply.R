@@ -320,7 +320,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' This is a convenience function that returns a list
 #' for the types of `.dat` and `...` as well as names in `.dat` and `...`,
 #' with components named `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
-#' `FUN_arg_names`,
+#' `FUN_arg_all_names`, `FUN_arg_default_names`, `FUN_arg_default_values`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
 #' `all_dots_list`, `all_dots_vect`, `all_dots_char`, `dots_names`, and
 #' `keep_args`.
@@ -333,6 +333,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' When all items in `...` are lists, `all_dots_list` is `TRUE` and all other list members are `FALSE`.
 #' When all items in `...` are vectors (including lists), `all_dots_vect` is `TRUE`.
 #' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
+#'
+#' The various `FUN_arg_*` components give information about the arguments to `FUN`.
+#' `FUN_arg_all_names` gives the names of all arguments to `FUN`,
+#' regardless of whether they have default values.
+#' `FUN_arg_default_names` gives the names of arguments that have default values.
+#' `FUN_arg_default_values` gives the values of the default arguments.
 #'
 #' `keep_args` is a named `list()` of arguments,
 #' which indicates which arguments to keep from which source
@@ -348,10 +354,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #'
 #' @return A logical list with components named
 #' `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
-#' `FUN_arg_names`,
-#' `dots_present`,
-#' `all_dot_num`, `all_dots_mats`,
-#' `all_dots_list`, `all_dots_char`, `dots_names`, and
+#' `FUN_arg_all_names`, `FUN_arg_default_names`, `FUN_arg_default_values`,
+#'  `dots_present`, `all_dots_num`, `all_dots_mats`,
+#' `all_dots_list`, `all_dots_vect`, `all_dots_char`, `dots_names`, and
 #' `keep_args`.
 #'
 #' @export
@@ -498,10 +503,14 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
                  paste(repeat_values, collapse = ", "))
     stop(msg)
   }
-  # Double-check that all args needed for FUN are available.
-  all_required_args_present <- all(FUN_arg_all_names %in% unlist(keep_args))
+  # The arguments that we have available are from keep_args$dots,
+  # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and
+  # keep_args$fun_defaults.
+  args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$fun_defaults)
+  # Double-check that all arguments needed for FUN are available.
+  all_required_args_present <- all(FUN_arg_all_names %in% args_available)
   if (!all_required_args_present) {
-    missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% unlist(keep_args))]
+    missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% args_available)]
     msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults:",
                  paste(missing_args, collapse = ", "))
     stop(msg)

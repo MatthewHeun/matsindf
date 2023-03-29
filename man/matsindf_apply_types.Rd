@@ -16,17 +16,16 @@ matsindf_apply_types(.dat, FUN, ...)
 \value{
 A logical list with components named
 \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
-\code{FUN_arg_names},
-\code{dots_present},
-\code{all_dot_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_char}, \code{dots_names}, and
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
+\code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
 \code{keep_args}.
 }
 \description{
 This is a convenience function that returns a list
 for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and \code{...},
 with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
-\code{FUN_arg_names},
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
 \code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
 \code{keep_args}.
@@ -40,6 +39,12 @@ When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} a
 When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
+
+The various \verb{FUN_arg_*} components give information about the arguments to \code{FUN}.
+\code{FUN_arg_all_names} gives the names of all arguments to \code{FUN},
+regardless of whether they have default values.
+\code{FUN_arg_default_names} gives the names of arguments that have default values.
+\code{FUN_arg_default_values} gives the values of the default arguments.
 
 \code{keep_args} is a named \code{list()} of arguments,
 which indicates which arguments to keep from which source

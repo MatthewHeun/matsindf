@@ -635,7 +635,7 @@ test_that("matsindf_apply_types() works as expected", {
                     dots_names = c("a", "b"),
                     keep_args = list(dots = c("a", "b"),
                                      .dat = NULL,
-                                     fun_defaults = character())))
+                                     fun_defaults = NULL)))
 
   expect_equal(matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
                                     a = matrix(c(1, 2)), b = matrix(c(2, 3)), c = matrix(c(3, 4))),

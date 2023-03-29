@@ -636,11 +636,11 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
   out <- out[!delete_these]
   if (which == "values") {
      out <- lapply(out, FUN = eval)
-     if (length(out) == 0) {
-       out <- NULL
-     }
   } else if (which == "names") {
     out <- names(out)
+  }
+  if (length(out) == 0) {
+    out <- NULL
   }
   out
 }

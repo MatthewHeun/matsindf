@@ -14,6 +14,11 @@ Default is "values".}
 
 \item{no_default}{The placeholder value for arguments with no default.}
 }
+\value{
+A named list of default arguments to \code{FUN}.
+Names are the argument names.
+Values are the default argument values.
+}
 \description{
 \code{formals(FUN)} does not handle arguments without a default well,
 returning a \code{name} vector of length \code{1},

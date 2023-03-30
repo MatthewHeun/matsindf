@@ -200,11 +200,11 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # it is, practically speaking, a missing argument, and we should treat it as such.
     # If an arg is not present in .dat, it will be NULL in arg_cols.
     # To treat it as "missing," we remove it from the arg_cols.
-    arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
+    # arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
     # Then, we call FUN, possibly with the missing argument(s).
     # If FUN can handle the missing argument, everything will be fine.
     # If not, an error will occur in FUN.
-    result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
 
 
 
@@ -215,7 +215,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
     # This code is probably what I want.
     # But not sure yet. Need more testing.
-    # Will comment for now.
     dots_cols_could_be_strings <- dots[types$arg_source$dots]
     if (types$all_dots_char) {
       dots_cols <- .dat[unlist(dots_cols_could_be_strings)] |>
@@ -625,7 +624,9 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
 #'              Default is "values".
 #' @param no_default The placeholder value for arguments with no default.
 #'
-#' @return
+#' @return A named list of default arguments to `FUN`.
+#'         Names are the argument names.
+#'         Values are the default argument values.
 #'
 #' @examples
 #' f <- function(a = 42, b) {

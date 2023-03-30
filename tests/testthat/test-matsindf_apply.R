@@ -677,23 +677,27 @@ test_that("matsindf_apply_types() works as expected", {
   expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
                                     a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3)), c = matsbyname::Matrix(c(3, 4))),
                list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_names = c("a", "b"),
+                    FUN_arg_all_names = c("a", "b"),
+                    FUN_arg_default_names = NULL,
+                    FUN_arg_default_values = NULL,
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE,
                     dots_names = c("a", "b", "c"),
-                    arg_source = list(dots = c(a = TRUE, b = TRUE),
-                                      .dat = c(a = FALSE, b = FALSE),
-                                      defaults = c(a = FALSE, b = FALSE))))
+                    keep_args = list(dots = c("a", "b", "c"),
+                                     .dat = NULL,
+                                     fun_defaults = NULL)))
 
   # Try with data coming from one but not the other source.
   expect_equal(matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
                                     b = matrix(c(2, 3))),
                list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
-                    FUN_arg_names = c("a", "b"),
+                    FUN_arg_all_names = c("a", "b"),
+                    FUN_arg_default_names = NULL,
+                    FUN_arg_default_values = NULL,
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE,
                     dots_names = "b",
-                    arg_source = list(dots = c(a = FALSE, b = TRUE),
-                                      .dat = c(a = TRUE, b = FALSE),
-                                      defaults = c(a = FALSE, b = FALSE))))
+                    keep_args = list(dots = "b",
+                                     .dat = c(a = "a"),
+                                     fun_defaults = NULL)))
 })
 
 

@@ -447,14 +447,15 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   # If so, we actually want to keep arguments in .dat whose name is the value of a ... argument.
   dot_args_to_pull_from_dat <- sapply(keep_args_dots,
                                       FUN = function(this_arg) {
-                                        if (length(this_arg) == 1 &
-                                            dots[[this_arg]] %in% args_present$.dat) {
-                                          return(dots[[this_arg]])
-                                        } else {
+                                        if (!(is.character(dots[[this_arg]]) & length(dots[[this_arg]]) == 1)) {
                                           return(NULL)
                                         }
+                                        if (dots[[this_arg]] %in% args_present$.dat) {
+                                          return(dots[[this_arg]])
+                                        }
+                                        return(NULL)
                                       })
-  if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
+    if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
     # If the whole array is empty, set to NULL.
     dot_args_to_pull_from_dat <- NULL
   } else {

@@ -129,7 +129,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # At this point, we have a data frame in .dat only.
   # Send one row at a time to FUN
-  new_cols <- DF |>
+  new_data <- DF |>
     purrr::transpose() |>
     # Each row is now a column
     lapply(FUN = function(this_row) {
@@ -139,7 +139,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # Re-transpose to get back to original orientation.
     purrr::transpose() |>
     # Eliminate one level of list.
-    unlist(recursive = FALSE) |>
+    unlist(recursive = FALSE)
+  if (types$.dat_null) {
+    # Return only the new variables as a list
+    return(new_data)
+  }
+
+  # We want a data frame with all of the incoming data included.
+  res <- new_data |>
     # Variable names are now the top-level name in the list.
     # Create a data frame in a way that preserves matrices, if they are present.
     rbind() |>
@@ -147,6 +154,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     tibble::as_tibble() |>
     # Check if we can unlist any columns
     purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
+
   # Recombine with the input data.
   res <- dplyr::bind_cols(DF, new_cols)
 

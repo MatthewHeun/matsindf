@@ -29,11 +29,9 @@ test_that("matsindf_apply() works as expected for single matrices (Case 2)", {
   d <- matsbyname::difference_byname(a, b)
 
   expected_list <- list(c = c, d = d)
-  expected_df <- tibble::tribble(~a, ~b, ~c, ~d,
-                                 a, b, c, d)
   expect_equal(example_fun(a, b), expected_list)
   expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b),
-               expected_df)
+               expected_list)
 })
 
 
@@ -48,10 +46,8 @@ test_that("matsindf_apply() works as expected for single Matrix objects (Case 2)
   c <- matsbyname::sum_byname(a, b)
   d <- matsbyname::difference_byname(a, b)
   expected_list <- list(c = a + b, d = a - b)
-  expected_df <- tibble::tribble(~a, ~b, ~c, ~d,
-                                 a, b, c, d)
   expect_equal(example_fun(a, b), expected_list)
-  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_df)
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_list)
 })
 
 

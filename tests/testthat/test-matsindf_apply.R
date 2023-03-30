@@ -652,22 +652,26 @@ test_that("matsindf_apply_types() works as expected", {
   expect_equal(matsindf_apply_types(.dat = list(a = 1, b = 2), FUN = example_fun,
                                     a = list(1, 2), b = list(3, 4), c = list(5, 6)),
                list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE, .dat_names = c("a", "b"),
-                    FUN_arg_names = c("a", "b"),
+                    FUN_arg_all_names = c("a", "b"),
+                    FUN_arg_default_names = NULL,
+                    FUN_arg_default_values = NULL,
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE, all_dots_vect = TRUE, all_dots_char = FALSE,
                     dots_names = c("a", "b", "c"),
-                    arg_source = list(dots = c(a = TRUE, b = TRUE),
-                                      .dat = c(a = FALSE, b = FALSE),
-                                      defaults = c(a = FALSE, b = FALSE))))
+                    keep_args = list(dots = c("a", "b", "c"),
+                                     .dat = NULL,
+                                     fun_defaults = NULL)))
 
   expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
                                     a = "a", b = "b", c = "c"),
                list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_names = c("a", "b"),
+                    FUN_arg_all_names = c("a", "b"),
+                    FUN_arg_default_names = NULL,
+                    FUN_arg_default_values = NULL,
                     dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = TRUE,
                     dots_names = c("a", "b", "c"),
-                    arg_source = list(dots = c(a = TRUE, b = TRUE),
-                                      .dat = c(a = FALSE, b = FALSE),
-                                      defaults = c(a = FALSE, b = FALSE))))
+                    keep_args = list(dots = c("a", "b", "c"),
+                                     .dat = NULL,
+                                     fun_defaults = NULL)))
 
   # Try with Matrix objects
   expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,

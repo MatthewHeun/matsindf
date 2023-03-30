@@ -490,7 +490,7 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   }
   # Set the names on keep_args_dat.
   # The names on keep_args_dat are the names to which we will rename these columns
-  # when we do the calcualtions.
+  # when we do the calculations.
   keep_args_dat <- keep_args_dat |>
     magrittr::set_names(new_names_keep_args_dat)
 
@@ -498,6 +498,11 @@ matsindf_apply_types <- function(.dat, FUN, ...) {
   keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_dat)) |>
     # or in the names of keep_args_dat.
     setdiff(names(keep_args_dat))
+  # We may get to this point and keep_args_dat is charactert(), a character vector of length 0.
+  # Under those conditions, set to NULL.
+  if (is.character(keep_args_dat) & length(keep_args_dat) == 0) {
+    keep_args_dat <- NULL
+  }
   # Bundle all keep_args together in a list.
   keep_args <- list(dots = keep_args_dots, .dat = keep_args_dat, fun_defaults = keep_args_fun_defaults)
   # Double check that each named argument has only one and only one source.

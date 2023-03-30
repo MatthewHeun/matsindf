@@ -720,6 +720,22 @@ test_that("matsindf_apply_types() works with functions that have default values"
 })
 
 
+test_that("matsindf_apply_types() works with a degenerate case with simple FUN and no parameters", {
+  example_fun <- function() {42}
+
+  expect_equal(matsindf_apply_types(FUN = example_fun),
+               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                    FUN_arg_all_names = NULL,
+                    FUN_arg_default_names = NULL,
+                    FUN_arg_default_values = NULL,
+                    dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE, all_dots_vect = FALSE, all_dots_char = FALSE,
+                    dots_names = NULL,
+                    keep_args = list(dots = NULL,
+                                     .dat = NULL,
+                                     fun_defaults = NULL)))
+})
+
+
 test_that("build_matsindf_apply_data_frame() works as expected", {
   example_fun <- function(a_var, b_var = c(42, 43)) {
     c(a_var, b_var)

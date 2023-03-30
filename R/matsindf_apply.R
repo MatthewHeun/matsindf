@@ -378,7 +378,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #'                      a = list(1, 2), b = list(3, 4), c = list(5, 6))
 #' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
 #'                      a = "a", b = "b", c = "c")
-matsindf_apply_types <- function(.dat, FUN, ...) {
+matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # Check .dat
   if (is.null(.dat)) {
     .dat_null <- TRUE

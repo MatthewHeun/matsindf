@@ -4,7 +4,7 @@
 \alias{matsindf_apply_types}
 \title{Determine types of \code{.dat} and \code{...} arguments for matsindf_apply()}
 \usage{
-matsindf_apply_types(.dat, FUN, ...)
+matsindf_apply_types(.dat = NULL, FUN, ...)
 }
 \arguments{
 \item{.dat}{The \code{.dat} argument to be checked.}

@@ -114,6 +114,83 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
   }
 
+
+
+
+
+
+
+
+
+
+  # New approach!
+
+  DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
+
+  # At this point, we have a data frame in .dat only.
+  # Send one row at a time to FUN
+  new_cols <- DF |>
+    purrr::transpose() |>
+    # Each row is now a column
+    lapply(FUN = function(this_row) {
+      # Call FUN on one row at a time.
+      do.call(what = FUN, args = this_row)
+    }) |>
+    # Re-transpose to get back to original orientation.
+    purrr::transpose() |>
+    # Variable names are now the top-level name in the list.
+    # Create a data frame in a way that preserves matrices, if they are present.
+    rbind() |>
+    # Turn into a tibble, which is much better at handling list columns.
+    tibble::as_tibble() # |>
+    # Check each column. If they are not all matrices or Matrices,
+    # unlist to convert to character or numeric.
+    # purrr::modify_if(.p = function(this_col) {
+    #   if (!is.list(this_col)) {
+    #     return(FALSE)
+    #   }
+    #   is.list(this_col) & lapply(this_col, function(this_item) {
+    #     all(!matsbyname::is_matrix_or_Matrix(this_item))
+    #   }),
+    #   .f = unlist
+    # )
+    # })
+
+
+
+
+  # New columns
+
+
+
+  return(res)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # Old approach ---- BOOOOOO
+
+
   if (types$.dat_list & types$dots_present & !types$all_dots_char) {
     # Case 14
     # Get the names of the arguments to FUN
@@ -215,20 +292,20 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
     # This code is probably what I want.
     # But not sure yet. Need more testing.
-    dots_cols_could_be_strings <- dots[types$arg_source$dots]
-    if (types$all_dots_char) {
-      dots_cols <- .dat[unlist(dots_cols_could_be_strings)] |>
-        magrittr::set_names(names(dots_cols_could_be_strings))
-    } else {
-      dots_cols <- dots_cols_could_be_strings
-    }
-    .dat_cols <- .dat[types$arg_source$.dat]
-    default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
-
-    arg_cols <- c(dots_cols, .dat_cols, default_cols)
-
-
-    result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
+    # dots_cols_could_be_strings <- dots[types$arg_source$dots]
+    # if (types$all_dots_char) {
+    #   dots_cols <- .dat[unlist(dots_cols_could_be_strings)] |>
+    #     magrittr::set_names(names(dots_cols_could_be_strings))
+    # } else {
+    #   dots_cols <- dots_cols_could_be_strings
+    # }
+    # .dat_cols <- .dat[types$arg_source$.dat]
+    # default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
+    #
+    # arg_cols <- c(dots_cols, .dat_cols, default_cols)
+    #
+    #
+    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
 
 
 
@@ -572,6 +649,10 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
   types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
 
   dots_df <- list(...) |>
+    # If we have single matrices in the list,
+    # they should we wrapped in list() to prevent
+    # expanding to more columns that we want.
+    purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
     # Make a tibble out of the ... arguments
     tibble::as_tibble() |>
     # And select only those columns that we want to keep

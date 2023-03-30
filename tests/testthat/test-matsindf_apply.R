@@ -45,9 +45,13 @@ test_that("matsindf_apply() works as expected for single Matrix objects (Case 2)
   a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
                           dimnames = list(c("r1", "r2"), c("c1", "c2")))
   b <- a
+  c <- matsbyname::sum_byname(a, b)
+  d <- matsbyname::difference_byname(a, b)
   expected_list <- list(c = a + b, d = a - b)
+  expected_df <- tibble::tribble(~a, ~b, ~c, ~d,
+                                 a, b, c, d)
   expect_equal(example_fun(a, b), expected_list)
-  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_list)
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), expected_df)
 })
 
 

@@ -138,29 +138,17 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }) |>
     # Re-transpose to get back to original orientation.
     purrr::transpose() |>
+    # Eliminate one level of list.
+    unlist(recursive = FALSE) |>
     # Variable names are now the top-level name in the list.
     # Create a data frame in a way that preserves matrices, if they are present.
     rbind() |>
     # Turn into a tibble, which is much better at handling list columns.
-    tibble::as_tibble() # |>
-    # Check each column. If they are not all matrices or Matrices,
-    # unlist to convert to character or numeric.
-    # purrr::modify_if(.p = function(this_col) {
-    #   if (!is.list(this_col)) {
-    #     return(FALSE)
-    #   }
-    #   is.list(this_col) & lapply(this_col, function(this_item) {
-    #     all(!matsbyname::is_matrix_or_Matrix(this_item))
-    #   }),
-    #   .f = unlist
-    # )
-    # })
-
-
-
-
-  # New columns
-
+    tibble::as_tibble() |>
+    # Check if we can unlist any columns
+    purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
+  # Recombine with the input data.
+  res <- dplyr::bind_cols(DF, new_cols)
 
 
   return(res)
@@ -733,3 +721,40 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
   out
 }
 
+
+#' Tell whether a column can be unlisted
+#'
+#' When evaluating each row of a data frame in `matsindf_apply()`,
+#' the result will be a `tibble` with list columns.
+#' This function tells whether a column can be unlisted.
+#'
+#' @param this_col The column to be checked.
+#'                 Or a `data.frame`, in which case every column is checked.
+#'
+#' @return A boolean. `TRUE` if the column can be unlisted, `FALSE` otherwise.
+#'         When `this_col` is a `data.frame`, a named boolean vector,
+#'         one entry for each column.
+#'
+#' @examples
+#' DF <- tibble::tibble(a = list(1, 2, 3), b = c("a", "b", "c"),
+#'                      c = list(matrix(c(42, 43)),
+#'                               matrix(c(44, 45)),
+#'                               matrix(c(46, 47))))
+#' matsindf:::should_unlist(DF$a)
+#' matsindf:::should_unlist(DF$b)
+#' matsindf:::should_unlist(DF$c)
+#' sapply(DF, FUN = function(this_col) {matsindf:::should_unlist(this_col)})
+#' matsindf:::should_unlist(DF)
+should_unlist <- function(this_col) {
+  if (is.data.frame(this_col)) {
+    return(sapply(this_col, FUN = matsindf:::should_unlist))
+  }
+  if (!is.list(this_col)) {
+    return(FALSE)
+  }
+  is_mat <- sapply(this_col, matsbyname::is_matrix_or_Matrix)
+  if (!all(is_mat)) {
+    return(TRUE)
+  }
+  return(FALSE)
+}

@@ -90,8 +90,7 @@ tryCatch(
 ```
 
 Failing to pass a needed argument (`b = 1`)
-causes the familiar `argument X is missing` error,
-because `example_fun` requires a value for `b`.
+causes an error that indicates `b` is missing.
 
 ```{r}
 tryCatch(

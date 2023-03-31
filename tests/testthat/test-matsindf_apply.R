@@ -14,8 +14,7 @@ test_that("matsindf_apply() works as expected for single values (Case 2)", {
   }
   expect_equal(example_fun(a = 2, b = 2), list(c = 4, d = 0))
   expect_equal(matsindf_apply(FUN = example_fun, a = 2, b = 2),
-               tibble::tribble(~a, ~b, ~c, ~d,
-                               2, 2, 4, 0))
+               list(c = 4, d = 0))
 })
 
 

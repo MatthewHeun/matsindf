@@ -126,10 +126,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # New approach!
 
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
+  DF_only_needed_args <- DF |>
+    dplyr::select(types$FUN_arg_all_names)
 
   # At this point, we have a data frame in .dat only.
   # Send one row at a time to FUN
-  new_data <- DF |>
+  new_data <- DF_only_needed_args |>
     purrr::transpose() |>
     # Each row is now a column
     lapply(FUN = function(this_row) {
@@ -145,6 +147,12 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(new_data)
   }
 
+  if (types$.dat_list) {
+    # We want to return a list containing both
+    # the data used for calculations and new_data
+    return(c(as.list(DF_only_needed_args), new_data))
+  }
+
   # We want a data frame with all of the incoming data included.
   res <- new_data |>
     # Variable names are now the top-level name in the list.
@@ -156,7 +164,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
 
   # Recombine with the input data.
-  res <- dplyr::bind_cols(DF, new_cols)
+  res <- dplyr::bind_cols(DF, res)
 
 
   return(res)
@@ -527,7 +535,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
                                         }
                                         return(NULL)
                                       })
-    if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
+  if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
     # If the whole array is empty, set to NULL.
     dot_args_to_pull_from_dat <- NULL
   } else {

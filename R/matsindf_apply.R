@@ -131,6 +131,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # At this point, we have a data frame in .dat only.
   # Send one row at a time to FUN
+  # new_data <- DF_only_needed_args |>
   new_data <- DF_only_needed_args |>
     purrr::transpose() |>
     # Each row is now a column
@@ -148,9 +149,13 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   if (types$.dat_list) {
-    # We want to return a list containing both
-    # the data used for calculations and new_data
-    return(c(as.list(DF_only_needed_args), new_data))
+    if (types$.dat_null) {
+      # We want to return a list containing both
+      # the data used for calculations and new_data
+      return(c(as.list(DF_only_needed_args), new_data))
+    }
+    # If .dat was present, we return everything.
+    return(c(as.list(DF), new_data))
   }
 
   # We want a data frame with all of the incoming data included.

@@ -551,9 +551,10 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   keep_args_dots <- setdiff(keep_args_dots, names(dots_args_to_pull_from_.dat))
   # Keep all args in .dat, unless they also exist in ... and are not strings,
   # i.e., keep all args in .dat, unless they are in keep_args_dots,
-  keep_args_.dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
-    # But be sure to keep those de-referenced arguments from ... ,
-    union(dots_args_to_pull_from_.dat)
+  # keep_args_.dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
+  #   # But be sure to keep those de-referenced arguments from ... ,
+  #   union(dots_args_to_pull_from_.dat)
+  keep_args_.dat <- .dat_names_to_keep(.dat = .dat, FUN = FUN, ...)
   # Now put names back on dots_args_to_pull_from_.dat
   # Find matches
   new_names_keep_args_.dat <- character(length(keep_args_.dat))
@@ -584,7 +585,8 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_.dat)) |>
     # or in the names of keep_args_.dat.
     setdiff(names(keep_args_.dat))
-  # We may get to this point and keep_args_.dat is charactert(), a character vector of length 0.
+  # We may get to this point and keep_args_.dat is character(),
+  # a character vector of length 0.
   # Under those conditions, set to NULL.
   if (is.character(keep_args_.dat) & length(keep_args_.dat) == 0) {
     keep_args_.dat <- NULL
@@ -605,12 +607,23 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and
   # keep_args$fun_defaults.
   args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$fun_defaults)
+  # Look in two directions.
+  # (1) Are all needed args to FUN available?
   # Double-check that all arguments needed for FUN are available.
   all_required_args_present <- all(FUN_arg_all_names %in% args_available)
   if (!all_required_args_present) {
     missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% args_available)]
     msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults:",
                  paste(missing_args, collapse = ", "))
+    stop(msg)
+  }
+  # (2) Do we have any extra args?
+  # Extra args would come from unneeded args in ... .
+  extra_args_present <- any(!(args_available %in% FUN_arg_all_names))
+  if (extra_args_present) {
+    extra_args <- args_available[!(args_available %in% FUN_arg_all_names)]
+    msg <- paste("In matsindf::matsindf_apply(), the following unused arguments appeared in ...:",
+                 paste(extra_args, collapse = ", "))
     stop(msg)
   }
 
@@ -814,13 +827,13 @@ should_unlist <- function(this_col) {
 #' matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
 #'                               FUN = example_fun,
 #'                               a = "z")
-.dat_names_to_keep <- function(.dat, FUN, ...) {
+.dat_names_to_keep <- function(.dat = NULL, FUN, ...) {
   dots <- list(...)
   dots_names <- names(dots)
   .dat_names <- names(.dat)
 
   if (length(dots) == 0) {
-    # We have not ... arguments, so everything in .dat should be kept.
+    # We have no ... arguments, so everything in .dat should be kept.
     return(.dat_names)
   }
 

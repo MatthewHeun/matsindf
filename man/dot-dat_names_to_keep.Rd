@@ -4,7 +4,7 @@
 \alias{.dat_names_to_keep}
 \title{Tell which \code{.dat} arguments to keep}
 \usage{
-.dat_names_to_keep(.dat, FUN, ...)
+.dat_names_to_keep(.dat = NULL, FUN, ...)
 }
 \arguments{
 \item{.dat}{The \code{.dat} argument to \code{matsindf_apply()}.}
@@ -15,16 +15,9 @@
 A vector of names of \code{.dat} arguments to keep.
 }
 \description{
-\code{.dat} arguments are kept according to this algorithm:
-\itemize{
-\item If an argument's name in \code{.dat} is also a string value in \code{...}, that argument is kept,
-because we will rename and use the argument in \code{.dat}.
-\item If an argument's name in \code{.dat} is not in the names of \code{...}, that argument is kept,
-because the argument in \code{.dat} will not be replaced by anything in \code{...}.
-\item If an argument's name in \code{.dat} is a name in \code{...} but \emph{not} a string value in \code{...},
-the argument is deleted from \code{.dat}, because it is not needed
-\item If an argument's name in \code{.dat} is a name in \code{...} and also a string value in \code{...}, the argument is kept.
-}
+The logic for deciding which arguments of \code{.dat} are kept
+is somewhat complex.
+This function abstracts pulls all of that code in one place.
 }
 \details{
 For the name of each argument in \code{.dat}, the following table
@@ -39,7 +32,13 @@ yes               \tab  no                          \tab delete    \tab will be 
 }
 \examples{
 example_fun <- function(a, b) {c(c = a + b, d = a - b)}
-.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
-                   FUN = example_fun,
-                   a = "z")
+# Keeps all items in .dat, because there no items in ...
+# that take precedence.
+matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
+                              FUN = example_fun)
+# Keeps "b" and "z", because
+# "a" is referenced to "z"
+matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
+                              FUN = example_fun,
+                              a = "z")
 }

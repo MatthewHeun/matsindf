@@ -815,4 +815,14 @@ test_that(".dat_names_to_keep() works as expected", {
   matsindf:::.dat_names_to_keep(.dat = list(z = 42, y = 41, b = 1, a = 2), FUN = example_fun,
                                 b = "y", a = "z") |>
     expect_equal(c("z", "y"))
+
+  # Try with empty .dat argument
+  matsindf:::.dat_names_to_keep(FUN = example_fun,
+                                b = "y", a = "z") |>
+    expect_null()
+
+  # Try with empty .dat argument and empty ...
+  matsindf:::.dat_names_to_keep(FUN = example_fun) |>
+    expect_null()
+
 })

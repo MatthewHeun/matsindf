@@ -79,7 +79,7 @@ matsindf_apply(FUN = example_fun, a = 2, b = 1)
 ```
 
 Passing an additional argument (`z = 2`)
-causes the familiar `unused argument` error,
+causes an unused argument error,
 because `example_fun` does not have a `z` argument.
 
 ```{r}

@@ -810,9 +810,15 @@ should_unlist <- function(this_col) {
 #'
 #' @examples
 #' example_fun <- function(a, b) {c(c = a + b, d = a - b)}
-#' .dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
-#'                    FUN = example_fun,
-#'                    a = "z")
+#' # Keeps all items in .dat, because there no items in ...
+#' # that take precedence.
+#' matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
+#'                               FUN = example_fun)
+#' # Keeps "b" and "z", because
+#' # "a" is referenced to "z"
+#' matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
+#'                               FUN = example_fun,
+#'                               a = "z")
 .dat_names_to_keep <- function(.dat, FUN, ...) {
   dots <- list(...)
   dots_names <- names(dots)

@@ -788,6 +788,7 @@ test_that(".dat_names_to_keep() works as expected", {
                                 a = "a", b = "b") |>
     expect_equal(c("a", "b", "z"))
 
+  # Try different order
   matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
                                 b = "b", a = "a") |>
     expect_equal(c("a", "b", "z"))
@@ -801,4 +802,17 @@ test_that(".dat_names_to_keep() works as expected", {
                                 a = "z", b = "a") |>
     expect_equal(c("a", "z"))
 
+  # Try double references
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, y = 41, z = 42), FUN = example_fun,
+                                a = "z", b = "y") |>
+    expect_equal(c("y", "z"))
+
+  # Try different order
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, y = 41, z = 42), FUN = example_fun,
+                                b = "y", a = "z") |>
+    expect_equal(c("y", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(z = 42, y = 41, b = 1, a = 2), FUN = example_fun,
+                                b = "y", a = "z") |>
+    expect_equal(c("z", "y"))
 })

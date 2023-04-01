@@ -768,3 +768,37 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
   res_df_2 <- build_matsindf_apply_data_frame(.dat = DF_2, FUN = example_fun, a_var = "a")
   expect_equal(res_df_2, expected_df_2)
 })
+
+
+test_that(".dat_names_to_keep() works as expected", {
+  example_fun <- function(a, b) {c(c = a + b, d = a - b)}
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun) |>
+    expect_equal(c("a", "b", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                a = "a") |>
+    expect_equal(c("a", "b", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                b = "b") |>
+    expect_equal(c("a", "b", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                a = "a", b = "b") |>
+    expect_equal(c("a", "b", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                b = "b", a = "a") |>
+    expect_equal(c("a", "b", "z"))
+
+  # Now test the de-referencing of variables
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                a = "z") |>
+    expect_equal(c("b", "z"))
+
+  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
+                                a = "z", b = "a") |>
+    expect_equal(c("a", "z"))
+
+})

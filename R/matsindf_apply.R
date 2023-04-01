@@ -530,66 +530,67 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   keep_args_dots <- args_present$dots
   # Check if any of the arguments in ... have values that are single strings.
   # If so, we actually want to keep arguments in .dat whose name is the value of a ... argument.
-  dot_args_to_pull_from_dat <- sapply(keep_args_dots,
-                                      FUN = function(this_arg) {
-                                        if (!(is.character(dots[[this_arg]]) & length(dots[[this_arg]]) == 1)) {
+  dots_args_to_pull_from_.dat <- sapply(keep_args_dots,
+                                        FUN = function(this_arg) {
+                                          if (!(is.character(dots[[this_arg]]) & length(dots[[this_arg]]) == 1)) {
+                                            return(NULL)
+                                          }
+                                          if (dots[[this_arg]] %in% args_present$.dat) {
+                                            return(dots[[this_arg]])
+                                          }
                                           return(NULL)
-                                        }
-                                        if (dots[[this_arg]] %in% args_present$.dat) {
-                                          return(dots[[this_arg]])
-                                        }
-                                        return(NULL)
-                                      })
-  if (all(sapply(dot_args_to_pull_from_dat, FUN = is.null))) {
+                                        })
+  if (all(sapply(dots_args_to_pull_from_.dat, FUN = is.null))) {
     # If the whole array is empty, set to NULL.
-    dot_args_to_pull_from_dat <- NULL
+    dots_args_to_pull_from_.dat <- NULL
   } else {
     # Keep only non-NULL elements
-    dot_args_to_pull_from_dat <- dot_args_to_pull_from_dat[!sapply(dot_args_to_pull_from_dat, is.null)]
+    dots_args_to_pull_from_.dat <- dots_args_to_pull_from_.dat[!sapply(dots_args_to_pull_from_.dat, is.null)]
   }
   # But don't keep arguments in dots that we'll pull from .dat.
-  keep_args_dots <- setdiff(keep_args_dots, names(dot_args_to_pull_from_dat))
-  # Keep all args in .dat, unless they also exist in ... ,
-  keep_args_dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
+  keep_args_dots <- setdiff(keep_args_dots, names(dots_args_to_pull_from_.dat))
+  # Keep all args in .dat, unless they also exist in ... and are not strings,
+  # i.e., keep all args in .dat, unless they are in keep_args_dots,
+  keep_args_.dat <- args_present$.dat[!(args_present$.dat %in% keep_args_dots)] |>
     # But be sure to keep those de-referenced arguments from ... ,
-    union(dot_args_to_pull_from_dat)
-  # Now put names back on dot_args_to_pull_from_dat
+    union(dots_args_to_pull_from_.dat)
+  # Now put names back on dots_args_to_pull_from_.dat
   # Find matches
-  new_names_keep_args_dat <- character(length(keep_args_dat))
-  if (length(new_names_keep_args_dat) > 0) {
+  new_names_keep_args_.dat <- character(length(keep_args_.dat))
+  if (length(new_names_keep_args_.dat) > 0) {
     # We have some new names to figure out.
-    for (i in 1:length(new_names_keep_args_dat)) {
-      if (keep_args_dat[i] %in% dot_args_to_pull_from_dat) {
+    for (i in 1:length(new_names_keep_args_.dat)) {
+      if (keep_args_.dat[i] %in% dots_args_to_pull_from_.dat) {
         # Needs a name.
-        # Find the corresponding item in dot_args_to_pull_from_dat, if it exists.
-        this_arg_has_a_name <- which(dot_args_to_pull_from_dat == keep_args_dat[i])
-        new_names_keep_args_dat[i] <- names(dot_args_to_pull_from_dat[this_arg_has_a_name])
+        # Find the corresponding item in dots_args_to_pull_from_.dat, if it exists.
+        this_arg_has_a_name <- which(dots_args_to_pull_from_.dat == keep_args_.dat[i])
+        new_names_keep_args_.dat[i] <- names(dots_args_to_pull_from_.dat[this_arg_has_a_name])
       } else {
         # Nothing special here. Just name the argument by its value.
-        new_names_keep_args_dat[i] <- keep_args_dat[i]
+        new_names_keep_args_.dat[i] <- keep_args_.dat[i]
       }
     }
   } else {
     # We don't have any renaming to do.
-    new_names_keep_args_dat <- NULL
+    new_names_keep_args_.dat <- NULL
   }
-  # Set the names on keep_args_dat.
-  # The names on keep_args_dat are the names to which we will rename these columns
+  # Set the names on keep_args_.dat.
+  # The names on keep_args_.dat are the names to which we will rename these columns
   # when we do the calculations.
-  keep_args_dat <- keep_args_dat |>
-    magrittr::set_names(new_names_keep_args_dat)
+  keep_args_.dat <- keep_args_.dat |>
+    magrittr::set_names(new_names_keep_args_.dat)
 
   # Keep all args in defaults, unless they also exist in ... or .dat.
-  keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_dat)) |>
-    # or in the names of keep_args_dat.
-    setdiff(names(keep_args_dat))
-  # We may get to this point and keep_args_dat is charactert(), a character vector of length 0.
+  keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_.dat)) |>
+    # or in the names of keep_args_.dat.
+    setdiff(names(keep_args_.dat))
+  # We may get to this point and keep_args_.dat is charactert(), a character vector of length 0.
   # Under those conditions, set to NULL.
-  if (is.character(keep_args_dat) & length(keep_args_dat) == 0) {
-    keep_args_dat <- NULL
+  if (is.character(keep_args_.dat) & length(keep_args_.dat) == 0) {
+    keep_args_.dat <- NULL
   }
   # Bundle all keep_args together in a list.
-  keep_args <- list(dots = keep_args_dots, .dat = keep_args_dat, fun_defaults = keep_args_fun_defaults)
+  keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, fun_defaults = keep_args_fun_defaults)
   # Double check that each named argument has only one and only one source.
   args_ok <- !any(duplicated(unlist(keep_args)))
   if (!args_ok) {
@@ -778,4 +779,81 @@ should_unlist <- function(this_col) {
     return(TRUE)
   }
   return(FALSE)
+}
+
+
+#' Tell which `.dat` arguments to keep
+#'
+#' `.dat` arguments are kept according to this algorithm:
+#' - If an argument's name in `.dat` is also a string value in `...`, that argument is kept,
+#'   because we will rename and use the argument in `.dat`.
+#' - If an argument's name in `.dat` is not in the names of `...`, that argument is kept,
+#'   because the argument in `.dat` will not be replaced by anything in `...`.
+#' - If an argument's name in `.dat` is a name in `...` but _not_ a string value in `...`,
+#'   the argument is deleted from `.dat`, because it is not needed
+#' - If an argument's name in `.dat` is a name in `...` and also a string value in `...`, the argument is kept.
+#'
+#' For the name of each argument in `.dat`, the following table
+#' decides whether that argument should be kept:
+#'
+#' \tabular{cccl}{
+#' in `names(...)`   \tab  in string values of `...`   \tab decision  \tab reason \cr
+#' no                \tab  yes or no                   \tab keep      \tab will not be replaced  \cr
+#' yes or no         \tab  yes                         \tab keep      \tab will be renamed       \cr
+#' yes               \tab  no                          \tab delete    \tab will be replaced      \cr
+#' }
+#'
+#' @param .dat The `.dat` argument to `matsindf_apply()`.
+#' @param dots The `...` argument to `matsindf_apply()`, as a list.
+#'
+#' @return A vector of names of `.dat` arguments to keep.
+#'
+#' @examples
+#' example_fun <- function(a, b) {c(c = a + b, d = a - b)}
+#' .dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
+#'                    FUN = example_fun,
+#'                    a = "z")
+.dat_names_to_keep <- function(.dat, FUN, ...) {
+  dots <- list(...)
+  dots_names <- names(dots)
+  .dat_names <- names(.dat)
+
+  if (length(dots) == 0) {
+    # We have not ... arguments, so everything in .dat should be kept.
+    return(.dat_names)
+  }
+
+  which_dots_are_single_character <- sapply(dots, FUN = function(this_dot) {
+    if (is.character(this_dot)) {
+      if (length(this_dot) == 1) {
+        return(TRUE)
+      }
+    }
+    return(FALSE)
+  })
+
+  single_character_dots <- dots[which_dots_are_single_character]
+
+  # Apply the logic
+  which_.dat_names_to_keep <- sapply(.dat_names, FUN = function(this_.dat_name) {
+    if (!(this_.dat_name %in% dots_names)) {
+      # If this .dat name is not in the names of ...,
+      # this .dat argument will not be replaced by the argument in ...,
+      # so keep it.
+      return(TRUE)
+    } else if (this_.dat_name %in% single_character_dots) {
+      # If this .dat name is a single character ...,
+      # it will be used in the call to FUN,
+      # so keep it.
+      return(TRUE)
+    } else {
+      # If we get here, this .dat name IS in the names of ...,
+      # so it will be replaced,
+      # so delete it.
+      return(FALSE)
+    }
+  })
+
+  # Return only those names that we want to keep.
+  .dat_names[which_.dat_names_to_keep]
 }

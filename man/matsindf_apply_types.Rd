@@ -18,7 +18,8 @@ A logical list with components named
 \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
 \code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char},
+\code{all_dots_longer_than_1}, \code{dots_names}, and
 \code{keep_args}.
 }
 \description{
@@ -27,7 +28,8 @@ for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and 
 with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
 \code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
 \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char}, \code{dots_names}, and
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char},
+\code{all_dots_longer_than_1}, \code{dots_names}, and
 \code{keep_args}.
 }
 \details{
@@ -38,6 +40,7 @@ When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TR
 When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
+When all items in \code{...} have length > 1, \code{all_dots_longer_than_1} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
 
 The various \verb{FUN_arg_*} components give information about the arguments to \code{FUN}.

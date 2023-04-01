@@ -140,9 +140,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       do.call(what = FUN, args = this_row)
     }) |>
     # Re-transpose to get back to original orientation.
-    purrr::transpose() |>
+    purrr::transpose() # |>
     # Eliminate one level of list.
-    unlist(recursive = FALSE)
+    # unlist(recursive = FALSE)
+
+  if (!types$.dat_df & !types$all_dots_longer_than_1) {
+    new_data <- unlist(new_data, recursive = FALSE)
+  }
+
   if (types$.dat_null) {
     # Return only the new variables as a list
     return(new_data)
@@ -158,26 +163,20 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   common_names <- intersect(names(DF), names(new_data))
   if (length(common_names) > 0) {
     msg <- paste("Name collision in matsindf::matsindf_apply().",
-                 "The following arguments appear in both .dat and the output of `FUN`:",
+                 "The following arguments appear both in .dat and in the output of `FUN`:",
                  paste(common_names, collapse = ", "))
     warning(msg)
   }
 
-  if (types$.dat_list) {
-    if (types$.dat_null) {
-      # We want to return a list containing both
-      # the data used for calculations and new_data
-      return(c(as.list(DF_only_needed_args), new_data))
-    }
+  if (types$.dat_list & !types$.dat_df) {
     return(c(as.list(DF), new_data))
   }
-
 
   # We want a data frame with all of the incoming data included.
   res <- new_data |>
     # Variable names are now the top-level name in the list.
     # Create a data frame in a way that preserves matrices, if they are present.
-    rbind() |>
+    # cbind() |>
     # Turn into a tibble, which is much better at handling list columns.
     tibble::as_tibble() |>
     # Check if we can unlist any columns
@@ -421,7 +420,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' with components named `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
 #' `FUN_arg_all_names`, `FUN_arg_default_names`, `FUN_arg_default_values`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
-#' `all_dots_list`, `all_dots_vect`, `all_dots_char`, `dots_names`, and
+#' `all_dots_list`, `all_dots_vect`, `all_dots_char`,
+#' `all_dots_longer_than_1`, `dots_names`, and
 #' `keep_args`.
 #'
 #' When `.dat` is a `data.frame`, both `.dat_list` and `.dat_df` are `TRUE`.
@@ -431,6 +431,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' When all items in `...` are matrices, `all_dots_mats` is `TRUE` and all other list members are `FALSE`.
 #' When all items in `...` are lists, `all_dots_list` is `TRUE` and all other list members are `FALSE`.
 #' When all items in `...` are vectors (including lists), `all_dots_vect` is `TRUE`.
+#' When all items in `...` have length > 1, `all_dots_longer_than_1` is `TRUE`.
 #' When all items in `...` are character strings, `all_dots_char` is `TRUE` and all other list members are `FALSE`.
 #'
 #' The various `FUN_arg_*` components give information about the arguments to `FUN`.
@@ -461,7 +462,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
 #' `FUN_arg_all_names`, `FUN_arg_default_names`, `FUN_arg_default_values`,
 #'  `dots_present`, `all_dots_num`, `all_dots_mats`,
-#' `all_dots_list`, `all_dots_vect`, `all_dots_char`, `dots_names`, and
+#' `all_dots_list`, `all_dots_vect`, `all_dots_char`,
+#' `all_dots_longer_than_1`, `dots_names`, and
 #' `keep_args`.
 #'
 #' @export
@@ -525,15 +527,14 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
     all_dots_list <- FALSE
     all_dots_vect <- FALSE
     all_dots_char <- FALSE
+    all_dots_longer_than_1 <- FALSE
   } else {
     # arguments are present in the ... argument.
     dots_except_NULL <- dots[which(!as.logical(lapply(dots, is.null)))]
     all_dots_num  <- all(lapply(dots_except_NULL, FUN = is.numeric) %>% as.logical())
     all_dots_mats <- all(lapply(dots_except_NULL, FUN = matsbyname::is_matrix_or_Matrix) %>% as.logical())
     all_dots_list <- all(lapply(dots_except_NULL, FUN = is.list) %>% as.logical())
-    all_dots_vect <- all(lapply(dots_except_NULL, FUN = function(x){
-      (!"matrix" %in% class(x)) & (length(x) > 1)
-    }) %>% as.logical())
+    all_dots_vect <- all(lapply(dots_except_NULL, FUN = is.vector) |> as.logical())
     all_dots_char <- all(lapply(dots_except_NULL, FUN = is.character) %>% as.logical())
     if (all_dots_mats) {
       # Matrices are numerics.
@@ -541,6 +542,9 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
       # So, set all_dots_num to FALSE.
       all_dots_num <- FALSE
     }
+    all_dots_longer_than_1 <- all(lapply(dots_except_NULL, FUN = function(x) {
+      (!"matrix" %in% class(x)) & (length(x) > 1)
+    }) |> as.logical())
   }
   dots_names <- names(dots)
 
@@ -689,6 +693,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
        all_dots_list = all_dots_list,
        all_dots_vect = all_dots_vect,
        all_dots_char = all_dots_char,
+       all_dots_longer_than_1 = all_dots_longer_than_1,
        dots_names = dots_names,
        keep_args = keep_args)
 }

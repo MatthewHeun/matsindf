@@ -169,7 +169,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   if (types$.dat_list & !types$.dat_df) {
-    return(c(as.list(DF), new_data))
+    # return(c(as.list(DF), new_data))
+    return(c(unlist(DF, recursive = FALSE), new_data))
   }
 
   # We want a data frame with all of the incoming data included.
@@ -735,7 +736,10 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     dplyr::select(dplyr::all_of(types$keep_args$dots))
 
   # Make a tibble out of the .dat argument (list or data frame)
-  .dat_df <- tibble::as_tibble(.dat) |>
+  .dat_df <- .dat |>
+    # Wrap in a list if the item itself is a matrix.
+    purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
+    tibble::as_tibble() |>
     # Keep only the arguments we want.
     dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
     # And set to their new names

@@ -59,7 +59,8 @@ returns a list containing its result, `c` and `d`.
 
 ```{r}
 example_fun <- function(a, b){
-  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+  return(list(c = matsbyname::sum_byname(a, b), 
+              d = matsbyname::difference_byname(a, b)))
 }
 ```
 
@@ -69,6 +70,7 @@ the data over which `FUN` is to be applied.
 These arguments can, in the first instance,
 be supplied as named arguments to the `...` argument
 of `matsindf_apply()`.
+All arguments in `...` must be named.
 The `...` arguments to `matsindf_apply()`
 are passed to `FUN` according to their names.
 In this case, the output of `matsindf_apply()`
@@ -289,7 +291,7 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
     list(W_mat) %>% magrittr::set_names(W)
   }
   # The body of the main function consists of a call to matsindf_apply
-  # that specifies the inner function
+  # that specifies the inner function in the FUN argument.
   matsindf_apply(.DF, FUN = W_func, U_mat = U, V_mat = V)
 }
 ```

@@ -784,14 +784,9 @@ should_unlist <- function(this_col) {
 
 #' Tell which `.dat` arguments to keep
 #'
-#' `.dat` arguments are kept according to this algorithm:
-#' - If an argument's name in `.dat` is also a string value in `...`, that argument is kept,
-#'   because we will rename and use the argument in `.dat`.
-#' - If an argument's name in `.dat` is not in the names of `...`, that argument is kept,
-#'   because the argument in `.dat` will not be replaced by anything in `...`.
-#' - If an argument's name in `.dat` is a name in `...` but _not_ a string value in `...`,
-#'   the argument is deleted from `.dat`, because it is not needed
-#' - If an argument's name in `.dat` is a name in `...` and also a string value in `...`, the argument is kept.
+#' The logic for deciding which arguments of `.dat` are kept
+#' is somewhat complex.
+#' This function abstracts pulls all of that code in one place.
 #'
 #' For the name of each argument in `.dat`, the following table
 #' decides whether that argument should be kept:

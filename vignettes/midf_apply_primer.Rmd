@@ -148,6 +148,13 @@ In the example below,
 `a = "z"` indicates that argument `a` to `FUN`
 should be supplied by item `z` in `.dat`.
 
+Return values indicate the actual values of arguments
+that were passed to `FUN`. 
+Thus, the return value has `a = 42`, 
+because the value of `z` (`42`) has replaced 
+the original value of `a` (`2`), 
+due to `a = "z"` in `...`.
+
 ```{r}
 matsindf_apply(list(a = 2, b = 1, z = 42),
                FUN = example_fun, a = "z")

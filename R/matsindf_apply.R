@@ -159,9 +159,14 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # But first, undo the re-naming in DF that was necessary
   # before calling FUN.
-
-
-
+  # Get the old names in the correct order.
+  new_names_DF <- types$keep_args$.dat[names(DF)]
+  # Make sure we got all the names we need.
+  assertthat::assert_that(length(new_names_DF) == ncol(DF),
+                          msg = "Couldn't rename in matsindf::matsindf_apply()")
+  # And reassign the names.
+  DF <- DF |>
+    magrittr::set_names(new_names_DF)
 
 
   # Next, check if a name collision could occur when a name in new_data

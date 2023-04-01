@@ -156,8 +156,15 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # If .dat was present,
   # return both .dat and new_data,
   # either as a list or a data frame.
-  #
-  # But first check if a name collision could occur when a name in new_data
+
+  # But first, undo the re-naming in DF that was necessary
+  # before calling FUN.
+
+
+
+
+
+  # Next, check if a name collision could occur when a name in new_data
   # is the same as a name in .dat.
   # If so, emit a warning.
   common_names <- intersect(names(DF), names(new_data))
@@ -169,16 +176,13 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   }
 
   if (types$.dat_list & !types$.dat_df) {
-    # return(c(as.list(DF), new_data))
+    # Return as a list.
     return(c(unlist(DF, recursive = FALSE), new_data))
   }
 
   # We want a data frame with all of the incoming data included.
   res <- new_data |>
-    # Variable names are now the top-level name in the list.
-    # Create a data frame in a way that preserves matrices, if they are present.
-    # cbind() |>
-    # Turn into a tibble, which is much better at handling list columns.
+    # Convert to a tibble, which is much better at handling list columns.
     tibble::as_tibble() |>
     # Check if we can unlist any columns
     purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)

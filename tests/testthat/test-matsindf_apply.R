@@ -162,7 +162,7 @@ test_that("matsindf_apply() fails as expected when not all same type for ...", {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: a")
+               "non-numeric argument to binary operator")
 })
 
 
@@ -187,7 +187,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
-               'argument "a" is missing, with no default')
+               "non-numeric argument to binary operator")
 })
 
 
@@ -196,7 +196,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
-               'argument "a" is missing, with no default')
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: .DF")
 })
 
 
@@ -263,7 +263,7 @@ test_that("matsindf_apply() works when .dat supplies some or all argument names 
                list(a = 1, b = 2, z = 10, c = 12, d = 8))
   # Try when one of the output names is same as an input name (Case 3)
   expect_warning(res <- matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b"),
-                 "name collision in matsindf_apply: c")
+                 "Name collision in matsindf::matsindf_apply\\(\\). The following arguments appear both in .dat and in the output of `FUN`: c")
   expect_equal(res, c(list(a = 1, b = 2, c = 10), list(c = 12, d = 8)))
 })
 

@@ -158,6 +158,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     out <- c(DF, new_data)
   }
 
+  # If we don't have the right sizes, try to modify the out list to get the right number of items.
   out <- out |>
     purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
 
@@ -168,7 +169,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # We want a data frame with all of the incoming data included.
   # Convert to a tibble, which is much better at handling list columns.
-  tibble::as_tibble(out)
+  tibble::as_tibble(out, .name_repair = "minimal")
 }
 
 
@@ -605,7 +606,13 @@ should_unlist <- function(this_col) {
     return(FALSE)
   }
   is_mat <- sapply(this_col, matsbyname::is_matrix_or_Matrix)
-  if (!all(is_mat)) {
+  if (all(is_mat)) {
+    return(FALSE)
+  }
+  # Check if everything in the list is length 1.
+  # If so, we can unlist.
+  lengths <- sapply(this_col, length)
+  if (all(lengths == lengths[1])) {
     return(TRUE)
   }
   return(FALSE)

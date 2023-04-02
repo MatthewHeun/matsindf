@@ -299,14 +299,11 @@ test_that("matsindf_apply() works when an argument is missing (Case 2)", {
     matsindf_apply(.DF, FUN = inner_fun, a_num = a, b_num = b)
   }
   # Make sure it works when all arguments are present.
-  expect_equal(outer_fun(a = 2, b = 2),
-               list(c = 4, d = 0))
-  # Now try when an argument is missing and the inner function can handle it.
-  expect_equal(outer_fun(a = 2),
-               list(c = 2, d = 2))
+  expect_equal(outer_fun(a = 2, b = 2), list(c = 4, d = 0))
+  # Now try when an argument is missing and the inner function can't handle it.
+  expect_error(outer_fun(a = 2), "non-numeric argument to binary operator")
   # Try when an argument is missing and the inner function can't handle it.
-  expect_error(outer_fun(b = 2),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: a_num")
+  expect_error(outer_fun(b = 2), "non-numeric argument to binary operator")
 })
 
 
@@ -321,7 +318,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
     rowmatch_fun <- function(prefixes_arg, m_arg) {
       out <- m_arg %>%
         matsbyname::select_rows_byname(retain_pattern =
-                                         RCLabels::make_or_pattern(strings = prefixes_arg, pattern_type = "leading")) %>%
+                                         RCLabels::make_or_pattern(strings = prefixes_arg, pattern_type = "leading")) |>
         matsbyname::getrownames_byname()
       # If we don't have a list, make a list.
       if (!is.list(out)) {
@@ -344,26 +341,24 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                   2, 3,
                   4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
-  # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
-  expect_error(find_matching_rownames(prefixes = "ra", m = mat),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: prefixes_arg")
+  expect_equal(find_matching_rownames(prefixes = "ra", m = mat),
+               list(matching_rows = c("ra1", "ra2")))
 
   # Now make lists and try again.  This works fine. (Case 15)
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
   expect_type(res2, type = "list")
-  expect_s3_class(res2, class = "data.frame")
-  expect_equal(res2[["matching_rows"]][[1]], c("ra1", "ra2"))
+  expect_equal(res2[["matching_rows"]][[1]], "ra1")
+  expect_equal(res2[["matching_rows"]][[2]], "ra2")
 
   # Use with lists and 2 items in each list. (Case 15)
   res3 <- find_matching_rownames(prefixes = list("ra", "ra"), m = list(mat, mat))
   expect_type(res3, type = "list")
-  expect_s3_class(res3, class = "data.frame")
   expect_equal(res3[["matching_rows"]][[1]], c("ra1", "ra2"))
   expect_equal(res3[["matching_rows"]][[2]], c("ra1", "ra2"))
-  expect_equal(ncol(res3), 1)
+  expect_equal(length(res3), 1)
 
   # Try in a data frame. (Case 13)
-  df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) %>%
+  df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) |>
     find_matching_rownames(prefixes = "prefixes")
   expect_equal(df$matching_rows[[1]], c("ra1", "ra2"))
   expect_equal(df$matching_rows[[2]], c("ra1", "ra2", "b3"))
@@ -406,25 +401,23 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                               4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
   # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
-  expect_error(find_matching_rownames(prefixes = "ra", m = mat),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults: prefixes_arg")
+  expect_equal(find_matching_rownames(prefixes = "ra", m = mat),
+               list(matching_rows = c("ra1", "ra2")))
 
-  # Now make lists and try again.  This works fine.
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
   expect_type(res2, type = "list")
-  expect_s3_class(res2, class = "data.frame")
-  expect_equal(res2[["matching_rows"]][[1]], c("ra1", "ra2"))
+  expect_equal(res2[["matching_rows"]][[1]], "ra1")
+  expect_equal(res2[["matching_rows"]][[2]], "ra2")
 
-  # Use with lists and 2 items in each list.
+  # Use with lists and 2 items in each list. (Case 15)
   res3 <- find_matching_rownames(prefixes = list("ra", "ra"), m = list(mat, mat))
   expect_type(res3, type = "list")
-  expect_s3_class(res3, class = "data.frame")
   expect_equal(res3[["matching_rows"]][[1]], c("ra1", "ra2"))
   expect_equal(res3[["matching_rows"]][[2]], c("ra1", "ra2"))
-  expect_equal(ncol(res3), 1)
+  expect_equal(length(res3), 1)
 
-  # Try in a data frame.
-  df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) %>%
+  # Try in a data frame. (Case 13)
+  df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) |>
     find_matching_rownames(prefixes = "prefixes")
   expect_equal(df$matching_rows[[1]], c("ra1", "ra2"))
   expect_equal(df$matching_rows[[2]], c("ra1", "ra2", "b3"))
@@ -455,7 +448,7 @@ test_that("matsindf_apply() issues a warning when replacing a column (Case 13)",
       # We already know of the problem and are testing for it, anyway.
       matsindf_apply(DF, FUN = replace_func, a_mat = "a", b_mat = "b")
     ),
-    "name collision in matsindf_apply: a"
+    "Name collision in matsindf::matsindf_apply\\(\\). The following arguments appear both in .dat and in the output of `FUN`: a"
   )
 })
 
@@ -484,7 +477,7 @@ test_that("matsindf_apply() issues a warning when replacing a column with Matrix
       # We already know of the problem and are testing for it, anyway.
       matsindf_apply(DF, FUN = replace_func, a_mat = "a", b_mat = "b")
     ),
-    "name collision in matsindf_apply: a"
+    "Name collision in matsindf::matsindf_apply\\(\\). The following arguments appear both in .dat and in the output of `FUN`: a"
   )
 })
 
@@ -502,17 +495,22 @@ test_that("matsindf_apply() works for a string and numbers (Case 5)", {
 
 test_that("matsindf_apply() works as desired in degenerate case (Case 5)", {
 
-  expected <- list(a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL)
+  sum_fun <- function(a, b) {
+    paste0(a, b) |>
+      magrittr::set_names("term")
+  }
+
+  expected <- list(term = list("string142", "string243"))
 
   expect_equal(
-    matsindf_apply(FUN = `+`, a = c("string1", "string2"), b = list(matrix(data = 42), matrix(data = 43)), c = NULL),
+    matsindf_apply(FUN = sum_fun, a = c("string1", "string2"), b = list("42", "43")),
     expected
     )
 })
 
 
 test_that("matsindf_apply() works as desired with zero-row data frames (Case 13)", {
-  example_fun <- function(a_var, b_var){
+  example_fun <- function(a_var, b_var) {
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
   }

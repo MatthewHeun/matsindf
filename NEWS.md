@@ -4,6 +4,11 @@ output: html_document
 ---
 
 
+* `matsbyname_apply()` now correctly disallows any unused arguments supplied in its `...` argument.
+  Previously, some unused argument situations were not flagged as errors,
+  despite the documentation saying they would be.
+* `matsbyname_apply()` now gives more descriptive error messages.
+* `matsbyname_apply()` now allows more options for incoming data.
 * `matsbyname_apply()` now returns the original input 
   unmodified (except possibly wrapped in a `list()`) when 
   the input has zero rows (in the case of a data frame)

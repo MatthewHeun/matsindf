@@ -75,13 +75,13 @@ test_that("matsindf_apply() works as expected for lists of matrices (Case 5)", {
   d <- a - b
   a <- list(a, a)
   b <- list(b, b)
-  DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)))
+  list_expected <- list(c = list(c, c), d = list(d, d))
   # Because DF_expected$c and DF_expected$d are created with I(list()), their class is "AsIs".
   # Need to set the class of DF_expected$c and DF_expected$d to NULL to get a match.
-  attr(DF_expected$c, which = "class") <- NULL
-  attr(DF_expected$d, which = "class") <- NULL
+  attr(list_expected$c, which = "class") <- NULL
+  attr(list_expected$d, which = "class") <- NULL
   expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b),
-               DF_expected)
+               list_expected)
 })
 
 
@@ -97,12 +97,13 @@ test_that("matsindf_apply() works as expected for lists of Matrix objects (Case 
   d <- matsbyname::difference_byname(a, b)
   a <- list(a, a)
   b <- list(b, b)
-  DF_expected <- data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE)
+  list_expected <- list(c = list(c, c), d = list(d, d))
   # Because DF_expected$c and DF_expected$d are created with I(list()), their class is "AsIs".
   # Need to set the class of DF_expected$c and DF_expected$d to NULL to get a match.
-  attr(DF_expected$c, which = "class") <- NULL
-  attr(DF_expected$d, which = "class") <- NULL
-  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b), DF_expected)
+  attr(list_expected$c, which = "class") <- NULL
+  attr(list_expected$d, which = "class") <- NULL
+  expect_equal(matsindf_apply(FUN = example_fun, a = a, b = b),
+               list_expected)
 })
 
 

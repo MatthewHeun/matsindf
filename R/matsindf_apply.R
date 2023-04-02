@@ -140,9 +140,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       do.call(what = FUN, args = this_row)
     }) |>
     # Re-transpose to get back to original orientation.
-    purrr::transpose() # |>
-    # Eliminate one level of list.
-    # unlist(recursive = FALSE)
+    purrr::transpose()
 
   if (!types$.dat_df & !types$all_dots_longer_than_1) {
     new_data <- unlist(new_data, recursive = FALSE)
@@ -157,17 +155,19 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # return both .dat and new_data,
   # either as a list or a data frame.
 
-  # But first, undo the re-naming in DF that was necessary
+  # But first, undo any re-naming in DF that was necessary
   # before calling FUN.
-  # Get the old names in the correct order.
-  new_names_DF <- types$keep_args$.dat[names(DF)]
-  # Make sure we got all the names we need.
-  assertthat::assert_that(length(new_names_DF) == ncol(DF),
-                          msg = "Couldn't rename in matsindf::matsindf_apply()")
-  # And reassign the names.
-  DF <- DF |>
-    magrittr::set_names(new_names_DF)
-
+  cnames_DF <- colnames(DF)
+  new_names_DF <- types$keep_args$.dat
+  for (i_col in 1:length(cnames_DF)) {
+    for (i_new_name in 1:length(new_names_DF)) {
+      if (cnames_DF[i_col] == names(new_names_DF)[i_new_name]) {
+        cnames_DF[i_col] <- new_names_DF[i_new_name]
+        break
+      }
+    }
+  }
+  colnames(DF) <- cnames_DF
 
   # Next, check if a name collision could occur when a name in new_data
   # is the same as a name in .dat.
@@ -553,7 +553,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
       all_dots_num <- FALSE
     }
     all_dots_longer_than_1 <- all(lapply(dots_except_NULL, FUN = function(x) {
-      (!"matrix" %in% class(x)) & (length(x) > 1)
+      (!matsbyname::is_matrix_or_Matrix(x)) & (length(x) > 1)
     }) |> as.logical())
   }
   dots_names <- names(dots)

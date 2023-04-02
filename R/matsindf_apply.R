@@ -114,15 +114,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
   }
 
-
-
-
-
-
-
-
-
-
   # New approach!
 
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
@@ -133,7 +124,8 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # Send one row at a time to FUN
   # new_data <- DF_only_needed_args |>
   new_data <- DF_only_needed_args |>
-    purrr::transpose() |>
+    as.list() |>
+    purrr::list_transpose(simplify = FALSE) |>
     # Each row is now a column
     lapply(FUN = function(this_row) {
       # Call FUN on one row at a time.
@@ -151,28 +143,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     return(new_data)
   }
 
-  # If .dat was present,
-  # return both .dat and new_data,
-  # either as a list or a data frame.
-
-  # But first, undo any re-naming in DF that was necessary
-  # before calling FUN.
-  cnames_DF <- colnames(DF)
-  new_names_DF <- types$keep_args$.dat
-  for (i_col in 1:length(cnames_DF)) {
-    for (i_new_name in 1:length(new_names_DF)) {
-      if (cnames_DF[i_col] == names(new_names_DF)[i_new_name]) {
-        cnames_DF[i_col] <- new_names_DF[i_new_name]
-        break
-      }
-    }
-  }
-  colnames(DF) <- cnames_DF
-
-  # Next, check if a name collision could occur when a name in new_data
-  # is the same as a name in .dat.
-  # If so, emit a warning.
-  common_names <- intersect(names(DF), names(new_data))
+  common_names <- intersect(names(.dat), names(new_data))
   if (length(common_names) > 0) {
     msg <- paste("Name collision in matsindf::matsindf_apply().",
                  "The following arguments appear both in .dat and in the output of `FUN`:",
@@ -180,246 +151,24 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     warning(msg)
   }
 
+  # Make a list of the return information
+  if (types$all_dots_char) {
+    out <- c(.dat, new_data)
+  } else {
+    out <- c(DF, new_data)
+  }
+
+  out <- out |>
+    purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
+
   if (types$.dat_list & !types$.dat_df) {
     # Return as a list.
-    return(c(unlist(DF, recursive = FALSE), new_data))
+    return(out)
   }
 
   # We want a data frame with all of the incoming data included.
-  res <- new_data |>
-    # Convert to a tibble, which is much better at handling list columns.
-    tibble::as_tibble() |>
-    # Check if we can unlist any columns
-    purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
-
-  # Recombine with the input data.
-  res <- dplyr::bind_cols(DF, res, .name_repair = "minimal")
-
-  return(res)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  # Old approach ---- BOOOOOO
-
-
-  if (types$.dat_list & types$dots_present & !types$all_dots_char) {
-    # Case 14
-    # Get the names of the arguments to FUN
-    FUN_arg_names <- types$FUN_arg_names
-    # Combine the arguments in ... and .dat, keeping arguments in ... when the same name is present in both.
-    new_dots <- c(list(...), .dat)[FUN_arg_names]
-    # Re-call with the new arguments (neglecting the arguments to .dat)
-    return(matsindf_apply(.dat = new_dots, FUN = FUN))
-  }
-
-  if (types$all_dots_num | types$all_dots_mats) {
-    # Cases 2 and 12
-    # ************** This probably isn't right.
-    # ************** Need to account for .dat somehow!
-    # .dat is not present, and we have numbers or matrices in the ... arguments.
-    # Simply call FUN on ... .
-    return(FUN(...))
-  }
-
-  if (types$all_dots_list | types$all_dots_vect) {
-    # Cases 5 and 15
-    # All arguments are coming in as lists or vectors across which FUN should be mapped.
-    # Map FUN across the lists.
-    # The result of Map is a list containing all the rows of output.
-    # But we want columns of output, so transpose.
-    # out_list <- purrr::transpose(Map(f = FUN, ...))
-    # Fixing a potential bug here.
-    # The result of Map is a named list.
-    # But when the names are present for one list but not another,
-    # binary matsbyname functions will fail.
-    out_list <- Map(f = FUN, ...) |>
-      unname() %>%
-      purrr::transpose()
-    # Work around a possible error condition here.
-    numcols <- length(out_list)
-    if (numcols == 0) {
-      # We got nothing back from FUN.
-      # Return the original input.
-      if (!missing(.dat)) {
-        return(.dat)
-      }
-      return(list(...))
-    } else {
-      numrows <- length(out_list[[1]])
-    }
-    # Create a data frame filled with NA values.
-    out_df <- data.frame(matrix(NA, nrow = numrows, ncol = numcols)) |>
-      magrittr::set_names(names(out_list))
-    # Fill the data frame with new columns.
-    for (j in 1:numcols) {
-      out_df[[j]] <- out_list[[j]]
-    }
-    return(out_df)
-  }
-
-  # Note that is.list(.dat) covers the cases where .dat is either a list or a data frame.
-  if (types$.dat_list & (!types$dots_present | types$all_dots_char)) {
-    # Cases 11 and 13
-    dots <- list(...)
-    # Get the names of arguments to FUN.
-    FUN_arg_names <- types$FUN_arg_names
-    # Get arguments in dots whose names are also names of arguments to FUN
-    dot_names_in_FUN <- dots[FUN_arg_names]
-    # Get the names in .dat
-    .dat_names <- types$.dat_names
-    # Get the names of items or columns in .dat that are also arguments to FUN,
-    # but do this in a way that assumes the names of the items or columns are the names
-    # to be used for the arguments.
-    .dat_names_in_FUN <- (.dat_names %>%
-                            magrittr::set_names(.dat_names) |>
-                            as.list())[FUN_arg_names]
-    # Create a list of arguments to use when extracting information from .dat
-    # Because dot_names is ahead of .dat_names, dot_names takes precedence over .dat_names.
-    use_dots <- c(dot_names_in_FUN, .dat_names_in_FUN)[FUN_arg_names]
-
-    # If one of the ... strings is NULL, we won't be able to
-    # extract a column from .dat.
-    # So, eliminate all NULLs from the ... strings.
-    use_dots_not_null <- use_dots[which(!as.logical(lapply(use_dots, is.null)))]
-    arg_cols <- lapply(use_dots_not_null, FUN = function(colname){
-      .dat[[colname]]
-    })
-    # If one of the ... strings is not a name of a column in .dat,
-    # it is, practically speaking, a missing argument, and we should treat it as such.
-    # If an arg is not present in .dat, it will be NULL in arg_cols.
-    # To treat it as "missing," we remove it from the arg_cols.
-    # arg_cols <- arg_cols[which(!as.logical(lapply(arg_cols, is.null)))]
-    # Then, we call FUN, possibly with the missing argument(s).
-    # If FUN can handle the missing argument, everything will be fine.
-    # If not, an error will occur in FUN.
-    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
-
-
-
-
-
-
-
-
-    # This code is probably what I want.
-    # But not sure yet. Need more testing.
-    # dots_cols_could_be_strings <- dots[types$arg_source$dots]
-    # if (types$all_dots_char) {
-    #   dots_cols <- .dat[unlist(dots_cols_could_be_strings)] |>
-    #     magrittr::set_names(names(dots_cols_could_be_strings))
-    # } else {
-    #   dots_cols <- dots_cols_could_be_strings
-    # }
-    # .dat_cols <- .dat[types$arg_source$.dat]
-    # default_cols <- as.list(formals(FUN))[types$arg_source$defaults]
-    #
-    # arg_cols <- c(dots_cols, .dat_cols, default_cols)
-    #
-    #
-    # result <- do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), arg_cols))
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # Check to see if the names of result are the same as any names of .dat.
-    # If so, emit a warning.
-    common_names <- intersect(names(.dat), names(result))
-    if (length(common_names) > 0) {
-      warning("name collision in matsindf_apply: ", common_names)
-    }
-    if (is.data.frame(.dat)) {
-      return(dplyr::bind_cols(.dat, dplyr::bind_rows(result)))
-    }
-    if (is.list(.dat)) {
-      return(c(.dat, result))
-    }
-  }
-
-  # Some arguments could be coming in as strings while all other arguments are of same type.
-  # This outcome is possible when
-  # (1) .dat is missing and
-  # (2) an outer function has string defaults for names and
-  # (3) some of the arguments are missing.
-  # To put it another way, when there is no .dat and some arguments are specified as strings,
-  # it means that the string arguments are unavailable (missing).
-  # In a last-ditch effort, let's try to
-  # * eliminate all strings from ...
-  # * re-call this function with the remaining arguments
-  # This approach will, in effect, call FUN with missing arguments.
-  # If FUN can handle the missing arguments,
-  # we'll get a result.
-  # If FUN can't handle the missing arguments,
-  # an error will occur.
-  if (types$.dat_null) {
-    dots <- list(...)
-    chars <- lapply(dots, function(x) is.character(x)) %>% as.logical()
-    dots <- dots[which(!chars)]
-    if (length(dots) == 0) {
-      # We have eliminated all of the arguments.
-      # This is possibly an error.
-      # And calling ourselves again would result in a stack overflow.
-      # But we will die trying.
-      # So just try to call FUN without any arguments.
-      return(do.call(FUN, args = list()))
-      # stop(".dat was missing and all arguments were strings")
-    }
-    # Now that we have eliminated the missing string arguments,
-    # call ourselves again.
-    return(do.call(matsindf_apply, args = c(list(.dat = NULL, FUN = FUN), dots)))
-  }
-
-  # We'll never get here, because at the top of this function, we check for
-  #   if (!is.null(.dat)).
-  # Then, just above, we check for
-  #   (is.null(.dat))
-  # So, that covers everything, and
-  # there is no need for further checks.
-  # Also, the code below is the only code not hit by tests,
-  # resulting in code coverage less than 100%.
-  # But, it is actually impossible to get here.
-  # By commenting this code,
-  # the package obtains 100% testing coverage.
-  #
-  # If we get here, we don't know how to deal with our inputs.
-  # Try our best to give a meaningful error message.
-  # clss <- lapply(list(...), class) %>% paste(collapse = ",")
-  # msg <- paste(
-  #   "unknown state in matsindf_apply",
-  #   "... must be missing or all same type: all single numbers, all matrices, all lists, or all character.",
-  #   "types are:",
-  #   clss
-  # )
-  # stop(msg)
+  # Convert to a tibble, which is much better at handling list columns.
+  tibble::as_tibble(out)
 }
 
 
@@ -683,7 +432,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # Extra args would come from unneeded args in ... .
   extra_dots_args_present <- any(!(keep_args$dots %in% FUN_arg_all_names))
   if (extra_dots_args_present) {
-    extra_dots_args <- args_available[!(keep_args$dots %in% FUN_arg_all_names)]
+    extra_dots_args <- keep_args$dots[!(keep_args$dots %in% FUN_arg_all_names)]
     msg <- paste("In matsindf::matsindf_apply(), the following unused arguments appeared in ...:",
                  paste(extra_dots_args, collapse = ", "))
     stop(msg)
@@ -755,7 +504,9 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     magrittr::set_names(names(types$keep_args$.dat))
 
   # Make a tibble out of the default arguments
-  defaults_df <- tibble::as_tibble(types$FUN_arg_default_values) |>
+  defaults_df <- types$FUN_arg_default_values |>
+    purrr::compact() |>
+    tibble::as_tibble() |>
     dplyr::select(dplyr::all_of(types$keep_args$fun_defaults))
 
   df_list <- list(dots_df, .dat_df, defaults_df)

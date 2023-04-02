@@ -77,22 +77,22 @@ matsindf_apply(df, FUN = example_fun)
 
 ## -----------------------------------------------------------------------------
 # Create a tidy data frame containing data for matrices
-tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
-                   matnames = c(rep("U", 8), rep("V", 8)),
-                   matvals = c(1:4, 11:14, 21:24, 31:34),
-                   rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
-                                rep(c(rep("i1", 2), rep("i2", 2)), 2)),
-                   colnames = c(rep(c("i1", "i2"), 4), 
-                                rep(c("p1", "p2"), 4))) %>%
+tidy <- tibble::tibble(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
+                       matnames = c(rep("U", 8), rep("V", 8)),
+                       matvals = c(1:4, 11:14, 21:24, 31:34),
+                       rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
+                                    rep(c(rep("i1", 2), rep("i2", 2)), 2)),
+                       colnames = c(rep(c("i1", "i2"), 4), 
+                                    rep(c("p1", "p2"), 4))) |>
   mutate(
     rowtypes = case_when(
-      matnames == "U" ~ "product",
-      matnames == "V" ~ "industry", 
+      matnames == "U" ~ "Product",
+      matnames == "V" ~ "Industry", 
       TRUE ~ NA_character_
     ),
     coltypes = case_when(
-      matnames == "U" ~ "industry",
-      matnames == "V" ~ "product",
+      matnames == "U" ~ "Industry",
+      matnames == "V" ~ "Product",
       TRUE ~ NA_character_
     )
   )
@@ -100,10 +100,10 @@ tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
 tidy
 
 # Convert to a matsindf data frame
-midf <- tidy %>% 
-  group_by(Year, matnames) %>% 
-  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") %>% 
-  spread(key = "matnames", value = "matvals")
+midf <- tidy |>  
+  group_by(Year, matnames) |> 
+  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") |> 
+  tidyr::pivot_wider(names_from = "matnames", values_from = "matvals")
 
 # Take a look at the midf data frame and some of the matrices it contains.
 midf
@@ -111,7 +111,7 @@ midf$U[[1]]
 midf$V[[1]]
 
 ## -----------------------------------------------------------------------------
-result <- midf %>% 
+result <- midf |> 
   mutate(
     W = difference_byname(transpose_byname(V), U)
   )
@@ -120,7 +120,7 @@ result$W[[1]]
 result$W[[2]]
 
 ## -----------------------------------------------------------------------------
-calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
+calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
   # The inner function does all the work.
   W_func <- function(U_mat, V_mat){
     # When we get here, U_mat and V_mat will be single matrices or single numbers, 
@@ -128,7 +128,7 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
     # Calculate W_mat from the inputs U_mat and V_mat.
     W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
     # Return a named list.
-    list(W_mat) %>% magrittr::set_names(W)
+    list(W_mat) |> magrittr::set_names(W)
   }
   # The body of the main function consists of a call to matsindf_apply
   # that specifies the inner function in the FUN argument.
@@ -136,14 +136,14 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
 }
 
 ## -----------------------------------------------------------------------------
-midf %>% calc_W()
+midf |> calc_W()
 
 ## -----------------------------------------------------------------------------
-midf %>% calc_W(W = "W_prime")
+midf |> calc_W(W = "W_prime")
 
 ## -----------------------------------------------------------------------------
-midf %>% 
-  rename(X = U, Y = V) %>% 
+midf |> 
+  rename(X = U, Y = V) |> 
   calc_W(U = "X", V = "Y")
 
 ## -----------------------------------------------------------------------------
@@ -153,7 +153,7 @@ calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
 
 ## -----------------------------------------------------------------------------
-data.frame(U = c(1, 2), V = c(3, 4)) %>% calc_W()
+data.frame(U = c(1, 2), V = c(3, 4)) |> calc_W()
 
 ## -----------------------------------------------------------------------------
 calc_W(U = 2, V = 3)

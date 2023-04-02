@@ -209,13 +209,13 @@ test_that("matsindf_apply() works with a NULL argument (Case 13)", {
   c <- a + b
   d <- a - b
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)))
-  # Here is where the NULL is given as an argument to matsindp_apply.
-  result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
-  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d))))
-  expect_equal(result, expected, ignore_attr = TRUE)
+  # Here is where the NULL is given as an argument to matsindf_apply.
+  # This attempt fails, because z is an extra argument in ... .
+  expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
   # Try with piped .DF argument
-  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
-  expect_equal(result, expected, ignore_attr = TRUE)
+  expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
 })
 
 
@@ -229,12 +229,12 @@ test_that("matsindf_apply() works with a NULL argument and Matrix objects (Case 
   d <- matsbyname::difference_byname(a, b)
   DF <- data.frame(a = I(list(a, a)), b = I(list(b,b)), stringsAsFactors = FALSE)
   # Here is where the NULL is given as an argument to matsindp_apply.
-  result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL)
-  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
-  expect_equal(result, expected, ignore_attr = TRUE)
+  # This attempt fails, because z is an extra argument in ... .
+  expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
   # Try with piped .DF argument
-  result <- DF %>% matsindf_apply(FUN = example_fun, a = "a", b = "b", z = NULL)
-  expect_equal(result, expected, ignore_attr = TRUE)
+  expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
 })
 
 
@@ -827,3 +827,4 @@ test_that(".dat_names_to_keep() works as expected", {
     expect_null()
 
 })
+

@@ -156,7 +156,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     # at least some ... arguments are length 1.
     if (all(sapply(new_data, should_unlist))) {
       # If we get here, the sub-items for each computed variable
-      # are lists AND they all have length 1 (or a single matrix)
+      # are lists AND they all have length 1 (or are a single matrix)
       # In this situation, we can unlist the inner lists
       # to remove one layer of listing.
       # Doing so makes natural data frames or lists.
@@ -189,7 +189,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # If we don't have the right sizes, try to modify the out list to get the right number of items.
   out <- out |>
-    purrr::modify_if(.p = matsindf:::should_unlist, .f = unlist, recursive = FALSE)
+    purrr::modify_if(.p = should_unlist, .f = unlist, recursive = FALSE)
 
   if (types$.dat_list & !types$.dat_df) {
     # Return as a list.
@@ -641,14 +641,14 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
 #'                      c = list(matrix(c(42, 43)),
 #'                               matrix(c(44, 45)),
 #'                               matrix(c(46, 47))))
-#' matsindf:::should_unlist(DF$a)
-#' matsindf:::should_unlist(DF$b)
-#' matsindf:::should_unlist(DF$c)
-#' sapply(DF, FUN = function(this_col) {matsindf:::should_unlist(this_col)})
-#' matsindf:::should_unlist(DF)
+#' should_unlist(DF$a)
+#' should_unlist(DF$b)
+#' should_unlist(DF$c)
+#' sapply(DF, FUN = function(this_col) {should_unlist(this_col)})
+#' should_unlist(DF)
 should_unlist <- function(this_col) {
   if (is.data.frame(this_col)) {
-    return(sapply(this_col, FUN = matsindf:::should_unlist))
+    return(sapply(this_col, should_unlist))
   }
   if (!is.list(this_col)) {
     return(FALSE)

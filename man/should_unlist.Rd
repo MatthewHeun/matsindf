@@ -25,9 +25,9 @@ DF <- tibble::tibble(a = list(1, 2, 3), b = c("a", "b", "c"),
                      c = list(matrix(c(42, 43)),
                               matrix(c(44, 45)),
                               matrix(c(46, 47))))
-matsindf:::should_unlist(DF$a)
-matsindf:::should_unlist(DF$b)
-matsindf:::should_unlist(DF$c)
-sapply(DF, FUN = function(this_col) {matsindf:::should_unlist(this_col)})
-matsindf:::should_unlist(DF)
+should_unlist(DF$a)
+should_unlist(DF$b)
+should_unlist(DF$c)
+sapply(DF, FUN = function(this_col) {should_unlist(this_col)})
+should_unlist(DF)
 }

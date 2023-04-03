@@ -4,8 +4,12 @@
 #' performs the calculation specified by `FUN`
 #' on numbers or matrices.
 #' `FUN` must return a named list.
-#' The names become columns in the return data frame.
-#' The values become entries in columns in the return data frame.
+#' The values of the list returned `FUN` become
+#' entries in columns in a returned data frame
+#' or entries in the sub-lists of a returned list.
+#' The names of the items in the list returned by `FUN` become
+#' names of the columns in a returned data frame or
+#' names of the list items in the returned list.
 #'
 #' If `is.null(.dat)` and `...` are all named numbers or matrices
 #' of the form `argname = m`,
@@ -17,12 +21,11 @@
 #' of the form `argname = l`,
 #' `FUN` is `Map`ped across the various `l`s
 #' to obtain a list of named lists returned from `FUN`.
-#' The return value is a data frame
-#' whose rows are the top-level lists returned from `FUN` and
-#' whose column names are the names of the list items returned from `FUN`.
-#' Columns of `.dat` are not included in the return value.
+#' The return value is a list
+#' whose top-level names are the names of the returned items from `FUN`
+#' `.dat` is not included in the return value.
 #'
-#' If `!is.null(.dat)` and `...` are all named character strings
+#' If `!is.null(.dat)` and `...` are all named, `length == 1` character strings
 #' of the form `argname = string`,
 #' `argname`s are expected to be names of arguments to `FUN`, and
 #' `string`s are expected to be column names in `.dat`.
@@ -31,7 +34,8 @@
 #' When `.dat` contains columns whose names are same as columns added at the right,
 #' a warning is emitted.
 #'
-#' `.dat` can be a list of named items in which case a list will be returned.
+#' `.dat` can be a list of named items in which case a list will be returned
+#' instead of a data frame.
 #'
 #' If items in `.dat` have same names as arguments to `FUN`,
 #' it is not necessary to specify any arguments in `...`.
@@ -45,17 +49,26 @@
 #' However, all `NULL` arguments are passed to `FUN`,
 #' so `FUN` should be able to deal with `NULL` arguments appropriately.
 #'
-#' If `.dat` is present, `...` contains strings, and one of the `...` strings is not the name
+#' If `.dat` is present, `...` contains `length == 1` strings, and one of the `...` strings is not the name
 #' of a column in `.dat`,
 #' `FUN` is called WITHOUT the argument whose column is missing.
 #' I.e., that argument is treated as missing.
 #' If `FUN` works despite the missing argument, execution proceeds.
 #' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
 #'
-#' If `.dat` is a zero-row data frame, `.dat` is returned unmodified.
-#' If `.dat` is a list of items with zero length, `.dat` is returned unmodified.
-#' If `.dat` is `NULL` (the default) and items in `...` have zero length,
-#' `...` is wrapped in a list and returned.
+#' It is suggested that `FUN` is able to handle empty data gracefully,
+#' returning an empty result with the same names as when
+#' non-empty data are fed to `FUN`.
+#' Attempts are made to handle zero-row data (in `.dat` or `...`)
+#' gracefully.
+#' First, `FUN` is called with the empty (but named) data.
+#' If `FUN` can handle empty data without error,
+#' the result is returned.
+#' If `FUN` errors when fed empty data, `FUN` is called with an empty
+#' argument list in the hopes that `FUN` has reasonable default values.
+#' If that fails,
+#' `.dat` is returned unmodified (if not `NULL`)
+#' or the data in `...` is returned.
 #'
 #' @param .dat A list of named items or a data frame.
 #' @param FUN The function to be applied to `.dat`.
@@ -98,7 +111,7 @@
 #' # A warning is issued when an output item has same name as an input item.
 #' matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 #' # When a zero-row data frame supplied to .dat,
-#' # .dat is returned unmodified.
+#' # .dat is returned unmodified, unless FUN can handle empty data.
 #' DF3 <- DF2[0, ]
 #' DF3
 #' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
@@ -107,9 +120,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   if (!types$.dat_null) {
     if (!types$.dat_list) {
-      # Cases 6, 7, 8, 9, and 10
       # If we get here, we have a value for .dat that doesn't make sense.
-      # Throw an error.
       stop(".dat must be NULL, a data frame, or a list in matsindf_apply(), was ", class(.dat))
     }
   }
@@ -118,22 +129,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
 
-  # if (nrow(DF) == 0) {
-  #   out <- tryCatch(
-  #     # Call FUN. Let it try to handle a zero-row data frame.
-  #     do.call(what = FUN, args = DF),
-  #     error = {
-  #       tryCatch(
-  #         # Try to call FUN with an empty argument list.
-  #         do.call(what = FUN, args = list()),
-  #         # If that fails, just return DF unmodified.
-  #         error = DF
-  #       )
-  #     }
-  #   )
-  #   return(out)
-  # }
-
+  # Deal gracefully with zero-row DF.
   if (nrow(DF) == 0) {
     out <- tryCatch(
       # Call FUN. Let it try to handle a zero-row data frame.
@@ -144,20 +140,16 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
           do.call(what = FUN, args = list()),
           # If that fails, just return .dat unmodified.
           error = function(e2) {
-            if (types$.dat_null) {
-              return(as.list(DF))
+            if (!types$.dat_null) {
+              return(.dat)
             }
-            return(.dat)
+            return(as.list(DF))
           }
         )
       }
     )
     return(out)
   }
-
-
-
-
 
   DF_only_needed_args <- DF |>
     dplyr::select(types$FUN_arg_all_names)
@@ -545,6 +537,16 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
     # And set to their new names
     magrittr::set_names(names(types$keep_args$.dat))
+
+  # # Set names, if possible
+  # if (!is.null(types$keep_args$.dat)) {
+  #   if (length(types$keep_args$.dat) > 0) {
+  #
+  #   }
+  # }
+  # .dat_df <- .dat_df
+  #   # And set to their new names
+  #   magrittr::set_names(names(types$keep_args$.dat))
 
   # Make a tibble out of the default arguments
   defaults_df <- types$FUN_arg_default_values |>

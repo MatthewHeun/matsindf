@@ -1,5 +1,5 @@
 
-test_that("matsindf_apply() fails with an unexpected argument (Case 1)", {
+test_that("matsindf_apply() fails with an unexpected argument", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -8,7 +8,7 @@ test_that("matsindf_apply() fails with an unexpected argument (Case 1)", {
 })
 
 
-test_that("matsindf_apply() works as expected for single values (Case 2)", {
+test_that("matsindf_apply() works as expected for single values", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -18,7 +18,7 @@ test_that("matsindf_apply() works as expected for single values (Case 2)", {
 })
 
 
-test_that("matsindf_apply() works as expected for single matrices (Case 2)", {
+test_that("matsindf_apply() works as expected for single matrices", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -34,7 +34,7 @@ test_that("matsindf_apply() works as expected for single matrices (Case 2)", {
 })
 
 
-test_that("matsindf_apply() works as expected for single Matrix objects (Case 2)", {
+test_that("matsindf_apply() works as expected for single Matrix objects", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b),
                 d = matsbyname::difference_byname(a, b)))
@@ -50,7 +50,7 @@ test_that("matsindf_apply() works as expected for single Matrix objects (Case 2)
 })
 
 
-test_that("matsindf_apply() works as expected for lists of single values (Case 5)", {
+test_that("matsindf_apply() works as expected for lists of single values", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -65,7 +65,7 @@ test_that("matsindf_apply() works as expected for lists of single values (Case 5
 })
 
 
-test_that("matsindf_apply() works as expected for lists of matrices (Case 5)", {
+test_that("matsindf_apply() works as expected for lists of matrices", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -85,7 +85,7 @@ test_that("matsindf_apply() works as expected for lists of matrices (Case 5)", {
 })
 
 
-test_that("matsindf_apply() works as expected for lists of Matrix objects (Case 5)", {
+test_that("matsindf_apply() works as expected for lists of Matrix objects", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -107,7 +107,7 @@ test_that("matsindf_apply() works as expected for lists of Matrix objects (Case 
 })
 
 
-test_that("matsindf_apply() works as expected using .dat with single numbers (Case 13)", {
+test_that("matsindf_apply() works as expected using .dat with single numbers", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -117,7 +117,7 @@ test_that("matsindf_apply() works as expected using .dat with single numbers (Ca
 })
 
 
-test_that("matsindf_apply() works as expected using .DF with matrices (Case 13)", {
+test_that("matsindf_apply() works as expected using .DF with matrices", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -136,7 +136,7 @@ test_that("matsindf_apply() works as expected using .DF with matrices (Case 13)"
 })
 
 
-test_that("matsindf_apply() works as expected using .DF with Matrix objects (Case 13)", {
+test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -174,7 +174,7 @@ test_that("matsindf_apply() fails as expected when wrong type of data is sent in
 })
 
 
-test_that("matsindf_apply() fails gracefully when some of ... are NULL (Case 2)", {
+test_that("matsindf_apply() fails gracefully when some of ... are NULL", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -182,7 +182,7 @@ test_that("matsindf_apply() fails gracefully when some of ... are NULL (Case 2)"
 })
 
 
-test_that("matsindf_apply() fails as expected when .DF argument is missing from a data frame (Case 13)", {
+test_that("matsindf_apply() fails as expected when .DF argument is missing from a data frame", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -191,7 +191,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
 })
 
 
-test_that("matsindf_apply() fails as expected when .DF argument is not a data frame or a list (Case 6)", {
+test_that("matsindf_apply() fails as expected when .DF argument is not a data frame or a list", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -200,7 +200,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
 })
 
 
-test_that("matsindf_apply() works with a NULL argument (Case 13)", {
+test_that("matsindf_apply() works with a NULL argument", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -219,7 +219,7 @@ test_that("matsindf_apply() works with a NULL argument (Case 13)", {
 })
 
 
-test_that("matsindf_apply() works with a NULL argument and Matrix objects (Case 13)", {
+test_that("matsindf_apply() works with a NULL argument and Matrix objects", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -247,7 +247,7 @@ test_that("matsindf_apply() works when .dat is a list (Case 13)", {
 })
 
 
-test_that("matsindf_apply() works when .dat supplies some or all argument names (Cases 11, 3 )", {
+test_that("matsindf_apply() works when .dat supplies some or all argument names", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -268,7 +268,7 @@ test_that("matsindf_apply() works when .dat supplies some or all argument names 
 })
 
 
-test_that("matsindf_apply() works for single numbers in data frame columns (Case 12)", {
+test_that("matsindf_apply() works for single numbers in data frame columns", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -281,7 +281,7 @@ test_that("matsindf_apply() works for single numbers in data frame columns (Case
 })
 
 
-test_that("override works() for single numbers supplied in a list (Case 12)", {
+test_that("override works() for single numbers supplied in a list", {
   example_fun <- function(a, b){
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
@@ -290,7 +290,7 @@ test_that("override works() for single numbers supplied in a list (Case 12)", {
 })
 
 
-test_that("matsindf_apply() works when an argument is missing (Case 2)", {
+test_that("matsindf_apply() works when an argument is missing", {
   outer_fun <- function(.DF = NULL, a = "a", b = "b"){
     inner_fun <- function(a_num, b_num = NULL){
       return(list(c = matsbyname::sum_byname(a_num, b_num),
@@ -307,7 +307,7 @@ test_that("matsindf_apply() works when an argument is missing (Case 2)", {
 })
 
 
-test_that("matsindf_apply() works with functions similar in form to those in `Recca` (Cases 13 and 15)", {
+test_that("matsindf_apply() works with functions similar in form to those in `Recca`", {
 
   # This function is similar in form to functions in `Recca`.
   find_matching_rownames <- function(.DF = NULL,
@@ -366,7 +366,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 })
 
 
-test_that("matsindf_apply() works with functions similar in form to those in `Recca` with Matrix objects (Cases 13 and 15)", {
+test_that("matsindf_apply() works with functions similar in form to those in `Recca` with Matrix objects", {
 
   # This function is similar in form to functions in `Recca`.
   find_matching_rownames <- function(.DF = NULL,
@@ -425,7 +425,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 })
 
 
-test_that("matsindf_apply() issues a warning when replacing a column (Case 13)", {
+test_that("matsindf_apply() issues a warning when replacing a column", {
   # Create a data frame with a matrix in a column.
   a <- matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE, dimnames = list(c("r1", "r2"), c("c1", "c2")))
   b <- 2 * a
@@ -453,7 +453,7 @@ test_that("matsindf_apply() issues a warning when replacing a column (Case 13)",
 })
 
 
-test_that("matsindf_apply() issues a warning when replacing a column with Matrix objects (Case 13)", {
+test_that("matsindf_apply() issues a warning when replacing a column with Matrix objects", {
   # Create a data frame with a matrix in a column.
   a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
                           dimnames = list(c("r1", "r2"), c("c1", "c2")))
@@ -482,7 +482,7 @@ test_that("matsindf_apply() issues a warning when replacing a column with Matrix
 })
 
 
-test_that("matsindf_apply() works for a string and numbers (Case 5)", {
+test_that("matsindf_apply() works for a string and numbers", {
   example_fun <- function(str_a, b) {
     a <- as.numeric(str_a)
     list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b))
@@ -493,7 +493,7 @@ test_that("matsindf_apply() works for a string and numbers (Case 5)", {
 })
 
 
-test_that("matsindf_apply() works as desired in degenerate case (Case 5)", {
+test_that("matsindf_apply() works as desired in degenerate case", {
 
   sum_fun <- function(a, b) {
     paste0(a, b) |>
@@ -509,7 +509,7 @@ test_that("matsindf_apply() works as desired in degenerate case (Case 5)", {
 })
 
 
-test_that("matsindf_apply() works as desired with zero-row data frames (Case 13)", {
+test_that("matsindf_apply() works as desired with zero-row data frames", {
   example_fun <- function(a_var, b_var) {
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -540,7 +540,7 @@ test_that("matsindf_apply() works as desired with zero-row data frames (Case 13)
 })
 
 
-test_that("matsindf_apply() works as desired with zero-length lists and matrix objects (Case 5)", {
+test_that("matsindf_apply() works as desired with zero-length lists and matrix objects", {
   example_fun <- function(a_var, b_var) {
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -562,7 +562,7 @@ test_that("matsindf_apply() works as desired with zero-length lists and matrix o
 })
 
 
-test_that("matsindf_apply() works as desired with zero-length lists and Matrix objects (Case 5)", {
+test_that("matsindf_apply() works as desired with zero-length lists and Matrix objects", {
   example_fun <- function(a_var, b_var) {
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -584,7 +584,7 @@ test_that("matsindf_apply() works as desired with zero-length lists and Matrix o
 })
 
 
-test_that("matsindf_apply() works with empty lists (Cases 5 and 15)", {
+test_that("matsindf_apply() works with empty lists", {
   example_fun <- function(a_var, b_var) {
     return(list(c = matsbyname::sum_byname(a_var, b_var),
                 d = matsbyname::difference_byname(a_var, b_var)))
@@ -609,7 +609,7 @@ test_that("matsindf_apply() works with empty lists (Cases 5 and 15)", {
 })
 
 
-test_that("matsindf_apply() works with a no-argument function (Case 2)", {
+test_that("matsindf_apply() works with a no-argument function", {
   example_fun <- function() {42}
 
   expect_equal(matsindf_apply(FUN = example_fun), 42)

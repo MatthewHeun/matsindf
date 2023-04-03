@@ -21,8 +21,12 @@ Applies \code{FUN} to \code{.dat} or
 performs the calculation specified by \code{FUN}
 on numbers or matrices.
 \code{FUN} must return a named list.
-The names become columns in the return data frame.
-The values become entries in columns in the return data frame.
+The values of the list returned \code{FUN} become
+entries in columns in a returned data frame
+or entries in the sub-lists of a returned list.
+The names of the items in the list returned by \code{FUN} become
+names of the columns in a returned data frame or
+names of the list items in the returned list.
 }
 \details{
 If \code{is.null(.dat)} and \code{...} are all named numbers or matrices
@@ -35,12 +39,11 @@ If \code{is.null(.dat)} and \code{...} are all lists of numbers or matrices
 of the form \code{argname = l},
 \code{FUN} is \code{Map}ped across the various \code{l}s
 to obtain a list of named lists returned from \code{FUN}.
-The return value is a data frame
-whose rows are the top-level lists returned from \code{FUN} and
-whose column names are the names of the list items returned from \code{FUN}.
-Columns of \code{.dat} are not included in the return value.
+The return value is a list
+whose top-level names are the names of the returned items from \code{FUN}
+\code{.dat} is not included in the return value.
 
-If \code{!is.null(.dat)} and \code{...} are all named character strings
+If \code{!is.null(.dat)} and \code{...} are all named, \code{length == 1} character strings
 of the form \code{argname = string},
 \code{argname}s are expected to be names of arguments to \code{FUN}, and
 \code{string}s are expected to be column names in \code{.dat}.
@@ -49,7 +52,8 @@ whose names are the names of list items returned from \code{FUN}.
 When \code{.dat} contains columns whose names are same as columns added at the right,
 a warning is emitted.
 
-\code{.dat} can be a list of named items in which case a list will be returned.
+\code{.dat} can be a list of named items in which case a list will be returned
+instead of a data frame.
 
 If items in \code{.dat} have same names as arguments to \code{FUN},
 it is not necessary to specify any arguments in \code{...}.
@@ -63,17 +67,26 @@ all arguments are numbers, matrices, lists of numbers of matrices, or named char
 However, all \code{NULL} arguments are passed to \code{FUN},
 so \code{FUN} should be able to deal with \code{NULL} arguments appropriately.
 
-If \code{.dat} is present, \code{...} contains strings, and one of the \code{...} strings is not the name
+If \code{.dat} is present, \code{...} contains \code{length == 1} strings, and one of the \code{...} strings is not the name
 of a column in \code{.dat},
 \code{FUN} is called WITHOUT the argument whose column is missing.
 I.e., that argument is treated as missing.
 If \code{FUN} works despite the missing argument, execution proceeds.
 If \code{FUN} cannot handle the missing argument, an error will occur in \code{FUN}.
 
-If \code{.dat} is a zero-row data frame, \code{.dat} is returned unmodified.
-If \code{.dat} is a list of items with zero length, \code{.dat} is returned unmodified.
-If \code{.dat} is \code{NULL} (the default) and items in \code{...} have zero length,
-\code{...} is wrapped in a list and returned.
+It is suggested that \code{FUN} is able to handle empty data gracefully,
+returning an empty result with the same names as when
+non-empty data are fed to \code{FUN}.
+Attempts are made to handle zero-row data (in \code{.dat} or \code{...})
+gracefully.
+First, \code{FUN} is called with the empty (but named) data.
+If \code{FUN} can handle empty data without error,
+the result is returned.
+If \code{FUN} errors when fed empty data, \code{FUN} is called with an empty
+argument list in the hopes that \code{FUN} has reasonable default values.
+If that fails,
+\code{.dat} is returned unmodified (if not \code{NULL})
+or the data in \code{...} is returned.
 }
 \examples{
 library(matsbyname)
@@ -108,7 +121,7 @@ matsindf_apply(list(a = 1, b = 2, z = 10), FUN = example_fun, a = "z", b = "b")
 # A warning is issued when an output item has same name as an input item.
 matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 # When a zero-row data frame supplied to .dat,
-# .dat is returned unmodified.
+# .dat is returned unmodified, unless FUN can handle empty data.
 DF3 <- DF2[0, ]
 DF3
 matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")

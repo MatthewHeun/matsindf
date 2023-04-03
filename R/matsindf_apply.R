@@ -117,6 +117,16 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   # New approach!
 
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
+
+  if (nrow(DF) == 0) {
+    # When DF has no rows, return .dat unmodified, if it is non-NULL.
+    if (!is.null(.dat)) {
+      return(.dat)
+    }
+    # Otherwise, return DF.
+    return(as.list(DF))
+  }
+
   DF_only_needed_args <- DF |>
     dplyr::select(types$FUN_arg_all_names)
 
@@ -524,6 +534,7 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
   df_list <- list(dots_df, .dat_df, defaults_df)
   df_list_length <- length(df_list)
 
+  next_i <- 0
   # Cycle through all data frames, looking for the first one.
   for (i in 1:df_list_length) {
     if (nrow(df_list[[i]]) > 0) {
@@ -532,12 +543,18 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
       break
     }
   }
-  # Start after the one we just found and
-  # cbind the other tibbles.
-  for (i in next_i:df_list_length) {
-    if (nrow(df_list[[i]]) > 0) {
-      out <- dplyr::bind_cols(out, df_list[[i]])
+
+  if (next_i > 0) {
+    # Start after the one we just found and
+    # cbind the other tibbles.
+    for (i in next_i:df_list_length) {
+      if (nrow(df_list[[i]]) > 0) {
+        out <- dplyr::bind_cols(out, df_list[[i]])
+      }
     }
+  } else {
+    # No data frames had any rows.
+    return(dplyr::bind_cols(df_list))
   }
   # Now return the full data frame.
   out

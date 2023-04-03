@@ -103,7 +103,7 @@ tidy
 
 # Convert to a matsindf data frame
 midf <- tidy |>  
-  group_by(Year, matnames) |> 
+  dplyr::group_by(Year, matnames) |> 
   collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") |> 
   tidyr::pivot_wider(names_from = "matnames", values_from = "matvals")
 
@@ -114,7 +114,7 @@ midf$V[[1]]
 
 ## -----------------------------------------------------------------------------
 result <- midf |> 
-  mutate(
+  dplyr::mutate(
     W = difference_byname(transpose_byname(V), U)
   )
 result
@@ -127,8 +127,15 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
   W_func <- function(U_mat, V_mat){
     # When we get here, U_mat and V_mat will be single matrices or single numbers, 
     # not a column in a data frame or an item in a list.
+    if (length(U_mat) == 0 & length(V_mat == 0)) {
+      # Tolerate zero-length arguments by returning a zero-length
+      # a list with the correct name and return type.
+      return(list(numeric()) |> magrittr::setnames(W))
+    }
     # Calculate W_mat from the inputs U_mat and V_mat.
-    W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
+    W_mat <- matsbyname::difference_byname(
+      matsbyname::transpose_byname(V_mat), 
+      U_mat)
     # Return a named list.
     list(W_mat) |> magrittr::set_names(W)
   }
@@ -159,4 +166,12 @@ data.frame(U = c(1, 2), V = c(3, 4)) |> calc_W()
 
 ## -----------------------------------------------------------------------------
 calc_W(U = 2, V = 3)
+
+## -----------------------------------------------------------------------------
+calc_W(U = numeric(), V = numeric())
+calc_W(.DF = list(U = numeric(), V = numeric()))
+
+res <- calc_W(list(U = c(2, 3, 4, 5), V = c(3, 4, 5, 6)))
+res0 <- calc_W(list(U = numeric(), V = numeric()))
+dplyr::bind_rows(res, res0)
 

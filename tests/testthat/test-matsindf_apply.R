@@ -868,3 +868,29 @@ test_that("matsindf_apply() works when FUN can handle zero-length lists", {
 })
 
 
+test_that("matsindf_apply() works for an edge case", {
+  # This example comes from the matsindf_apply primer.
+  calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
+    # The inner function does all the work.
+    W_func <- function(U_mat, V_mat){
+      # When we get here, U_mat and V_mat will be single matrices or single numbers,
+      # not a column in a data frame or an item in a list.
+      if (length(U_mat) == 0 & length(V_mat == 0)) {
+        # Tolerate zero-length arguments by returning a zero-length
+        # a list with the correct name and return type.
+        return(list(numeric()) |> magrittr::setnames(W))
+      }
+      # Calculate W_mat from the inputs U_mat and V_mat.
+      W_mat <- matsbyname::difference_byname(matsbyname::transpose_byname(V_mat), U_mat)
+      # Return a named list.
+      list(W_mat) |> magrittr::set_names(W)
+    }
+    # The body of the main function consists of a call to matsindf_apply
+    # that specifies the inner function in the FUN argument.
+    matsindf_apply(.DF, FUN = W_func, U_mat = U, V_mat = V)
+  }
+
+  expect_equal(calc_W(list(U = c(2, 2, 2, 2), V = c(3, 4, 5, 6))),
+               list(U = c(2, 2, 2, 2), V = c(3, 4, 5, 6), W = c(1, 2, 3, 4)))
+})
+

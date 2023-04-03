@@ -300,7 +300,9 @@ calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
       return(list(numeric()) |> magrittr::setnames(W))
     }
     # Calculate W_mat from the inputs U_mat and V_mat.
-    W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
+    W_mat <- matsbyname::difference_byname(
+      matsbyname::transpose_byname(V_mat), 
+      U_mat)
     # Return a named list.
     list(W_mat) |> magrittr::set_names(W)
   }
@@ -380,10 +382,15 @@ calc_W(U = 2, V = 3)
 
 It is good practice to write internal functions
 that tolerate zero-length inputs, as `calc_W()` does.
+Doing so, enables results from different calculations to be `rbind`ed together.
 
 ```{r}
 calc_W(U = numeric(), V = numeric())
 calc_W(.DF = list(U = numeric(), V = numeric()))
+
+res <- calc_W(list(U = c(2, 3, 4, 5), V = c(3, 4, 5, 6)))
+res0 <- calc_W(list(U = numeric(), V = numeric()))
+dplyr::bind_rows(res, res0)
 ```
 
 

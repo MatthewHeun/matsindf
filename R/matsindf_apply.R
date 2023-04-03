@@ -149,10 +149,22 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
       do.call(what = FUN, args = this_row)
     }) |>
     # Re-transpose to get back to original orientation.
-    purrr::transpose()
+    purrr::list_transpose(simplify = FALSE)
 
   if (!types$.dat_df & !types$all_dots_longer_than_1) {
-    new_data <- unlist(new_data, recursive = FALSE)
+    # .dat is not a data frame and
+    # at least some ... arguments are length 1.
+    if (all(sapply(new_data, should_unlist))) {
+      # If we get here, the sub-items for each computed variable
+      # are lists AND they all have length 1 (or a single matrix)
+      # In this situation, we can unlist the inner lists
+      # to remove one layer of listing.
+      # Doing so makes natural data frames or lists.
+      new_data <- lapply(new_data, unlist, recursive = FALSE)
+    } else {
+      # We can unlist at the top level.
+      new_data <- unlist(new_data, recursive = FALSE)
+    }
   }
 
   if (types$.dat_null) {

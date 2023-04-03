@@ -1,4 +1,5 @@
 al
+args
 ary
 apenergy
 Brockway
@@ -37,6 +38,7 @@ rowtypes
 rowvec
 Roxygen
 TravisCI
+tibble
 tidyr
 tidyverse
 transposeinverse

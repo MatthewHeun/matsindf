@@ -131,24 +131,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   # Deal gracefully with zero-row DF.
   if (nrow(DF) == 0) {
-    out <- tryCatch(
-      # Call FUN. Let it try to handle a zero-row data frame.
-      do.call(what = FUN, args = DF),
-      error = function(e1) {
-        tryCatch(
-          # Calling with an empty data frame failed. Try to call FUN with an empty argument list.
-          do.call(what = FUN, args = list()),
-          # If that fails, just return .dat unmodified.
-          error = function(e2) {
-            if (!types$.dat_null) {
-              return(.dat)
-            }
-            return(as.list(DF))
-          }
-        )
-      }
-    )
-    return(out)
+    return(handle_empty_data(.dat = .dat, FUN = FUN, DF = DF, types = types))
   }
 
   DF_only_needed_args <- DF |>
@@ -764,3 +747,49 @@ should_unlist <- function(this_col) {
   # Return only those names that we want to keep.
   .dat_names[which_.dat_names_to_keep]
 }
+
+
+#' Gracefully handle empty data
+#'
+#' When empty data are provided to `matsindf_apply()`,
+#' care must be take with the return value.
+#' This function assembles the correct zero-row data frame or
+#' zero-length lists.
+#'
+#' @param .dat The `.dat` argument to `matsindf_apply()`.
+#' @param FUN The `FUN` argument to `matsindf_apply()`.
+#' @param DF The assembled `DF` inside `matsindf_apply()`.
+#' @param types The `types` object assembled inside `matsindf_apply()`.
+#'
+#' @return The appropriate return value from `matsindf_apply()`,
+#'         either a zero-length list or a zero-row data frame.
+handle_empty_data <- function(.dat = NULL, FUN, DF, types) {
+  out <- tryCatch({
+      # Call FUN. Let it try to handle a zero-row data frame.
+      res <- do.call(what = FUN, args = DF)
+      if (types$.dat_df) {
+        res <- dplyr::bind_cols(.dat, res) |>
+          tibble::as_tibble()
+      } else if (types$.dat_list) {
+        res <- c(.dat, res)
+      }
+      res
+    },
+    error = function(e1) {
+      tryCatch(
+        # Calling with an empty data frame failed. Try to call FUN with an empty argument list.
+        do.call(what = FUN, args = list()),
+        # If that fails, just return .dat unmodified.
+        error = function(e2) {
+          if (!types$.dat_null) {
+            return(.dat)
+          }
+          return(as.list(DF))
+        }
+      )
+    }
+  )
+  return(out)
+
+}
+

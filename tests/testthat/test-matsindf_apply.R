@@ -572,14 +572,11 @@ test_that("matsindf_apply() works as desired with zero-length lists and Matrix o
   b <- a + 1
   c <- a + b
   d <- a - b
-  expected_df <- tibble::tribble(~c, ~d,
-                                 c, d,
-                                 c, d) |>
-    as.data.frame()
+  expected_list <- list(c = list(c, c), d = list(d, d))
 
   res <- matsindf_apply(FUN = example_fun, a_var = list(a, a), b_var = list(b, b))
 
-  expect_equal(res, expected_df)
+  expect_equal(res, expected_list)
 
   # Now try with zero-length lists
   res_zero <- matsindf_apply(FUN = example_fun, a_var = list(), b_var = list())

@@ -118,14 +118,46 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
 
+  # if (nrow(DF) == 0) {
+  #   out <- tryCatch(
+  #     # Call FUN. Let it try to handle a zero-row data frame.
+  #     do.call(what = FUN, args = DF),
+  #     error = {
+  #       tryCatch(
+  #         # Try to call FUN with an empty argument list.
+  #         do.call(what = FUN, args = list()),
+  #         # If that fails, just return DF unmodified.
+  #         error = DF
+  #       )
+  #     }
+  #   )
+  #   return(out)
+  # }
+
   if (nrow(DF) == 0) {
-    # When DF has no rows, return .dat unmodified, if it is non-NULL.
-    if (!is.null(.dat)) {
-      return(.dat)
-    }
-    # Otherwise, return DF.
-    return(as.list(DF))
+    out <- tryCatch(
+      # Call FUN. Let it try to handle a zero-row data frame.
+      do.call(what = FUN, args = DF),
+      error = function(e1) {
+        tryCatch(
+          # Calling with an empty data frame failed. Try to call FUN with an empty argument list.
+          do.call(what = FUN, args = list()),
+          # If that fails, just return .dat unmodified.
+          error = function(e2) {
+            if (types$.dat_null) {
+              return(as.list(DF))
+            }
+            return(.dat)
+          }
+        )
+      }
+    )
+    return(out)
   }
+
+
+
+
 
   DF_only_needed_args <- DF |>
     dplyr::select(types$FUN_arg_all_names)

@@ -62,6 +62,8 @@ matsindf_apply(FUN = example_fun_with_string,
 matsindf_apply(.dat = list(str_a = list("1"), b = list(2)), FUN = example_fun_with_string)
 matsindf_apply(.dat = list(m = list("1"), n = list(2)), FUN = example_fun_with_string, 
                str_a = "m", b = "n")
+
+## -----------------------------------------------------------------------------
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
                FUN = example_fun_with_string)
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
@@ -84,7 +86,7 @@ tidy <- tibble::tibble(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
                                     rep(c(rep("i1", 2), rep("i2", 2)), 2)),
                        colnames = c(rep(c("i1", "i2"), 4), 
                                     rep(c("p1", "p2"), 4))) |>
-  mutate(
+  dplyr::mutate(
     rowtypes = case_when(
       matnames == "U" ~ "Product",
       matnames == "V" ~ "Industry", 

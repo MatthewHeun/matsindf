@@ -9,11 +9,9 @@ build_matsindf_apply_data_frame(.dat, FUN, ...)
 \arguments{
 \item{.dat}{The value of the \code{.dat} argument to \code{matsindf_apply()}, as a list or a data frame.}
 
-\item{types}{The output of \code{matsindf_apply_types()}.}
+\item{FUN}{The function supplied to \code{matsindf_apply()}.}
 
-\item{dots}{The contents of the \code{...} argument to \code{matsindf_apply()}, as a list or a data frame.}
-
-\item{defaults}{The values of the default arguments for the \code{FUN} argument to \code{matsindf_apply()}.}
+\item{...}{The \code{...} argument supplied to \code{matsindf_apply()}.}
 }
 \value{
 A data frame (actually, a \code{tibble})

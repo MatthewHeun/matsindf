@@ -9,7 +9,9 @@
 \arguments{
 \item{.dat}{The \code{.dat} argument to \code{matsindf_apply()}.}
 
-\item{dots}{The \code{...} argument to \code{matsindf_apply()}, as a list.}
+\item{FUN}{The \code{FUN} argument to \code{matsindf_apply()}.}
+
+\item{...}{The \code{...} argument to \code{matsindf_apply()}.}
 }
 \value{
 A vector of names of \code{.dat} arguments to keep.

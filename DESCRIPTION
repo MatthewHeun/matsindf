@@ -21,7 +21,6 @@ Imports:
     magrittr,
     matsbyname,
     purrr,
-    purrrlyr,
     rlang,
     tibble,
     tidyr

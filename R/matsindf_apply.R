@@ -263,11 +263,11 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' matsindf_apply_types(.dat = data.frame(), FUN = identity_fun,
 #'                      a = matrix(c(1, 2)), b = matrix(c(2, 3)))
 #' matsindf_apply_types(.dat = list(), FUN = identity_fun,
-#'                      a = c(1, 2), b = c(3, 4), c = c(5, 6))
+#'                      a = c(1, 2), b = c(3, 4))
 #' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
-#'                      a = list(1, 2), b = list(3, 4), c = list(5, 6))
+#'                      a = list(1, 2), b = list(3, 4))
 #' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
-#'                      a = "a", b = "b", c = "c")
+#'                      a = "a", b = "b")
 matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 
   ############################
@@ -499,10 +499,9 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 #' variables found in `.dat`, which take priority over
 #' variables found in the default values of `FUN`.
 #'
-#' @param types The output of `matsindf_apply_types()`.
-#' @param dots The contents of the `...` argument to `matsindf_apply()`, as a list or a data frame.
 #' @param .dat The value of the `.dat` argument to `matsindf_apply()`, as a list or a data frame.
-#' @param defaults The values of the default arguments for the `FUN` argument to `matsindf_apply()`.
+#' @param FUN The function supplied to `matsindf_apply()`.
+#' @param ... The `...` argument supplied to `matsindf_apply()`.
 #'
 #' @return A data frame (actually, a `tibble`)
 #'         with columns from `dots`, `.dat`, and the default values to `FUN`,
@@ -523,16 +522,6 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     # And select only those columns that we want to keep
     dplyr::select(dplyr::all_of(types$keep_args$dots))
 
-  # Make a tibble out of the .dat argument (list or data frame)
-  # .dat_df <- .dat |>
-  #   # Wrap in a list if the item itself is a matrix.
-  #   purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
-  #   tibble::as_tibble() |>
-  #   # Keep only the arguments we want.
-  #   dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
-  #   # And set to their new names
-  #   magrittr::set_names(names(types$keep_args$.dat))
-
   .dat_df <- .dat |>
     # Wrap in a list if the item itself is a matrix.
     purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
@@ -544,11 +533,6 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     .dat_df <- .dat_df |>
       magrittr::set_names(names(types$keep_args$.dat))
   }
-
-
-
-
-
 
   # Make a tibble out of the default arguments
   defaults_df <- types$FUN_arg_default_values |>
@@ -700,7 +684,8 @@ should_unlist <- function(this_col) {
 #' }
 #'
 #' @param .dat The `.dat` argument to `matsindf_apply()`.
-#' @param dots The `...` argument to `matsindf_apply()`, as a list.
+#' @param FUN The `FUN` argument to `matsindf_apply()`.
+#' @param ... The `...` argument to `matsindf_apply()`.
 #'
 #' @return A vector of names of `.dat` arguments to keep.
 #'

@@ -828,3 +828,24 @@ test_that(".dat_names_to_keep() works as expected", {
 
 })
 
+
+test_that("matsindf_apply() works when FUN can handle zero-row DF's", {
+  example_fun <- function(a, b){
+    if (length(a) == 0 & length(b) == 0) {
+      return(list(c = numeric(), d = numeric()))
+    }
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+
+  expect_equal(example_fun(a = 2, b = 2), list(c = 4, d = 0))
+  expect_equal(matsindf_apply(FUN = example_fun, a = 2, b = 2), list(c = 4, d = 0))
+  expect_equal(matsindf_apply(list(a = 2, b = 2), FUN = example_fun), list(a = 2, b = 2, c = 4, d = 0))
+
+  df <- data.frame(a = 2, b = 2)
+  df_expected <- tibble::tibble(a = 2, b = 2, c = 4, d = 0)
+  expect_equal(matsindf_apply(df, example_fun), df_expected)
+
+  dfzero <- df[0, ]
+  dfzero_expected <- df_expected[0, ]
+  expect_equal(matsindf_apply(dfzero, example_fun), tibble::tibble(a = 2, b = 2, c = 4, d = 0))
+})

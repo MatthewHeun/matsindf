@@ -529,24 +529,31 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     dplyr::select(dplyr::all_of(types$keep_args$dots))
 
   # Make a tibble out of the .dat argument (list or data frame)
+  # .dat_df <- .dat |>
+  #   # Wrap in a list if the item itself is a matrix.
+  #   purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
+  #   tibble::as_tibble() |>
+  #   # Keep only the arguments we want.
+  #   dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
+  #   # And set to their new names
+  #   magrittr::set_names(names(types$keep_args$.dat))
+
   .dat_df <- .dat |>
     # Wrap in a list if the item itself is a matrix.
     purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
     tibble::as_tibble() |>
     # Keep only the arguments we want.
-    dplyr::select(dplyr::all_of(types$keep_args$.dat)) |>
-    # And set to their new names
-    magrittr::set_names(names(types$keep_args$.dat))
+    dplyr::select(dplyr::all_of(types$keep_args$.dat))
 
-  # # Set names, if possible
-  # if (!is.null(types$keep_args$.dat)) {
-  #   if (length(types$keep_args$.dat) > 0) {
-  #
-  #   }
-  # }
-  # .dat_df <- .dat_df
-  #   # And set to their new names
-  #   magrittr::set_names(names(types$keep_args$.dat))
+  if (!is.null(types$keep_args$.dat)) {
+    .dat_df <- .dat_df |>
+      magrittr::set_names(names(types$keep_args$.dat))
+  }
+
+
+
+
+
 
   # Make a tibble out of the default arguments
   defaults_df <- types$FUN_arg_default_values |>

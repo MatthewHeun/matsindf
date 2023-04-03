@@ -510,6 +510,17 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     tibble::as_tibble() |>
     dplyr::select(dplyr::all_of(types$keep_args$fun_defaults))
 
+  if (ncol(dots_df) == 0 & nrow(.dat_df) == 0 & nrow(defaults_df) == 0) {
+    # The incoming data could have no rows in .dat_df and defautls_df
+    # when no incoming data are available.
+    # We could have 1 row and zero columns of dots_df,
+    # due to single-name arguments.
+    # If this is true, we want to cbind .dat_df and defaults_df together
+    # and return.
+    # Doing so preserves the column names in .dat_df and defaults_df.
+    return(dplyr::bind_cols(.dat_df, defaults_df))
+  }
+
   df_list <- list(dots_df, .dat_df, defaults_df)
   df_list_length <- length(df_list)
 

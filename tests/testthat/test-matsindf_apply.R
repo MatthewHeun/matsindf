@@ -935,3 +935,31 @@ test_that("should_unlist() works as expected", {
 })
 
 
+test_that("matsindf_apply() works for missing arg in .dat", {
+  example_fun <- function(a_val = 2, b_val = 1) {
+    list(c = matsbyname::sum_byname(a_val, b_val),
+         d = matsbyname::difference_byname(a_val, b_val))
+  }
+
+  # Try when everything is available.
+  df <- tibble::tibble(a = c(10, 11, 12), b = c(5, 6, 7))
+  expected_df <- dplyr::bind_cols(df, data.frame(c = c(15, 17, 19), d = c(5, 5, 5)))
+  res <- df |>
+    matsindf_apply(FUN = example_fun, a_val = "a", b_val = "b")
+  expect_equal(res, expected_df)
+
+  # Try when df lacks a column.
+  # matsindf_apply() should use the default value in the signature of example_fun.
+  # But as of 4 April 2023, it does not.
+  # This test exposes that bug.
+  res <- df |>
+    dplyr::select("a") |>
+    matsindf_apply(FUN = example_fun, a_val = "a", b_val = "b")
+})
+
+
+
+
+
+
+

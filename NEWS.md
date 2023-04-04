@@ -4,15 +4,22 @@ output: html_document
 ---
 
 
-* `matsbyname_apply()` now correctly disallows any unused arguments supplied in its `...` argument.
-  Previously, some unused argument situations were not flagged as errors,
-  despite the documentation saying they would be.
-* `matsbyname_apply()` now gives more descriptive error messages.
-* `matsbyname_apply()` now allows more options for incoming data.
-* `matsbyname_apply()` now returns the original input 
-  unmodified (except possibly wrapped in a `list()`) when 
-  the input has zero rows (in the case of a data frame)
-  or zero length (in the case of lists).
+* Rewrote all of `matsindf_apply()`.
+    * `matsindf_apply()` now correctly returns a list when lists are provided in the `...` argument.
+      Previously, it incorrectly returned a data frame.
+    * `matsindf_apply()` now correctly disallows any unused arguments supplied in its `...` argument.
+      Previously, some unused argument situations were not flagged as errors,
+      despite the documentation saying they would be.
+    * `matsindf_apply()` now gives more descriptive error messages.
+    * `matsindf_apply()` now allows more options for incoming data.
+    * `matsindf_apply()` now tries really hard to deal with empty inputs, 
+      falling back to returning the original input 
+      unmodified (except possibly wrapped in a `list()`) when 
+      the input has zero rows (in the case of a data frame)
+      or zero length (in the case of lists).
+* Many new tests to verify that the package works with `Matrix` objects.
+    - Now at 362 tests, all passing.
+    - Test coverage remains at 100 %.
 
 
 # matsindf 0.4.0 (2023-03-07) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7713764.svg)](https://doi.org/10.5281/zenodo.7713764)

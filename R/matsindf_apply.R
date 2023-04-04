@@ -765,6 +765,5 @@ handle_empty_data <- function(.dat = NULL, FUN, DF, types) {
     }
   )
   return(out)
-
 }
 

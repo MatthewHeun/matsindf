@@ -504,11 +504,15 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
 
   # See if all non-NULL items have the same length
   compact_lengths <- purrr::compact(lengths)
-  all_same_length <- all(compact_lengths == compact_lengths[[1]])
-  if (! all_same_length) {
-    stop("Different lengths in build_matsindf_apply_data_frame()")
+  if (length(compact_lengths) == 0) {
+    all_same_length <- TRUE
+  } else {
+    all_same_length <- all(compact_lengths == compact_lengths[[1]])
+    if (! all_same_length) {
+      stop("Different lengths in build_matsindf_apply_data_frame()")
+    }
+    null_replacement <- vector("list", compact_lengths[[1]])
   }
-  null_replacement <- vector("list", compact_lengths[[1]])
 
   dots_df <- dots |>
     # If we have single matrices in the list,

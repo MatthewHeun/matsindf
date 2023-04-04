@@ -418,14 +418,8 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, fun_defaults = keep_args_fun_defaults)
   # Double check that each named argument has only one and only one source.
   args_ok <- !any(duplicated(unlist(keep_args)))
-  if (!args_ok) {
-    # Give a helpful error message
-    repeat_values <- keep_args[duplicated(keep_args)] |>
-      unique()
-    msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
-                 paste(repeat_values, collapse = ", "))
-    stop(msg)
-  }
+  assertthat::assert_that(args_ok, msg = paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
+                                               paste(keep_args[duplicated(keep_args)], collapse = ", ")))
 
   # Check that required args are present and that no extra args are specified in ...  --------------------------------
 
@@ -508,8 +502,6 @@ build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
     dplyr::select(dplyr::all_of(types$keep_args$dots))
 
   .dat_df <- .dat |>
-    # Wrap in a list if the item itself is a matrix.
-    purrr::modify_if(.p = is.matrix, .f = function(this_matrix) {list(this_matrix)}) |>
     tibble::as_tibble() |>
     # Keep only the arguments we want.
     dplyr::select(dplyr::all_of(types$keep_args$.dat))

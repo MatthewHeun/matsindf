@@ -779,6 +779,16 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
 })
 
 
+# test_that("build_matsindf_apply_data_frame() works with a list", {
+#   example_fun <- function(a_var, b_var) {
+#     c(a_var, b_var)
+#   }
+#
+#   build_matsindf_apply_data_frame(matrix(42), FUN = example_fun, a_var = 1, b_var = 2)
+#
+# })
+#
+
 test_that(".dat_names_to_keep() works as expected", {
   example_fun <- function(a, b) {c(c = a + b, d = a - b)}
 

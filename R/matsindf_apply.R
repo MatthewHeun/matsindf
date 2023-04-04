@@ -490,41 +490,6 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
 
   dots <- list(...)
 
-  # # Get lengths of each item in ...
-  # # But do so in a way that preserves any NULL elements.
-  # lengths <- sapply(dots, function(this_dot) {
-  #   if (matsbyname::is_matrix_or_Matrix(this_dot)) {
-  #     return(1)
-  #   } else if (is.null(this_dot)) {
-  #     return(NULL)
-  #   } else {
-  #     return(length(this_dot))
-  #   }
-  # })
-  #
-  # # See if all non-NULL items have the same length
-  # compact_lengths <- purrr::compact(lengths)
-  # if (length(compact_lengths) == 0) {
-  #   all_same_length <- TRUE
-  # } else {
-  #   all_same_length <- all(compact_lengths == compact_lengths[[1]])
-  #   if (! all_same_length) {
-  #     stop("Different lengths in build_matsindf_apply_data_frame()")
-  #   }
-  #   null_replacement <- vector("list", compact_lengths[[1]])
-  # }
-  #
-  # dots_df <- dots |>
-  #   # If we have single matrices in the list,
-  #   # they should we wrapped in list() to prevent
-  #   # expanding to more columns than we want.
-  #   purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
-  #   purrr::modify_if(.p = is.null, .f = function(n) {null_replacement}) |>
-  #   # Make a tibble out of the ... arguments
-  #   tibble::as_tibble() |>
-  #   # And select only those columns that we want to keep
-  #   dplyr::select(dplyr::all_of(types$keep_args$dots))
-
   dots_df <- dots |>
     # Deal with any NULL args
     handle_null_args() |>
@@ -533,9 +498,10 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
     # And select only those columns that we want to keep
     dplyr::select(dplyr::all_of(types$keep_args$dots))
 
-
-
   .dat_df <- .dat |>
+    # Deal with any NULL args
+    handle_null_args() |>
+    # Make a tibble out of the .dat arguments
     tibble::as_tibble() |>
     # Keep only the arguments we want.
     dplyr::select(dplyr::all_of(types$keep_args$.dat))
@@ -547,6 +513,7 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
 
   # Make a tibble out of the default arguments
   defaults_df <- types$FUN_arg_default_values |>
+    # Get rid of NULL arguments.
     purrr::compact() |>
     tibble::as_tibble() |>
     dplyr::select(dplyr::all_of(types$keep_args$fun_defaults))

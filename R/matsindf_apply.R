@@ -125,8 +125,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
   }
 
-  # New approach!
-
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
 
   # Deal gracefully with zero-row DF.
@@ -137,7 +135,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   DF_only_needed_args <- DF |>
     dplyr::select(types$FUN_arg_all_names)
 
-  # At this point, we have a data frame in .dat only.
   # Send one row at a time to FUN
   # new_data <- DF_only_needed_args |>
   new_data <- DF_only_needed_args |>

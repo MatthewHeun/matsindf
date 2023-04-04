@@ -152,7 +152,7 @@ midf |> calc_W(W = "W_prime")
 
 ## -----------------------------------------------------------------------------
 midf |> 
-  rename(X = U, Y = V) |> 
+  dplyr::rename(X = U, Y = V) |> 
   calc_W(U = "X", V = "Y")
 
 ## -----------------------------------------------------------------------------
@@ -169,7 +169,7 @@ calc_W(U = 2, V = 3)
 
 ## -----------------------------------------------------------------------------
 calc_W(U = numeric(), V = numeric())
-calc_W(.DF = list(U = numeric(), V = numeric()))
+calc_W(list(U = numeric(), V = numeric()))
 
 res <- calc_W(list(U = c(2, 3, 4, 5), V = c(3, 4, 5, 6)))
 res0 <- calc_W(list(U = numeric(), V = numeric()))

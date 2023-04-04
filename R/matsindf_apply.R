@@ -484,15 +484,38 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 #'         according to precedence rules for `matsindf_apply()`.
 #'
 #' @export
-build_matsindf_apply_data_frame <- function(.dat, FUN, ...) {
+build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
 
   types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
 
-  dots_df <- list(...) |>
+  dots <- list(...)
+
+  # Get lengths of each item in ...
+  # But do so in a way that preserves any NULL elements.
+  lengths <- sapply(dots, function(this_dot) {
+    if (matsbyname::is_matrix_or_Matrix(this_dot)) {
+      return(1)
+    } else if (is.null(this_dot)) {
+      return(NULL)
+    } else {
+      return(length(this_dot))
+    }
+  })
+
+  # See if all non-NULL items have the same length
+  compact_lengths <- purrr::compact(lengths)
+  all_same_length <- all(compact_lengths == compact_lengths[[1]])
+  if (! all_same_length) {
+    stop("Different lengths in build_matsindf_apply_data_frame()")
+  }
+  null_replacement <- vector("list", compact_lengths[[1]])
+
+  dots_df <- dots |>
     # If we have single matrices in the list,
     # they should we wrapped in list() to prevent
-    # expanding to more columns that we want.
+    # expanding to more columns than we want.
     purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
+    purrr::modify_if(.p = is.null, .f = function(n) {null_replacement}) |>
     # Make a tibble out of the ... arguments
     tibble::as_tibble() |>
     # And select only those columns that we want to keep

@@ -779,6 +779,23 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
 })
 
 
+test_that("build_matsindf_apply_data_frame() works with NULL args in ...", {
+  example_fun <- function(R_mat, U_mat) {
+    return(matsbyname::sum_byname(R_mat, matsbyname::transpose_byname(U_mat)))
+  }
+  expected <- tibble::tribble(~R_mat, ~U_mat,
+                              NULL, matrix(c(42, 43)))
+  res <- build_matsindf_apply_data_frame(FUN = example_fun, R_mat = NULL, U_mat = matrix(c(42, 43)))
+  expect_equal(res, expected)
+})
+
+
+
+
+
+
+
+
 test_that(".dat_names_to_keep() works as expected", {
   example_fun <- function(a, b) {c(c = a + b, d = a - b)}
 

@@ -4,7 +4,7 @@
 \alias{build_matsindf_apply_data_frame}
 \title{Create a data frame consisting of the input data for matsindf_apply()}
 \usage{
-build_matsindf_apply_data_frame(.dat, FUN, ...)
+build_matsindf_apply_data_frame(.dat = NULL, FUN, ...)
 }
 \arguments{
 \item{.dat}{The value of the \code{.dat} argument to \code{matsindf_apply()}, as a list or a data frame.}

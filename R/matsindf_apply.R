@@ -628,6 +628,7 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
 #' When evaluating each row of a data frame in `matsindf_apply()`,
 #' the result will be a `tibble` with list columns.
 #' This function tells whether a column can be unlisted.
+#' This is internal helper function and should not be called externally.
 #'
 #' @param this_col The column to be checked.
 #'                 Or a `data.frame`, in which case every column is checked.
@@ -635,17 +636,6 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
 #' @return A boolean. `TRUE` if the column can be unlisted, `FALSE` otherwise.
 #'         When `this_col` is a `data.frame`, a named boolean vector,
 #'         one entry for each column.
-#'
-#' @examples
-#' DF <- tibble::tibble(a = list(1, 2, 3), b = c("a", "b", "c"),
-#'                      c = list(matrix(c(42, 43)),
-#'                               matrix(c(44, 45)),
-#'                               matrix(c(46, 47))))
-#' should_unlist(DF$a)
-#' should_unlist(DF$b)
-#' should_unlist(DF$c)
-#' sapply(DF, FUN = function(this_col) {should_unlist(this_col)})
-#' should_unlist(DF)
 should_unlist <- function(this_col) {
   if (is.data.frame(this_col)) {
     return(sapply(this_col, should_unlist))
@@ -742,6 +732,9 @@ should_unlist <- function(this_col) {
   })
 
   # Return only those names that we want to keep.
+  if (length(.dat_names) == 0) {
+    return(NULL)
+  }
   .dat_names[which_.dat_names_to_keep]
 }
 

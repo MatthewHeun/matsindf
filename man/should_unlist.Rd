@@ -19,15 +19,5 @@ one entry for each column.
 When evaluating each row of a data frame in \code{matsindf_apply()},
 the result will be a \code{tibble} with list columns.
 This function tells whether a column can be unlisted.
-}
-\examples{
-DF <- tibble::tibble(a = list(1, 2, 3), b = c("a", "b", "c"),
-                     c = list(matrix(c(42, 43)),
-                              matrix(c(44, 45)),
-                              matrix(c(46, 47))))
-should_unlist(DF$a)
-should_unlist(DF$b)
-should_unlist(DF$c)
-sapply(DF, FUN = function(this_col) {should_unlist(this_col)})
-should_unlist(DF)
+This is internal helper function and should not be called externally.
 }

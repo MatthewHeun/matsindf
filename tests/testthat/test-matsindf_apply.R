@@ -742,6 +742,14 @@ test_that("matsindf_apply_types() works with a degenerate case with simple FUN a
 })
 
 
+test_that("matsindf_apply_types() works for examples", {
+  identity_fun <- function(a, b) {list(a = a, b = b)}
+  types <- matsindf_apply_types(.dat = data.frame(), FUN = identity_fun,
+                                a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+  expect_null(types$keep_args$.dat)
+})
+
+
 test_that("build_matsindf_apply_data_frame() works as expected", {
   example_fun <- function(a_var, b_var = c(42, 43)) {
     c(a_var, b_var)
@@ -893,4 +901,20 @@ test_that("matsindf_apply() works for an edge case", {
   expect_equal(calc_W(list(U = c(2, 2, 2, 2), V = c(3, 4, 5, 6))),
                list(U = c(2, 2, 2, 2), V = c(3, 4, 5, 6), W = c(1, 2, 3, 4)))
 })
+
+
+test_that("should_unlist() works as expected", {
+  DF <- tibble::tibble(a = list(1, 2, 3), b = c("a", "b", "c"),
+                       c = list(matrix(c(42, 43)),
+                                matrix(c(44, 45)),
+                                matrix(c(46, 47))))
+  expect_true(should_unlist(DF$a))
+  expect_false(should_unlist(DF$b))
+  expect_false(should_unlist(DF$c))
+  expect_equal(sapply(DF, FUN = function(this_col) {should_unlist(this_col)}),
+               c(a = TRUE, b = FALSE, c = FALSE))
+  expect_equal(should_unlist(DF),
+               c(a = TRUE, b = FALSE, c = FALSE))
+})
+
 

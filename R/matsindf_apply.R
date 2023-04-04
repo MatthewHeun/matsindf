@@ -490,40 +490,50 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
 
   dots <- list(...)
 
-  # Get lengths of each item in ...
-  # But do so in a way that preserves any NULL elements.
-  lengths <- sapply(dots, function(this_dot) {
-    if (matsbyname::is_matrix_or_Matrix(this_dot)) {
-      return(1)
-    } else if (is.null(this_dot)) {
-      return(NULL)
-    } else {
-      return(length(this_dot))
-    }
-  })
-
-  # See if all non-NULL items have the same length
-  compact_lengths <- purrr::compact(lengths)
-  if (length(compact_lengths) == 0) {
-    all_same_length <- TRUE
-  } else {
-    all_same_length <- all(compact_lengths == compact_lengths[[1]])
-    if (! all_same_length) {
-      stop("Different lengths in build_matsindf_apply_data_frame()")
-    }
-    null_replacement <- vector("list", compact_lengths[[1]])
-  }
+  # # Get lengths of each item in ...
+  # # But do so in a way that preserves any NULL elements.
+  # lengths <- sapply(dots, function(this_dot) {
+  #   if (matsbyname::is_matrix_or_Matrix(this_dot)) {
+  #     return(1)
+  #   } else if (is.null(this_dot)) {
+  #     return(NULL)
+  #   } else {
+  #     return(length(this_dot))
+  #   }
+  # })
+  #
+  # # See if all non-NULL items have the same length
+  # compact_lengths <- purrr::compact(lengths)
+  # if (length(compact_lengths) == 0) {
+  #   all_same_length <- TRUE
+  # } else {
+  #   all_same_length <- all(compact_lengths == compact_lengths[[1]])
+  #   if (! all_same_length) {
+  #     stop("Different lengths in build_matsindf_apply_data_frame()")
+  #   }
+  #   null_replacement <- vector("list", compact_lengths[[1]])
+  # }
+  #
+  # dots_df <- dots |>
+  #   # If we have single matrices in the list,
+  #   # they should we wrapped in list() to prevent
+  #   # expanding to more columns than we want.
+  #   purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
+  #   purrr::modify_if(.p = is.null, .f = function(n) {null_replacement}) |>
+  #   # Make a tibble out of the ... arguments
+  #   tibble::as_tibble() |>
+  #   # And select only those columns that we want to keep
+  #   dplyr::select(dplyr::all_of(types$keep_args$dots))
 
   dots_df <- dots |>
-    # If we have single matrices in the list,
-    # they should we wrapped in list() to prevent
-    # expanding to more columns than we want.
-    purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
-    purrr::modify_if(.p = is.null, .f = function(n) {null_replacement}) |>
+    # Deal with any NULL args
+    handle_null_args() |>
     # Make a tibble out of the ... arguments
     tibble::as_tibble() |>
     # And select only those columns that we want to keep
     dplyr::select(dplyr::all_of(types$keep_args$dots))
+
+
 
   .dat_df <- .dat |>
     tibble::as_tibble() |>
@@ -783,3 +793,45 @@ handle_empty_data <- function(.dat = NULL, FUN, DF, types) {
   return(out)
 }
 
+
+#' Gracefully handle `NULL` arguments
+#'
+#' When `NULL` is passed as an element of the `.dat` or `...` arguments
+#' to `matsindf_apply()`, special care must be taken.
+#' This function helps in those situations.
+#'
+#' @param .arg One of `.dat` or `...` (as a list) arguments to `matsindf_apply()`.
+#'
+#' @return A list representation of `.arg` with `NULL` values handled appropriately.
+handle_null_args <- function(.arg) {
+  # Get lengths of each item in .arg
+  # But do so in a way that preserves any NULL elements.
+  lengths <- sapply(.arg, function(this_.arg) {
+    if (matsbyname::is_matrix_or_Matrix(this_.arg)) {
+      return(1)
+    } else if (is.null(this_.arg)) {
+      return(NULL)
+    } else {
+      return(length(this_.arg))
+    }
+  })
+
+  # See if all non-NULL items have the same length
+  compact_lengths <- purrr::compact(lengths)
+  if (length(compact_lengths) == 0) {
+    all_same_length <- TRUE
+  } else {
+    all_same_length <- all(compact_lengths == compact_lengths[[1]])
+    if (! all_same_length) {
+      stop("Different lengths in handle_null_args()")
+    }
+    null_replacement <- vector("list", compact_lengths[[1]])
+  }
+
+  .arg |>
+    # If we have single matrices in the list,
+    # they should we wrapped in list() to prevent
+    # expanding to more columns than we want.
+    purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
+    purrr::modify_if(.p = is.null, .f = function(n) {null_replacement})
+}

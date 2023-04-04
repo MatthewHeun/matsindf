@@ -270,9 +270,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #'                      a = "a", b = "b")
 matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 
-  ############################
-  # Check .dat, FUN, and ... #
-  ############################
+  # Check .dat, FUN, and ... ----------------------------------------------
 
   # Check .dat
   if (is.null(.dat)) {
@@ -306,9 +304,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   dots <- list(...)
   dots_present <- length(dots) > 0
 
-  #################################################
-  # Set some logical values for the outgoing list #
-  #################################################
+  # Set some logical values for the outgoing list -----------------------------
 
   if (!dots_present) {
     all_dots_num  <- FALSE
@@ -345,9 +341,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # Figure out where to pull needed parameters from: ..., .dat, or defaults.
   # Precedence is given to ... over .dat over defaults when there are conflicts.
 
-  ################################
-  # First, work on args in ... . #
-  ################################
+  # First, work on args in ...  -------------------------------------------
 
   # If an argument is present in ..., we use it from ... .
   keep_args_dots <- args_present$dots
@@ -373,9 +367,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # But don't keep arguments in dots that we'll pull from .dat.
   keep_args_dots <- setdiff(keep_args_dots, names(dots_args_to_pull_from_.dat))
 
-  ################################
-  # Second, work on args in .dat #
-  ################################
+  # Second, work on args in .dat ------------------------------------------
 
   # Keep all args in .dat, unless they also exist in ... and are not single strings,
   # i.e., keep all args in .dat, unless they are in keep_args_dots,
@@ -408,9 +400,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   keep_args_.dat <- keep_args_.dat |>
     magrittr::set_names(new_names_keep_args_.dat)
 
-  ######################################
-  # Third, work on default args to FUN #
-  ######################################
+  # Third, work on default args to FUN -----------------------------------
 
   # Keep all args in defaults, unless they also exist in ... or .dat.
   keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_.dat)) |>
@@ -423,9 +413,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
     keep_args_.dat <- NULL
   }
 
-  ############################################
-  # Bundle all keep_args together in a list. #
-  ############################################
+  # Bundle all keep_args together in a list ---------------------------------
 
   keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, fun_defaults = keep_args_fun_defaults)
   # Double check that each named argument has only one and only one source.
@@ -439,10 +427,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
     stop(msg)
   }
 
-  ############################################
-  # Check that required args are present and #
-  # that no extra args are specified in ...  #
-  ############################################
+  # Check that required args are present and that no extra args are specified in ...  --------------------------------
 
   # The arguments that we have available are from keep_args$dots,
   # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and

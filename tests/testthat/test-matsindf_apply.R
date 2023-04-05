@@ -633,9 +633,9 @@ test_that("matsindf_apply_types() works as expected", {
                       dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE,
                       all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                       dots_names = c("a", "b"),
-                      keep_args = list(dots = c(a = "a", b = "b"),
-                                       .dat = NULL,
-                                       FUN = NULL)))
+                      keep_args = list(.dat = NULL,
+                                       FUN = NULL,
+                                       dots = c(a = "a", b = "b"))))
 
   matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
                        a = matrix(c(1, 2)), b = matrix(c(2, 3))) |>
@@ -646,9 +646,9 @@ test_that("matsindf_apply_types() works as expected", {
                       dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
                       all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                       dots_names = c("a", "b"),
-                      keep_args = list(dots = c(a = "a", b = "b"),
-                                       .dat = NULL,
-                                       FUN = NULL)))
+                      keep_args = list(.dat = NULL,
+                                       FUN = NULL,
+                                       dots = c(a = "a", b = "b"))))
 
   matsindf_apply_types(.dat = list(a = 1, b = 2), FUN = example_fun,
                        a = list(1, 2), b = list(3, 4)) |>
@@ -659,9 +659,9 @@ test_that("matsindf_apply_types() works as expected", {
                       dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE,
                       all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = TRUE,
                       dots_names = c("a", "b"),
-                      keep_args = list(dots = c(a = "a", b = "b"),
-                                       .dat = NULL,
-                                       FUN = NULL)))
+                      keep_args = list(.dat = NULL,
+                                       FUN = NULL,
+                                       dots = c(a = "a", b = "b"))))
 
   matsindf_apply_types(.dat = NULL, FUN = example_fun, a = "a", b = "b") |>
     expect_error("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
@@ -676,9 +676,9 @@ test_that("matsindf_apply_types() works as expected", {
                       dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
                       all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                       dots_names = c("a", "b"),
-                      keep_args = list(dots = c(a = "a", b = "b"),
-                                       .dat = NULL,
-                                       FUN = NULL)))
+                      keep_args = list(.dat = NULL,
+                                       FUN = NULL,
+                                       dots = c(a = "a", b = "b"))))
 
   # Try with data coming from one but not the other source.
   matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
@@ -690,9 +690,9 @@ test_that("matsindf_apply_types() works as expected", {
                       dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
                       all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                       dots_names = "b",
-                      keep_args = list(dots = c(b = "b"),
-                                       .dat = c(a = "a"),
-                                       FUN = NULL)))
+                      keep_args = list(.dat = c(a = "a"),
+                                       FUN = NULL,
+                                       dots = c(b = "b"))))
 })
 
 
@@ -710,9 +710,9 @@ test_that("matsindf_apply_types() works with functions that have default values"
                     dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE,
                     all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                     dots_names = c("a", "b"),
-                    keep_args = list(dots = c(a = "a", b = "b"),
-                                     .dat = NULL,
-                                     FUN = c(c = "c"))))
+                    keep_args = list(.dat = NULL,
+                                     FUN = c(c = "c"),
+                                     dots = c(a = "a", b = "b"))))
 })
 
 
@@ -727,9 +727,9 @@ test_that("matsindf_apply_types() works with a degenerate case with simple FUN a
                     dots_present = FALSE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE,
                     all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                     dots_names = NULL,
-                    keep_args = list(dots = NULL,
-                                     .dat = NULL,
-                                     FUN = NULL)))
+                    keep_args = list(.dat = NULL,
+                                     FUN = NULL,
+                                     dots = NULL)))
 })
 
 

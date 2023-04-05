@@ -125,7 +125,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     }
   }
 
-  DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ...)
+  DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ..., types = types)
 
   # Deal gracefully with zero-row DF.
   if (nrow(DF) == 0) {
@@ -478,15 +478,15 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 #' @param .dat The value of the `.dat` argument to `matsindf_apply()`, as a list or a data frame.
 #' @param FUN The function supplied to `matsindf_apply()`.
 #' @param ... The `...` argument supplied to `matsindf_apply()`.
+#' @param types The types for `matsindf_apply()`. Supply if already calculated externally.
+#'              Default is `types = matsindf_apply_types(.dat, FUN = FUN, ... = ...)`.
 #'
 #' @return A data frame (actually, a `tibble`)
 #'         with columns from `dots`, `.dat`, and the default values to `FUN`,
 #'         according to precedence rules for `matsindf_apply()`.
 #'
 #' @export
-build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ...) {
-
-  types <- matsindf_apply_types(.dat = .dat, FUN = FUN, ... = ...)
+build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ..., types = matsindf_apply_types(.dat, FUN = FUN, ... = ...)) {
 
   dots <- list(...)
 

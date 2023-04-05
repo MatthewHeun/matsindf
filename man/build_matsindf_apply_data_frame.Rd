@@ -4,7 +4,12 @@
 \alias{build_matsindf_apply_data_frame}
 \title{Create a data frame consisting of the input data for matsindf_apply()}
 \usage{
-build_matsindf_apply_data_frame(.dat = NULL, FUN, ...)
+build_matsindf_apply_data_frame(
+  .dat = NULL,
+  FUN,
+  ...,
+  types = matsindf_apply_types(.dat, FUN = FUN, ... = ...)
+)
 }
 \arguments{
 \item{.dat}{The value of the \code{.dat} argument to \code{matsindf_apply()}, as a list or a data frame.}
@@ -12,6 +17,9 @@ build_matsindf_apply_data_frame(.dat = NULL, FUN, ...)
 \item{FUN}{The function supplied to \code{matsindf_apply()}.}
 
 \item{...}{The \code{...} argument supplied to \code{matsindf_apply()}.}
+
+\item{types}{The types for \code{matsindf_apply()}. Supply if already calculated externally.
+Default is \code{types = matsindf_apply_types(.dat, FUN = FUN, ... = ...)}.}
 }
 \value{
 A data frame (actually, a \code{tibble})

@@ -136,7 +136,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
     dplyr::select(types$FUN_arg_all_names)
 
   # Send one row at a time to FUN
-  # new_data <- DF_only_needed_args |>
   new_data <- DF_only_needed_args |>
     as.list() |>
     purrr::list_transpose(simplify = FALSE) |>
@@ -263,8 +262,6 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #'                      a = c(1, 2), b = c(3, 4))
 #' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
 #'                      a = list(1, 2), b = list(3, 4))
-#' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
-#'                      a = "a", b = "b")
 matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 
   # Check .dat, FUN, and ... ----------------------------------------------
@@ -537,12 +534,10 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
 #' `...`, `.dat`, and defaults to `FUN`.
 #' This function does that work in one place.
 #'
-#' @param where_to_find_args
+#' @param where_to_find_args A list created by `where_to_get_args()`.
 #'
-#' @return
-#' @export
-#'
-#' @examples
+#' @return A list with names `.dat`, `dots`, and `FUN` which
+#'         gives items to keep from each source.
 build_keep_args <- function(where_to_find_args) {
   args_to_keep <- function(where_to_find_args, which_source) {
     where_to_find_args |>
@@ -561,7 +556,7 @@ build_keep_args <- function(where_to_find_args) {
   keep_args_FUN <- args_to_keep(where_to_find_args, which_source = "FUN")
 
   # Return everything in a list
-  list(dots = keep_args_dots, .dat = keep_args_.dat, FUN = keep_args_FUN)
+  list(.dat = keep_args_.dat, FUN = keep_args_FUN, dots = keep_args_dots)
 }
 
 

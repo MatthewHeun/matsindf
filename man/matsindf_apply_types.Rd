@@ -72,6 +72,4 @@ matsindf_apply_types(.dat = list(), FUN = identity_fun,
                      a = c(1, 2), b = c(3, 4))
 matsindf_apply_types(.dat = NULL, FUN = identity_fun,
                      a = list(1, 2), b = list(3, 4))
-matsindf_apply_types(.dat = NULL, FUN = identity_fun,
-                     a = "a", b = "b")
 }

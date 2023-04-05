@@ -7,7 +7,11 @@
 build_keep_args(where_to_find_args)
 }
 \arguments{
-\item{where_to_find_args}{}
+\item{where_to_find_args}{A list created by \code{where_to_get_args()}.}
+}
+\value{
+A list with names \code{.dat}, \code{dots}, and \code{FUN} which
+gives items to keep from each source.
 }
 \description{
 In the process of building data frames of arguments to \code{FUN},

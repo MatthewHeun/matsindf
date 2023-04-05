@@ -802,3 +802,87 @@ handle_null_args <- function(.arg) {
     purrr::modify_if(.p = matsbyname::is_matrix_or_Matrix, .f = function(m) {list(m)}) |>
     purrr::modify_if(.p = is.null, .f = function(n) {null_replacement})
 }
+
+
+#' Decide where to get each argument to FUN
+#'
+#' The precedence rules for where to obtain arguments are codified here.
+#' The rules are:
+#' * Order (highest priority to lowest priority): `...`, `.dat`, defaults arguments to `FUN`.
+#' * If an element of `...` is a single string, the name of that element should be found
+#'   in `...` (first priority) or defaults to `FUN` (second priority)
+#'   according to the value.
+#'
+#' Examples:
+#'
+#' * `.dat` has columns `a`, `b`, and `c`.
+#'   `...` has `b = "c"`.
+#'   `FUN` has arguments `a` and `b`.
+#'   Argument `a` of `FUN` will be supplied by column `a` in `.dat`.
+#'   Argument `b` of `FUN` will be supplied by column `c` in `.dat`.
+#'   The return value will be
+#'   `list(a = c(".dat", "a"), b = c(".dat", "c"))`
+#' * `.dat` has columns `b`, and `c`.
+#'   `...` has `b = "c"`.
+#'   `FUN` has arguments `a = 1` and `b`.
+#'   Argument `a` of `FUN` will be supplied by the default value to `FUN` (`a = 1`).
+#'   Argument `b` of `FUN` will be supplied by column `c` in `.dat`.
+#'   The return value will be
+#'   `list(a = c("FUN", "a"), b = c(".dat", "c"))`
+#'
+#'
+#' @param .dat The `.dat` argument to `matsindf_apply()`.
+#' @param FUN The `FUN` argument to `matsindf_apply()`.
+#' @param ... The `...` argument to `matsindf_apply()`.
+#'
+#' @return A named list wherein the names are the argument names to `FUN`.
+#'         Values are strings vectors with 2 elements.
+#'         The first element is the location at which the named argument should be found,
+#'         one of ".dat", "...", or "defaults".
+#'         The second element is the variable or argument name that contains the data.
+where_to_get_args <- function(.dat = NULL, FUN, ...) {
+  .dat_arg_names <- names(.dat)
+  # Names of all FUN arguments
+  FUN_arg_names <- names(formals(FUN))
+  FUN_arg_names <- FUN_arg_names |>
+    magrittr::set_names(FUN_arg_names)
+  # Names of FUN args that have default values
+  FUN_arg_names_with_defaults <- get_useable_default_args(FUN, which = "names")
+  dots <- list(...)
+  dots_arg_names <- names(dots)
+  dots_arg_char1 <- lapply(dots, function(this_dot) {
+    if (is.null(this_dot)) {
+      return(FALSE)
+    } else {
+      return(is.character(this_dot) & length(this_dot) == 1)
+    }
+  })
+
+  # Cycle through each arg of FUN
+  lapply(FUN_arg_names, function(this_FUN_arg_name) {
+    if (this_FUN_arg_name %in% dots_arg_names) {
+      if (dots_arg_char1[[this_FUN_arg_name]]) {
+        # We have a single character.
+        # Look for this argument in .dat and defaults to FUN
+        dots_arg_val <- dots[[this_FUN_arg_name]]
+        if (dots_arg_val %in% .dat_arg_names) {
+          return(c(source = ".dat", arg_name = dots_arg_val))
+        } else if (dots_arg_val %in% FUN_arg_names_with_defaults) {
+          return(c(source = "FUN", arg_name = dots_arg_val))
+        } else {
+          return(NULL)
+        }
+      } else {
+        # We don't have a single character.
+        # Use this arg from ... directly.
+        return(c(source = "...", arg_name = this_FUN_arg_name))
+      }
+    } else if (this_FUN_arg_name %in% .dat_arg_names) {
+      return(c(source = ".dat", arg_name = this_FUN_arg_name))
+    } else if (this_FUN_arg_name %in% FUN_arg_names_with_defaults) {
+      return(c(source = "FUN", arg_name = this_FUN_arg_name))
+    }
+    # Couldn't find this_FUN_arg anywhere.
+    return(NULL)
+  })
+}

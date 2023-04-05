@@ -951,7 +951,31 @@ test_that("matsindf_apply() works for missing arg in .dat", {
 })
 
 
+test_that("where_to_get_args() works as intended", {
+  example_fun <- function(a = 1, b) {
+    list(c = a + b, d = a - b)
+  }
 
+  matsindf:::where_to_get_args(FUN = example_fun) |>
+    expect_equal(list(a = c(source = "FUN", arg_name = "a"),
+                      b = NULL))
+
+  matsindf:::where_to_get_args(FUN = example_fun, b = 2) |>
+    expect_equal(list(a = c(source = "FUN", arg_name = "a"),
+                      b = c(source = "...", arg_name = "b")))
+
+  matsindf:::where_to_get_args(list(a = 2), FUN = example_fun, b = 2) |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = "...", arg_name = "b")))
+
+  matsindf:::where_to_get_args(list(a = 2, b = 2), FUN = example_fun) |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = ".dat", arg_name = "b")))
+
+  matsindf:::where_to_get_args(list(a = 2, b = 2, c = 2), FUN = example_fun, b = "c") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = ".dat", arg_name = "c")))
+})
 
 
 

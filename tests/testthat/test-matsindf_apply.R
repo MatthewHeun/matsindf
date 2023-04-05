@@ -750,11 +750,12 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
                         1, 2, 3,
                         4, 5, NULL)
   expected_df <- DF |>
+    dplyr::select("a", "b") |>
     dplyr::rename(
       a_var = "a", b_var = "b"
     )
   res_df <- build_matsindf_apply_data_frame(.dat = DF, FUN = example_fun, a_var = "a", b_var = "b")
-  expect_equal(names(res_df), c("a_var", "b_var", "z"))
+  expect_equal(names(res_df), c("a_var", "b_var"))
   expect_equal(res_df, expected_df)
 
   DF_2 <- DF |>
@@ -764,7 +765,7 @@ test_that("build_matsindf_apply_data_frame() works as expected", {
       b_var = c(42, 43),
       b = NULL) |>
     dplyr::rename(a_var = "a") |>
-    dplyr::select(a_var, z, b_var)
+    dplyr::select(a_var, b_var)
   res_df_2 <- build_matsindf_apply_data_frame(.dat = DF_2, FUN = example_fun, a_var = "a")
   expect_equal(res_df_2, expected_df_2)
 })
@@ -909,12 +910,12 @@ test_that("should_unlist() works as expected", {
                        c = list(matrix(c(42, 43)),
                                 matrix(c(44, 45)),
                                 matrix(c(46, 47))))
-  expect_true(should_unlist(DF$a))
-  expect_false(should_unlist(DF$b))
-  expect_false(should_unlist(DF$c))
-  expect_equal(sapply(DF, FUN = function(this_col) {should_unlist(this_col)}),
+  expect_true(matsindf:::should_unlist(DF$a))
+  expect_false(matsindf:::should_unlist(DF$b))
+  expect_false(matsindf:::should_unlist(DF$c))
+  expect_equal(sapply(DF, FUN = function(this_col) {matsindf:::should_unlist(this_col)}),
                c(a = TRUE, b = FALSE, c = FALSE))
-  expect_equal(should_unlist(DF),
+  expect_equal(matsindf:::should_unlist(DF),
                c(a = TRUE, b = FALSE, c = FALSE))
 })
 
@@ -938,7 +939,7 @@ test_that("matsindf_apply() works for missing arg in .dat", {
   # This test exposes that bug.
   res <- df |>
     dplyr::select("a") |>
-    matsindf_apply(FUN = example_fun, a_val = "a", b_val = "b")
+    matsindf_apply(FUN = example_fun, a_val = "a")
 })
 
 

@@ -54,7 +54,13 @@ example_fun_with_string <- function(str_a, b) {
   list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
 }
 
-matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2)
+# Causes an error
+tryCatch(
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2),
+  error = function(e){e}
+)
+# To solve the problem, wrap "1" in list().
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = 2)
 matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
 matsindf_apply(FUN = example_fun_with_string, 
                str_a = list("1", "3"), 

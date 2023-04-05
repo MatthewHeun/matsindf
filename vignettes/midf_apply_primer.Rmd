@@ -165,7 +165,13 @@ tryCatch(
 ```
 
 `FUN` can accept more than just numerics. 
-`example_fun_with_string()` accepts a string and a numeric.
+`example_fun_with_string()` accepts a character string and a numeric.
+However, because `...` argument that is a character string
+of length `1` has special meaning
+(namely mapping variables in `.dat` to arguments of `FUN`), 
+passing a character string of length `1` can cause an error.
+To get around the problem, wrap the single string
+in a list, as shown below.
 
 ```{r}
 example_fun_with_string <- function(str_a, b) {
@@ -173,7 +179,13 @@ example_fun_with_string <- function(str_a, b) {
   list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
 }
 
-matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2)
+# Causes an error
+tryCatch(
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2),
+  error = function(e){e}
+)
+# To solve the problem, wrap "1" in list().
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = 2)
 matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
 matsindf_apply(FUN = example_fun_with_string, 
                str_a = list("1", "3"), 

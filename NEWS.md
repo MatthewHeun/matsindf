@@ -4,6 +4,7 @@ output: html_document
 ---
 
 
+* The rewrite of `matsindf_apply()` enabled better error messages in many places.
 * Rewrote all of `matsindf_apply()`.
     * `matsindf_apply()` now correctly returns a list when lists are provided in the `...` argument.
       Previously, it incorrectly returned a data frame.

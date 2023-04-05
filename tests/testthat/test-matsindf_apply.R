@@ -159,10 +159,11 @@ test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
 
 test_that("matsindf_apply() fails as expected when not all same type for ...", {
   example_fun <- function(a, b) {
-    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+    return(list(c = matsbyname::sum_byname(a, b),
+                d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2),
-               "non-numeric argument to binary operator")
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a")
 })
 
 
@@ -178,7 +179,8 @@ test_that("matsindf_apply() fails gracefully when some of ... are NULL", {
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
-  expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL), "unused argument")
+  expect_error(matsindf_apply(FUN = example_fun, a = 1, b = 2, c = NULL),
+               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: c")
 })
 
 
@@ -187,7 +189,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
-               "non-numeric argument to binary operator")
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 })
 
 
@@ -196,7 +198,7 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
   expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
-               "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: .DF")
+               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 })
 
 
@@ -238,9 +240,10 @@ test_that("matsindf_apply() works with a NULL argument and Matrix objects", {
 })
 
 
-test_that("matsindf_apply() works when .dat is a list (Case 13)", {
+test_that("matsindf_apply() works when .dat is a list", {
   example_fun <- function(a, b) {
-    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+    return(list(c = matsbyname::sum_byname(a, b),
+                d = matsbyname::difference_byname(a, b)))
   }
   expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun, a = "a", b = "b"),
                list(a = 1, b = 2, c = 3, d = -1))
@@ -301,9 +304,9 @@ test_that("matsindf_apply() works when an argument is missing", {
   # Make sure it works when all arguments are present.
   expect_equal(outer_fun(a = 2, b = 2), list(c = 4, d = 0))
   # Now try when an argument is missing and the inner function can't handle it.
-  expect_error(outer_fun(a = 2), "non-numeric argument to binary operator")
+  expect_error(outer_fun(a = 2), "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: b_num")
   # Try when an argument is missing and the inner function can't handle it.
-  expect_error(outer_fun(b = 2), "non-numeric argument to binary operator")
+  expect_error(outer_fun(b = 2), "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a_num")
 })
 
 
@@ -341,23 +344,23 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                   2, 3,
                   4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
-  expect_equal(find_matching_rownames(prefixes = "ra", m = mat),
+  expect_equal(find_matching_rownames(prefixes = list("ra"), m = mat),
                list(matching_rows = c("ra1", "ra2")))
 
-  # Now make lists and try again.  This works fine. (Case 15)
+  # Now make lists and try again.  This works fine.
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
   expect_type(res2, type = "list")
   expect_equal(res2[["matching_rows"]][[1]], "ra1")
   expect_equal(res2[["matching_rows"]][[2]], "ra2")
 
-  # Use with lists and 2 items in each list. (Case 15)
+  # Use with lists and 2 items in each list.
   res3 <- find_matching_rownames(prefixes = list("ra", "ra"), m = list(mat, mat))
   expect_type(res3, type = "list")
   expect_equal(res3[["matching_rows"]][[1]], c("ra1", "ra2"))
   expect_equal(res3[["matching_rows"]][[2]], c("ra1", "ra2"))
   expect_equal(length(res3), 1)
 
-  # Try in a data frame. (Case 13)
+  # Try in a data frame.
   df <- tibble::tibble(prefixes = list("ra", c("r", "b"), "b"), m = list(mat, mat, mat)) |>
     find_matching_rownames(prefixes = "prefixes")
   expect_equal(df$matching_rows[[1]], c("ra1", "ra2"))
@@ -367,7 +370,6 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
 
 
 test_that("matsindf_apply() works with functions similar in form to those in `Recca` with Matrix objects", {
-
   # This function is similar in form to functions in `Recca`.
   find_matching_rownames <- function(.DF = NULL,
                                      prefixes,
@@ -401,7 +403,7 @@ test_that("matsindf_apply() works with functions similar in form to those in `Re
                               4, 5), nrow = 3, ncol = 2, byrow = TRUE, dimnames = list(c("ra1", "ra2", "b3"), c("c1", "c2")))
 
   # This fails, because we go into find_matching_rownames without the string prefixes_arg argument.
-  expect_equal(find_matching_rownames(prefixes = "ra", m = mat),
+  expect_equal(find_matching_rownames(prefixes = list("ra"), m = mat),
                list(matching_rows = c("ra1", "ra2")))
 
   res2 <- find_matching_rownames(prefixes = list("ra"), m = list(mat))
@@ -623,85 +625,74 @@ test_that("matsindf_apply_types() works as expected", {
   expect_error(matsindf_apply_types(.dat = NULL, FUN = example_fun),
                "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 
-  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
-                                    a = 1, b = 2),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE,
-                    all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
-                    dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
-                                     .dat = NULL,
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = NULL, FUN = example_fun, a = 1, b = 2) |>
+    expect_equal(list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                      FUN_arg_all_names = c("a", "b"),
+                      FUN_arg_default_names = NULL,
+                      FUN_arg_default_values = NULL,
+                      dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE,
+                      all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
+                      dots_names = c("a", "b"),
+                      keep_args = list(dots = c(a = "a", b = "b"),
+                                       .dat = NULL,
+                                       FUN = NULL)))
 
-  expect_equal(matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
-                                    a = matrix(c(1, 2)), b = matrix(c(2, 3))),
-               list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
-                    all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
-                    dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
-                                     .dat = NULL,
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
+                       a = matrix(c(1, 2)), b = matrix(c(2, 3))) |>
+    expect_equal(list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
+                      FUN_arg_all_names = c("a", "b"),
+                      FUN_arg_default_names = NULL,
+                      FUN_arg_default_values = NULL,
+                      dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
+                      all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
+                      dots_names = c("a", "b"),
+                      keep_args = list(dots = c(a = "a", b = "b"),
+                                       .dat = NULL,
+                                       FUN = NULL)))
 
-  expect_equal(matsindf_apply_types(.dat = list(a = 1, b = 2), FUN = example_fun,
-                                    a = list(1, 2), b = list(3, 4)),
-               list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE, .dat_names = c("a", "b"),
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE,
-                    all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = TRUE,
-                    dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
-                                     .dat = NULL,
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = list(a = 1, b = 2), FUN = example_fun,
+                       a = list(1, 2), b = list(3, 4)) |>
+    expect_equal(list(.dat_null = FALSE, .dat_df = FALSE, .dat_list = TRUE, .dat_names = c("a", "b"),
+                      FUN_arg_all_names = c("a", "b"),
+                      FUN_arg_default_names = NULL,
+                      FUN_arg_default_values = NULL,
+                      dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = TRUE,
+                      all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = TRUE,
+                      dots_names = c("a", "b"),
+                      keep_args = list(dots = c(a = "a", b = "b"),
+                                       .dat = NULL,
+                                       FUN = NULL)))
 
-  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
-                                    a = "a", b = "b"),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = FALSE, all_dots_list = FALSE,
-                    all_dots_vect = TRUE, all_dots_char = TRUE, all_dots_longer_than_1 = FALSE,
-                    dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
-                                     .dat = NULL,
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = NULL, FUN = example_fun, a = "a", b = "b") |>
+    expect_error("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 
   # Try with Matrix objects
-  expect_equal(matsindf_apply_types(.dat = NULL, FUN = example_fun,
-                                    a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3))),
-               list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
-                    all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
-                    dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
-                                     .dat = NULL,
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = NULL, FUN = example_fun,
+                       a = matsbyname::Matrix(c(1, 2)), b = matsbyname::Matrix(c(2, 3))) |>
+    expect_equal(list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
+                      FUN_arg_all_names = c("a", "b"),
+                      FUN_arg_default_names = NULL,
+                      FUN_arg_default_values = NULL,
+                      dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
+                      all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
+                      dots_names = c("a", "b"),
+                      keep_args = list(dots = c(a = "a", b = "b"),
+                                       .dat = NULL,
+                                       FUN = NULL)))
 
   # Try with data coming from one but not the other source.
-  expect_equal(matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
-                                    b = matrix(c(2, 3))),
-               list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
-                    FUN_arg_all_names = c("a", "b"),
-                    FUN_arg_default_names = NULL,
-                    FUN_arg_default_values = NULL,
-                    dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
-                    all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
-                    dots_names = "b",
-                    keep_args = list(dots = "b",
-                                     .dat = c(a = "a"),
-                                     fun_defaults = NULL)))
+  matsindf_apply_types(.dat = data.frame(a = 42), FUN = example_fun,
+                       b = matrix(c(2, 3))) |>
+    expect_equal(list(.dat_null = FALSE, .dat_df = TRUE, .dat_list = TRUE, .dat_names = "a",
+                      FUN_arg_all_names = c("a", "b"),
+                      FUN_arg_default_names = NULL,
+                      FUN_arg_default_values = NULL,
+                      dots_present = TRUE, all_dots_num = FALSE, all_dots_mats = TRUE, all_dots_list = FALSE,
+                      all_dots_vect = FALSE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
+                      dots_names = "b",
+                      keep_args = list(dots = c(b = "b"),
+                                       .dat = c(a = "a"),
+                                       FUN = NULL)))
 })
 
 
@@ -719,9 +710,9 @@ test_that("matsindf_apply_types() works with functions that have default values"
                     dots_present = TRUE, all_dots_num = TRUE, all_dots_mats = FALSE, all_dots_list = FALSE,
                     all_dots_vect = TRUE, all_dots_char = FALSE, all_dots_longer_than_1 = FALSE,
                     dots_names = c("a", "b"),
-                    keep_args = list(dots = c("a", "b"),
+                    keep_args = list(dots = c(a = "a", b = "b"),
                                      .dat = NULL,
-                                     fun_defaults = "c")))
+                                     FUN = c(c = "c"))))
 })
 
 
@@ -738,7 +729,7 @@ test_that("matsindf_apply_types() works with a degenerate case with simple FUN a
                     dots_names = NULL,
                     keep_args = list(dots = NULL,
                                      .dat = NULL,
-                                     fun_defaults = NULL)))
+                                     FUN = NULL)))
 })
 
 

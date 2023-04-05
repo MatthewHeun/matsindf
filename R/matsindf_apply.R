@@ -419,31 +419,19 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   #                                              paste(keep_args[duplicated(keep_args)], collapse = ", ")))
 
   where_to_find_args <- where_to_get_args(.dat, FUN = FUN, ... = ...)
-  keep_args_dots <- where_to_find_args |>
-    purrr::keep(.p = function(this_var) {this_var[["source"]] == "..."}) |>
-    purrr::list_transpose() |>
-    purrr::pluck("arg_name")
-  keep_args_.dat <- where_to_find_args |>
-    purrr::keep(.p = function(this_var) {this_var[["source"]] == ".dat"}) |>
-    purrr::list_transpose() |>
-    purrr::pluck("arg_name")
-  keep_args_FUN <- where_to_find_args |>
-    purrr::keep(.p = function(this_var) {this_var[["source"]] == "FUN"}) |>
-    purrr::list_transpose() |>
-    purrr::pluck("arg_name")
-  keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, FUN = keep_args_FUN)
+  keep_args <- where_to_find_args |>
+    build_keep_args()
   # Double check that each named argument has only one and only one source.
   args_ok <- !any(duplicated(unlist(keep_args)))
   assertthat::assert_that(args_ok, msg = paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
                                                paste(keep_args[duplicated(keep_args)], collapse = ", ")))
-
 
   # Check that required args are present and that no extra args are specified in ...  --------------------------------
 
   # The arguments that we have available are from keep_args$dots,
   # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and
   # keep_args$fun_defaults.
-  args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$fun_defaults)
+  args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$FUN)
   # Look in two directions.
   # (1) Are all needed args to FUN available?
   # Double-check that all arguments needed for FUN are available.
@@ -456,9 +444,10 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   }
   # (2) Do we have any extra args?
   # Extra args would come from unneeded args in ... .
-  extra_dots_args_present <- any(!(keep_args$dots %in% FUN_arg_all_names))
+  extra_dots_args_present <- any(!(names(dots) %in% FUN_arg_all_names))
   if (extra_dots_args_present) {
-    extra_dots_args <- keep_args$dots[!(keep_args$dots %in% FUN_arg_all_names)]
+    names_dots <- names(dots)
+    extra_dots_args <- names_dots[!(names_dots %in% FUN_arg_all_names)]
     msg <- paste("In matsindf::matsindf_apply(), the following unused arguments appeared in ...:",
                  paste(extra_dots_args, collapse = ", "))
     stop(msg)
@@ -618,6 +607,41 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
     out <- NULL
   }
   out
+}
+
+
+#' Build a list of arguments to keep
+#'
+#' In the process of building data frames of arguments to `FUN`,
+#' we need to decide which arguments to keep from each source,
+#' `...`, `.dat`, and defaults to `FUN`.
+#' This function does that work in one place.
+#'
+#' @param where_to_find_args
+#'
+#' @return
+#' @export
+#'
+#' @examples
+build_keep_args <- function(where_to_find_args) {
+  args_to_keep <- function(where_to_find_args, which_source) {
+    where_to_find_args |>
+      purrr::keep(.p = function(this_FUN_arg) {
+        if (is.null(this_FUN_arg)) {
+          return(FALSE)
+        }
+        this_FUN_arg[["source"]] == which_source
+      }) |>
+      purrr::list_transpose() |>
+      purrr::pluck("arg_name")
+  }
+
+  keep_args_dots <- args_to_keep(where_to_find_args, which_source = "...")
+  keep_args_.dat <- args_to_keep(where_to_find_args, which_source = ".dat")
+  keep_args_FUN <- args_to_keep(where_to_find_args, which_source = "FUN")
+
+  # Return everything in a list
+  list(dots = keep_args_dots, .dat = keep_args_.dat, FUN = keep_args_FUN)
 }
 
 

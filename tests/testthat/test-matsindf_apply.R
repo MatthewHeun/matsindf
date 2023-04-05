@@ -790,12 +790,6 @@ test_that("build_matsindf_apply_data_frame() works with NULL args in ...", {
 })
 
 
-
-
-
-
-
-
 test_that(".dat_names_to_keep() works as expected", {
   example_fun <- function(a, b) {c(c = a + b, d = a - b)}
 
@@ -850,7 +844,6 @@ test_that(".dat_names_to_keep() works as expected", {
   # Try with empty .dat argument and empty ...
   matsindf:::.dat_names_to_keep(FUN = example_fun) |>
     expect_null()
-
 })
 
 

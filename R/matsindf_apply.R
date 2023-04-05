@@ -806,12 +806,15 @@ handle_null_args <- function(.arg) {
 
 #' Decide where to get each argument to FUN
 #'
-#' The precedence rules for where to obtain arguments are codified here.
+#' The precedence rules for where to obtain values for the `FUN` argument to
+#' `matsindf_apply()` are codified here.
 #' The rules are:
-#' * Order (highest priority to lowest priority): `...`, `.dat`, defaults arguments to `FUN`.
-#' * If an element of `...` is a single string, the name of that element should be found
-#'   in `...` (first priority) or defaults to `FUN` (second priority)
-#'   according to the value.
+#' * Precedence order: `...`, `.dat`, defaults arguments to `FUN`
+#'   (highest priority to lowest priority).
+#' * If an element of `...` is a character string of length `1`,
+#'   the element of `...` provides a mapping between
+#'   an item in `.dat` (with same name as the value of the character string of length `1`)
+#'   to an argument of `FUN` (with the same name as the name of the character string of length `1`).
 #'
 #' Examples:
 #'
@@ -836,10 +839,13 @@ handle_null_args <- function(.arg) {
 #' @param ... The `...` argument to `matsindf_apply()`.
 #'
 #' @return A named list wherein the names are the argument names to `FUN`.
-#'         Values are strings vectors with 2 elements.
-#'         The first element is the location at which the named argument should be found,
-#'         one of ".dat", "...", or "defaults".
-#'         The second element is the variable or argument name that contains the data.
+#'         Values are character vectors with 2 elements.
+#'         The first element is named `source` and provides
+#'         the argument to `matsindf_apply()` from which the named argument should be found,
+#'         one of ".dat", "FUN", or "...".
+#'         The second element is named `arg_name` and provides
+#'         the variable name or argument name in the source that contains the input data
+#'         for the argument to `FUN`.
 where_to_get_args <- function(.dat = NULL, FUN, ...) {
   .dat_arg_names <- names(.dat)
   # Names of all FUN arguments

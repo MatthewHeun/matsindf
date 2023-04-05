@@ -15,19 +15,25 @@ where_to_get_args(.dat = NULL, FUN, ...)
 }
 \value{
 A named list wherein the names are the argument names to \code{FUN}.
-Values are strings vectors with 2 elements.
-The first element is the location at which the named argument should be found,
-one of ".dat", "...", or "defaults".
-The second element is the variable or argument name that contains the data.
+Values are character vectors with 2 elements.
+The first element is named \code{source} and provides
+the argument to \code{matsindf_apply()} from which the named argument should be found,
+one of ".dat", "FUN", or "...".
+The second element is named \code{arg_name} and provides
+the variable name or argument name in the source that contains the input data
+for the argument to \code{FUN}.
 }
 \description{
-The precedence rules for where to obtain arguments are codified here.
+The precedence rules for where to obtain values for the \code{FUN} argument to
+\code{matsindf_apply()} are codified here.
 The rules are:
 \itemize{
-\item Order (highest priority to lowest priority): \code{...}, \code{.dat}, defaults arguments to \code{FUN}.
-\item If an element of \code{...} is a single string, the name of that element should be found
-in \code{...} (first priority) or defaults to \code{FUN} (second priority)
-according to the value.
+\item Precedence order: \code{...}, \code{.dat}, defaults arguments to \code{FUN}
+(highest priority to lowest priority).
+\item If an element of \code{...} is a character string of length \code{1},
+the element of \code{...} provides a mapping between
+an item in \code{.dat} (with same name as the value of the character string of length \code{1})
+to an argument of \code{FUN} (with the same name as the name of the character string of length \code{1}).
 }
 }
 \details{

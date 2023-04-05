@@ -972,9 +972,30 @@ test_that("where_to_get_args() works as intended", {
     expect_equal(list(a = c(source = ".dat", arg_name = "a"),
                       b = c(source = ".dat", arg_name = "b")))
 
+  # Map to self
+  matsindf:::where_to_get_args(list(a = 2, b = 2, c = 2), FUN = example_fun, a = "a", b = "b") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = ".dat", arg_name = "b")))
+
+  # Check redirection
   matsindf:::where_to_get_args(list(a = 2, b = 2, c = 2), FUN = example_fun, b = "c") |>
     expect_equal(list(a = c(source = ".dat", arg_name = "a"),
                       b = c(source = ".dat", arg_name = "c")))
+
+  # Leave an argument out
+  matsindf:::where_to_get_args(list(a = 2), FUN = example_fun) |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = NULL))
+
+  # Try redirecting to an item that doesn't exist in .dat
+  matsindf:::where_to_get_args(list(a = 2, b = 2, c = 2), FUN = example_fun, b = "d") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = NULL))
+
+  # Cross the mappings
+  matsindf:::where_to_get_args(list(a = 2, b = 2), FUN = example_fun, a = "b", b = "a") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "b"),
+                      b = c(source = ".dat", arg_name = "a")))
 })
 
 

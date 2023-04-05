@@ -525,7 +525,7 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ..., types = matsi
     # Get rid of NULL arguments.
     purrr::compact() |>
     tibble::as_tibble() |>
-    dplyr::select(dplyr::all_of(types$keep_args$fun_defaults))
+    dplyr::select(dplyr::all_of(types$keep_args$FUN))
 
   if (ncol(dots_df) == 0 & nrow(.dat_df) == 0 & nrow(defaults_df) == 0) {
     # The incoming data could have no rows in .dat_df and defautls_df

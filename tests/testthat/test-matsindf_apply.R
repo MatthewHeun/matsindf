@@ -940,6 +940,10 @@ test_that("matsindf_apply() works for missing arg in .dat", {
   res <- df |>
     dplyr::select("a") |>
     matsindf_apply(FUN = example_fun, a_val = "a")
+  expect_equal(res, tibble::tribble(~a, ~c, ~d,
+                                    10, 11, 9,
+                                    11, 12, 10,
+                                    12, 13, 11))
 })
 
 

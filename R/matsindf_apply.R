@@ -338,85 +338,105 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
   # Figure out where to pull needed parameters from: ..., .dat, or defaults.
   # Precedence is given to ... over .dat over defaults when there are conflicts.
 
-  # First, work on args in ...  -------------------------------------------
+  # # First, work on args in ...  -------------------------------------------
+  #
+  # # If an argument is present in ..., we use it from ... .
+  # keep_args_dots <- args_present$dots
+  # # Check if any of the arguments in ... have values that are single strings.
+  # # If so, we actually want to keep arguments in .dat whose name is the value of a ... argument.
+  # dots_args_to_pull_from_.dat <- sapply(keep_args_dots,
+  #                                       FUN = function(this_arg) {
+  #                                         if (!(is.character(dots[[this_arg]]) & length(dots[[this_arg]]) == 1)) {
+  #                                           return(NULL)
+  #                                         }
+  #                                         if (dots[[this_arg]] %in% args_present$.dat) {
+  #                                           return(dots[[this_arg]])
+  #                                         }
+  #                                         return(NULL)
+  #                                       })
+  # if (all(sapply(dots_args_to_pull_from_.dat, FUN = is.null))) {
+  #   # If the whole array is empty, set to NULL.
+  #   dots_args_to_pull_from_.dat <- NULL
+  # } else {
+  #   # Keep only non-NULL elements
+  #   dots_args_to_pull_from_.dat <- dots_args_to_pull_from_.dat[!sapply(dots_args_to_pull_from_.dat, is.null)]
+  # }
+  # # But don't keep arguments in dots that we'll pull from .dat.
+  # keep_args_dots <- setdiff(keep_args_dots, names(dots_args_to_pull_from_.dat))
+  #
+  # # Second, work on args in .dat ------------------------------------------
+  #
+  # # Keep all args in .dat, unless they also exist in ... and are not single strings,
+  # # i.e., keep all args in .dat, unless they are in keep_args_dots,
+  # # The logic for these decisions is found in .dat_names_to_keep()
+  # keep_args_.dat <- .dat_names_to_keep(.dat = .dat, FUN = FUN, ...)
+  # # The call to .dat_names_to_keep() does not preserve names of the returned vector.
+  # # Now put names on dots_args_to_pull_from_.dat.
+  # # The names indicate which argument to FUN each column of .dat will supply.
+  # new_names_keep_args_.dat <- character(length(keep_args_.dat))
+  # if (length(new_names_keep_args_.dat) > 0) {
+  #   # We have some new names to figure out.
+  #   for (i in 1:length(new_names_keep_args_.dat)) {
+  #     if (keep_args_.dat[i] %in% dots_args_to_pull_from_.dat) {
+  #       # Needs a name.
+  #       # Find the corresponding item in dots_args_to_pull_from_.dat, if it exists.
+  #       this_arg_has_a_name <- which(dots_args_to_pull_from_.dat == keep_args_.dat[i])
+  #       new_names_keep_args_.dat[i] <- names(dots_args_to_pull_from_.dat[this_arg_has_a_name])
+  #     } else {
+  #       # Nothing special here. Just name the argument by its value.
+  #       new_names_keep_args_.dat[i] <- keep_args_.dat[i]
+  #     }
+  #   }
+  # } else {
+  #   # We don't have any renaming to do.
+  #   new_names_keep_args_.dat <- NULL
+  # }
+  # # Set the names on keep_args_.dat.
+  # # The names on keep_args_.dat are the names to which we will rename these columns
+  # # when we do the calculations.
+  # keep_args_.dat <- keep_args_.dat |>
+  #   magrittr::set_names(new_names_keep_args_.dat)
+  #
+  # # Third, work on default args to FUN -----------------------------------
+  #
+  # # Keep all args in defaults, unless they also exist in ... or .dat.
+  # keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_.dat)) |>
+  #   # or in the names of keep_args_.dat.
+  #   setdiff(names(keep_args_.dat))
+  # # We may get to this point and keep_args_.dat is character(),
+  # # a character vector of length 0.
+  # # Under those conditions, set to NULL.
+  # if (is.character(keep_args_.dat) & length(keep_args_.dat) == 0) {
+  #   keep_args_.dat <- NULL
+  # }
+  #
+  # # Bundle all keep_args together in a list ---------------------------------
+  #
+  # keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, fun_defaults = keep_args_fun_defaults)
+  # # Double check that each named argument has only one and only one source.
+  # args_ok <- !any(duplicated(unlist(keep_args)))
+  # assertthat::assert_that(args_ok, msg = paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
+  #                                              paste(keep_args[duplicated(keep_args)], collapse = ", ")))
 
-  # If an argument is present in ..., we use it from ... .
-  keep_args_dots <- args_present$dots
-  # Check if any of the arguments in ... have values that are single strings.
-  # If so, we actually want to keep arguments in .dat whose name is the value of a ... argument.
-  dots_args_to_pull_from_.dat <- sapply(keep_args_dots,
-                                        FUN = function(this_arg) {
-                                          if (!(is.character(dots[[this_arg]]) & length(dots[[this_arg]]) == 1)) {
-                                            return(NULL)
-                                          }
-                                          if (dots[[this_arg]] %in% args_present$.dat) {
-                                            return(dots[[this_arg]])
-                                          }
-                                          return(NULL)
-                                        })
-  if (all(sapply(dots_args_to_pull_from_.dat, FUN = is.null))) {
-    # If the whole array is empty, set to NULL.
-    dots_args_to_pull_from_.dat <- NULL
-  } else {
-    # Keep only non-NULL elements
-    dots_args_to_pull_from_.dat <- dots_args_to_pull_from_.dat[!sapply(dots_args_to_pull_from_.dat, is.null)]
-  }
-  # But don't keep arguments in dots that we'll pull from .dat.
-  keep_args_dots <- setdiff(keep_args_dots, names(dots_args_to_pull_from_.dat))
-
-  # Second, work on args in .dat ------------------------------------------
-
-  # Keep all args in .dat, unless they also exist in ... and are not single strings,
-  # i.e., keep all args in .dat, unless they are in keep_args_dots,
-  # The logic for these decisions is found in .dat_names_to_keep()
-  keep_args_.dat <- .dat_names_to_keep(.dat = .dat, FUN = FUN, ...)
-  # The call to .dat_names_to_keep() does not preserve names of the returned vector.
-  # Now put names on dots_args_to_pull_from_.dat.
-  # The names indicate which argument to FUN each column of .dat will supply.
-  new_names_keep_args_.dat <- character(length(keep_args_.dat))
-  if (length(new_names_keep_args_.dat) > 0) {
-    # We have some new names to figure out.
-    for (i in 1:length(new_names_keep_args_.dat)) {
-      if (keep_args_.dat[i] %in% dots_args_to_pull_from_.dat) {
-        # Needs a name.
-        # Find the corresponding item in dots_args_to_pull_from_.dat, if it exists.
-        this_arg_has_a_name <- which(dots_args_to_pull_from_.dat == keep_args_.dat[i])
-        new_names_keep_args_.dat[i] <- names(dots_args_to_pull_from_.dat[this_arg_has_a_name])
-      } else {
-        # Nothing special here. Just name the argument by its value.
-        new_names_keep_args_.dat[i] <- keep_args_.dat[i]
-      }
-    }
-  } else {
-    # We don't have any renaming to do.
-    new_names_keep_args_.dat <- NULL
-  }
-  # Set the names on keep_args_.dat.
-  # The names on keep_args_.dat are the names to which we will rename these columns
-  # when we do the calculations.
-  keep_args_.dat <- keep_args_.dat |>
-    magrittr::set_names(new_names_keep_args_.dat)
-
-  # Third, work on default args to FUN -----------------------------------
-
-  # Keep all args in defaults, unless they also exist in ... or .dat.
-  keep_args_fun_defaults <- setdiff(args_present$fun_defaults, union(keep_args_dots, keep_args_.dat)) |>
-    # or in the names of keep_args_.dat.
-    setdiff(names(keep_args_.dat))
-  # We may get to this point and keep_args_.dat is character(),
-  # a character vector of length 0.
-  # Under those conditions, set to NULL.
-  if (is.character(keep_args_.dat) & length(keep_args_.dat) == 0) {
-    keep_args_.dat <- NULL
-  }
-
-  # Bundle all keep_args together in a list ---------------------------------
-
-  keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, fun_defaults = keep_args_fun_defaults)
+  where_to_find_args <- where_to_get_args(.dat, FUN = FUN, ... = ...)
+  keep_args_dots <- where_to_find_args |>
+    purrr::keep(.p = function(this_var) {this_var[["source"]] == "..."}) |>
+    purrr::list_transpose() |>
+    purrr::pluck("arg_name")
+  keep_args_.dat <- where_to_find_args |>
+    purrr::keep(.p = function(this_var) {this_var[["source"]] == ".dat"}) |>
+    purrr::list_transpose() |>
+    purrr::pluck("arg_name")
+  keep_args_FUN <- where_to_find_args |>
+    purrr::keep(.p = function(this_var) {this_var[["source"]] == "FUN"}) |>
+    purrr::list_transpose() |>
+    purrr::pluck("arg_name")
+  keep_args <- list(dots = keep_args_dots, .dat = keep_args_.dat, FUN = keep_args_FUN)
   # Double check that each named argument has only one and only one source.
   args_ok <- !any(duplicated(unlist(keep_args)))
   assertthat::assert_that(args_ok, msg = paste("In matsindf::matsindf_apply(), the following named arguments to FUN were not removed from ..., or defaults:",
                                                paste(keep_args[duplicated(keep_args)], collapse = ", ")))
+
 
   # Check that required args are present and that no extra args are specified in ...  --------------------------------
 

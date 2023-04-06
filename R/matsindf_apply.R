@@ -521,7 +521,7 @@ get_useable_default_args <- function(FUN, which = c("values", "names"), no_defau
     out <- names(out)
   }
   if (length(out) == 0) {
-    out <- NULL
+    out <- no_default
   }
   out
 }

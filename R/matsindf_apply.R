@@ -594,88 +594,6 @@ should_unlist <- function(this_col) {
 }
 
 
-#' Tell which `.dat` arguments to keep
-#'
-#' The logic for deciding which arguments of `.dat` are kept
-#' is somewhat complex.
-#' This function abstracts pulls all of that code in one place.
-#'
-#' For the name of each argument in `.dat`, the following table
-#' decides whether that argument should be kept:
-#'
-#' \tabular{cccl}{
-#' in `names(...)`   \tab  in string values of `...`   \tab decision  \tab reason \cr
-#' no                \tab  yes or no                   \tab keep      \tab will not be replaced  \cr
-#' yes or no         \tab  yes                         \tab keep      \tab will be renamed       \cr
-#' yes               \tab  no                          \tab delete    \tab will be replaced      \cr
-#' }
-#'
-#' @param .dat The `.dat` argument to `matsindf_apply()`.
-#' @param FUN The `FUN` argument to `matsindf_apply()`.
-#' @param ... The `...` argument to `matsindf_apply()`.
-#'
-#' @return A vector of names of `.dat` arguments to keep.
-#'
-#' @examples
-#' example_fun <- function(a, b) {c(c = a + b, d = a - b)}
-#' # Keeps all items in .dat, because there no items in ...
-#' # that take precedence.
-#' matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
-#'                               FUN = example_fun)
-#' # Keeps "b" and "z", because
-#' # "a" is referenced to "z"
-#' matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42),
-#'                               FUN = example_fun,
-#'                               a = "z")
-.dat_names_to_keep <- function(.dat = NULL, FUN, ...) {
-  dots <- list(...)
-  dots_names <- names(dots)
-  .dat_names <- names(.dat)
-
-  if (length(dots) == 0) {
-    # We have no ... arguments, so everything in .dat should be kept.
-    return(.dat_names)
-  }
-
-  which_dots_are_single_character <- sapply(dots, FUN = function(this_dot) {
-    if (is.character(this_dot)) {
-      if (length(this_dot) == 1) {
-        return(TRUE)
-      }
-    }
-    return(FALSE)
-  })
-
-  single_character_dots <- dots[which_dots_are_single_character]
-
-  # Apply the logic
-  which_.dat_names_to_keep <- sapply(.dat_names, FUN = function(this_.dat_name) {
-    if (!(this_.dat_name %in% dots_names)) {
-      # If this .dat name is not in the names of ...,
-      # this .dat argument will not be replaced by the argument in ...,
-      # so keep it.
-      return(TRUE)
-    } else if (this_.dat_name %in% single_character_dots) {
-      # If this .dat name is a single character ...,
-      # it will be used in the call to FUN,
-      # so keep it.
-      return(TRUE)
-    } else {
-      # If we get here, this .dat name IS in the names of ...,
-      # so it will be replaced,
-      # so delete it.
-      return(FALSE)
-    }
-  })
-
-  # Return only those names that we want to keep.
-  if (length(.dat_names) == 0) {
-    return(NULL)
-  }
-  .dat_names[which_.dat_names_to_keep]
-}
-
-
 #' Gracefully handle empty data
 #'
 #' When empty data are provided to `matsindf_apply()`,
@@ -826,6 +744,7 @@ where_to_get_args <- function(.dat = NULL, FUN, ...) {
   # Cycle through each arg of FUN
   lapply(FUN_arg_names, function(this_FUN_arg_name) {
     if (this_FUN_arg_name %in% dots_arg_names) {
+      # The argument to FUN is present in ...
       if (dots_arg_char1[[this_FUN_arg_name]]) {
         # We have a single character.
         # Look for this argument in .dat and defaults to FUN

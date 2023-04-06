@@ -782,63 +782,6 @@ test_that("build_matsindf_apply_data_frame() works with NULL args in ...", {
 })
 
 
-test_that(".dat_names_to_keep() works as expected", {
-  example_fun <- function(a, b) {c(c = a + b, d = a - b)}
-
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun) |>
-    expect_equal(c("a", "b", "z"))
-
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                a = "a") |>
-    expect_equal(c("a", "b", "z"))
-
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                b = "b") |>
-    expect_equal(c("a", "b", "z"))
-
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                a = "a", b = "b") |>
-    expect_equal(c("a", "b", "z"))
-
-  # Try different order
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                b = "b", a = "a") |>
-    expect_equal(c("a", "b", "z"))
-
-  # Now test the de-referencing of variables
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                a = "z") |>
-    expect_equal(c("b", "z"))
-
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, z = 42), FUN = example_fun,
-                                a = "z", b = "a") |>
-    expect_equal(c("a", "z"))
-
-  # Try double references
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, y = 41, z = 42), FUN = example_fun,
-                                a = "z", b = "y") |>
-    expect_equal(c("y", "z"))
-
-  # Try different order
-  matsindf:::.dat_names_to_keep(.dat = list(a = 2, b = 1, y = 41, z = 42), FUN = example_fun,
-                                b = "y", a = "z") |>
-    expect_equal(c("y", "z"))
-
-  matsindf:::.dat_names_to_keep(.dat = list(z = 42, y = 41, b = 1, a = 2), FUN = example_fun,
-                                b = "y", a = "z") |>
-    expect_equal(c("z", "y"))
-
-  # Try with empty .dat argument
-  matsindf:::.dat_names_to_keep(FUN = example_fun,
-                                b = "y", a = "z") |>
-    expect_null()
-
-  # Try with empty .dat argument and empty ...
-  matsindf:::.dat_names_to_keep(FUN = example_fun) |>
-    expect_null()
-})
-
-
 test_that("matsindf_apply() works when FUN can handle zero-row DF's", {
   example_fun <- function(a, b) {
     if (length(a) == 0 & length(b) == 0) {
@@ -987,6 +930,23 @@ test_that("where_to_get_args() works as intended", {
   matsindf:::where_to_get_args(list(a = 2, b = 2, c = 2), FUN = example_fun, b = "d") |>
     expect_equal(list(a = c(source = ".dat", arg_name = "a"),
                       b = NULL))
+
+  # Try redirecting to an item in FUN defaults.
+  # This is pretty weird, but it works.
+  # In this case a comes from .dat and b comes from .dat as well.
+  matsindf:::where_to_get_args(list(a = 2, c = 2), FUN = example_fun, b = "a") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = ".dat", arg_name = "a")))
+
+  # In this case, both a and b should be found in defaults to FUN.
+  matsindf:::where_to_get_args(list(c = 2), FUN = example_fun, b = "a") |>
+    expect_equal(list(a = c(source = "FUN", arg_name = "a"),
+                      b = c(source = "FUN", arg_name = "a")))
+
+  # In this case, both a and b should be found in .dat.
+  matsindf:::where_to_get_args(list(a = 2, c = 2), FUN = example_fun, b = "a") |>
+    expect_equal(list(a = c(source = ".dat", arg_name = "a"),
+                      b = c(source = ".dat", arg_name = "a")))
 
   # Cross the mappings
   matsindf:::where_to_get_args(list(a = 2, b = 2), FUN = example_fun, a = "b", b = "a") |>

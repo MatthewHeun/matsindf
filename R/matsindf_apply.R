@@ -439,8 +439,9 @@ build_matsindf_apply_data_frame <- function(.dat = NULL, FUN, ..., types = matsi
 
   # Make a tibble out of the default arguments
   defaults_df <- types$FUN_arg_default_values |>
-    # Get rid of NULL arguments.
-    purrr::compact() |>
+    # If a default argument value is NULL,
+    # wrap it in a list to allow as_tibble() to work correctly.
+    purrr::modify_if(.p = is.null, .f = function(null_col) {list(null_col)}) |>
     tibble::as_tibble() |>
     dplyr::select(dplyr::all_of(types$keep_args$FUN))
 

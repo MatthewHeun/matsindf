@@ -969,8 +969,10 @@ test_that("matsindf_apply() correctly handles NULL default args on FUN", {
     list(c = a, d = b)
   }
 
-  expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun,
-                 list(a = 1, b = 2, c = 1, d = NULL)))
+  expect_equal(matsindf:::where_to_get_args(list(a = 1), FUN = example_fun),
+               list(a = c(source = ".dat", arg_name = "a"), b = c(source = "FUN", arg_name = "b")))
 
+  expect_equal(matsindf_apply(list(a = 1), FUN = example_fun),
+               list(a = 1, b = NULL, c = 1, d = NULL))
 })
 

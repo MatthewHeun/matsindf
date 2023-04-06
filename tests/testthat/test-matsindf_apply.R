@@ -955,5 +955,11 @@ test_that("where_to_get_args() works as intended", {
 })
 
 
-
+test_that("matsindf_apply() handles different lengths correctly (i.e., with an error)", {
+  example_fun <- function(a = 1, b) {
+    list(c = a + b, d = a - b)
+  }
+  expect_error(matsindf_apply(FUN = example_fun, a = c(1, 2, 3), b = c(4, 5)),
+               "Different lengths in handle_null_args\\(\\)")
+})
 

@@ -963,3 +963,14 @@ test_that("matsindf_apply() handles different lengths correctly (i.e., with an e
                "Different lengths in handle_null_args\\(\\)")
 })
 
+
+test_that("matsindf_apply() correctly handles NULL default args on FUN", {
+  example_fun <- function(a = 1, b = NULL) {
+    list(c = a, d = b)
+  }
+
+  expect_equal(matsindf_apply(list(a = 1, b = 2), FUN = example_fun,
+                 list(a = 1, b = 2, c = 1, d = NULL)))
+
+})
+

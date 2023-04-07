@@ -614,12 +614,12 @@ handle_empty_data <- function(.dat = NULL, FUN, DF, types) {
       # Call FUN. Let it try to handle a zero-row data frame.
       res <- do.call(what = FUN, args = DF)
       if (types$.dat_df) {
-        res <- dplyr::bind_cols(.dat, res) |>
+        res <- dplyr::bind_cols(.dat, tibble::as_tibble(res)) |>
           tibble::as_tibble()
       } else if (types$.dat_list) {
         res <- c(.dat, res)
       }
-      res
+      return(res)
     },
     error = function(e1) {
       tryCatch(
@@ -693,24 +693,12 @@ handle_null_args <- function(.arg) {
 #'   the element of `...` provides a mapping between
 #'   an item in `.dat` (with same name as the value of the character string of length `1`)
 #'   to an argument of `FUN` (with the same name as the name of the character string of length `1`).
-#'
-#' Examples:
-#'
-#' * `.dat` has columns `a`, `b`, and `c`.
-#'   `...` has `b = "c"`.
-#'   `FUN` has arguments `a` and `b`.
-#'   Argument `a` of `FUN` will be supplied by column `a` in `.dat`.
-#'   Argument `b` of `FUN` will be supplied by column `c` in `.dat`.
-#'   The return value will be
-#'   `list(a = c(".dat", "a"), b = c(".dat", "c"))`
-#' * `.dat` has columns `b`, and `c`.
-#'   `...` has `b = "c"`.
-#'   `FUN` has arguments `a = 1` and `b`.
-#'   Argument `a` of `FUN` will be supplied by the default value to `FUN` (`a = 1`).
-#'   Argument `b` of `FUN` will be supplied by column `c` in `.dat`.
-#'   The return value will be
-#'   `list(a = c("FUN", "a"), b = c(".dat", "c"))`
-#'
+#' * If the value of the character string of length `1` is not a name in `.dat`,
+#'   the default arguments to `FUN` are checked in this order.
+#'     - If the name of a default argument to `FUN` is the same as the value of the
+#'       string of length `1` argument in `...`, a mapping occurs.
+#'     - If a mapping is not possible,
+#'       the default arg to `FUN` is used directly.
 #'
 #' @param .dat The `.dat` argument to `matsindf_apply()`.
 #' @param FUN The `FUN` argument to `matsindf_apply()`.
@@ -724,6 +712,27 @@ handle_null_args <- function(.arg) {
 #'         The second element is named `arg_name` and provides
 #'         the variable name or argument name in the source that contains the input data
 #'         for the argument to `FUN`.
+#'
+#' @examples
+#' example_fun <- function(a = 1, b) {
+#'   list(c = a + b, d = a - b)
+#' }
+#' # b is not available anywhere, likely causing an error later
+#' matsindf:::where_to_get_args(FUN = example_fun)
+#' # b is now available in ...
+#' matsindf:::where_to_get_args(FUN = example_fun, b = 2)
+#' # b is now available in .dat
+#' matsindf:::where_to_get_args(list(b = 2), FUN = example_fun)
+#' # b now comes from ..., because ... takes precedence over .dat
+#' matsindf:::where_to_get_args(list(b = 2), FUN = example_fun, b = 3)
+#' # Mapping from c in .dat to b in FUN
+#' matsindf:::where_to_get_args(list(c = 2),
+#'                              FUN = example_fun, b = "c")
+#' # Redirect from an arg in ... to a different default to FUN
+#' matsindf:::where_to_get_args(FUN = example_fun, b = "a")
+#' # b is found in FUN, not in .dat, because the mapping (b = "a")
+#' is not available in .dat
+#' matsindf:::where_to_get_args(list(b = 2), FUN = example_fun, b = "a")
 where_to_get_args <- function(.dat = NULL, FUN, ...) {
   .dat_arg_names <- names(.dat)
   # Names of all FUN arguments
@@ -748,13 +757,33 @@ where_to_get_args <- function(.dat = NULL, FUN, ...) {
       # The argument to FUN is present in ...
       if (dots_arg_char1[[this_FUN_arg_name]]) {
         # We have a single character.
-        # Look for this argument in .dat and defaults to FUN
+        # Look for this argument in .dat and defaults to FUN.
+        # according to the precedence order provided in the documentation.
         dots_arg_val <- dots[[this_FUN_arg_name]]
         if (dots_arg_val %in% .dat_arg_names) {
+          # The length-1 string value of this_FUN_arg_name is present
+          # in .dat.
           return(c(source = ".dat", arg_name = dots_arg_val))
         } else if (dots_arg_val %in% FUN_arg_names_with_defaults) {
+          # The length-1 string value of this_FUN_arg_name is NOT present
+          # in .dat.
+          # Check if the length-1 string value of this_FUN_arg_name exists
+          # in the names of the default arguments to FUN.
+          # If so, use that.
           return(c(source = "FUN", arg_name = dots_arg_val))
+        } else if (this_FUN_arg_name %in% FUN_arg_names_with_defaults) {
+          # The length-1 string value of this_FUN_arg_name is NOT present
+          # in .dat.
+          # Nor was the length-1 string value of this_FUN_arg_name
+          # present in the names of default args to FUN.
+          # So, instead, look for this_FUN_arg_name in the names of the
+          # default arguments to FUN.
+          return(c(source = "FUN", arg_name = this_FUN_arg_name))
         } else {
+          # The length-1 string value of this_FUN_arg_name is NOT present
+          # in .dat, nor is this_FUN_arg_name the name of a default
+          # argument to FUN.
+          # Simply return NULL.
           return(NULL)
         }
       } else {

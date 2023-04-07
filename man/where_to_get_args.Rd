@@ -34,24 +34,31 @@ The rules are:
 the element of \code{...} provides a mapping between
 an item in \code{.dat} (with same name as the value of the character string of length \code{1})
 to an argument of \code{FUN} (with the same name as the name of the character string of length \code{1}).
-}
-}
-\details{
-Examples:
+\item If the value of the character string of length \code{1} is not a name in \code{.dat},
+the default arguments to \code{FUN} are checked in this order.
 \itemize{
-\item \code{.dat} has columns \code{a}, \code{b}, and \code{c}.
-\code{...} has \code{b = "c"}.
-\code{FUN} has arguments \code{a} and \code{b}.
-Argument \code{a} of \code{FUN} will be supplied by column \code{a} in \code{.dat}.
-Argument \code{b} of \code{FUN} will be supplied by column \code{c} in \code{.dat}.
-The return value will be
-\code{list(a = c(".dat", "a"), b = c(".dat", "c"))}
-\item \code{.dat} has columns \code{b}, and \code{c}.
-\code{...} has \code{b = "c"}.
-\code{FUN} has arguments \code{a = 1} and \code{b}.
-Argument \code{a} of \code{FUN} will be supplied by the default value to \code{FUN} (\code{a = 1}).
-Argument \code{b} of \code{FUN} will be supplied by column \code{c} in \code{.dat}.
-The return value will be
-\code{list(a = c("FUN", "a"), b = c(".dat", "c"))}
+\item If the name of a default argument to \code{FUN} is the same as the value of the
+string of length \code{1} argument in \code{...}, a mapping occurs.
+\item If a mapping is not possible,
+the default arg to \code{FUN} is used directly.
 }
+}
+}
+\examples{
+example_fun <- function(a = 1, b) {
+  list(c = a + b, d = a - b)
+}
+# b is not available anywhere, likely causing an error later
+matsindf:::where_to_get_args(FUN = example_fun)
+# b is now available in ...
+matsindf:::where_to_get_args(FUN = example_fun, b = 2)
+# b is now available in .dat
+matsindf:::where_to_get_args(list(b = 2), FUN = example_fun)
+# b now comes from ..., because ... takes precedence over .dat
+matsindf:::where_to_get_args(list(b = 2), FUN = example_fun, b = 3)
+# Mapping from c in .dat to b in FUN
+matsindf:::where_to_get_args(list(c = 2),
+                             FUN = example_fun, b = "c")
+# Redirect from an arg in ... to a different default to FUN
+matsindf:::where_to_get_args(FUN = example_fun, a = 2, b = "a")
 }

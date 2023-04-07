@@ -303,8 +303,8 @@ test_that("matsindf_apply() works when an argument is missing", {
   }
   # Make sure it works when all arguments are present.
   expect_equal(outer_fun(a = 2, b = 2), list(c = 4, d = 0))
-  # Now try when an argument is missing and the inner function can't handle it.
-  expect_error(outer_fun(a = 2), "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: b_num")
+  # Now try when an argument is missing and the inner function can handle it.
+  expect_equal(outer_fun(a = 2), list(c = 2, d = 2))
   # Try when an argument is missing and the inner function can't handle it.
   expect_error(outer_fun(b = 2), "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a_num")
 })
@@ -931,8 +931,6 @@ test_that("where_to_get_args() works as intended", {
     expect_equal(list(a = c(source = ".dat", arg_name = "a"),
                       b = NULL))
 
-  # Try redirecting to an item in FUN defaults.
-  # This is pretty weird, but it works.
   # In this case a comes from .dat and b comes from .dat as well.
   matsindf:::where_to_get_args(list(a = 2, c = 2), FUN = example_fun, b = "a") |>
     expect_equal(list(a = c(source = ".dat", arg_name = "a"),

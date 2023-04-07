@@ -982,3 +982,20 @@ test_that("matsindf_apply() correctly handles NULL default args on FUN", {
                list(a = 1, b = NULL, c = 1, d = NULL))
 })
 
+
+test_that("matsindf_apply() works correctly for a list of matrices each with length 1", {
+  example_fun <- function(a, b) {
+    list(c = matsbyname::sum_byname(a, b),
+         d = matsbyname::difference_byname(a, b))
+  }
+  m <- matrix(c(1, 2,
+                3, 4), nrow = 2, ncol = 2, byrow = TRUE)
+  my_mat_list <- list(a = m, b = m+1)
+  expected_c <- my_mat_list$a + my_mat_list$b
+  expected_d <- my_mat_list$a - my_mat_list$b
+  expect_equal(matsindf_apply(my_mat_list, example_fun),
+               list(a = list(my_mat_list$a), b = list(my_mat_list$b), c = expected_c, d = expected_d))
+
+  expect_equal(matsindf_apply(FUN = example_fun, a = m, b = m+1),
+               list(c = expected_c, d = expected_d))
+  })

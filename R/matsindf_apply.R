@@ -589,7 +589,16 @@ should_unlist <- function(this_col) {
   # If so, we can unlist.
   lengths <- sapply(this_col, length)
   if (all(lengths == lengths[1])) {
-    return(TRUE)
+    # We could get here if all items are NULL, because
+    # length(NULL) is 0.
+    # When all items are NULL, we do not want to simplify,
+    # because the column will become NULL itself,
+    # probably against the wishes of the caller.
+    if (all(sapply(this_col, is.null)) & length(this_col) > 1) {
+      return(FALSE)
+    } else {
+      return(TRUE)
+    }
   }
   return(FALSE)
 }

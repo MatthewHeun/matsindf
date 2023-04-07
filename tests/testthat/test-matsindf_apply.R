@@ -863,6 +863,14 @@ test_that("should_unlist() works as expected", {
 })
 
 
+test_that("should_unlist() correctly says 'FALSE' for a list of NULL items", {
+  # Unlist when length is 1
+  expect_true(matsindf:::should_unlist(list(NULL)))
+  # Do not unlist when the length is > 1
+  expect_false(matsindf:::should_unlist(list(NULL, NULL, NULL)))
+})
+
+
 test_that("matsindf_apply() works for missing arg in .dat", {
   example_fun <- function(a_val = 2, b_val = 1) {
     list(c = matsbyname::sum_byname(a_val, b_val),

@@ -4,7 +4,9 @@ output: html_document
 ---
 
 
-* The rewrite of `matsindf_apply()` enabled better error messages in many places.
+* The mapping of length-`1` strings in the `...` argument of 
+  `matsindf_apply()` now extends to default arguments of `FUN`.
+* The rewrite of `matsindf_apply()` enables better error messages in many places.
 * Rewrote all of `matsindf_apply()`.
     * `matsindf_apply()` now correctly returns a list when lists are provided in the `...` argument.
       Previously, it incorrectly returned a data frame.

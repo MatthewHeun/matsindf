@@ -731,7 +731,7 @@ handle_null_args <- function(.arg) {
 #' # Redirect from an arg in ... to a different default to FUN
 #' matsindf:::where_to_get_args(FUN = example_fun, b = "a")
 #' # b is found in FUN, not in .dat, because the mapping (b = "a")
-#' is not available in .dat
+#' # is not available in .dat
 #' matsindf:::where_to_get_args(list(b = 2), FUN = example_fun, b = "a")
 where_to_get_args <- function(.dat = NULL, FUN, ...) {
   .dat_arg_names <- names(.dat)

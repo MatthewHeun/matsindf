@@ -128,7 +128,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
   DF <- build_matsindf_apply_data_frame(.dat = .dat, FUN = FUN, ... = ..., types = types)
 
   # Deal gracefully with zero-row DF.
-  if (nrow(DF) == 0) {
+  if (nrow(DF) == 0 | ncol(DF) == 0) {
     return(handle_empty_data(.dat = .dat, FUN = FUN, DF = DF, types = types))
   }
 

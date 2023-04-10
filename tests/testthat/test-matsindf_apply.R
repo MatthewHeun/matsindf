@@ -164,7 +164,7 @@ test_that("matsindf_apply() fails as expected when not all same type for ...", {
   }
   matsindf_apply(FUN = example_fun, a = "a", b = 2) |>
     expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were not found in any of .dat, ..., or defaults to FUN: a") |>
-    expect_error("Can't subset columns that don't exist.")
+    expect_error('argument "a" is missing, with no default')
 })
 
 
@@ -310,7 +310,7 @@ test_that("matsindf_apply() works when an argument is missing", {
   # Try when an argument is missing and the inner function can't handle it.
   outer_fun(b = 2) |>
     expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were not found in any of .dat, ..., or defaults to FUN: a_num") |>
-    expect_error("Can't subset columns that don't exist.")
+    expect_error('argument "a_num" is missing, with no default')
 })
 
 

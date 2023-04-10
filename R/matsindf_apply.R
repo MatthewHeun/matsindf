@@ -136,7 +136,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
   }
 
   DF_only_needed_args <- DF |>
-    dplyr::select(types$FUN_arg_all_names)
+    dplyr::select(dplyr::any_of(types$FUN_arg_all_names))
 
   # Send one row at a time to FUN
   new_data <- DF_only_needed_args |>

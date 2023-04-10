@@ -162,8 +162,9 @@ test_that("matsindf_apply() fails as expected when not all same type for ...", {
     return(list(c = matsbyname::sum_byname(a, b),
                 d = matsbyname::difference_byname(a, b)))
   }
-  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = 2),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a")
+  matsindf_apply(FUN = example_fun, a = "a", b = 2) |>
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a") |>
+    expect_error("Can't subset columns that don't exist.")
 })
 
 
@@ -188,8 +189,8 @@ test_that("matsindf_apply() fails as expected when .DF argument is missing from 
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
-  expect_error(matsindf_apply(FUN = example_fun, a = "a", b = "b"),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
+  matsindf_apply(FUN = example_fun, a = "a", b = "b") |>
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 })
 
 
@@ -197,8 +198,9 @@ test_that("matsindf_apply() fails as expected when .DF argument is not a data fr
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
   }
-  expect_error(matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b"),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
+  matsindf_apply(.DF = "string", FUN = example_fun, a = "a", b = "b") |>
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b") |>
+    expect_error("In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: .DF")
 })
 
 
@@ -215,7 +217,7 @@ test_that("matsindf_apply() works with a NULL argument", {
   # This attempt fails, because z is an extra argument in ... .
   expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
                "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
-  # Try with piped .DF argument
+  # Try with piped .dat argument
   expect_error(matsindf_apply(DF, FUN = example_fun, a = "a", b = "b", z = NULL),
                "In matsindf::matsindf_apply\\(\\), the following unused arguments appeared in ...: z")
 })
@@ -306,7 +308,9 @@ test_that("matsindf_apply() works when an argument is missing", {
   # Now try when an argument is missing and the inner function can handle it.
   expect_equal(outer_fun(a = 2), list(c = 2, d = 2))
   # Try when an argument is missing and the inner function can't handle it.
-  expect_error(outer_fun(b = 2), "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a_num")
+  outer_fun(b = 2) |>
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a_num") |>
+    expect_error("Can't subset columns that don't exist.")
 })
 
 
@@ -622,8 +626,12 @@ test_that("matsindf_apply_types() works as expected", {
   example_fun <- function(a, b) {
     c(a, b)
   }
-  expect_error(matsindf_apply_types(.dat = NULL, FUN = example_fun),
-               "In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
+  matsindf_apply_types(.dat = NULL, FUN = example_fun) |>
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
+
+  # Set the warning flag to FALSE to suppress the warning
+  no_warn <- matsindf_apply_types(.dat = NULL, FUN = example_fun, .warn_missing_FUN_args = FALSE)
+  expect_equal(no_warn$keep_args, list(.dat = NULL, FUN = NULL, dots = NULL))
 
   matsindf_apply_types(.dat = NULL, FUN = example_fun, a = 1, b = 2) |>
     expect_equal(list(.dat_null = TRUE, .dat_df = FALSE, .dat_list = FALSE, .dat_names = NULL,
@@ -664,7 +672,7 @@ test_that("matsindf_apply_types() works as expected", {
                                        dots = c(a = "a", b = "b"))))
 
   matsindf_apply_types(.dat = NULL, FUN = example_fun, a = "a", b = "b") |>
-    expect_error("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
+    expect_warning("In matsindf::matsindf_apply\\(\\), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: a, b")
 
   # Try with Matrix objects
   matsindf_apply_types(.dat = NULL, FUN = example_fun,
@@ -999,3 +1007,4 @@ test_that("matsindf_apply() works correctly for a list of matrices each with len
   expect_equal(matsindf_apply(FUN = example_fun, a = m, b = m+1),
                list(c = expected_c, d = expected_d))
   })
+

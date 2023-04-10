@@ -4,7 +4,7 @@
 \alias{matsindf_apply_types}
 \title{Determine types of \code{.dat} and \code{...} arguments for matsindf_apply()}
 \usage{
-matsindf_apply_types(.dat = NULL, FUN, ...)
+matsindf_apply_types(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
 }
 \arguments{
 \item{.dat}{The \code{.dat} argument to be checked.}
@@ -12,6 +12,10 @@ matsindf_apply_types(.dat = NULL, FUN, ...)
 \item{FUN}{The function sent to \code{matsindf_apply()}.}
 
 \item{...}{The list of arguments to \code{matsindf_apply()} to be checked.}
+
+\item{.warn_missing_FUN_args}{A boolean that tells
+whether to warn of missing arguments to \code{FUN}.
+Default is \code{TRUE}.}
 }
 \value{
 A logical list with components named

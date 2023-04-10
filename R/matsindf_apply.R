@@ -73,6 +73,9 @@
 #' @param .dat A list of named items or a data frame.
 #' @param FUN The function to be applied to `.dat`.
 #' @param ... Named arguments to be passed by name to `FUN`.
+#' @param .warn_missing_FUN_args A boolean that tells
+#'        whether to warn of missing arguments to `FUN`.
+#'        Default is `TRUE`.
 #'
 #' @return A named list or a data frame. (See details.)
 #'
@@ -115,7 +118,7 @@
 #' DF3 <- DF2[0, ]
 #' DF3
 #' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
-matsindf_apply <- function(.dat = NULL, FUN, ...){
+matsindf_apply <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE){
   types <- matsindf_apply_types(.dat, FUN, ...)
 
   if (!types$.dat_null) {
@@ -242,6 +245,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #' @param .dat The `.dat` argument to be checked.
 #' @param FUN The function sent to `matsindf_apply()`.
 #' @param ... The list of arguments to `matsindf_apply()` to be checked.
+#' @param .warn_missing_FUN_args A boolean that tells
+#'        whether to warn of missing arguments to `FUN`.
+#'        Default is `TRUE`.
 #'
 #' @return A logical list with components named
 #' `.dat_null`, `.dat_df`, `.dat_list`, `.dat_names`,
@@ -262,7 +268,7 @@ matsindf_apply <- function(.dat = NULL, FUN, ...){
 #'                      a = c(1, 2), b = c(3, 4))
 #' matsindf_apply_types(.dat = NULL, FUN = identity_fun,
 #'                      a = list(1, 2), b = list(3, 4))
-matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
+matsindf_apply_types <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE) {
 
   # Check .dat, FUN, and ... ----------------------------------------------
 
@@ -345,19 +351,23 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ...) {
 
   # Check that required args are present and that no extra args are specified in ...  --------------------------------
 
-  # The arguments that we have available are from keep_args$dots,
-  # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and
-  # keep_args$fun_defaults.
-  args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$FUN)
   # Look in two directions.
   # (1) Are all needed args to FUN available?
   # Double-check that all arguments needed for FUN are available.
-  all_required_args_present <- all(FUN_arg_all_names %in% args_available)
-  if (!all_required_args_present) {
-    missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% args_available)]
-    msg <- paste("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN:",
-                 paste(missing_args, collapse = ", "))
-    stop(msg)
+  if (.warn_missing_FUN_args) {
+    # The arguments that we have available are from keep_args$dots,
+    # the names of keep_args$.dat (because the columns of .dat will be later renamed to the names of keep_args$.dat), and
+    # keep_args$fun_defaults.
+    args_available <- c(keep_args$dots, names(keep_args$.dat), keep_args$FUN)
+    # Decide if all required arguments are present.
+    all_required_args_present <- all(FUN_arg_all_names %in% args_available)
+    if (!all_required_args_present) {
+      missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% args_available)]
+      msg <- paste0("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: ",
+                    paste(missing_args, collapse = ", "),
+                    ". Set .warn_missing_FUN_args = FALSE if this is OK and you know what you are doing.")
+      warning(msg)
+    }
   }
   # (2) Do we have any extra args?
   # Extra args would come from unneeded args in ... .

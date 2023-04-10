@@ -4,7 +4,7 @@
 \alias{matsindf_apply}
 \title{Apply a function to a \code{matsindf} data frame (and more)}
 \usage{
-matsindf_apply(.dat = NULL, FUN, ...)
+matsindf_apply(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
 }
 \arguments{
 \item{.dat}{A list of named items or a data frame.}
@@ -12,6 +12,10 @@ matsindf_apply(.dat = NULL, FUN, ...)
 \item{FUN}{The function to be applied to \code{.dat}.}
 
 \item{...}{Named arguments to be passed by name to \code{FUN}.}
+
+\item{.warn_missing_FUN_args}{A boolean that tells
+whether to warn of missing arguments to \code{FUN}.
+Default is \code{TRUE}.}
 }
 \value{
 A named list or a data frame. (See details.)

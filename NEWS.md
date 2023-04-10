@@ -24,7 +24,7 @@ output: html_document
       unmodified (except possibly wrapped in a `list()`) when 
       the input has zero rows (in the case of a data frame)
       or zero length (in the case of lists).
-* Many new tests to verify that the package works with `Matrix` objects.
+* Many new tests to verify that the package works after rewriting `matsindf_apply()`.
     - Now at 374 tests, all passing.
     - Test coverage remains at 100 %.
 

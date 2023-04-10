@@ -25,7 +25,7 @@ output: html_document
       the input has zero rows (in the case of a data frame)
       or zero length (in the case of lists).
 * Many new tests to verify that the package works with `Matrix` objects.
-    - Now at 373 tests, all passing.
+    - Now at 374 tests, all passing.
     - Test coverage remains at 100 %.
 
 

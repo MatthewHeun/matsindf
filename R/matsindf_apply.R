@@ -363,7 +363,7 @@ matsindf_apply_types <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args =
     all_required_args_present <- all(FUN_arg_all_names %in% args_available)
     if (!all_required_args_present) {
       missing_args <- FUN_arg_all_names[!(FUN_arg_all_names %in% args_available)]
-      msg <- paste0("In matsindf::matsindf_apply(), the following named arguments to FUN were found neither in .dat, nor in ..., nor in defaults to FUN: ",
+      msg <- paste0("In matsindf::matsindf_apply(), the following named arguments to FUN were not found in any of .dat, ..., or defaults to FUN: ",
                     paste(missing_args, collapse = ", "),
                     ". Set .warn_missing_FUN_args = FALSE to suppress this warning if you know what you are doing.")
       warning(msg)

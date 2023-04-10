@@ -591,8 +591,17 @@ should_unlist <- function(this_col) {
   if (!is.list(this_col)) {
     return(FALSE)
   }
+  # Check if everything in the list is a matrix.
+  # If so, don't unlist it.
   is_mat <- sapply(this_col, matsbyname::is_matrix_or_Matrix)
   if (all(is_mat)) {
+    return(FALSE)
+  }
+  # Check if everything in the list is a data frame.
+  # If so, don't unlist it.
+  # Assume the caller is creating a nested data frame.
+  is_df <- sapply(this_col, is.data.frame)
+  if (all(is_df)) {
     return(FALSE)
   }
   # Check if everything in the list is length 1.
@@ -605,6 +614,10 @@ should_unlist <- function(this_col) {
     # because the column will become NULL itself,
     # probably against the wishes of the caller.
     if (all(sapply(this_col, is.null)) & length(this_col) > 1) {
+      return(FALSE)
+    } else if (all(lengths > 1)) {
+      # Probably have special list objects (models, Sankey diagrams, etc.)
+      # Don't want to unlist this.
       return(FALSE)
     } else {
       return(TRUE)

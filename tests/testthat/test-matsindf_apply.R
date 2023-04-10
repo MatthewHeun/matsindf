@@ -879,6 +879,12 @@ test_that("should_unlist() correctly says 'FALSE' for a list of NULL items", {
 })
 
 
+test_that("should_unlist() correctly says 'FALSE' for a list of data frames", {
+  my_col <- list(data.frame(a = 42), tibble::tibble(b = 43) )
+  expect_false(matsindf:::should_unlist(my_col))
+})
+
+
 test_that("matsindf_apply() works for missing arg in .dat", {
   example_fun <- function(a_val = 2, b_val = 1) {
     list(c = matsbyname::sum_byname(a_val, b_val),

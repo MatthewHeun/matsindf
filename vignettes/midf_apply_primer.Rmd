@@ -29,7 +29,7 @@ library(tidyr)
 ## Introduction
 
 `matsindf_apply()` is a powerful and versatile function
-that enables analysis of data frames by applying
+that enables analysis with lists and data frames by applying
 `FUN` in helpful ways.
 The function is called `matsindf_apply()`,
 because it can be used to apply `FUN` to a `matsindf` data frame,
@@ -44,22 +44,24 @@ lists of single numbers, and
 individual numbers.
 This vignette demonstrates `matsindf_apply()`,
 starting with simple examples and
-proceeding to sophisticated analyses.
+proceeding toward sophisticated analyses.
 
 
 ## The basics
 
 The basis of all analyses conducted with `matsindf_apply()`
-is a function (`FUN`) to be applied across data.
+is a function (`FUN`) to be applied across data
+supplied in `.dat` or `...`.
 `FUN` must return a named list of variables as
 its result.
-Here is an example function that both adds and subtracts is arguments,
+Here is an example function that both adds and subtracts its arguments,
 `a` and `b`, and
 returns a list containing its result, `c` and `d`.
 
 ```{r}
 example_fun <- function(a, b){
-  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+  return(list(c = matsbyname::sum_byname(a, b), 
+              d = matsbyname::difference_byname(a, b)))
 }
 ```
 
@@ -69,6 +71,7 @@ the data over which `FUN` is to be applied.
 These arguments can, in the first instance,
 be supplied as named arguments to the `...` argument
 of `matsindf_apply()`.
+All arguments in `...` must be named.
 The `...` arguments to `matsindf_apply()`
 are passed to `FUN` according to their names.
 In this case, the output of `matsindf_apply()`
@@ -79,7 +82,7 @@ matsindf_apply(FUN = example_fun, a = 2, b = 1)
 ```
 
 Passing an additional argument (`z = 2`)
-causes the familiar `unused argument` error,
+causes an unused argument error,
 because `example_fun` does not have a `z` argument.
 
 ```{r}
@@ -89,9 +92,8 @@ tryCatch(
 )
 ```
 
-Failing to pass a needed argument (`b = 1`)
-causes the familiar `argument X is missing` error,
-because `example_fun` requires a value for `b`.
+Failing to pass a needed argument (`b`)
+causes an error that indicates the missing argument.
 
 ```{r}
 tryCatch(
@@ -100,11 +102,8 @@ tryCatch(
 )
 ```
 
-(If `example_fun` tolerated a missing argument,
-no such error would be created.)
-
 Alternatively, arguments to `FUN` can be given
-in a named list to the first argument to `matsindf_apply()` (`.dat`).
+in a named list to `.dat`, the first argument of `matsindf_apply()`.
 When a value is assigned to `.dat`,
 the return value from `matsindf_apply()`
 contains all named variables in `.dat`
@@ -124,9 +123,9 @@ from which variables can be drawn as needed.
 matsindf_apply(list(a = 2, b = 1, z = 42), FUN = example_fun)
 ```
 
-In contrast, named arguments to `...`
-are specified by the user,
-so including an extra variable is considered an error,
+In contrast, arguments to `...`
+are named explicitly by the user,
+so including an extra argument in `...` is considered an error,
 as shown above.
 
 
@@ -141,9 +140,9 @@ matsindf_apply(list(a = 2, b = 1), FUN = example_fun, a = 10)
 ```
 
 When supplying **both** `.dat` and `...`,
-`...` can contain named strings
+`...` can contain named strings of length `1`
 which are interpreted as mappings
-from item names in `.dat`
+from named items in `.dat`
 to arguments in the signature of `FUN`.
 In the example below,
 `a = "z"` indicates that argument `a` to `FUN`
@@ -165,9 +164,14 @@ tryCatch(
 )
 ```
 
-If `FUN` accepts mixed argument types, 
-arguments to `matsindf_apply()` can be wrapped in `list()`
-for success.
+`FUN` can accept more than just numerics. 
+`example_fun_with_string()` accepts a character string and a numeric.
+However, because `...` argument that is a character string
+of length `1` has special meaning
+(namely mapping variables in `.dat` to arguments of `FUN`), 
+passing a character string of length `1` can cause an error.
+To get around the problem, wrap the single string
+in a list, as shown below.
 
 ```{r}
 example_fun_with_string <- function(str_a, b) {
@@ -175,17 +179,13 @@ example_fun_with_string <- function(str_a, b) {
   list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
 }
 
-# Fails, because of mixed argument types.
+# Causes an error
 tryCatch(
-  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2), 
-  error = function(e) {
-    print(e)
-  }
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2),
+  error = function(e){e}
 )
-
-# All of the following work, 
-# because arguments are wrapped in list() or 
-# supplied in .dat.
+# To solve the problem, wrap "1" in list().
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = 2)
 matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
 matsindf_apply(FUN = example_fun_with_string, 
                str_a = list("1", "3"), 
@@ -193,6 +193,19 @@ matsindf_apply(FUN = example_fun_with_string,
 matsindf_apply(.dat = list(str_a = list("1"), b = list(2)), FUN = example_fun_with_string)
 matsindf_apply(.dat = list(m = list("1"), n = list(2)), FUN = example_fun_with_string, 
                str_a = "m", b = "n")
+```
+
+
+## `matsindf_apply()` and data frames
+
+`.dat` can also contain a data frame (or tibble), 
+both of which are fancy lists. 
+When `.dat` is a data frame or tibble, 
+the output of `matsindf_apply()` is a tibble, and 
+`FUN` acts like a specialized `dplyr::mutate()`, 
+adding new columns at the right of `.dat`.
+
+```{r}
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
                FUN = example_fun_with_string)
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
@@ -203,41 +216,39 @@ matsindf_apply(.dat = data.frame(m = c("1", "3"), n = c(2, 4)),
                str_a = "m", b = "n")
 ```
 
-
-## matsindf_apply and data frames
-
-`.dat` can be a list (as shown in several examples above),
-but it can also be a data frame.
+Additional niceties are available when `.dat` is a data frame or a tibble.
+`matsindf_apply()` works when the data frame is filled with single numeric values,
+as is typical.
 
 ```{r}
 df <- data.frame(a = 2:4, b = 1:3)
 matsindf_apply(df, FUN = example_fun)
 ```
 
-Furthermore, `matsindf_apply()` works with a `matsindf` data frame,
-a data frame wherein each entry in the data frame is a matrix.
-To demonstrate use of `matsindf_apply()` with a data frame, 
+But `matsindf_apply()` also works with `matsindf` data frames,
+data frames in which each cell of the data frame is filled with a single matrix.
+To demonstrate use of `matsindf_apply()` with a `matsindf` data frame, 
 we'll construct a simple `matsindf` data frame (`midf`)
 using functions in this package.
 
 ```{r}
 # Create a tidy data frame containing data for matrices
-tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
-                   matnames = c(rep("U", 8), rep("V", 8)),
-                   matvals = c(1:4, 11:14, 21:24, 31:34),
-                   rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
-                                rep(c(rep("i1", 2), rep("i2", 2)), 2)),
-                   colnames = c(rep(c("i1", "i2"), 4), 
-                                rep(c("p1", "p2"), 4))) %>%
-  mutate(
+tidy <- tibble::tibble(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
+                       matnames = c(rep("U", 8), rep("V", 8)),
+                       matvals = c(1:4, 11:14, 21:24, 31:34),
+                       rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
+                                    rep(c(rep("i1", 2), rep("i2", 2)), 2)),
+                       colnames = c(rep(c("i1", "i2"), 4), 
+                                    rep(c("p1", "p2"), 4))) |>
+  dplyr::mutate(
     rowtypes = case_when(
-      matnames == "U" ~ "product",
-      matnames == "V" ~ "industry", 
+      matnames == "U" ~ "Product",
+      matnames == "V" ~ "Industry", 
       TRUE ~ NA_character_
     ),
     coltypes = case_when(
-      matnames == "U" ~ "industry",
-      matnames == "V" ~ "product",
+      matnames == "U" ~ "Industry",
+      matnames == "V" ~ "Product",
       TRUE ~ NA_character_
     )
   )
@@ -245,10 +256,10 @@ tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
 tidy
 
 # Convert to a matsindf data frame
-midf <- tidy %>% 
-  group_by(Year, matnames) %>% 
-  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") %>% 
-  spread(key = "matnames", value = "matvals")
+midf <- tidy |>  
+  dplyr::group_by(Year, matnames) |> 
+  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") |> 
+  tidyr::pivot_wider(names_from = "matnames", values_from = "matvals")
 
 # Take a look at the midf data frame and some of the matrices it contains.
 midf
@@ -265,8 +276,8 @@ The functions of the `matsbyname` package
 can be used for this purpose.
 
 ```{r}
-result <- midf %>% 
-  mutate(
+result <- midf |> 
+  dplyr::mutate(
     W = difference_byname(transpose_byname(V), U)
   )
 result
@@ -276,28 +287,35 @@ result$W[[2]]
 
 This way of performing matrix calculations works equally well 
 within a 2-row `matsindf` data frame
-(as shown above)
-or a 1000-row `matsindf` data frame.
+(as shown above) or
+within a 1000-row `matsindf` data frame.
 
 
-## Programming with matsindf_apply
+## Programming with `matsindf_apply()`
 
 Users can write their own functions using `matsindf_apply()`. 
-A flexible `calc_W` function can be written as follows. 
+A flexible `calc_W()` function can be written as follows. 
 
 ```{r}
-calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
+calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
   # The inner function does all the work.
   W_func <- function(U_mat, V_mat){
     # When we get here, U_mat and V_mat will be single matrices or single numbers, 
     # not a column in a data frame or an item in a list.
+    if (length(U_mat) == 0 & length(V_mat == 0)) {
+      # Tolerate zero-length arguments by returning a zero-length
+      # a list with the correct name and return type.
+      return(list(numeric()) |> magrittr::setnames(W))
+    }
     # Calculate W_mat from the inputs U_mat and V_mat.
-    W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
+    W_mat <- matsbyname::difference_byname(
+      matsbyname::transpose_byname(V_mat), 
+      U_mat)
     # Return a named list.
-    list(W_mat) %>% magrittr::set_names(W)
+    list(W_mat) |> magrittr::set_names(W)
   }
   # The body of the main function consists of a call to matsindf_apply
-  # that specifies the inner function
+  # that specifies the inner function in the FUN argument.
   matsindf_apply(.DF, FUN = W_func, U_mat = U, V_mat = V)
 }
 ```
@@ -308,66 +326,83 @@ leveraging the capabilities of both the `matsindf` and `matsbyname` packages.
 uses `matsindf_apply()` heavily and
 is built upon the functions in the `matsindf` and `matsbyname` packages.)
 
-Functions written like `calc_W`
+Functions written like `calc_W()`
 can operate in ways similar to `matsindf_apply()` itself.
-To demonstrate, we'll use `calc_W` in all the ways that `matsindf_apply()` can be used,
+To demonstrate, we'll use `calc_W()` in all the ways that `matsindf_apply()` can be used,
 going in the reverse order to our demonstration of the capabilities of `matsindf_apply()` above.
 
-`calc_W` can be used as a specialized `mutate` function
+`calc_W()` can be used as a specialized `mutate` function
 that operates on `matsindf` data frames.
 
 ```{r}
-midf %>% calc_W()
+midf |> calc_W()
 ```
 
 The added column could be given a different name from the default ("`W`")
 using the `W` argument.
 
 ```{r}
-midf %>% calc_W(W = "W_prime")
+midf |> calc_W(W = "W_prime")
 ```
 
 As with `matsindf_apply()`, 
-column names in `midf` can be mapped to the arguments of `calc_W`
-by the arguments to `calc_W`.
+column names in `midf` can be mapped to the arguments of `calc_W()`
+by the arguments to `calc_W()`.
 
 ```{r}
-midf %>% 
-  rename(X = U, Y = V) %>% 
+midf |> 
+  dplyr::rename(X = U, Y = V) |> 
   calc_W(U = "X", V = "Y")
 ```
 
-`calc_W` can operate on lists of single matrices, too.
+`calc_W()` can operate on lists of single matrices, too.
 This approach works, because the default values for the 
-`U` and `V` arguments to `calc_W` are 
+`U` and `V` arguments to `calc_W()` are 
 "U" and "V", respectively.
 The input list members (in this case `midf$U[[1]]` and `midf$V[[1]]`)
-are returned with the output.
+are returned with the output, because
+`list(U = midf$U[[1]], V = midf$V[[1]])` is passed to the `.dat` argument
+of `matsindf_apply()`.
 
 ```{r}
 calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 ```
 
-It may be clearer to name the arguments as required by the `calc_W` function
+It may be clearer to name the arguments as required by the `calc_W()` function
 without wrapping in a list first,
 as shown below.
-But in this approach, the input matrices are not returned with the output.
+But in this approach, the input matrices are not returned with the output,
+because arguments `U` and `V` are passed to the `...` argument of `matsindf_apply()`,
+not the `.dat` argument of `matsindf_apply()`.
 
 ```{r}
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
 ```
 
-`calc_W` can operate on data frames containing single numbers.
+`calc_W()` can operate on data frames containing single numbers.
 
 ```{r}
-data.frame(U = c(1, 2), V = c(3, 4)) %>% calc_W()
+data.frame(U = c(1, 2), V = c(3, 4)) |> calc_W()
 ```
 
-Finally, `calc_W` can be applied to single numbers,
+Finally, `calc_W()` can be applied to single numbers,
 and the result is 1x1 matrix.
 
 ```{r}
 calc_W(U = 2, V = 3)
+```
+
+It is good practice to write internal functions
+that tolerate zero-length inputs, as `calc_W()` does.
+Doing so, enables results from different calculations to be `rbind`ed together.
+
+```{r}
+calc_W(U = numeric(), V = numeric())
+calc_W(list(U = numeric(), V = numeric()))
+
+res <- calc_W(list(U = c(2, 3, 4, 5), V = c(3, 4, 5, 6)))
+res0 <- calc_W(list(U = numeric(), V = numeric()))
+dplyr::bind_rows(res, res0)
 ```
 
 

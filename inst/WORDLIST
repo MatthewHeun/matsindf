@@ -1,4 +1,6 @@
 al
+arg
+args
 ary
 apenergy
 Brockway
@@ -6,6 +8,7 @@ CMD
 Codecov
 coltypes
 colvec
+dat
 doi
 dplyr
 ECC
@@ -37,6 +40,7 @@ rowtypes
 rowvec
 Roxygen
 TravisCI
+tibble
 tidyr
 tidyverse
 transposeinverse

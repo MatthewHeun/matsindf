@@ -2,35 +2,78 @@
 % Please edit documentation in R/matsindf_apply.R
 \name{matsindf_apply_types}
 \alias{matsindf_apply_types}
-\title{Determine types of \code{...} argument for matsindf_apply}
+\title{Determine types of \code{.dat} and \code{...} arguments for matsindf_apply()}
 \usage{
-matsindf_apply_types(...)
+matsindf_apply_types(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
 }
 \arguments{
-\item{...}{the list of arguments to be checked}
+\item{.dat}{The \code{.dat} argument to be checked.}
+
+\item{FUN}{The function sent to \code{matsindf_apply()}.}
+
+\item{...}{The list of arguments to \code{matsindf_apply()} to be checked.}
+
+\item{.warn_missing_FUN_args}{A boolean that tells
+whether to warn of missing arguments to \code{FUN}.
+Default is \code{TRUE}.}
 }
 \value{
-A logical list with components named \code{dots_present},
-\code{all_dot_num}, \code{all_dots_mats},
-\code{all_dots_list}, and \code{all_dots_char}.
+A logical list with components named
+\code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
+\code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char},
+\code{all_dots_longer_than_1}, \code{dots_names}, and
+\code{keep_args}.
 }
 \description{
-This is a convenience function that returns a logical list for the types of \code{...}
-with components named \code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
-\code{all_dots_list}, \verb{all_dots_vect``, and }all_dots_char`.
+This is a convenience function that returns a list
+for the types of \code{.dat} and \code{...} as well as names in \code{.dat} and \code{...},
+with components named \code{.dat_null}, \code{.dat_df}, \code{.dat_list}, \code{.dat_names},
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names}, \code{FUN_arg_default_values},
+\code{dots_present}, \code{all_dots_num}, \code{all_dots_mats},
+\code{all_dots_list}, \code{all_dots_vect}, \code{all_dots_char},
+\code{all_dots_longer_than_1}, \code{dots_names}, and
+\code{keep_args}.
 }
 \details{
+When \code{.dat} is a \code{data.frame}, both \code{.dat_list} and \code{.dat_df} are \code{TRUE}.
+
 When arguments are present in \code{...}, \code{dots_present} is \code{TRUE} but \code{FALSE} otherwise.
 When all items in \code{...} are single numbers, \code{all_dots_num} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are matrices, \code{all_dots_mats} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are lists, \code{all_dots_list} is \code{TRUE} and all other list members are \code{FALSE}.
 When all items in \code{...} are vectors (including lists), \code{all_dots_vect} is \code{TRUE}.
+When all items in \code{...} have length > 1, \code{all_dots_longer_than_1} is \code{TRUE}.
 When all items in \code{...} are character strings, \code{all_dots_char} is \code{TRUE} and all other list members are \code{FALSE}.
+
+The various \verb{FUN_arg_*} components give information about the arguments to \code{FUN}.
+\code{FUN_arg_all_names} gives the names of all arguments to \code{FUN},
+regardless of whether they have default values.
+\code{FUN_arg_default_names} gives the names of only those arguments with default values.
+\code{FUN_arg_default_values} gives the values of the default arguments,
+already \code{eval()}ed in the global environment.
+When there are no values in a category, \code{NULL} is returned.
+thus, if \code{FUN} has no arguments with default values assigned in the signature of the function,
+both \code{FUN_arg_default_names} and \code{FUN_arg_default_values} will be \code{NULL}.
+If \code{FUN} has no arguments, all of
+\code{FUN_arg_all_names}, \code{FUN_arg_default_names} and \code{FUN_arg_default_values} will be \code{NULL}.
+
+\code{keep_args} is a named \code{list()} of arguments,
+which indicates which arguments to keep from which source
+(\code{...}, \code{.dat}, or default args to \code{FUN})
+by order of preference,
+\code{...} over \code{.dat} over default arguments to \code{FUN}.
+Arguments not used by \code{FUN} are kept,
+again according to the rules of preference.
 }
 \examples{
-matsindf_apply_types(a = 1, b = 2)
-matsindf_apply_types(a = matrix(c(1, 2)), b = matrix(c(2, 3)))
-matsindf_apply_types(a = c(1, 2), b = c(3, 4), c = c(5, 6))
-matsindf_apply_types(a = list(1, 2), b = list(3, 4), c = list(5, 6))
-matsindf_apply_types(a = "a", b = "b", c = "c")
+identity_fun <- function(a, b) {list(a = a, b = b)}
+matsindf_apply_types(.dat = NULL, FUN = identity_fun, a = 1, b = 2)
+matsindf_apply_types(.dat = data.frame(), FUN = identity_fun,
+                     a = matrix(c(1, 2)), b = matrix(c(2, 3)))
+matsindf_apply_types(.dat = list(), FUN = identity_fun,
+                     a = c(1, 2), b = c(3, 4))
+matsindf_apply_types(.dat = NULL, FUN = identity_fun,
+                     a = list(1, 2), b = list(3, 4))
 }

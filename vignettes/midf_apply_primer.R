@@ -10,7 +10,8 @@ library(tidyr)
 
 ## -----------------------------------------------------------------------------
 example_fun <- function(a, b){
-  return(list(c = sum_byname(a, b), d = difference_byname(a, b)))
+  return(list(c = matsbyname::sum_byname(a, b), 
+              d = matsbyname::difference_byname(a, b)))
 }
 
 ## -----------------------------------------------------------------------------
@@ -53,17 +54,13 @@ example_fun_with_string <- function(str_a, b) {
   list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a, b))
 }
 
-# Fails, because of mixed argument types.
+# Causes an error
 tryCatch(
-  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2), 
-  error = function(e) {
-    print(e)
-  }
+  matsindf_apply(FUN = example_fun_with_string, str_a = "1", b = 2),
+  error = function(e){e}
 )
-
-# All of the following work, 
-# because arguments are wrapped in list() or 
-# supplied in .dat.
+# To solve the problem, wrap "1" in list().
+matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = 2)
 matsindf_apply(FUN = example_fun_with_string, str_a = list("1"), b = list(2))
 matsindf_apply(FUN = example_fun_with_string, 
                str_a = list("1", "3"), 
@@ -71,6 +68,8 @@ matsindf_apply(FUN = example_fun_with_string,
 matsindf_apply(.dat = list(str_a = list("1"), b = list(2)), FUN = example_fun_with_string)
 matsindf_apply(.dat = list(m = list("1"), n = list(2)), FUN = example_fun_with_string, 
                str_a = "m", b = "n")
+
+## -----------------------------------------------------------------------------
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
                FUN = example_fun_with_string)
 matsindf_apply(.dat = data.frame(str_a = c("1", "3"), b = c(2, 4)), 
@@ -86,22 +85,22 @@ matsindf_apply(df, FUN = example_fun)
 
 ## -----------------------------------------------------------------------------
 # Create a tidy data frame containing data for matrices
-tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
-                   matnames = c(rep("U", 8), rep("V", 8)),
-                   matvals = c(1:4, 11:14, 21:24, 31:34),
-                   rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
-                                rep(c(rep("i1", 2), rep("i2", 2)), 2)),
-                   colnames = c(rep(c("i1", "i2"), 4), 
-                                rep(c("p1", "p2"), 4))) %>%
-  mutate(
+tidy <- tibble::tibble(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
+                       matnames = c(rep("U", 8), rep("V", 8)),
+                       matvals = c(1:4, 11:14, 21:24, 31:34),
+                       rownames = c(rep(c(rep("p1", 2), rep("p2", 2)), 2), 
+                                    rep(c(rep("i1", 2), rep("i2", 2)), 2)),
+                       colnames = c(rep(c("i1", "i2"), 4), 
+                                    rep(c("p1", "p2"), 4))) |>
+  dplyr::mutate(
     rowtypes = case_when(
-      matnames == "U" ~ "product",
-      matnames == "V" ~ "industry", 
+      matnames == "U" ~ "Product",
+      matnames == "V" ~ "Industry", 
       TRUE ~ NA_character_
     ),
     coltypes = case_when(
-      matnames == "U" ~ "industry",
-      matnames == "V" ~ "product",
+      matnames == "U" ~ "Industry",
+      matnames == "V" ~ "Product",
       TRUE ~ NA_character_
     )
   )
@@ -109,10 +108,10 @@ tidy <- data.frame(Year = rep(c(rep(2017, 4), rep(2018, 4)), 2),
 tidy
 
 # Convert to a matsindf data frame
-midf <- tidy %>% 
-  group_by(Year, matnames) %>% 
-  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") %>% 
-  spread(key = "matnames", value = "matvals")
+midf <- tidy |>  
+  dplyr::group_by(Year, matnames) |> 
+  collapse_to_matrices(rowtypes = "rowtypes", coltypes = "coltypes") |> 
+  tidyr::pivot_wider(names_from = "matnames", values_from = "matvals")
 
 # Take a look at the midf data frame and some of the matrices it contains.
 midf
@@ -120,8 +119,8 @@ midf$U[[1]]
 midf$V[[1]]
 
 ## -----------------------------------------------------------------------------
-result <- midf %>% 
-  mutate(
+result <- midf |> 
+  dplyr::mutate(
     W = difference_byname(transpose_byname(V), U)
   )
 result
@@ -129,30 +128,37 @@ result$W[[1]]
 result$W[[2]]
 
 ## -----------------------------------------------------------------------------
-calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W"){
+calc_W <- function(.DF = NULL, U = "U", V = "V", W = "W") {
   # The inner function does all the work.
   W_func <- function(U_mat, V_mat){
     # When we get here, U_mat and V_mat will be single matrices or single numbers, 
     # not a column in a data frame or an item in a list.
+    if (length(U_mat) == 0 & length(V_mat == 0)) {
+      # Tolerate zero-length arguments by returning a zero-length
+      # a list with the correct name and return type.
+      return(list(numeric()) |> magrittr::setnames(W))
+    }
     # Calculate W_mat from the inputs U_mat and V_mat.
-    W_mat <- difference_byname(transpose_byname(V_mat), U_mat)
+    W_mat <- matsbyname::difference_byname(
+      matsbyname::transpose_byname(V_mat), 
+      U_mat)
     # Return a named list.
-    list(W_mat) %>% magrittr::set_names(W)
+    list(W_mat) |> magrittr::set_names(W)
   }
   # The body of the main function consists of a call to matsindf_apply
-  # that specifies the inner function
+  # that specifies the inner function in the FUN argument.
   matsindf_apply(.DF, FUN = W_func, U_mat = U, V_mat = V)
 }
 
 ## -----------------------------------------------------------------------------
-midf %>% calc_W()
+midf |> calc_W()
 
 ## -----------------------------------------------------------------------------
-midf %>% calc_W(W = "W_prime")
+midf |> calc_W(W = "W_prime")
 
 ## -----------------------------------------------------------------------------
-midf %>% 
-  rename(X = U, Y = V) %>% 
+midf |> 
+  dplyr::rename(X = U, Y = V) |> 
   calc_W(U = "X", V = "Y")
 
 ## -----------------------------------------------------------------------------
@@ -162,8 +168,16 @@ calc_W(list(U = midf$U[[1]], V = midf$V[[1]]))
 calc_W(U = midf$U[[1]], V = midf$V[[1]])
 
 ## -----------------------------------------------------------------------------
-data.frame(U = c(1, 2), V = c(3, 4)) %>% calc_W()
+data.frame(U = c(1, 2), V = c(3, 4)) |> calc_W()
 
 ## -----------------------------------------------------------------------------
 calc_W(U = 2, V = 3)
+
+## -----------------------------------------------------------------------------
+calc_W(U = numeric(), V = numeric())
+calc_W(list(U = numeric(), V = numeric()))
+
+res <- calc_W(list(U = c(2, 3, 4, 5), V = c(3, 4, 5, 6)))
+res0 <- calc_W(list(U = numeric(), V = numeric()))
+dplyr::bind_rows(res, res0)
 

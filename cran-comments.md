@@ -1,36 +1,49 @@
 ## Context
 
-`matsindf` v0.4.0 now works with `Matrix` objects,
-thereby enabling sparse matrix representation of data.
+`matsindf` v0.4.1 includes a rewrite of `matsindf_apply()` 
+to make it easier to debug and maintain.
+Better error messages are now available, too.
 See `NEWS.md` for details.
 
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.2.1 (Ventura), R4.2.2
+* local: macOS X 13.3.1 (Ventura), R4.3.0
     * errors: 0
     * warnings: 0
     * notes: 0
-* GitHub Actions: windows-latest (release)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
-* GitHub Actions: macos-latest (release)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
-* GitHub Actions: ubuntu-latest (release)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
-* GitHub Actions: ubuntu-latest (devel)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
-* GitHub Actions: ubuntu-latest (oldrel-1)
-    * errors: 0
-    * warnings: 0
-    * notes: 0
+* GitHub Actions: 
+    * macOS-latest (release)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+    * ubuntu-latest (devel)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+    * ubuntu-latest (release)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+    * ubuntu-latest (oldrel-1)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+    * windows-latest (release)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 * Windows (on win-builder):
     * `devtools::check_win_release()`, R version 4.2.2 (2022-10-31 ucrt)
         * errors: 0

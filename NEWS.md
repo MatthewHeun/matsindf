@@ -8,6 +8,8 @@ output: html_document
   `matsindf_apply()` now extends to default arguments of `FUN`.
 * The rewrite of `matsindf_apply()` enables better error and warning messages in many places.
 * Rewrote all of `matsindf_apply()`.
+  It was a complete mess!
+  Hopefully, it is now easier to debug and maintain.
     * `matsindf_apply()` now correctly returns a list when lists are provided in the `...` argument.
       Previously, it incorrectly returned a data frame.
     * `matsindf_apply()` now correctly disallows any unused arguments supplied in its `...` argument.

@@ -3,6 +3,7 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+# matsindf 0.4.1 (2023-04-26)
 
 * The mapping of length-`1` strings in the `...` argument of 
   `matsindf_apply()` now extends to default arguments of `FUN`.

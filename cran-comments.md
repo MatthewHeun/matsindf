@@ -38,9 +38,14 @@ See `NEWS.md` for details.
         * ERRORs: 0
         * WARNINGs: 0
         * NOTEs: 0
-        
-        
-        
+    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-04-25 r84327 ucrt)
+        * ERRORs: 0
+        * WARNINGs: 0
+        * NOTEs: 0
 * rhub:
     * `devtools::check_rhub()`
         * Windows Server 2022, R-devel, 64 bit
@@ -69,15 +74,12 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
 
         
-        
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-03-04 r83937 ucrt)
-        * ERRORs: 0
-        * WARNINGs: 0
-        * NOTEs: 0
-    * `devtools::check_win_oldrelease()`, R version 4.1.3 (2022-03-10)
-        * ERRORs: 0
-        * WARNINGs: 0
-        * NOTEs: 0
+
+
+
+
+
+
 * rhub:
     * `devtools::check_rhub()`
         * Windows Server 2022, R-devel, 64 bit

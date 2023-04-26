@@ -1,6 +1,6 @@
 ## Context
 
-`matsindf` v0.4.1 includes a rewrite of `matsindf_apply()` 
+`matsindf` v0.4.1 includes a rewrite of `matsindf_apply()`
 to make it easier to debug and maintain.
 Better error messages are now available, too.
 See `NEWS.md` for details.
@@ -82,14 +82,6 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
 * rhub:
     * `devtools::check_rhub()`
-        * Windows Server 2022, R-devel, 64 bit
-            * ERRORs: 0
-            * WARNINGs: 0
-            * NOTEs: 1
-                - checking for detritus in the temp directory ... NOTE
-                - Found the following files/directories:
-                - 'lastMiKTeXException'
-                - This note appears to be a minor problem with the cleanup process, not caused by the `matsindf` package itself.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * ERRORs: 0
             * WARNINGs: 0

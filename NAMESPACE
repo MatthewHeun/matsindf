@@ -3,6 +3,7 @@
 export("%>%")
 export(":=")
 export(.data)
+export(build_matsindf_apply_data_frame)
 export(collapse_to_matrices)
 export(df_to_msg)
 export(everything_except)

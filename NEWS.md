@@ -3,8 +3,36 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+# matsindf 0.4.1 (2023-04-26)
 
-# matsindf 0.4.0 (2023-03-07)
+* The mapping of length-`1` strings in the `...` argument of 
+  `matsindf_apply()` now extends to default arguments of `FUN`.
+* The rewrite of `matsindf_apply()` enables better error and warning messages in many places.
+* Rewrote all of `matsindf_apply()`.
+  It was a complete mess!
+  Hopefully, it is now easier to debug and maintain.
+    * `matsindf_apply()` now correctly returns a list when lists are provided in the `...` argument.
+      Previously, it incorrectly returned a data frame.
+    * `matsindf_apply()` now correctly disallows any unused arguments supplied in its `...` argument.
+      Previously, some unused argument situations were not flagged as errors,
+      despite documentation saying they would be.
+    * `matsindf_apply()` now gives warning messages when an argument to `FUN` cannot be found
+      in any of `...`, `.dat`, or defaults to `FUN`. 
+      This condition may be OK, and the caller can suppress the warning by passing
+      `.warn_missing_FUN_args = FALSE` to `matsindf_apply()`.
+    * `matsindf_apply()` now gives more descriptive error messages.
+    * `matsindf_apply()` now allows more options for incoming data.
+    * `matsindf_apply()` now tries really hard to deal with empty inputs, 
+      falling back to returning the original input 
+      unmodified (except possibly wrapped in a `list()`) when 
+      the input has zero rows (in the case of a data frame)
+      or zero length (in the case of lists).
+* Many new tests to verify that the package works after rewriting `matsindf_apply()`.
+    - Now at 374 tests, all passing.
+    - Test coverage remains at 100 %.
+
+
+# matsindf 0.4.0 (2023-03-07) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7713764.svg)](https://doi.org/10.5281/zenodo.7713764)
 
 * All functions now work with both `matrix` and `Matrix` objects,
   thereby enabling use of sparse matrices.

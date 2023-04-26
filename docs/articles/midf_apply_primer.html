@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-03-07</h4>
+            <h4 data-toc-skip class="date">2023-04-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/midf_apply_primer.Rmd" class="external-link"><code>vignettes/midf_apply_primer.Rmd</code></a></small>
       <div class="d-none name"><code>midf_apply_primer.Rmd</code></div>
@@ -91,39 +91,42 @@ Heun</h4>
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p><code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> is a powerful and versatile function
-that enables analysis of data frames by applying <code>FUN</code> in
-helpful ways. The function is called <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>,
-because it can be used to apply <code>FUN</code> to a
-<code>matsindf</code> data frame, a data frame that contains matrices as
-individual entries in a data frame. (A <code>matsindf</code> data frame
-can be created by calling <code><a href="../reference/collapse_to_matrices.html">collapse_to_matrices()</a></code>, as
-demonstrated below.)</p>
+that enables analysis with lists and data frames by applying
+<code>FUN</code> in helpful ways. The function is called
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>, because it can be used to apply
+<code>FUN</code> to a <code>matsindf</code> data frame, a data frame
+that contains matrices as individual entries in a data frame. (A
+<code>matsindf</code> data frame can be created by calling
+<code><a href="../reference/collapse_to_matrices.html">collapse_to_matrices()</a></code>, as demonstrated below.)</p>
 <p>But <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> can apply <code>FUN</code> across
 much more: data frames of single numbers, lists of matrices, lists of
 single numbers, and individual numbers. This vignette demonstrates
 <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>, starting with simple examples and
-proceeding to sophisticated analyses.</p>
+proceeding toward sophisticated analyses.</p>
 </div>
 <div class="section level2">
 <h2 id="the-basics">The basics<a class="anchor" aria-label="anchor" href="#the-basics"></a>
 </h2>
 <p>The basis of all analyses conducted with
 <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> is a function (<code>FUN</code>) to be
-applied across data. <code>FUN</code> must return a named list of
-variables as its result. Here is an example function that both adds and
-subtracts is arguments, <code>a</code> and <code>b</code>, and returns a
-list containing its result, <code>c</code> and <code>d</code>.</p>
+applied across data supplied in <code>.dat</code> or <code>...</code>.
+<code>FUN</code> must return a named list of variables as its result.
+Here is an example function that both adds and subtracts its arguments,
+<code>a</code> and <code>b</code>, and returns a list containing its
+result, <code>c</code> and <code>d</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, </span>
+<span>              d <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Similar to <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> and its siblings, additional
 argument(s) to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> include the data over which
 <code>FUN</code> is to be applied. These arguments can, in the first
 instance, be supplied as named arguments to the <code>...</code>
-argument of <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>. The <code>...</code>
-arguments to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> are passed to
-<code>FUN</code> according to their names. In this case, the output of
+argument of <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>. All arguments in
+<code>...</code> must be named. The <code>...</code> arguments to
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> are passed to <code>FUN</code> according
+to their names. In this case, the output of
 <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> is the the named list returned by
 <code>FUN</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -133,33 +136,35 @@ arguments to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $d</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
-<p>Passing an additional argument (<code>z = 2</code>) causes the
-familiar <code>unused argument</code> error, because
-<code>example_fun</code> does not have a <code>z</code> argument.</p>
+<p>Passing an additional argument (<code>z = 2</code>) causes an unused
+argument error, because <code>example_fun</code> does not have a
+<code>z</code> argument.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, z <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">}</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;simpleError in FUN(...): unused argument (z = 2)&gt;</span></span></code></pre></div>
-<p>Failing to pass a needed argument (<code>b = 1</code>) causes the
-familiar <code>argument X is missing</code> error, because
-<code>example_fun</code> requires a value for <code>b</code>.</p>
+<span><span class="co">#&gt; &lt;simpleError in matsindf_apply_types(.dat, FUN, ...): In matsindf::matsindf_apply(), the following unused arguments appeared in ...: z&gt;</span></span></code></pre></div>
+<p>Failing to pass a needed argument (<code>b</code>) causes an error
+that indicates the missing argument.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">}</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;simpleError in sum_byname(a, b): argument "b" is missing, with no default&gt;</span></span></code></pre></div>
-<p>(If <code>example_fun</code> tolerated a missing argument, no such
-error would be created.)</p>
+<span><span class="co">#&gt; Warning in matsindf_apply_types(.dat, FUN, ...): In matsindf::matsindf_apply(),</span></span>
+<span><span class="co">#&gt; the following named arguments to FUN were not found in any of .dat, ..., or</span></span>
+<span><span class="co">#&gt; defaults to FUN: b. Set .warn_missing_FUN_args = FALSE to suppress this warning</span></span>
+<span><span class="co">#&gt; if you know what you are doing.</span></span>
+<span><span class="co">#&gt; &lt;simpleError in (function (a, b) {    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a,         b)))})(a = 2): argument "b" is missing, with no default&gt;</span></span></code></pre></div>
 <p>Alternatively, arguments to <code>FUN</code> can be given in a named
-list to the first argument to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>
-(<code>.dat</code>). When a value is assigned to <code>.dat</code>, the
-return value from <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> contains all named
-variables in <code>.dat</code> (in this case both <code>a</code> and
-<code>b</code>) in addition to the results provided by <code>FUN</code>
-(in this case both <code>c</code> and <code>d</code>).</p>
+list to <code>.dat</code>, the first argument of
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>. When a value is assigned to
+<code>.dat</code>, the return value from <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>
+contains all named variables in <code>.dat</code> (in this case both
+<code>a</code> and <code>b</code>) in addition to the results provided
+by <code>FUN</code> (in this case both <code>c</code> and
+<code>d</code>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $a</span></span>
@@ -184,17 +189,14 @@ variables can be drawn as needed.</p>
 <span><span class="co">#&gt; $b</span></span>
 <span><span class="co">#&gt; [1] 1</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $z</span></span>
-<span><span class="co">#&gt; [1] 42</span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $c</span></span>
 <span><span class="co">#&gt; [1] 3</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $d</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
-<p>In contrast, named arguments to <code>...</code> are specified by the
-user, so including an extra variable is considered an error, as shown
-above.</p>
+<p>In contrast, arguments to <code>...</code> are named explicitly by
+the user, so including an extra argument in <code>...</code> is
+considered an error, as shown above.</p>
 </div>
 <div class="section level2">
 <h2 id="some-details">Some details<a class="anchor" aria-label="anchor" href="#some-details"></a>
@@ -216,12 +218,12 @@ overriding the argument in <code>.dat</code>.</p>
 <span><span class="co">#&gt; $d</span></span>
 <span><span class="co">#&gt; [1] 9</span></span></code></pre></div>
 <p>When supplying <strong>both</strong> <code>.dat</code> and
-<code>...</code>, <code>...</code> can contain named strings which are
-interpreted as mappings from item names in <code>.dat</code> to
-arguments in the signature of <code>FUN</code>. In the example below,
-<code>a = "z"</code> indicates that argument <code>a</code> to
-<code>FUN</code> should be supplied by item <code>z</code> in
-<code>.dat</code>.</p>
+<code>...</code>, <code>...</code> can contain named strings of length
+<code>1</code> which are interpreted as mappings from named items in
+<code>.dat</code> to arguments in the signature of <code>FUN</code>. In
+the example below, <code>a = "z"</code> indicates that argument
+<code>a</code> to <code>FUN</code> should be supplied by item
+<code>z</code> in <code>.dat</code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, z <span class="op">=</span> <span class="fl">42</span><span class="op">)</span>,</span>
 <span>               FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="st">"z"</span><span class="op">)</span></span>
@@ -247,233 +249,272 @@ of <code>FUN</code>, a name collision occurs in the output of
 <span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">42</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span>,</span>
 <span>  warning <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">w</span><span class="op">)</span><span class="op">{</span><span class="va">w</span><span class="op">}</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;simpleWarning in matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun): name collision in matsindf_apply: c&gt;</span></span></code></pre></div>
-<p>If <code>FUN</code> accepts mixed argument types, arguments to
-<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> can be wrapped in <code><a href="https://rdrr.io/r/base/list.html" class="external-link">list()</a></code> for
-success.</p>
+<span><span class="co">#&gt; &lt;simpleWarning in matsindf_apply(list(a = 2, b = 1, c = 42), FUN = example_fun): Name collision in matsindf::matsindf_apply(). The following arguments appear both in .dat and in the output of `FUN`: c&gt;</span></span></code></pre></div>
+<p><code>FUN</code> can accept more than just numerics.
+<code>example_fun_with_string()</code> accepts a character string and a
+numeric. However, because <code>...</code> argument that is a character
+string of length <code>1</code> has special meaning (namely mapping
+variables in <code>.dat</code> to arguments of <code>FUN</code>),
+passing a character string of length <code>1</code> can cause an error.
+To get around the problem, wrap the single string in a list, as shown
+below.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_fun_with_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">str_a</span>, <span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">str_a</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>added <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, subtracted <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Fails, because of mixed argument types.</span></span>
+<span><span class="co"># Causes an error</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/conditions.html" class="external-link">tryCatch</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, str_a <span class="op">=</span> <span class="st">"1"</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, </span>
-<span>  error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, str_a <span class="op">=</span> <span class="st">"1"</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">{</span><span class="va">e</span><span class="op">}</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; &lt;simpleError in FUN(...): argument "str_a" is missing, with no default&gt;</span></span>
-<span></span>
-<span><span class="co"># All of the following work, </span></span>
-<span><span class="co"># because arguments are wrapped in list() or </span></span>
-<span><span class="co"># supplied in .dat.</span></span>
+<span><span class="co">#&gt; Warning in matsindf_apply_types(.dat, FUN, ...): In matsindf::matsindf_apply(),</span></span>
+<span><span class="co">#&gt; the following named arguments to FUN were not found in any of .dat, ..., or</span></span>
+<span><span class="co">#&gt; defaults to FUN: str_a. Set .warn_missing_FUN_args = FALSE to suppress this</span></span>
+<span><span class="co">#&gt; warning if you know what you are doing.</span></span>
+<span><span class="co">#&gt; &lt;simpleError in (function (str_a, b) {    a &lt;- as.numeric(str_a)    list(added = matsbyname::sum_byname(a, b), subtracted = matsbyname::difference_byname(a,         b))})(b = 2): argument "str_a" is missing, with no default&gt;</span></span>
+<span><span class="co"># To solve the problem, wrap "1" in list().</span></span>
+<span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $added</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $subtracted</span></span>
+<span><span class="co">#&gt; [1] -1</span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   added subtracted</span></span>
-<span><span class="co">#&gt; 1     3         -1</span></span>
+<span><span class="co">#&gt; $added</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $subtracted</span></span>
+<span><span class="co">#&gt; [1] -1</span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, </span>
 <span>               str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"3"</span><span class="op">)</span>, </span>
 <span>               b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   added subtracted</span></span>
-<span><span class="co">#&gt; 1     3         -1</span></span>
-<span><span class="co">#&gt; 2     7         -1</span></span>
-<span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun_with_string</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $str_a</span></span>
-<span><span class="co">#&gt; $str_a[[1]]</span></span>
-<span><span class="co">#&gt; [1] "1"</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $b</span></span>
-<span><span class="co">#&gt; $b[[1]]</span></span>
-<span><span class="co">#&gt; [1] 2</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $added</span></span>
 <span><span class="co">#&gt; $added[[1]]</span></span>
 <span><span class="co">#&gt; [1] 3</span></span>
 <span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $added[[2]]</span></span>
+<span><span class="co">#&gt; [1] 7</span></span>
+<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $subtracted</span></span>
 <span><span class="co">#&gt; $subtracted[[1]]</span></span>
+<span><span class="co">#&gt; [1] -1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $subtracted[[2]]</span></span>
+<span><span class="co">#&gt; [1] -1</span></span>
+<span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun_with_string</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $str_a</span></span>
+<span><span class="co">#&gt; [1] "1"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $b</span></span>
+<span><span class="co">#&gt; [1] 2</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $added</span></span>
+<span><span class="co">#&gt; [1] 3</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $subtracted</span></span>
 <span><span class="co">#&gt; [1] -1</span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"1"</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, </span>
 <span>               str_a <span class="op">=</span> <span class="st">"m"</span>, b <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $m</span></span>
-<span><span class="co">#&gt; $m[[1]]</span></span>
 <span><span class="co">#&gt; [1] "1"</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $n</span></span>
-<span><span class="co">#&gt; $n[[1]]</span></span>
 <span><span class="co">#&gt; [1] 2</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $added</span></span>
-<span><span class="co">#&gt; $added[[1]]</span></span>
 <span><span class="co">#&gt; [1] 3</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $subtracted</span></span>
-<span><span class="co">#&gt; $subtracted[[1]]</span></span>
-<span><span class="co">#&gt; [1] -1</span></span>
-<span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"3"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, </span>
+<span><span class="co">#&gt; [1] -1</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="matsindf_apply-and-data-frames">
+<code>matsindf_apply()</code> and data frames<a class="anchor" aria-label="anchor" href="#matsindf_apply-and-data-frames"></a>
+</h2>
+<p><code>.dat</code> can also contain a data frame (or tibble), both of
+which are fancy lists. When <code>.dat</code> is a data frame or tibble,
+the output of <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> is a tibble, and
+<code>FUN</code> acts like a specialized <code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">dplyr::mutate()</a></code>,
+adding new columns at the right of <code>.dat</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"3"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>               FUN <span class="op">=</span> <span class="va">example_fun_with_string</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   str_a b added subtracted</span></span>
-<span><span class="co">#&gt; 1     1 2     3         -1</span></span>
-<span><span class="co">#&gt; 2     3 4     7         -1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;   str_a     b added subtracted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1         2     3         -<span style="color: #BB0000;">1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 3         4     7         -<span style="color: #BB0000;">1</span></span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>str_a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"3"</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>               FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, </span>
 <span>               str_a <span class="op">=</span> <span class="st">"str_a"</span>, b <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   str_a b added subtracted</span></span>
-<span><span class="co">#&gt; 1     1 2     3         -1</span></span>
-<span><span class="co">#&gt; 2     3 4     7         -1</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;   str_a     b added subtracted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1         2     3         -<span style="color: #BB0000;">1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 3         4     7         -<span style="color: #BB0000;">1</span></span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span>.dat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>m <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"1"</span>, <span class="st">"3"</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>               FUN <span class="op">=</span> <span class="va">example_fun_with_string</span>, </span>
 <span>               str_a <span class="op">=</span> <span class="st">"m"</span>, b <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   m n added subtracted</span></span>
-<span><span class="co">#&gt; 1 1 2     3         -1</span></span>
-<span><span class="co">#&gt; 2 3 4     7         -1</span></span></code></pre></div>
-</div>
-<div class="section level2">
-<h2 id="matsindf_apply-and-data-frames">matsindf_apply and data frames<a class="anchor" aria-label="anchor" href="#matsindf_apply-and-data-frames"></a>
-</h2>
-<p><code>.dat</code> can be a list (as shown in several examples above),
-but it can also be a data frame.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;   m         n added subtracted</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> 1         2     3         -<span style="color: #BB0000;">1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> 3         4     7         -<span style="color: #BB0000;">1</span></span></span></code></pre></div>
+<p>Additional niceties are available when <code>.dat</code> is a data
+frame or a tibble. <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> works when the data
+frame is filled with single numeric values, as is typical.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, b <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="va">df</span>, FUN <span class="op">=</span> <span class="va">example_fun</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   a b c d</span></span>
-<span><span class="co">#&gt; 1 2 1 3 1</span></span>
-<span><span class="co">#&gt; 2 3 2 5 1</span></span>
-<span><span class="co">#&gt; 3 4 3 7 1</span></span></code></pre></div>
-<p>Furthermore, <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> works with a
-<code>matsindf</code> data frame, a data frame wherein each entry in the
-data frame is a matrix. To demonstrate use of
-<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> with a data frame, we’ll construct a
-simple <code>matsindf</code> data frame (<code>midf</code>) using
-functions in this package.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3 × 4</span></span></span>
+<span><span class="co">#&gt;       a     b     c     d</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     2     1     3     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3     2     5     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     4     3     7     1</span></span></code></pre></div>
+<p>But <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> also works with
+<code>matsindf</code> data frames, data frames in which each cell of the
+data frame is filled with a single matrix. To demonstrate use of
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> with a <code>matsindf</code> data frame,
+we’ll construct a simple <code>matsindf</code> data frame
+(<code>midf</code>) using functions in this package.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create a tidy data frame containing data for matrices</span></span>
-<span><span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>Year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2017</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2018</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>                   matnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"U"</span>, <span class="fl">8</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   matvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">11</span><span class="op">:</span><span class="fl">14</span>, <span class="fl">21</span><span class="op">:</span><span class="fl">24</span>, <span class="fl">31</span><span class="op">:</span><span class="fl">34</span><span class="op">)</span>,</span>
-<span>                   rownames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"p1"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"p2"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, </span>
-<span>                                <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"i2"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="st">"i2"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>, </span>
-<span>                                <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p1"</span>, <span class="st">"p2"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<span><span class="va">tidy</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>Year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2017</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2018</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>                       matnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"U"</span>, <span class="fl">8</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"V"</span>, <span class="fl">8</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                       matvals <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="fl">11</span><span class="op">:</span><span class="fl">14</span>, <span class="fl">21</span><span class="op">:</span><span class="fl">24</span>, <span class="fl">31</span><span class="op">:</span><span class="fl">34</span><span class="op">)</span>,</span>
+<span>                       rownames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"p1"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"p2"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span>, </span>
+<span>                                    <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"i2"</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                       colnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="st">"i2"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>, </span>
+<span>                                    <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"p1"</span>, <span class="st">"p2"</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    rowtypes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"U"</span> <span class="op">~</span> <span class="st">"product"</span>,</span>
-<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"V"</span> <span class="op">~</span> <span class="st">"industry"</span>, </span>
+<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"U"</span> <span class="op">~</span> <span class="st">"Product"</span>,</span>
+<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"V"</span> <span class="op">~</span> <span class="st">"Industry"</span>, </span>
 <span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span></span>
 <span>    <span class="op">)</span>,</span>
 <span>    coltypes <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
-<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"U"</span> <span class="op">~</span> <span class="st">"industry"</span>,</span>
-<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"V"</span> <span class="op">~</span> <span class="st">"product"</span>,</span>
+<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"U"</span> <span class="op">~</span> <span class="st">"Industry"</span>,</span>
+<span>      <span class="va">matnames</span> <span class="op">==</span> <span class="st">"V"</span> <span class="op">~</span> <span class="st">"Product"</span>,</span>
 <span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_character_</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="va">tidy</span></span>
-<span><span class="co">#&gt;    Year matnames matvals rownames colnames rowtypes coltypes</span></span>
-<span><span class="co">#&gt; 1  2017        U       1       p1       i1  product industry</span></span>
-<span><span class="co">#&gt; 2  2017        U       2       p1       i2  product industry</span></span>
-<span><span class="co">#&gt; 3  2017        U       3       p2       i1  product industry</span></span>
-<span><span class="co">#&gt; 4  2017        U       4       p2       i2  product industry</span></span>
-<span><span class="co">#&gt; 5  2018        U      11       p1       i1  product industry</span></span>
-<span><span class="co">#&gt; 6  2018        U      12       p1       i2  product industry</span></span>
-<span><span class="co">#&gt; 7  2018        U      13       p2       i1  product industry</span></span>
-<span><span class="co">#&gt; 8  2018        U      14       p2       i2  product industry</span></span>
-<span><span class="co">#&gt; 9  2017        V      21       i1       p1 industry  product</span></span>
-<span><span class="co">#&gt; 10 2017        V      22       i1       p2 industry  product</span></span>
-<span><span class="co">#&gt; 11 2017        V      23       i2       p1 industry  product</span></span>
-<span><span class="co">#&gt; 12 2017        V      24       i2       p2 industry  product</span></span>
-<span><span class="co">#&gt; 13 2018        V      31       i1       p1 industry  product</span></span>
-<span><span class="co">#&gt; 14 2018        V      32       i1       p2 industry  product</span></span>
-<span><span class="co">#&gt; 15 2018        V      33       i2       p1 industry  product</span></span>
-<span><span class="co">#&gt; 16 2018        V      34       i2       p2 industry  product</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 16 × 7</span></span></span>
+<span><span class="co">#&gt;     Year matnames matvals rownames colnames rowtypes coltypes</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>  <span style="text-decoration: underline;">2</span>017 U              1 p1       i1       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  <span style="text-decoration: underline;">2</span>017 U              2 p1       i2       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>  <span style="text-decoration: underline;">2</span>017 U              3 p2       i1       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>  <span style="text-decoration: underline;">2</span>017 U              4 p2       i2       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>  <span style="text-decoration: underline;">2</span>018 U             11 p1       i1       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>  <span style="text-decoration: underline;">2</span>018 U             12 p1       i2       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>  <span style="text-decoration: underline;">2</span>018 U             13 p2       i1       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>  <span style="text-decoration: underline;">2</span>018 U             14 p2       i2       Product  Industry</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>  <span style="text-decoration: underline;">2</span>017 V             21 i1       p1       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>  <span style="text-decoration: underline;">2</span>017 V             22 i1       p2       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span>  <span style="text-decoration: underline;">2</span>017 V             23 i2       p1       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span>  <span style="text-decoration: underline;">2</span>017 V             24 i2       p2       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">13</span>  <span style="text-decoration: underline;">2</span>018 V             31 i1       p1       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span>  <span style="text-decoration: underline;">2</span>018 V             32 i1       p2       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">15</span>  <span style="text-decoration: underline;">2</span>018 V             33 i2       p1       Industry Product </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">16</span>  <span style="text-decoration: underline;">2</span>018 V             34 i2       p2       Industry Product</span></span>
 <span></span>
 <span><span class="co"># Convert to a matsindf data frame</span></span>
-<span><span class="va">midf</span> <span class="op">&lt;-</span> <span class="va">tidy</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">matnames</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span><span class="op">(</span>rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/spread.html" class="external-link">spread</a></span><span class="op">(</span>key <span class="op">=</span> <span class="st">"matnames"</span>, value <span class="op">=</span> <span class="st">"matvals"</span><span class="op">)</span></span>
+<span><span class="va">midf</span> <span class="op">&lt;-</span> <span class="va">tidy</span> <span class="op">|&gt;</span>  </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">matnames</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="../reference/collapse_to_matrices.html">collapse_to_matrices</a></span><span class="op">(</span>rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>, coltypes <span class="op">=</span> <span class="st">"coltypes"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html" class="external-link">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="st">"matnames"</span>, values_from <span class="op">=</span> <span class="st">"matvals"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Take a look at the midf data frame and some of the matrices it contains.</span></span>
 <span><span class="va">midf</span></span>
-<span><span class="co">#&gt;   Year              U              V</span></span>
-<span><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24</span></span>
-<span><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;    Year U             V            </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>017 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>018 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
 <span><span class="va">midf</span><span class="op">$</span><span class="va">U</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1  1  2</span></span>
 <span><span class="co">#&gt; p2  3  4</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span>
+<span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="va">midf</span><span class="op">$</span><span class="va">V</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    p1 p2</span></span>
 <span><span class="co">#&gt; i1 21 22</span></span>
 <span><span class="co">#&gt; i2 23 24</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span>
+<span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Product"</span></span></code></pre></div>
 <p>With <code>midf</code> in hand, we can demonstrate use of <a href="https://www.tidyverse.org" class="external-link"><code>tidyverse</code></a>-style
 functional programming to perform matrix algebra within a data frame.
 The functions of the <code>matsbyname</code> package (such as
 <code><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname()</a></code> below) can be used for this
 purpose.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">midf</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
 <span>    W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">result</span></span>
-<span><span class="co">#&gt;   Year              U              V              W</span></span>
-<span><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span></span>
-<span><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;    Year U             V             W            </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>017 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>018 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">W</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1 20 21</span></span>
 <span><span class="co">#&gt; p2 19 20</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span>
+<span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="va">result</span><span class="op">$</span><span class="va">W</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1 20 21</span></span>
 <span><span class="co">#&gt; p2 19 20</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Industry"</span></span></code></pre></div>
 <p>This way of performing matrix calculations works equally well within
-a 2-row <code>matsindf</code> data frame (as shown above) or a 1000-row
-<code>matsindf</code> data frame.</p>
+a 2-row <code>matsindf</code> data frame (as shown above) or within a
+1000-row <code>matsindf</code> data frame.</p>
 </div>
 <div class="section level2">
-<h2 id="programming-with-matsindf_apply">Programming with matsindf_apply<a class="anchor" aria-label="anchor" href="#programming-with-matsindf_apply"></a>
+<h2 id="programming-with-matsindf_apply">Programming with <code>matsindf_apply()</code><a class="anchor" aria-label="anchor" href="#programming-with-matsindf_apply"></a>
 </h2>
 <p>Users can write their own functions using
-<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>. A flexible <code>calc_W</code> function
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>. A flexible <code>calc_W()</code> function
 can be written as follows.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">calc_W</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.DF</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">U</span> <span class="op">=</span> <span class="st">"U"</span>, <span class="va">V</span> <span class="op">=</span> <span class="st">"V"</span>, <span class="va">W</span> <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span><span class="op">{</span></span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">calc_W</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">.DF</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">U</span> <span class="op">=</span> <span class="st">"U"</span>, <span class="va">V</span> <span class="op">=</span> <span class="st">"V"</span>, <span class="va">W</span> <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="co"># The inner function does all the work.</span></span>
 <span>  <span class="va">W_func</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">U_mat</span>, <span class="va">V_mat</span><span class="op">)</span><span class="op">{</span></span>
 <span>    <span class="co"># When we get here, U_mat and V_mat will be single matrices or single numbers, </span></span>
 <span>    <span class="co"># not a column in a data frame or an item in a list.</span></span>
+<span>    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">U_mat</span><span class="op">)</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">V_mat</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="co"># Tolerate zero-length arguments by returning a zero-length</span></span>
+<span>      <span class="co"># a list with the correct name and return type.</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="fu">setnames</span><span class="op">(</span><span class="va">W</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
 <span>    <span class="co"># Calculate W_mat from the inputs U_mat and V_mat.</span></span>
-<span>    <span class="va">W_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V_mat</span><span class="op">)</span>, <span class="va">U_mat</span><span class="op">)</span></span>
+<span>    <span class="va">W_mat</span> <span class="op">&lt;-</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V_mat</span><span class="op">)</span>, </span>
+<span>      <span class="va">U_mat</span><span class="op">)</span></span>
 <span>    <span class="co"># Return a named list.</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">W_mat</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">W_mat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="co"># The body of the main function consists of a call to matsindf_apply</span></span>
-<span>  <span class="co"># that specifies the inner function</span></span>
+<span>  <span class="co"># that specifies the inner function in the FUN argument.</span></span>
 <span>  <span class="fu"><a href="../reference/matsindf_apply.html">matsindf_apply</a></span><span class="op">(</span><span class="va">.DF</span>, FUN <span class="op">=</span> <span class="va">W_func</span>, U_mat <span class="op">=</span> <span class="va">U</span>, V_mat <span class="op">=</span> <span class="va">V</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>This style of writing <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> functions is
@@ -482,97 +523,139 @@ incredibly versatile, leveraging the capabilities of both the
 <code>Recca</code> package uses <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> heavily
 and is built upon the functions in the <code>matsindf</code> and
 <code>matsbyname</code> packages.)</p>
-<p>Functions written like <code>calc_W</code> can operate in ways
+<p>Functions written like <code>calc_W()</code> can operate in ways
 similar to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> itself. To demonstrate, we’ll
-use <code>calc_W</code> in all the ways that
+use <code>calc_W()</code> in all the ways that
 <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> can be used, going in the reverse order to
 our demonstration of the capabilities of <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>
 above.</p>
-<p><code>calc_W</code> can be used as a specialized <code>mutate</code>
-function that operates on <code>matsindf</code> data frames.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Year              U              V              W</span></span>
-<span><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span></span>
-<span><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></span></code></pre></div>
+<p><code>calc_W()</code> can be used as a specialized
+<code>mutate</code> function that operates on <code>matsindf</code> data
+frames.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">midf</span> <span class="op">|&gt;</span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;    Year U             V             W            </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>017 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>018 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span></code></pre></div>
 <p>The added column could be given a different name from the default
 (“<code>W</code>”) using the <code>W</code> argument.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span>W <span class="op">=</span> <span class="st">"W_prime"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Year              U              V        W_prime</span></span>
-<span><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span></span>
-<span><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></span></code></pre></div>
-<p>As with <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>, column names in
-<code>midf</code> can be mapped to the arguments of <code>calc_W</code>
-by the arguments to <code>calc_W</code>.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">midf</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">U</span>, Y <span class="op">=</span> <span class="va">V</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<code class="sourceCode R"><span><span class="va">midf</span> <span class="op">|&gt;</span> <span class="fu">calc_W</span><span class="op">(</span>W <span class="op">=</span> <span class="st">"W_prime"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;    Year U             V             W_prime      </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>017 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>018 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span></code></pre></div>
+<p>As with <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>, column names in
+<code>midf</code> can be mapped to the arguments of
+<code>calc_W()</code> by the arguments to <code>calc_W()</code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">midf</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>X <span class="op">=</span> <span class="va">U</span>, Y <span class="op">=</span> <span class="va">V</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="st">"X"</span>, V <span class="op">=</span> <span class="st">"Y"</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   Year              X              Y              W</span></span>
-<span><span class="co">#&gt; 1 2017     1, 3, 2, 4 21, 23, 22, 24 20, 19, 21, 20</span></span>
-<span><span class="co">#&gt; 2 2018 11, 13, 12, 14 31, 33, 32, 34 20, 19, 21, 20</span></span></code></pre></div>
-<p><code>calc_W</code> can operate on lists of single matrices, too.
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
+<span><span class="co">#&gt;    Year X             Y             W            </span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>       </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>  <span style="text-decoration: underline;">2</span>017 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>  <span style="text-decoration: underline;">2</span>018 <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span> <span style="color: #949494;">&lt;dbl [2 × 2]&gt;</span></span></span></code></pre></div>
+<p><code>calc_W()</code> can operate on lists of single matrices, too.
 This approach works, because the default values for the <code>U</code>
-and <code>V</code> arguments to <code>calc_W</code> are “U” and “V”,
+and <code>V</code> arguments to <code>calc_W()</code> are “U” and “V”,
 respectively. The input list members (in this case
 <code>midf$U[[1]]</code> and <code>midf$V[[1]]</code>) are returned with
-the output.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+the output, because <code>list(U = midf$U[[1]], V = midf$V[[1]])</code>
+is passed to the <code>.dat</code> argument of
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">calc_W</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>U <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">U</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, V <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">V</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $U</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1  1  2</span></span>
 <span><span class="co">#&gt; p2  3  4</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span>
+<span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $V</span></span>
 <span><span class="co">#&gt;    p1 p2</span></span>
 <span><span class="co">#&gt; i1 21 22</span></span>
 <span><span class="co">#&gt; i2 23 24</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span>
+<span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $W</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1 20 21</span></span>
 <span><span class="co">#&gt; p2 19 20</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "Industry"</span></span></code></pre></div>
 <p>It may be clearer to name the arguments as required by the
-<code>calc_W</code> function without wrapping in a list first, as shown
-below. But in this approach, the input matrices are not returned with
-the output.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code>calc_W()</code> function without wrapping in a list first, as
+shown below. But in this approach, the input matrices are not returned
+with the output, because arguments <code>U</code> and <code>V</code> are
+passed to the <code>...</code> argument of
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>, not the <code>.dat</code> argument of
+<code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code>.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">U</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, V <span class="op">=</span> <span class="va">midf</span><span class="op">$</span><span class="va">V</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $W</span></span>
 <span><span class="co">#&gt;    i1 i2</span></span>
 <span><span class="co">#&gt; p1 20 21</span></span>
 <span><span class="co">#&gt; p2 19 20</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
-<span><span class="co">#&gt; [1] "product"</span></span>
+<span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
-<span><span class="co">#&gt; [1] "industry"</span></span></code></pre></div>
-<p><code>calc_W</code> can operate on data frames containing single
+<span><span class="co">#&gt; [1] "Industry"</span></span></code></pre></div>
+<p><code>calc_W()</code> can operate on data frames containing single
 numbers.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   U V W</span></span>
-<span><span class="co">#&gt; 1 1 3 2</span></span>
-<span><span class="co">#&gt; 2 2 4 2</span></span></code></pre></div>
-<p>Finally, <code>calc_W</code> can be applied to single numbers, and
-the result is 1x1 matrix.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">calc_W</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 3</span></span></span>
+<span><span class="co">#&gt;       U     V     W</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     1     3     2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     2     4     2</span></span></code></pre></div>
+<p>Finally, <code>calc_W()</code> can be applied to single numbers, and
+the result is 1x1 matrix.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="fl">2</span>, V <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $W</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
+<p>It is good practice to write internal functions that tolerate
+zero-length inputs, as <code>calc_W()</code> does. Doing so, enables
+results from different calculations to be <code>rbind</code>ed
+together.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">calc_W</span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $W</span></span>
+<span><span class="co">#&gt; numeric(0)</span></span>
+<span><span class="fu">calc_W</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $U</span></span>
+<span><span class="co">#&gt; numeric(0)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $V</span></span>
+<span><span class="co">#&gt; numeric(0)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $W</span></span>
+<span><span class="co">#&gt; numeric(0)</span></span>
+<span></span>
+<span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">calc_W</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">5</span>, <span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">res0</span> <span class="op">&lt;-</span> <span class="fu">calc_W</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>U <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span>, V <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">res</span>, <span class="va">res0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 4 × 3</span></span></span>
+<span><span class="co">#&gt;       U     V     W</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>     2     3     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span>     3     4     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span>     4     5     1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span>     5     6     1</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>

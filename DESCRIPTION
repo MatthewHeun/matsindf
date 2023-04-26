@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.4.0
-Date: 2023-03-07
+Version: 0.4.1
+Date: 2023-04-26
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -17,6 +17,7 @@ RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 2.10)
 Imports:
+    assertthat,
     dplyr,
     magrittr,
     matsbyname,

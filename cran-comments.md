@@ -56,9 +56,23 @@ See `NEWS.md` for details.
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
                 - This note appears to be a minor problem with the cleanup process, not caused by the `matsindf` package itself.
+    * `devtools::check_rhub()`
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
+            * ERRORs: 0
+            * WARNINGs: 0
+            * NOTEs: 1
+                - checking HTML version of manual ... NOTE
+                - Skipping checking HTML validation: no command 'tidy' found
+                - This NOTE appears to be an anomaly, as it occurs only on rhub.
+        * Fedora Linux, R-devel, clang, gfortran
+            * ERRORs: 0
+            * WARNINGs: 0
+            * NOTEs: 1
+                - checking HTML version of manual ... NOTE
+                - Skipping checking HTML validation: no command 'tidy' found
+                - This NOTE appears to be an anomaly, as it occurs only on rhub.
 
-        
-        
+
 ## revdepcheck results
 
 We checked 1 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
@@ -66,32 +80,3 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
  * We saw 0 new problems
  * We failed to check 0 packages
         
-        
-
-
-
-
-
-
-        
-
-
-
-
-
-
-* rhub:
-    * `devtools::check_rhub()`
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
-            * ERRORs: 0
-            * WARNINGs: 0
-            * NOTEs: 0
-        * Fedora Linux, R-devel, clang, gfortran
-            * ERRORs: 0
-            * WARNINGs: 0
-            * NOTEs: 1
-                - checking HTML version of manual ... NOTE
-                - Skipping checking HTML validation: no command 'tidy' found
-                - This NOTE appears to be an anomaly, as it occurs only in this test setup.
-
-

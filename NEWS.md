@@ -3,7 +3,7 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
-# matsindf 0.4.2 (2023-05-04) 
+# matsindf 0.4.2 (2023-05-04) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7896799.svg)](https://doi.org/10.5281/zenodo.7896799)
 
 * Move to latest version of GitHub test coverage workflow.
 * This version not released to CRAN.

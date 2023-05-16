@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-* renamed `matrix.class` argument to `matrix_class`.
+* Renamed `matrix.class` argument to `matrix_class`.
 
 
 

@@ -4,8 +4,9 @@ output: html_document
 ---
 
 
+* Deprecated `matrix.class` argument. 
+  It will be removed soon.
 * Renamed `matrix.class` argument to `matrix_class`.
-
 
 
 # matsindf 0.4.2 (2023-05-04) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7896799.svg)](https://doi.org/10.5281/zenodo.7896799)

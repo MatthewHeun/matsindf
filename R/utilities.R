@@ -101,7 +101,11 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #' @param rowtypes  An optional string identifying the types of information found in rows of the matrix to be constructed. Default is "rowtypes".
 #' @param coltypes  An optional string identifying the types of information found in columns of the matrix to be constructed. Default is "coltypes".
 #' @param fill      The value for missing entries in the resulting matrix. default is `0`.
-#' @param matrix_class The type of matrix to be created, one of "matrix" or "Matrix".
+#' @param matrix.class `r lifecycle::badge("deprecated")` Use `matrix_class` instead.
+#' @param matrix_class One of "matrix" or "Matrix".
+#'                     "matrix" creates a `base::matrix` object with the `matrix()` function.
+#'                     "Matrix" creates a `Matrix::Matrix` object using the `matsbyname::Matrix()` function.
+#'                     This could be a sparse matrix.
 #'                     Default is "matrix".
 #'
 #' @return A matrix with named rows and columns and, optionally, row and column types.
@@ -142,8 +146,18 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
-                             fill = 0, matrix_class = c("matrix", "Matrix")){
+                             fill = 0,
+                             matrix.class = lifecycle::deprecated(),
+                             matrix_class = c("matrix", "Matrix")) {
+  if (lifecycle::is_present(matrix.class)) {
+    lifecycle::deprecate_warn(when = "0.6.3",
+                              what = "create_matrix_byname(matrix.class)",
+                              with = "create_matrix_byname(matrix_class)")
+    matrix_class <- matrix.class
+  }
+
   matrix_class <- match.arg(matrix_class)
+
   if (!is.null(rowtypes)) {
     # If rowtype is supplied and is not NA, check if it is one of the columns of .DF
     if (rowtypes %in% colnames(.DF)) {

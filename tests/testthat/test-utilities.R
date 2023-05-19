@@ -230,6 +230,18 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
 })
 
 
+test_that("rowcolval_to_mat() deprecation works as expected", {
+  rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
+                          rows = c( "p1",  "p1", "p2"),
+                          cols = c( "i1",  "i2", "i2"),
+                          vals = c(  11  ,  12,   22 ),
+                          stringsAsFactors = FALSE)
+  expect_warning(rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+                                  rowtypes = NULL, coltypes = NULL,
+                                  matrix.class = "matrix"))
+})
+
+
 test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   # This is the matrix we expect to obtain.
   expected_mat <- matsbyname::Matrix(c(11, 12,

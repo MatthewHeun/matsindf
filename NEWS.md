@@ -54,7 +54,7 @@ output: html_document
   as appropriate.
 * `mat_to_rowcolval()` now accepts `Matrix` objects
   in the `.matrix` argument.
-* `rowcolval_to_mat()` gains a `matrix_class` argument
+* `rowcolval_to_mat()` gains a `matrix.class` argument
   that specifies whether a `matrix` or a `Matrix` 
   should be created.
 * Many new tests to verify that the package works with `Matrix` objects.

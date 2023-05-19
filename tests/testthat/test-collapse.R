@@ -389,7 +389,7 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
                          col = c("p1", "p2", "p2"),
                          vals = c(1, 2, 3))
 
-  # Try wtih NULL
+  # Try with NULL
   mats <- collapse_to_matrices(tidy, matnames = NULL,
                                matvals = "vals", rownames = "row", colnames = "col",
                                matrix_class = "Matrix")
@@ -405,4 +405,15 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
                matsbyname::Matrix(c(1, 2,
                                     0, 3), byrow = TRUE, nrow = 2, ncol = 2,
                                   dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+})
+
+
+test_that("collapse_to_matrices() deprecation is correct", {
+  tidy <- tibble::tibble(row = c("i1", "i1", "i2"),
+                         col = c("p1", "p2", "p2"),
+                         vals = c(1, 2, 3))
+
+  expect_warning(collapse_to_matrices(tidy, matnames = NULL,
+                                      matvals = "vals", rownames = "row", colnames = "col",
+                                      matrix.class = "matrix"))
 })

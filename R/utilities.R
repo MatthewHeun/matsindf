@@ -150,7 +150,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              matrix.class = lifecycle::deprecated(),
                              matrix_class = c("matrix", "Matrix")) {
   if (lifecycle::is_present(matrix.class)) {
-    lifecycle::deprecate_warn(when = "0.6.3",
+    lifecycle::deprecate_warn(when = "0.4.3",
                               what = "create_matrix_byname(matrix.class)",
                               with = "create_matrix_byname(matrix_class)")
     matrix_class <- matrix.class

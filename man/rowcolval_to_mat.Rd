@@ -12,7 +12,8 @@ rowcolval_to_mat(
   rowtypes = "rowtypes",
   coltypes = "coltypes",
   fill = 0,
-  matrix.class = c("matrix", "Matrix")
+  matrix.class = lifecycle::deprecated(),
+  matrix_class = c("matrix", "Matrix")
 )
 }
 \arguments{
@@ -30,7 +31,12 @@ rowcolval_to_mat(
 
 \item{fill}{The value for missing entries in the resulting matrix. default is \code{0}.}
 
-\item{matrix.class}{The type of matrix to be created, one of "matrix" or "Matrix".
+\item{matrix.class}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{matrix_class} instead.}
+
+\item{matrix_class}{One of "matrix" or "Matrix".
+"matrix" creates a \code{base::matrix} object with the \code{matrix()} function.
+"Matrix" creates a \code{Matrix::Matrix} object using the \code{matsbyname::Matrix()} function.
+This could be a sparse matrix.
 Default is "matrix".}
 }
 \value{

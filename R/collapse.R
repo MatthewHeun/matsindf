@@ -57,8 +57,12 @@
 #' @param coltypes An optional string identifying the column in `.DF` containing the type of values in columns of the matrices to be created
 #'                 Default is `if ("coltypes" %in% names(.DF)) "rowtypes" else NULL`,
 #'                 so that failure to set the coltypes argument will give `NULL`, as appropriate.
-#' @param matrix.class    The type of matrix to be created, one of "matrix" or "Matrix".
-#'                        Default is "matrix".
+#' @param matrix.class `r lifecycle::badge("deprecated")` Use `matrix_class` instead.
+#' @param matrix_class One of "matrix" or "Matrix".
+#'                     "matrix" creates a `base::matrix` object with the `matrix()` function.
+#'                     "Matrix" creates a `Matrix::Matrix` object using the `matsbyname::Matrix()` function.
+#'                     This could be a sparse matrix.
+#'                     Default is "matrix".
 #'
 #' @return A data frame with matrices in the `matvals` column.
 #'
@@ -96,8 +100,17 @@
 collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals", rownames = "rownames", colnames = "colnames",
                                  rowtypes = if ("rowtypes" %in% names(.DF)) "rowtypes" else NULL,
                                  coltypes = if ("coltypes" %in% names(.DF)) "coltypes" else NULL,
-                                 matrix.class = c("matrix", "Matrix")) {
-  matrix.class <- match.arg(matrix.class)
+                                 matrix.class = lifecycle::deprecated(),
+                                 matrix_class = c("matrix", "Matrix")) {
+  if (lifecycle::is_present(matrix.class)) {
+    lifecycle::deprecate_warn(when = "0.4.3",
+                              what = "create_matrix_byname(matrix.class)",
+                              with = "create_matrix_byname(matrix_class)")
+    matrix_class <- matrix.class
+  }
+
+  matrix_class <- match.arg(matrix_class)
+
   # Ensure that none of rownames, colnames, or values is a group variable.
   # These can't be in the group variables.
   # If they were, we wouldn't be able to summarise them into the matrices.
@@ -130,7 +143,7 @@ collapse_to_matrices <- function(.DF, matnames = "matnames", matvals = "matvals"
       # Convert .DF to matrices
       "{matvals}" := rowcolval_to_mat(.data, rownames = rownames, colnames = colnames, matvals = matvals,
                                       rowtypes = rowtypes, coltypes = coltypes,
-                                      matrix.class = matrix.class)
+                                      matrix_class = matrix_class)
     ) %>%
     dplyr::select(!!!dplyr::group_vars(.DF), !!matvals) %>%
     data.frame(check.names = FALSE)

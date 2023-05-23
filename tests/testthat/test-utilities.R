@@ -166,7 +166,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                           vals = c(  11  ,  12,   22 ),
                           stringsAsFactors = FALSE)
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
-                        rowtypes = NULL, coltypes = NULL, matrix.class = "Matrix")
+                        rowtypes = NULL, coltypes = NULL, matrix_class = "Matrix")
   expect_true(inherits(A, "Matrix"))
   expect_equal(A, expected_mat)
   expect_null(matsbyname::rowtype(A)) # rowtype has not been set
@@ -175,7 +175,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   # Provide single row and column types to be applied to all entries.
   B <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
                         rowtypes  = "Products", coltypes  = "Industries",
-                        matrix.class = "Matrix")
+                        matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(B))
   expect_equal(B, expected_mat_with_types)
 
@@ -186,7 +186,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                                 stringsAsFactors = FALSE)) %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rt", coltypes = "ct",
-                     matrix.class = "Matrix")
+                     matrix_class = "Matrix")
   expect_equal(C, expected_mat_with_types)
 
   # Also works for single values if both the rownames and colnames columns contain NA
@@ -196,14 +196,14 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   D <- rowcolval2 %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rowtype", coltypes = "coltype",
-                     matrix.class = "Matrix")
+                     matrix_class = "Matrix")
   expect_equal(D, 2)
 
   # Try without rowtype or coltype columns in the data frame.
   rowcolval3 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA), vals = c(2), stringsAsFactors = FALSE)
   E <- rowcolval3 %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
-                     matrix.class = "Matrix")
+                     matrix_class = "Matrix")
   expect_equal(E, 2)
 
   # Fails when rowtype or coltype not all same. In rowcolval4, column rt is not all same.
@@ -215,7 +215,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 rowtypes = "rt", coltypes = "ct",
-                                matrix.class = "Matrix"),
+                                matrix_class = "Matrix"),
                "Not all values in rt \\(rowtype\\) were same as first entry: Products")
   rowcolval5 <- rowcolval %>%
     dplyr::bind_cols(data.frame(rt = c("Products", "Products", "Products"),
@@ -225,8 +225,20 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                                 rownames = "rows", colnames = "cols",
                                 matvals = "vals",
                                 rowtypes = "rt", coltypes = "ct",
-                                matrix.class = "Matrix"),
+                                matrix_class = "Matrix"),
                "Not all values in ct \\(coltype\\) were same as first entry: Industries")
+})
+
+
+test_that("rowcolval_to_mat() deprecation works as expected", {
+  rowcolval <- data.frame(Country  = c("GH", "GH", "GH"),
+                          rows = c( "p1",  "p1", "p2"),
+                          cols = c( "i1",  "i2", "i2"),
+                          vals = c(  11  ,  12,   22 ),
+                          stringsAsFactors = FALSE)
+  expect_warning(rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+                                  rowtypes = NULL, coltypes = NULL,
+                                  matrix.class = "matrix"))
 })
 
 
@@ -257,7 +269,7 @@ test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   A <- data %>%
     rowcolval_to_mat(rownames = "rows", colnames = "cols",
                      rowtypes = "rt",   coltypes = "ct", matvals = "vals",
-                     matrix.class = "Matrix")
+                     matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(A))
   expect_equal(A, expected_mat)
 
@@ -507,7 +519,7 @@ test_that("matrix_cols() works with Matrix objects", {
     collapse_to_matrices(matnames = "matrix", matvals = "vals",
                          rownames = "row", colnames = "col",
                          rowtypes = "rowtypes", coltypes = "coltypes",
-                         matrix.class = "Matrix") %>%
+                         matrix_class = "Matrix") %>%
     dplyr::mutate(
       integer = 42,
       string = "hello world"

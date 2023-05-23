@@ -91,28 +91,28 @@ test_that("small example works with Matrix objects", {
                                     matnames = "matrix", matvals = "vals",
                                     rownames = "row", colnames = "col",
                                     rowtypes = "rowtypes", coltypes = "coltypes",
-                                    matrix.class = "Matrix"),
+                                    matrix_class = "Matrix"),
                "row is/are grouping variable/s. Cannot group on rownames, colnames, rowtypes, coltypes, or matvals in argument .DF of collapse_to_matrices.")
   # Try with NULL rowtypes but non-NULL coltypes and expect an error.
   expect_error(collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
                                     matnames = "matrix", matvals = "vals",
                                     rownames = "row", colnames = "col",
                                     rowtypes = NULL, coltypes = "coltypes",
-                                    matrix.class = "Matrix"),
+                                    matrix_class = "Matrix"),
                "One of rowtypes or coltypes was non-NULL while the other was NULL. Both need to be NULL or both need to be non-NULL in collapse_to_matrices.")
   # Try with NULL coltypes but non-NULL rowtypes and expect an error.
   expect_error(collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
                                     matnames = "matrix", matvals = "vals",
                                     rownames = "row", colnames = "col",
                                     rowtypes = "rowtypes", coltypes = NULL,
-                                    matrix.class = "Matrix"),
+                                    matrix_class = "Matrix"),
                "One of rowtypes or coltypes was non-NULL while the other was NULL. Both need to be NULL or both need to be non-NULL in collapse_to_matrices.")
   # Group on the right things and expect success.
   mats <- collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
                                matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
-                               matrix.class = "Matrix")
+                               matrix_class = "Matrix")
   # Check that groups are discarded.
   expect_equal(length(dplyr::group_vars(mats)), 0)
   # Check that factors are not created for String columns.
@@ -150,7 +150,7 @@ test_that("small example works with Matrix objects", {
                                        matnames = "matrix", matvals = "vals",
                                        rownames = "row", colnames = "col",
                                        rowtypes = NULL, coltypes = NULL,
-                                       matrix.class = "Matrix")
+                                       matrix_class = "Matrix")
   # Test for V1
   expect_equal(mats_trimmed$vals[[1]], matsbyname::Matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
                                                           dimnames = list(c("i1", "i2"), c("p1", "p2"))))
@@ -226,7 +226,7 @@ test_that("collapse_to_matrices() works with Matrix objects", {
   mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
-                               matrix.class = "Matrix")
+                               matrix_class = "Matrix")
   A <- matsbyname::Matrix(c(11, 0,
                             0, 22),
                           nrow = 2, ncol = 2, byrow = TRUE,
@@ -299,7 +299,7 @@ test_that("collapse_to_matrices() works correctly when row and col types are NUL
                                matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
                                rowtypes = NULL, coltypes = NULL,
-                               matrix.class = "Matrix")
+                               matrix_class = "Matrix")
 
   expect_null(mats$vals[[1]] %>% matsbyname::rowtype())
   expect_null(mats$vals[[1]] %>% matsbyname::coltype())
@@ -310,7 +310,7 @@ test_that("collapse_to_matrices() works correctly when row and col types are NUL
   mats2 <- collapse_to_matrices(tidy %>% dplyr::group_by(matrix),
                                 matnames = "matrix", matvals = "vals",
                                 rownames = "row", colnames = "col",
-                                matrix.class = "Matrix")
+                                matrix_class = "Matrix")
 
   expect_null(mats2$vals[[1]] %>% matsbyname::rowtype())
   expect_null(mats2$vals[[1]] %>% matsbyname::coltype())
@@ -353,7 +353,7 @@ test_that("new defaults for rowtypes and coltypes arguments work with Matrix obj
   # They should default to NULL.
   mats <- collapse_to_matrices(tidy, matnames = "matrix", matvals = "vals",
                                rownames = "row", colnames = "col",
-                               matrix.class = "Matrix") %>%
+                               matrix_class = "Matrix") %>%
     tidyr::pivot_wider(names_from = matrix, values_from = vals)
   expect_null(mats$U[[1]] |> matsbyname::rowtype())
   expect_null(mats$U[[2]] |> matsbyname::rowtype())
@@ -389,10 +389,10 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
                          col = c("p1", "p2", "p2"),
                          vals = c(1, 2, 3))
 
-  # Try wtih NULL
+  # Try with NULL
   mats <- collapse_to_matrices(tidy, matnames = NULL,
                                matvals = "vals", rownames = "row", colnames = "col",
-                               matrix.class = "Matrix")
+                               matrix_class = "Matrix")
   expect_equal(mats$vals[[1]],
                matsbyname::Matrix(c(1, 2,
                                     0, 3), byrow = TRUE, nrow = 2, ncol = 2,
@@ -400,9 +400,20 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
 
   # Try with unspecified
   mats2 <- collapse_to_matrices(tidy, matvals = "vals", rownames = "row", colnames = "col",
-                                matrix.class = "Matrix")
+                                matrix_class = "Matrix")
   expect_equal(mats2$vals[[1]],
                matsbyname::Matrix(c(1, 2,
                                     0, 3), byrow = TRUE, nrow = 2, ncol = 2,
                                   dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+})
+
+
+test_that("collapse_to_matrices() deprecation is correct", {
+  tidy <- tibble::tibble(row = c("i1", "i1", "i2"),
+                         col = c("p1", "p2", "p2"),
+                         vals = c(1, 2, 3))
+
+  expect_warning(collapse_to_matrices(tidy, matnames = NULL,
+                                      matvals = "vals", rownames = "row", colnames = "col",
+                                      matrix.class = "matrix"))
 })

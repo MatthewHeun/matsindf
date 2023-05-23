@@ -12,7 +12,8 @@ collapse_to_matrices(
   colnames = "colnames",
   rowtypes = if ("rowtypes" \%in\% names(.DF)) "rowtypes" else NULL,
   coltypes = if ("coltypes" \%in\% names(.DF)) "coltypes" else NULL,
-  matrix.class = c("matrix", "Matrix")
+  matrix.class = lifecycle::deprecated(),
+  matrix_class = c("matrix", "Matrix")
 )
 }
 \arguments{
@@ -40,7 +41,12 @@ so that failure to set the rowtypes argument will give \code{NULL}, as appropria
 Default is \code{if ("coltypes" \%in\% names(.DF)) "rowtypes" else NULL},
 so that failure to set the coltypes argument will give \code{NULL}, as appropriate.}
 
-\item{matrix.class}{The type of matrix to be created, one of "matrix" or "Matrix".
+\item{matrix.class}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Use \code{matrix_class} instead.}
+
+\item{matrix_class}{One of "matrix" or "Matrix".
+"matrix" creates a \code{base::matrix} object with the \code{matrix()} function.
+"Matrix" creates a \code{Matrix::Matrix} object using the \code{matsbyname::Matrix()} function.
+This could be a sparse matrix.
 Default is "matrix".}
 }
 \value{

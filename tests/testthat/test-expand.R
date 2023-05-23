@@ -105,7 +105,7 @@ test_that("expand_to_tidy() works with Matrix objects", {
   mats <- collapse_to_matrices(tidy, matnames = "matrix", rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
                                matvals = "vals",
-                               matrix.class = "Matrix") %>%
+                               matrix_class = "Matrix") %>%
     dplyr::ungroup()
   # For the first tests, do not drop 0 values.
   A <- expand_to_tidy(mats, matnames = "matrix", matvals = "vals",

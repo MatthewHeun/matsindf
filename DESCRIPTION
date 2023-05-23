@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.4.2
-Date: 2023-05-04
+Version: 0.4.3
+Date: 2023-05-23
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -19,6 +19,7 @@ Depends: R (>= 2.10)
 Imports:
     assertthat,
     dplyr,
+    lifecycle,
     magrittr,
     matsbyname,
     purrr,

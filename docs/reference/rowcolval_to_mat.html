@@ -24,7 +24,7 @@ in which case the value in the values column is returned."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -90,7 +90,8 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span>  rowtypes <span class="op">=</span> <span class="st">"rowtypes"</span>,</span>
 <span>  coltypes <span class="op">=</span> <span class="st">"coltypes"</span>,</span>
 <span>  fill <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  matrix.class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span></span>
+<span>  matrix.class <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  matrix_class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -125,7 +126,14 @@ in which case the value in the <code>values</code> column is returned.</p>
 
 
 <dt>matrix.class</dt>
-<dd><p>The type of matrix to be created, one of "matrix" or "Matrix".
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Use <code>matrix_class</code> instead.</p></dd>
+
+
+<dt>matrix_class</dt>
+<dd><p>One of "matrix" or "Matrix".
+"matrix" creates a <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">base::matrix</a></code> object with the <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code> function.
+"Matrix" creates a <code><a href="https://rdrr.io/pkg/Matrix/man/Matrix.html" class="external-link">Matrix::Matrix</a></code> object using the <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code> function.
+This could be a sparse matrix.
 Default is "matrix".</p></dd>
 
 </dl></div>

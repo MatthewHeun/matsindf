@@ -3,7 +3,18 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
-# matsindf 0.4.2 (2023-05-04) 
+
+# matsindf 0.4.3 (2023-05-23)
+
+* Deprecated `matrix.class` argument. 
+  It will be removed soon.
+* Renamed `matrix.class` argument to `matrix_class`.
+* New tests for deprecations.
+    * Now at 376 tests, all passing.
+    * Test coverage remains at 100 %.
+
+
+# matsindf 0.4.2 (2023-05-04) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7896799.svg)](https://doi.org/10.5281/zenodo.7896799)
 
 * Move to latest version of GitHub test coverage workflow.
 * This version not released to CRAN.

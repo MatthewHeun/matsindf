@@ -4,7 +4,7 @@ output: html_document
 ---
 
 
-# matsindf 0.4.3 (2023-05-23)
+# matsindf 0.4.3 (2023-05-23) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963968.svg)](https://doi.org/10.5281/zenodo.7963968)
 
 * Deprecated `matrix.class` argument. 
   It will be removed soon.

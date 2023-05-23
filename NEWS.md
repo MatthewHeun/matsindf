@@ -4,6 +4,8 @@ output: html_document
 ---
 
 
+# matsindf 0.4.3 (2023-05-23)
+
 * Deprecated `matrix.class` argument. 
   It will be removed soon.
 * Renamed `matrix.class` argument to `matrix_class`.

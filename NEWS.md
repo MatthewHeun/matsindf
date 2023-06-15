@@ -3,7 +3,7 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
-* Added a line break in `df_to_msg()`
+* Added a line break and separator in `df_to_msg()`
   to make error reports easier to read.
 
 

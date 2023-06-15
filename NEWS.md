@@ -3,6 +3,9 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+* Added a line break in `df_to_msg()`
+  to make error reports easier to read.
+
 
 # matsindf 0.4.3 (2023-05-23) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963968.svg)](https://doi.org/10.5281/zenodo.7963968)
 

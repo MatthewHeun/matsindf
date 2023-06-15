@@ -586,7 +586,7 @@ df_to_msg <- function(df) {
       as.list() %>%
       paste(collapse = ", ")
   }) %>%
-    paste(collapse = "; ")
+    paste(collapse = "\n")
 }
 
 

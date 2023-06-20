@@ -141,6 +141,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
   # Send one row at a time to FUN
   new_data <- DF_only_needed_args |>
     as.list() |>
+    # Need to unname the items in the columns,
+    # otherwise results are messed up.
+    lapply(FUN = unname) |>
     purrr::list_transpose(simplify = FALSE) |>
     # Each row is now a column
     lapply(FUN = function(this_row) {

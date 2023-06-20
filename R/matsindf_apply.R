@@ -44,6 +44,10 @@
 #' When an item name appears in both `...` and `.dat`,
 #' `...` takes precedence.
 #'
+#' if `.dat` is a data frame,
+#' the items in its columns (possibly matrices)
+#' are `unname()`d before calling `FUN`.
+#'
 #' `NULL` arguments in `...` are ignored for the purposes of deciding whether
 #' all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 #' However, all `NULL` arguments are passed to `FUN`,
@@ -55,10 +59,6 @@
 #' I.e., that argument is treated as missing.
 #' If `FUN` works despite the missing argument, execution proceeds.
 #' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
-#'
-#' if `.dat` is a data frame,
-#' the items in its columns (possibly matrices)
-#' are `unname()`d before calling `FUN`.
 #'
 #' It is suggested that `FUN` is able to handle empty data gracefully,
 #' returning an empty result with the same names as when

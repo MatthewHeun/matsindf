@@ -44,6 +44,10 @@
 #' When an item name appears in both `...` and `.dat`,
 #' `...` takes precedence.
 #'
+#' if `.dat` is a data frame,
+#' the items in its columns (possibly matrices)
+#' are `unname()`d before calling `FUN`.
+#'
 #' `NULL` arguments in `...` are ignored for the purposes of deciding whether
 #' all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 #' However, all `NULL` arguments are passed to `FUN`,
@@ -141,6 +145,9 @@ matsindf_apply <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE)
   # Send one row at a time to FUN
   new_data <- DF_only_needed_args |>
     as.list() |>
+    # Need to unname the items in the columns,
+    # otherwise results are messed up.
+    lapply(FUN = unname) |>
     purrr::list_transpose(simplify = FALSE) |>
     # Each row is now a column
     lapply(FUN = function(this_row) {

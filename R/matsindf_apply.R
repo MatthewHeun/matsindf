@@ -56,6 +56,10 @@
 #' If `FUN` works despite the missing argument, execution proceeds.
 #' If `FUN` cannot handle the missing argument, an error will occur in `FUN`.
 #'
+#' if `.dat` is a data frame,
+#' the items in its columns (possibly matrices)
+#' are `unname()`d before calling `FUN`.
+#'
 #' It is suggested that `FUN` is able to handle empty data gracefully,
 #' returning an empty result with the same names as when
 #' non-empty data are fed to `FUN`.

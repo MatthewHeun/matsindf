@@ -3,6 +3,12 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+* Fixed a bug in `matsindf_apply()` where a 
+  a data frame column with some named elements
+  and some unnamed elements led to the unnamed elements
+  yielding `0` or `NULL` results after `FUN` was applied.
+  The fix was unnaming everything before calling
+  `purrr::transpose()`.
 * Added a line break and separator in `df_to_msg()`
   to make error reports easier to read.
 

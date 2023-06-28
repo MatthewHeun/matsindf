@@ -7,7 +7,7 @@ output: html_document
   a data frame column with some named elements
   and some unnamed elements led to the unnamed elements
   yielding `0` or `NULL` results after `FUN` was applied.
-  The fix was unnaming everything before calling
+  The fix was to `unname()` everything before calling
   `purrr::transpose()`.
 * Added a line break and separator in `df_to_msg()`
   to make error reports easier to read.

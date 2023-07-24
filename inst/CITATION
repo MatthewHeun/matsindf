@@ -1,7 +1,7 @@
 bibentry(
   header      = "To cite package ‘matsindf’ in publications use:",
   bibtype     = "Manual",
-  title       = "matsindf: Matrices in Data Frames",
+  title       = "{matsindf}: Matrices in Data Frames",
   author      = person(given = "Matthew Kuperus",
                        family = "Heun",
                        email = "matthew.heun@me.com",

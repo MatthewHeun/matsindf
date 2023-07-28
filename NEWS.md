@@ -3,6 +3,12 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+
+Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zenodo.5475443), 
+which always resolves to the latest release.
+
+
+
 * Fixed a bug in `matsindf_apply()` where a 
   a data frame column with some named elements
   and some unnamed elements led to the unnamed elements

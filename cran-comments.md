@@ -33,17 +33,8 @@ See `NEWS.md` for details.
         * errors: 0
         * warnings: 0
         * notes: 0
-        
-
-
-
-
-
-
-
-
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.3.0 (2023-04-21 ucrt)
+    * `devtools::check_win_release()`, R version 4.3.1 (2023-06-16 ucrt)                          OK
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -69,19 +60,19 @@ See `NEWS.md` for details.
                 - 'lastMiKTeXException'
                 - These notes appear to be minor problems with the cleanup process, not caused by the `matsindf` package itself.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
-            * errors: 0
+            * errors: 1 PREPERROR
+                -  Error in loadNamespace(x) : there is no package called ‘remotes’
+                    - This error appears to be a mal-configuration of this test setup, 
+                      as it occurs only on r-hub.
             * warnings: 0
-            * notes: 1
-                - checking HTML version of manual ... NOTE
-                - Skipping checking HTML validation: no command 'tidy' found
-                - This NOTE appears to be an anomaly, as it occurs only on rhub.
+            * notes: 0
         * Fedora Linux, R-devel, clang, gfortran
-            * errors: 0
+            * errors: 1 PREPERROR
+                -  Error in loadNamespace(x) : there is no package called ‘remotes’
+                    - This error appears to be a mal-configuration of this test setup, 
+                      as it occurs only on r-hub.
             * warnings: 0
-            * notes: 1
-                - checking HTML version of manual ... NOTE
-                - Skipping checking HTML validation: no command 'tidy' found
-                - This NOTE appears to be an anomaly, as it occurs only on rhub.
+            * notes: 0
 
 
 ## revdepcheck results

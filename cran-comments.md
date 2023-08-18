@@ -1,16 +1,14 @@
 ## Context
 
-`matsindf` v0.4.3 includes a rewrite of `matsindf_apply()`,
-making it easier to debug and maintain.
-Better error messages are now available, too.
-Finally, the latest version of the GitHub test coverage workflow
-is now being used.
+`matsindf` v0.4.4 fixes a bug in 
+`matsindf_apply()` and prepares
+for a JOSS paper submission.
 See `NEWS.md` for details.
 
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.3.1(a) (Ventura), R4.3.0
+* local: macOS X 13.5 (Ventura), R4.3.1
     * errors: 0
     * warnings: 0
     * notes: 0

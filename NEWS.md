@@ -8,6 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+# matsindf 0.4.4 (2023-08-18)
 
 * Fixed a bug in `matsindf_apply()` where a 
   a data frame column with some named elements

@@ -147,6 +147,9 @@ it is not necessary to specify any arguments in <code>...</code>.
 intended to be arguments to <code>FUN</code>.
 When an item name appears in both <code>...</code> and <code>.dat</code>,
 <code>...</code> takes precedence.</p>
+<p>if <code>.dat</code> is a data frame,
+the items in its columns (possibly matrices)
+are <code><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname()</a></code>d before calling <code>FUN</code>.</p>
 <p><code>NULL</code> arguments in <code>...</code> are ignored for the purposes of deciding whether
 all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 However, all <code>NULL</code> arguments are passed to <code>FUN</code>,

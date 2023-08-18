@@ -8,6 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+# matsindf 0.4.4 (2023-08-18)
 
 * Fixed a bug in `matsindf_apply()` where a 
   a data frame column with some named elements
@@ -17,6 +18,9 @@ which always resolves to the latest release.
   `purrr::transpose()`.
 * Added a line break and separator in `df_to_msg()`
   to make error reports easier to read.
+* One new test.
+    * Now at 377 tests, all passing.
+    * Test coverage remains at 100 %.
 
 
 # matsindf 0.4.3 (2023-05-23) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7963968.svg)](https://doi.org/10.5281/zenodo.7963968)

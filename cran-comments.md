@@ -1,16 +1,14 @@
 ## Context
 
-`matsindf` v0.4.3 includes a rewrite of `matsindf_apply()`,
-making it easier to debug and maintain.
-Better error messages are now available, too.
-Finally, the latest version of the GitHub test coverage workflow
-is now being used.
+`matsindf` v0.4.4 fixes a bug in 
+`matsindf_apply()` and prepares
+for a JOSS paper submission.
 See `NEWS.md` for details.
 
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.3.1(a) (Ventura), R4.3.0
+* local: macOS X 13.5 (Ventura), R4.3.1
     * errors: 0
     * warnings: 0
     * notes: 0
@@ -36,15 +34,15 @@ See `NEWS.md` for details.
         * warnings: 0
         * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.3.0 (2023-04-21 ucrt)
+    * `devtools::check_win_release()`, R version 4.3.1 (2023-06-16 ucrt)                          OK
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)
+    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)                       OK
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-05-19 r84451 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-08-17 r84984 ucrt)       OK
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -62,19 +60,19 @@ See `NEWS.md` for details.
                 - 'lastMiKTeXException'
                 - These notes appear to be minor problems with the cleanup process, not caused by the `matsindf` package itself.
         * Ubuntu Linux 20.04.1 LTS, R-release, GCC
-            * errors: 0
+            * errors: 1 PREPERROR
+                -  Error in loadNamespace(x) : there is no package called ‘remotes’
+                    - This error appears to be a mal-configuration of this test setup, 
+                      as it occurs only on r-hub.
             * warnings: 0
-            * notes: 1
-                - checking HTML version of manual ... NOTE
-                - Skipping checking HTML validation: no command 'tidy' found
-                - This NOTE appears to be an anomaly, as it occurs only on rhub.
+            * notes: 0
         * Fedora Linux, R-devel, clang, gfortran
-            * errors: 0
+            * errors: 1 PREPERROR
+                -  Error in loadNamespace(x) : there is no package called ‘remotes’
+                    - This error appears to be a mal-configuration of this test setup, 
+                      as it occurs only on r-hub.
             * warnings: 0
-            * notes: 1
-                - checking HTML version of manual ... NOTE
-                - Skipping checking HTML validation: no command 'tidy' found
-                - This NOTE appears to be an anomaly, as it occurs only on rhub.
+            * notes: 0
 
 
 ## revdepcheck results
@@ -83,3 +81,4 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
  * We saw 0 new problems
  * We failed to check 0 packages
+

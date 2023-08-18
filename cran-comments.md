@@ -33,16 +33,25 @@ See `NEWS.md` for details.
         * errors: 0
         * warnings: 0
         * notes: 0
+        
+
+
+
+
+
+
+
+
 * Windows (on win-builder):
     * `devtools::check_win_release()`, R version 4.3.0 (2023-04-21 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)
+    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)                       OK
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-05-19 r84451 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-08-17 r84984 ucrt)       OK
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -81,3 +90,4 @@ We checked 1 reverse dependencies, comparing R CMD check results across CRAN and
 
  * We saw 0 new problems
  * We failed to check 0 packages
+

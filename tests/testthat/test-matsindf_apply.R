@@ -157,6 +157,26 @@ test_that("matsindf_apply() works as expected using .DF with Matrix objects", {
 })
 
 
+test_that("matsindf_apply() works with .DF containing lists of Matrix objects, only some of which are named", {
+  # This is a failure mode for one set of calculations in the PFUAGgDatabase pipeline,
+  # namely when doing chops.
+  # See if we can reproduce the error here.
+  example_fun <- function(a, b) {
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  a <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                          dimnames = list(c("r1", "r2"), c("c1", "c2")),
+                          rowtype = "rows", coltype = "cols")
+  b <- a
+  c <- matsbyname::sum_byname(a, b)
+  d <- matsbyname::difference_byname(a, b)
+  DF <- data.frame(a = I(list(a, named_a = a)), b = I(list(b, named_b = b)), stringsAsFactors = FALSE)
+  result <- matsindf_apply(DF, FUN = example_fun, a = "a", b = "b")
+  expected <- dplyr::bind_cols(DF, data.frame(c = I(list(c, c)), d = I(list(d, d)), stringsAsFactors = FALSE))
+  expect_equal(result, expected, ignore_attr = TRUE)
+})
+
+
 test_that("matsindf_apply() fails as expected when not all same type for ...", {
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b),

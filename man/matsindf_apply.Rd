@@ -66,6 +66,10 @@ intended to be arguments to \code{FUN}.
 When an item name appears in both \code{...} and \code{.dat},
 \code{...} takes precedence.
 
+if \code{.dat} is a data frame,
+the items in its columns (possibly matrices)
+are \code{unname()}d before calling \code{FUN}.
+
 \code{NULL} arguments in \code{...} are ignored for the purposes of deciding whether
 all arguments are numbers, matrices, lists of numbers of matrices, or named character strings.
 However, all \code{NULL} arguments are passed to \code{FUN},

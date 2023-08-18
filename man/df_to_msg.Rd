@@ -19,6 +19,6 @@ Trim unneeded columns, then call this function
 to create a string with rows separated by semicolons and entries separated by commas.
 }
 \examples{
-data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) \%>\%
+data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) |>
   df_to_msg()
 }

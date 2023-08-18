@@ -1,17 +1,17 @@
 bibentry(
   header      = "To cite package ‘matsindf’ in publications use:",
   bibtype     = "Manual",
-  title       = "matsindf: Matrices in Data Frames",
+  title       = "{matsindf}: Matrices in Data Frames",
   author      = person(given = "Matthew Kuperus",
                        family = "Heun",
                        email = "matthew.heun@me.com",
                        role = c("aut", "cre"),
                        comment = c(ORCID = "0000-0002-7438-214X")),
   year        = "2023",
-  note        = "R package version 0.4.3",
-  url         = "https://CRAN.R-project.org/package=matsindf",
+  note        = "R package version 0.4.4",
+  url         = "https://doi.org/10.5281/zenodo.5475443",
   textVersion = paste("Matthew Kuperus Heun (2023).",
                       "matsindf: Matrices in Data Frames",
-                      "R package version 0.4.3",
-                      "https://CRAN.R-project.org/package=matsindf")
+                      "R package version 0.4.4",
+                      "https://doi.org/10.5281/zenodo.5475443")
 )

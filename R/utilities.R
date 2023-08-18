@@ -578,15 +578,19 @@ add_UKEnergy2000_row_col_meta <- function(.DF,
 #' @export
 #'
 #' @examples
-#' data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) %>%
+#' data.frame(a = c(1, 2, 3), b = c("a", "b", "c")) |>
 #'   df_to_msg()
 df_to_msg <- function(df) {
-  lapply(1:nrow(df), function(r) {
+  titles <- paste0(names(df), collapse = ", ")
+  rows <- lapply(1:nrow(df), function(r) {
     df[r, ] %>%
       as.list() %>%
       paste(collapse = ", ")
   }) %>%
-    paste(collapse = "; ")
+    paste(collapse = "\n")
+  gridline <- rep("=", times = nchar(titles)) |>
+    paste0(collapse = "")
+  paste0(titles, "\n", gridline, "\n", rows)
 }
 
 

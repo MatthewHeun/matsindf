@@ -8,6 +8,11 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Added code of conduct and contributing pages to documentation.
+* No new tests.
+    * Still at 377 tests, all passing.
+    * Test coverage remains at 100%.
+
 
 # matsindf 0.4.4 (2023-08-18) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8264195.svg)](https://doi.org/10.5281/zenodo.8264195)
 

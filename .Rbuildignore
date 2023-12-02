@@ -13,3 +13,4 @@
 ^data-raw$
 ^pkgdown$
 ^CRAN-SUBMISSION$
+^LICENSE\.md$

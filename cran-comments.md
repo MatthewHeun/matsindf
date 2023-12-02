@@ -55,20 +55,20 @@ See `NEWS.md` for details.
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
                 - These notes appear to be problems with the cleanup process.
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC                                         ************
-            * errors: 1 PREPERROR
-                -  Error in loadNamespace(x) : there is no package called ‘remotes’
-                    - This error appears to be a mal-configuration of this test setup, 
-                      as it occurs only on r-hub.
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
+            * errors: 0
             * warnings: 0
-            * notes: 0
-        * Fedora Linux, R-devel, clang, gfortran                                       ************
-            * errors: 1 PREPERROR
-                -  Error in loadNamespace(x) : there is no package called ‘remotes’
-                    - This error appears to be a mal-configuration of this test setup, 
-                      as it occurs only on r-hub.
+            * notes: 1
+              - checking HTML version of manual ... NOTE
+              - Skipping checking HTML validation: no command 'tidy' found
+              - The note appears only on this test platform.
+        * Fedora Linux, R-devel, clang, gfortran
+            * errors: 0
             * warnings: 0
-            * notes: 0
+            * notes: 1
+              - checking HTML version of manual ... NOTE
+              - Skipping checking HTML validation: no command 'tidy' found
+              - The note appears only on this test platform.
 
 
 ## revdepcheck results

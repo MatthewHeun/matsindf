@@ -8,7 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-# matsindf 0.4.5 (2023-12-01)
+# matsindf 0.4.5 (2023-12-01) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10251269.svg)](https://doi.org/10.5281/zenodo.10251269)
 
 * Added code of conduct and contributing pages to documentation.
 * No new tests.

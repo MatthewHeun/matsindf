@@ -1,12 +1,12 @@
 ## Context
 
-`matsindf` v0.4.5 adds a code of conduct and contributing guidelines.
-See `NEWS.md` for details.
+`matsindf` v0.4.6 fixes the `pkgdown` website on GitHub.
+No other changes were made.
 
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.5.1 (Ventura), R4.3.2
+* local: macOS X 13.5.1 (Ventura), R4.3.2 (2023-10-31 ucrt)
     * errors: 0
     * warnings: 0
     * notes: 0
@@ -40,7 +40,7 @@ See `NEWS.md` for details.
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-11-30 r85651 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-09 r85665 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -51,6 +51,8 @@ See `NEWS.md` for details.
             * warnings: 0
             * notes: 2 
                 - checking for non-standard things in the check directory ... NOTE
+                - Found the following files/directories:
+                - ''NULL''
                 - checking for detritus in the temp directory ... NOTE
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
@@ -61,14 +63,14 @@ See `NEWS.md` for details.
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on this test platform.
+              - The note appears only on Linux.
         * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on this test platform.
+              - The note appears only on Linux.
 
 
 ## revdepcheck results

@@ -11,7 +11,7 @@ status](https://www.r-pkg.org/badges/version/matsindf)](https://cran.r-project.o
 [![Project Status: Active – The project has reached a stable, usable
 state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![R-CMD-check](https://github.com/MatthewHeun/matsindf/workflows/R-CMD-check/badge.svg)](https://github.com/MatthewHeun/matsindf/actions)
+[![R-CMD-check](https://github.com/MatthewHeun/matsindf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MatthewHeun/matsindf/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MatthewHeun/matsindf?branch=master)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475443.svg)](https://doi.org/10.5281/zenodo.5475443)

@@ -32,7 +32,7 @@ No other changes were made.
         * warnings: 0
         * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)
+    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)                 *****************
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -40,7 +40,7 @@ No other changes were made.
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-08 r85664 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-09 r85665 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -51,18 +51,20 @@ No other changes were made.
             * warnings: 0
             * notes: 2 
                 - checking for non-standard things in the check directory ... NOTE
+                - Found the following files/directories:
+                - ''NULL''
                 - checking for detritus in the temp directory ... NOTE
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
                 - These notes appear to be problems with the cleanup process.
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC                       *****************
             * errors: 0
             * warnings: 0
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
               - The note appears only on this test platform.
-        * Fedora Linux, R-devel, clang, gfortran
+        * Fedora Linux, R-devel, clang, gfortran                              *****************
             * errors: 0
             * warnings: 0
             * notes: 1

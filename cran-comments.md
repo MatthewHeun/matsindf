@@ -1,12 +1,12 @@
 ## Context
 
-`matsindf` v0.4.5 adds a code of conduct and contributing guidelines.
-See `NEWS.md` for details.
+`matsindf` v0.4.6 fixes the `pkgdown` website on GitHub.
+No other changes were made.
 
 
 ## Test environments (12 in total) and R CMD check results
 
-* local: macOS X 13.5.1 (Ventura), R4.3.2
+* local: macOS X 13.5.1 (Ventura), R4.3.2 (2023-10-31 ucrt)
     * errors: 0
     * warnings: 0
     * notes: 0

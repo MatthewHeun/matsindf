@@ -57,20 +57,20 @@ No other changes were made.
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
                 - These notes appear to be problems with the cleanup process.
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC                       *****************
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * errors: 0
             * warnings: 0
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on this test platform.
-        * Fedora Linux, R-devel, clang, gfortran                              *****************
+              - The note appears only on Linux.
+        * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on this test platform.
+              - The note appears only on Linux.
 
 
 ## revdepcheck results

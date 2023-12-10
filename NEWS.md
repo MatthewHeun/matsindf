@@ -8,6 +8,8 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+# matsindf 0.4.6 (2023-12-09)
+
 * Fix pkgdown website on GitHub.
 * No new tests.
     * Still at 377 tests, all passing.

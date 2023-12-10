@@ -40,7 +40,7 @@ No other changes were made.
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-11-30 r85651 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-08 r85664 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0

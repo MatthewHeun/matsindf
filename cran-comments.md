@@ -32,7 +32,7 @@ No other changes were made.
         * warnings: 0
         * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)                 *****************
+    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0

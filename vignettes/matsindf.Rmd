@@ -55,7 +55,7 @@ to organize network-wide calculations,
 thereby simplifying the work of analysts who study entire systems.
 
 But [wouldn't it be nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) 
-if there were an easy way to create data frames
+if there were an easy way to create `R` data frames
 whose entries were not numbers but entire matrices?
 If that were possible, 
 matrix algebra could be performed on columns
@@ -67,13 +67,13 @@ a suitably-formatted
 [tidy](https://tidyr.tidyverse.org/articles/tidy-data.html) 
 data frame into a data frame containing a column of matrices.
 
-Furthermore, `matsbyname` is a sister package that ...
+Furthermore, `matsbyname` is a sister package that
 
-* ... provides matrix algebra functions that respect names of matrix rows and columns
+* provides matrix algebra functions that respect names of matrix rows and columns
 (`dimnames` in `R`)
 to free the analyst from the task of aligning rows and columns of 
 operands (matrices) passed to matrix algebra functions and
-* ... allows matrix algebra to be conducted within data frames using 
+* allows matrix algebra to be conducted within data frames using 
 [dplyr](https://dplyr.tidyverse.org),
 [tidyr](https://tidyr.tidyverse.org), 
 and other

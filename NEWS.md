@@ -8,6 +8,9 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Added statement of need to README file.
+
+
 # matsindf 0.4.6 (2023-12-09) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10340525.svg)](https://doi.org/10.5281/zenodo.10340525)
 
 * Fix pkgdown website on GitHub.

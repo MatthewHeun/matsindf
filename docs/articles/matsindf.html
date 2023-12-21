@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-12-09</h4>
+            <h4 data-toc-skip class="date">2023-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/matsindf.Rmd" class="external-link"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="d-none name"><code>matsindf.Rmd</code></div>
@@ -122,19 +122,20 @@ following table.</p>
 calculations, thereby simplifying the work of analysts who study entire
 systems.</p>
 <p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice" class="external-link">wouldn’t it
-be nice</a> if there were an easy way to create data frames whose
-entries were not numbers but entire matrices? If that were possible,
-matrix algebra could be performed on columns of similar matrices.</p>
+be nice</a> if there were an easy way to create <code>R</code> data
+frames whose entries were not numbers but entire matrices? If that were
+possible, matrix algebra could be performed on columns of similar
+matrices.</p>
 <p>That’s the reason for <code>matsindf</code>. It provides functions to
 convert a suitably-formatted <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a> data
 frame into a data frame containing a column of matrices.</p>
-<p>Furthermore, <code>matsbyname</code> is a sister package that …</p>
+<p>Furthermore, <code>matsbyname</code> is a sister package that</p>
 <ul>
-<li>… provides matrix algebra functions that respect names of matrix
-rows and columns (<code>dimnames</code> in <code>R</code>) to free the
+<li>provides matrix algebra functions that respect names of matrix rows
+and columns (<code>dimnames</code> in <code>R</code>) to free the
 analyst from the task of aligning rows and columns of operands
 (matrices) passed to matrix algebra functions and</li>
-<li>… allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a>, and other <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functions.</li>
+<li>allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a>, and other <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functions.</li>
 </ul>
 <p>When used together, <code>matsindf</code> and <code>matsbyname</code>
 allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix
@@ -448,12 +449,12 @@ programming:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Check</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span>,</span>
+<span>    W <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span>,</span>
 <span>    <span class="co"># Need to change column name and type on y so it can be subtracted from row sums of W</span></span>
-<span>    err <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span>, </span>
-<span>                            <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>                              <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcolnames_byname.html" class="external-link">setcolnames_byname</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcoltype.html" class="external-link">setcoltype</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    EBalOK <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/iszero_byname.html" class="external-link">iszero_byname</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span></span>
+<span>    err <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span>, </span>
+<span>                            <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>                              <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/setcolnames_byname.html" class="external-link">setcolnames_byname</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/setcoltype.html" class="external-link">setcoltype</a></span><span class="op">(</span><span class="st">"Industry"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    EBalOK <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/iszero_byname.html" class="external-link">iszero_byname</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">Check</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">EBalOK</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   Country Year EBalOK</span></span>
@@ -485,11 +486,11 @@ Owen, and Brockway <span class="citation">(2018)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Etas</span> <span class="op">&lt;-</span> <span class="va">Energy</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    g <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>,</span>
-<span>    eta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/hatize_byname.html" class="external-link">hatize_byname</a></span><span class="op">(</span>keep <span class="op">=</span> <span class="st">"rownames"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/invert_byname.html" class="external-link">invert_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/matrixproduct_byname.html" class="external-link">matrixproduct_byname</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
-<span>      <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcolnames_byname.html" class="external-link">setcolnames_byname</a></span><span class="op">(</span><span class="st">"eta"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/setcoltype.html" class="external-link">setcoltype</a></span><span class="op">(</span><span class="st">"Efficiency"</span><span class="op">)</span></span>
+<span>    g <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>,</span>
+<span>    eta <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">U</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/rowsums_byname.html" class="external-link">rowsums_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>      <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/hatize_byname.html" class="external-link">hatize_byname</a></span><span class="op">(</span>keep <span class="op">=</span> <span class="st">"rownames"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/invert_byname.html" class="external-link">invert_byname</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>      <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/matrixproduct_byname.html" class="external-link">matrixproduct_byname</a></span><span class="op">(</span><span class="va">g</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>      <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/setcolnames_byname.html" class="external-link">setcolnames_byname</a></span><span class="op">(</span><span class="st">"eta"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/setcoltype.html" class="external-link">setcoltype</a></span><span class="op">(</span><span class="st">"Efficiency"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Country</span>, <span class="va">Year</span>, <span class="va">eta</span><span class="op">)</span></span>
 <span></span>

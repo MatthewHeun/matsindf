@@ -19,8 +19,39 @@ coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.s
 
 # matsindf
 
-The `R` package `matsindf` provides ways to interact with matrices in
-data frames.
+## Statement of need
+
+Matrices are important mathematical objects, and they often describe
+networks of flows among nodes. The power of matrices lies in their
+ability to organize network-wide calculations, thereby simplifying the
+work of analysts who study entire systems.
+
+But [wouldn’t it be
+nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) if there were
+an easy way to create `R` data frames whose entries were not numbers but
+entire matrices? If that were possible, matrix algebra could be
+performed on columns of similar matrices.
+
+That’s the reason for `matsindf`. It provides functions to convert a
+suitably-formatted
+[tidy](https://tidyr.tidyverse.org/articles/tidy-data.html) data frame
+into a data frame containing a column of matrices.
+
+Furthermore, `matsbyname` is a sister package that
+
+- provides matrix algebra functions that respect names of matrix rows
+  and columns (`dimnames` in `R`) to free the analyst from the task of
+  aligning rows and columns of operands (matrices) passed to matrix
+  algebra functions and
+- allows matrix algebra to be conducted within data frames using
+  [dplyr](https://dplyr.tidyverse.org),
+  [tidyr](https://tidyr.tidyverse.org), and other
+  [tidyverse](https://www.tidyverse.org) functions.
+
+When used together, `matsindf` and `matsbyname` allow analysts to wield
+simultaneously the power of both [matrix
+mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and
+[tidyverse](https://www.tidyverse.org) functional programming.
 
 ## Installation
 

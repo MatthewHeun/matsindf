@@ -36,15 +36,15 @@ See `NEWS.md` for details.
         * warnings: 0
         * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)             **************************
+    * `devtools::check_win_release()`, R version 4.3.2 (2023-10-31 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)             **************************
+    * `devtools::check_win_oldrelease()`, R version 4.2.3 (2023-03-15 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-09 r85665 ucrt)             **************************
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-20 r85713 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -61,20 +61,27 @@ See `NEWS.md` for details.
                 - Found the following files/directories:
                 - 'lastMiKTeXException'
                 - These notes appear to be problems with the cleanup process.
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC             **************************
+        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
             * errors: 0
             * warnings: 0
             * notes: 1
               - checking HTML version of manual ... NOTE
               - Skipping checking HTML validation: no command 'tidy' found
               - The note appears only on Linux.
-        * Fedora Linux, R-devel, clang, gfortran             **************************
+        * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
-            * notes: 1
+            * notes: 2
               - checking HTML version of manual ... NOTE
-              - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on Linux.
+                  - Skipping checking HTML validation: no command 'tidy' found
+                  - The note appears only on Linux.
+              - Checking CRAN incoming feasibility ... [10s/44s] NOTE
+                  - Found the following (possibly) invalid URLs:
+                  - Followed by a series of files with invalid URLs.
+                  - I see no invalid URLs, 
+                    and Fedora Linux is the only platform where this 
+                    NOTE is provided.
+
 
 
 ## revdepcheck results

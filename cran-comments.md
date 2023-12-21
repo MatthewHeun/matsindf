@@ -1,7 +1,11 @@
 ## Context
 
-`matsindf` v0.4.6 fixes the `pkgdown` website on GitHub.
-No other changes were made.
+`matsindf` v0.4.7
+adds a statement of need to the `README.Rmd` file 
+in preparation for submitting a paper to the 
+Journal of Open Source Software. 
+No other changes have been made.
+See `NEWS.md` for details.
 
 
 ## Test environments (12 in total) and R CMD check results

@@ -9,6 +9,9 @@ which always resolves to the latest release.
 
 
 * Added statement of need to README file.
+* No new tests.
+    * Still at 377 tests, all passing.
+    * Test coverage remains at 100%.
 
 
 # matsindf 0.4.6 (2023-12-09) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10340525.svg)](https://doi.org/10.5281/zenodo.10340525)

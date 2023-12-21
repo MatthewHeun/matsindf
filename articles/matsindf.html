@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-12-10</h4>
+            <h4 data-toc-skip class="date">2023-12-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/matsindf.Rmd" class="external-link"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="d-none name"><code>matsindf.Rmd</code></div>
@@ -122,19 +122,20 @@ following table.</p>
 calculations, thereby simplifying the work of analysts who study entire
 systems.</p>
 <p>But <a href="https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice" class="external-link">wouldn’t it
-be nice</a> if there were an easy way to create data frames whose
-entries were not numbers but entire matrices? If that were possible,
-matrix algebra could be performed on columns of similar matrices.</p>
+be nice</a> if there were an easy way to create <code>R</code> data
+frames whose entries were not numbers but entire matrices? If that were
+possible, matrix algebra could be performed on columns of similar
+matrices.</p>
 <p>That’s the reason for <code>matsindf</code>. It provides functions to
 convert a suitably-formatted <a href="https://tidyr.tidyverse.org/articles/tidy-data.html" class="external-link">tidy</a> data
 frame into a data frame containing a column of matrices.</p>
-<p>Furthermore, <code>matsbyname</code> is a sister package that …</p>
+<p>Furthermore, <code>matsbyname</code> is a sister package that</p>
 <ul>
-<li>… provides matrix algebra functions that respect names of matrix
-rows and columns (<code>dimnames</code> in <code>R</code>) to free the
+<li>provides matrix algebra functions that respect names of matrix rows
+and columns (<code>dimnames</code> in <code>R</code>) to free the
 analyst from the task of aligning rows and columns of operands
 (matrices) passed to matrix algebra functions and</li>
-<li>… allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a>, and other <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functions.</li>
+<li>allows matrix algebra to be conducted within data frames using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a>, <a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a>, and other <a href="https://www.tidyverse.org" class="external-link">tidyverse</a> functions.</li>
 </ul>
 <p>When used together, <code>matsindf</code> and <code>matsbyname</code>
 allow analysts to wield simultaneously the power of both <a href="https://en.wikipedia.org/wiki/Matrix_(mathematics)" class="external-link">matrix

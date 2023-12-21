@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-12-09</h4>
+            <h4 data-toc-skip class="date">2023-12-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/midf_apply_primer.Rmd" class="external-link"><code>vignettes/midf_apply_primer.Rmd</code></a></small>
       <div class="d-none name"><code>midf_apply_primer.Rmd</code></div>
@@ -116,8 +116,8 @@ Here is an example function that both adds and subtracts its arguments,
 result, <code>c</code> and <code>d</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, </span>
-<span>              d <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, </span>
+<span>              d <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div>
 <p>Similar to <code><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply()</a></code> and its siblings, additional
 argument(s) to <code><a href="../reference/matsindf_apply.html">matsindf_apply()</a></code> include the data over which
@@ -261,7 +261,7 @@ below.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_fun_with_string</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">str_a</span>, <span class="va">b</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">a</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="va">str_a</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>added <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, subtracted <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>added <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>, subtracted <span class="op">=</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Causes an error</span></span>
@@ -456,12 +456,12 @@ we’ll construct a simple <code>matsindf</code> data frame
 <p>With <code>midf</code> in hand, we can demonstrate use of <a href="https://www.tidyverse.org" class="external-link"><code>tidyverse</code></a>-style
 functional programming to perform matrix algebra within a data frame.
 The functions of the <code>matsbyname</code> package (such as
-<code><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname()</a></code> below) can be used for this
+<code><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname()</a></code> below) can be used for this
 purpose.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="va">midf</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>    W <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span></span>
+<span>    W <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V</span><span class="op">)</span>, <span class="va">U</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="va">result</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2 × 4</span></span></span>
@@ -507,8 +507,8 @@ can be written as follows.</p>
 <span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="fu">setnames</span><span class="op">(</span><span class="va">W</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="op">}</span></span>
 <span>    <span class="co"># Calculate W_mat from the inputs U_mat and V_mat.</span></span>
-<span>    <span class="va">W_mat</span> <span class="op">&lt;-</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span></span>
-<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V_mat</span><span class="op">)</span>, </span>
+<span>    <span class="va">W_mat</span> <span class="op">&lt;-</span> <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span></span>
+<span>      <span class="fu">matsbyname</span><span class="fu">::</span><span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/transpose_byname.html" class="external-link">transpose_byname</a></span><span class="op">(</span><span class="va">V_mat</span><span class="op">)</span>, </span>
 <span>      <span class="va">U_mat</span><span class="op">)</span></span>
 <span>    <span class="co"># Return a named list.</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">W_mat</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">magrittr</span><span class="fu">::</span><span class="fu"><a href="https://magrittr.tidyverse.org/reference/aliases.html" class="external-link">set_names</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span></span>

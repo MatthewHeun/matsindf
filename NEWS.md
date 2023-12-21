@@ -8,6 +8,8 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+# matsindf 0.4.7 (2023-12-20)
+
 * Added statement of need to README file.
 * No new tests.
     * Still at 377 tests, all passing.

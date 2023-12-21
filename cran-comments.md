@@ -1,7 +1,11 @@
 ## Context
 
-`matsindf` v0.4.6 fixes the `pkgdown` website on GitHub.
-No other changes were made.
+`matsindf` v0.4.7
+adds a statement of need to the `README.Rmd` file 
+in preparation for submitting a paper to the 
+Journal of Open Source Software. 
+No other changes have been made.
+See `NEWS.md` for details.
 
 
 ## Test environments (12 in total) and R CMD check results
@@ -40,7 +44,7 @@ No other changes were made.
         * errors: 0
         * warnings: 0
         * notes: 0
-    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-09 r85665 ucrt)
+    * `devtools::check_win_devel()` R Under development (unstable) (2023-12-20 r85713 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -67,10 +71,17 @@ No other changes were made.
         * Fedora Linux, R-devel, clang, gfortran
             * errors: 0
             * warnings: 0
-            * notes: 1
+            * notes: 2
               - checking HTML version of manual ... NOTE
-              - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on Linux.
+                  - Skipping checking HTML validation: no command 'tidy' found
+                  - The note appears only on Linux.
+              - Checking CRAN incoming feasibility ... [10s/44s] NOTE
+                  - Found the following (possibly) invalid URLs:
+                  - Followed by a series of files with invalid URLs.
+                  - I see no invalid URLs, 
+                    and Fedora Linux is the only platform where this 
+                    NOTE is provided.
+
 
 
 ## revdepcheck results

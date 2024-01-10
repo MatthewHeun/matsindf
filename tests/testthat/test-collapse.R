@@ -475,12 +475,30 @@ test_that("collapse_to_matrices() works quickly with large data frames", {
 #
 # df |>
 #   tidyr::nest(.key = "matvals")
+#
+#   Look at https://www.rdocumentation.org/packages/Matrix/versions/1.6-4/topics/sparseMatrix
+#   for how to create a Matrix from triplet representation
 
 
 
 
-
-
+# mydf <- data.frame(rnames = c("r1", "r2", "r1"),
+#                    cnames = c("c1", "c2", "c3"),
+#                    x = c(11, 22, 13),
+#                    stringsAsFactors = TRUE) |>
+#   dplyr::mutate(
+#     i = as.numeric(rnames),
+#     j = as.numeric(cnames)
+#   )
+#
+# dnames <- list(levels(mydf[["rnames"]]), levels(mydf[["cnames"]]))
+#
+#
+# Matrix::sparseMatrix(i = mydf[["i"]],
+#                      j = mydf[["j"]],
+#                      x = mydf[["x"]],
+#                      dims = sapply(dnames, length),
+#                      dimnames = dnames)
 
 
 

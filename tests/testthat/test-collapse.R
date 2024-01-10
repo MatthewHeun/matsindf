@@ -1,6 +1,3 @@
-# Contains tests for the matsindf package.
-
-
 test_that("small example works as expected", {
   tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
                  row = c("i1", "i1", "i2", "i1", "i2"),
@@ -417,3 +414,56 @@ test_that("collapse_to_matrices() deprecation is correct", {
                                       matvals = "vals", rownames = "row", colnames = "col",
                                       matrix.class = "matrix"))
 })
+
+
+test_that("collapse_to_matrices() works quickly with large data frames", {
+  # Build a big data frame to collapse into small matrices
+  n_mats <- 100
+  n_rows_mat <- 3
+  n_cols_mat <- 2
+  df <- data.frame(
+    rownames = paste0("r", 1:n_rows_mat) |>
+      rep(n_cols_mat) |> # in each matrix
+      rep(n_mats), # for all matrices
+    colnames = paste0("c", 1:n_cols_mat) |>
+      rep(n_rows_mat) |> # in each matrix
+      rep(n_mats), # for all matrices
+    matvals = 1:(n_rows_mat*n_cols_mat) |>
+      rep(n_mats),
+    matnames = paste0("m", 1:n_mats) |>
+      rep(n_rows_mat * n_cols_mat) |>
+      sort(),
+    rowtypes = "rtype",
+    coltypes = "ctype"
+  ) |>
+    dplyr::group_by(matnames)
+
+  exec_time_secs <- df |>
+    collapse_to_matrices(matrix_class = "Matrix") |>
+    system.time() |>
+    magrittr::extract2("user.self")
+  # As of 10 Jan 2024, it takes about 0.6 secs per 100 matrices.
+  # I want to get this much smaller, say to one tenth of the time
+  time_improvement <- 0.1
+  current_time_per_matrix = 0.6 / 100 # seconds/matrix
+  expect_true(exec_time_secs < time_improvement * current_time_per_matrix * n_mats)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -452,6 +452,33 @@ test_that("collapse_to_matrices() works quickly with large data frames", {
 
 
 
+# n_mats <- 2
+# n_rows_mat <- 3
+# n_cols_mat <- 2
+# df <- data.frame(
+#   rownames = paste0("r", 1:n_rows_mat) |>
+#     rep(n_cols_mat) |> # in each matrix
+#     rep(n_mats), # for all matrices
+#   colnames = paste0("c", 1:n_cols_mat) |>
+#     rep(n_rows_mat) |> # in each matrix
+#     rep(n_mats), # for all matrices
+#   matvals = 1:(n_rows_mat*n_cols_mat) |>
+#     rep(n_mats),
+#   matnames = paste0("m", 1:n_mats) |>
+#     rep(n_rows_mat * n_cols_mat) |>
+#     sort(),
+#   rowtypes = "rtype",
+#   coltypes = "ctype"
+# ) |>
+#   dplyr::group_by(matnames)
+#
+#
+# df |>
+#   tidyr::nest(.key = "matvals")
+
+
+
+
 
 
 

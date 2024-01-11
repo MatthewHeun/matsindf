@@ -482,23 +482,23 @@ test_that("collapse_to_matrices() works quickly with large data frames", {
 
 
 
-# mydf <- data.frame(rnames = c("r1", "r2", "r1"),
-#                    cnames = c("c1", "c2", "c3"),
-#                    x = c(11, 22, 13),
-#                    stringsAsFactors = TRUE) |>
-#   dplyr::mutate(
-#     i = as.numeric(rnames),
-#     j = as.numeric(cnames)
-#   )
-#
-# dnames <- list(levels(mydf[["rnames"]]), levels(mydf[["cnames"]]))
-#
-#
-# Matrix::sparseMatrix(i = mydf[["i"]],
-#                      j = mydf[["j"]],
-#                      x = mydf[["x"]],
-#                      dims = sapply(dnames, length),
-#                      dimnames = dnames)
+mydf <- data.frame(rnames = c("r1", "r2", "r2"),
+                   cnames = c("c1", "c2", "c1"),
+                   x = c(11, 22, 21),
+                   stringsAsFactors = TRUE) |>
+  dplyr::mutate(
+    i = as.numeric(rnames),
+    j = as.numeric(cnames)
+  )
+
+dnames <- list(levels(mydf[["rnames"]]), levels(mydf[["cnames"]]))
+
+
+Matrix::sparseMatrix(i = mydf[["i"]],
+                     j = mydf[["j"]],
+                     x = mydf[["x"]],
+                     dims = sapply(dnames, length),
+                     dimnames = dnames)
 
 
 

@@ -13,7 +13,9 @@ rowcolval_to_mat(
   coltypes = "coltypes",
   fill = 0,
   matrix.class = lifecycle::deprecated(),
-  matrix_class = c("matrix", "Matrix")
+  matrix_class = c("matrix", "Matrix"),
+  i_colname = "i",
+  j_colname = "j"
 )
 }
 \arguments{

@@ -98,6 +98,15 @@ test_that("rowcolval_to_mat() (collapse) works as expected", {
                           vals = c(  11  ,  12,   22 ),
                           stringsAsFactors = FALSE)
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
+
+
+
+  # rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+  #                  rowtypes = NULL, coltypes = NULL, matrix_class = "Matrix") |>
+  #   microbenchmark::microbenchmark(unit = "ms", times = 1000)
+
+
+
   expect_true(inherits(A, "matrix"))
   expect_equal(A, expected_mat)
   expect_null(matsbyname::rowtype(A)) # rowtype has not been set

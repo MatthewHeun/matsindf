@@ -161,10 +161,11 @@ test_that("rowcolval_to_mat() (collapse) works as expected", {
 
 test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   # Establish some matrices that we expect to see.
-  expected_mat <- matsbyname::Matrix(c(11, 12,
-                                       0,  22),
-                                     nrow = 2, ncol = 2, byrow = TRUE,
-                                     dimnames = list(c("p1", "p2"), c("i1", "i2")))
+  expected_mat <- Matrix::sparseMatrix(i = c(1, 1, 2),
+                                       j = c(1, 2, 2),
+                                       x = c(11, 12, 22),
+                                       dimnames = list(c("p1", "p2"), c("i1", "i2")),
+                                       dims = c(2, 2))
   expected_mat_with_types <- expected_mat %>%
     matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
@@ -253,11 +254,17 @@ test_that("rowcolval_to_mat() deprecation works as expected", {
 
 test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   # This is the matrix we expect to obtain.
-  expected_mat <- matsbyname::Matrix(c(11, 12,
-                                       0,  22),
-                                     nrow = 2, ncol = 2, byrow = TRUE,
-                                     dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
+  # expected_mat <- matsbyname::Matrix(c(11, 12,
+  #                                      0,  22),
+  #                                    nrow = 2, ncol = 2, byrow = TRUE,
+  #                                    dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
+  #   matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
+  expected_mat <- Matrix::sparseMatrix(i = c(1, 1, 2),
+                                       j = c(1, 2, 2),
+                                       x = c(11, 12, 22),
+                                       dimnames = list(c("p1", "p2"), c("i1", "i2")),
+                                       dims = c(2, 2)) |>
+      matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # This is the data frame that we'll use the construct the matrix
   data <- data.frame(rows = c( "p1",  "p1", "p2"),

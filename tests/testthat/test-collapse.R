@@ -116,14 +116,21 @@ test_that("small example works with Matrix objects", {
   expect_false(is.factor(mats$matrix))
   # Test for V1
   expect_equal(mats$vals[[1]],
-               matsbyname::Matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
-                                  dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%
-                 matsbyname::setrowtype("Industries") %>% matsbyname::setcoltype("Products"))
+               Matrix::sparseMatrix(i = c(1, 1, 2),
+                                    j = c(1, 2, 2),
+                                    x = c(1, 2, 3),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))) |>
+                 matsbyname::setrowtype("Industries") |> matsbyname::setcoltype("Products"))
   # Test for V2
   expect_equal(mats$vals[[2]],
-               matsbyname::Matrix(c(4, 0, 0, 5), nrow = 2, ncol = 2, byrow = TRUE,
-                                  dimnames = list(c("i1", "i2"), c("p1", "p2"))) %>%
-                 matsbyname::setrowtype("Industries") %>% matsbyname::setcoltype("Products"))
+               Matrix::sparseMatrix(i = c(1, 2),
+                                    j = c(1, 2),
+                                    x = c(4, 5),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))) |>
+                 matsbyname::setrowtype("Industries") |> matsbyname::setcoltype("Products"))
+
   # Now expand everything back out, just for good measure
   tidy2 <- mats %>%
     expand_to_tidy(matnames = "matrix", matvals = "vals",
@@ -149,11 +156,21 @@ test_that("small example works with Matrix objects", {
                                        rowtypes = NULL, coltypes = NULL,
                                        matrix_class = "Matrix")
   # Test for V1
-  expect_equal(mats_trimmed$vals[[1]], matsbyname::Matrix(c(1, 2, 0, 3), nrow = 2, ncol = 2, byrow = TRUE,
-                                                          dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+  expect_equal(mats_trimmed$vals[[1]],
+               Matrix::sparseMatrix(i = c(1, 1, 2),
+                                    j = c(1, 2, 2),
+                                    x = c(1, 2, 3),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))))
   # Test for V2
-  expect_equal(mats_trimmed$vals[[2]], matsbyname::Matrix(c(4, 0, 0, 5), nrow = 2, ncol = 2, byrow = TRUE,
-                                                          dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+  expect_equal(mats_trimmed$vals[[2]],
+               # matsbyname::Matrix(c(4, 0, 0, 5), nrow = 2, ncol = 2, byrow = TRUE,
+               #                    dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+               Matrix::sparseMatrix(i = c(1, 2),
+                                    j = c(1, 2),
+                                    x = c(4, 5),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))))
 })
 
 
@@ -224,11 +241,12 @@ test_that("collapse_to_matrices() works with Matrix objects", {
                                rownames = "row", colnames = "col",
                                rowtypes = "rowtypes", coltypes = "coltypes",
                                matrix_class = "Matrix")
-  A <- matsbyname::Matrix(c(11, 0,
-                            0, 22),
-                          nrow = 2, ncol = 2, byrow = TRUE,
-                          dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
+  A <- Matrix::sparseMatrix(i = c(1, 2),
+                            j = c(1, 2),
+                            x = c(11, 22),
+                            dims = c(2, 2),
+                            dimnames = list(c("p1", "p2"), c("i1", "i2"))) |>
+    matsbyname::setrowtype("Products") |> matsbyname::setcoltype("Industries")
 
   # Check that the single values turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "eta"))$vals[[1]], 0.2 )
@@ -238,19 +256,27 @@ test_that("collapse_to_matrices() works with Matrix objects", {
   expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "U"))$vals[[1]], A)
   # Check that US U turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "U"))$vals[[1]],
-               matsbyname::Matrix(c(11, 12),
-                                  nrow = 1, ncol = 2, byrow = TRUE,
-                                  dimnames = list(c("p1"), c("i1", "i2"))) %>%
-                 matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
+               Matrix::sparseMatrix(i = c(1, 1),
+                                    j = c(1, 2),
+                                    x = c(11, 12),
+                                    dims = c(1, 2),
+                                    dimnames = list(c("p1"), c("i1", "i2"))) |>
+                 matsbyname::setrowtype("Products") |> matsbyname::setcoltype("Industries"))
   # Check that GH V turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "V"))$vals[[1]], A %>% matsbyname::transpose_byname())
   # Check that GH Y turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "GH", matrix == "Y"))$vals[[1]],
-               matsbyname::Matrix(c(11, 0, 0,
-                                    0, 22, 23),
-                                  nrow = 2, ncol = 3, byrow = TRUE,
-                                  dimnames = list(c("p1", "p2"), c("i1", "i2", "i3"))) %>%
-                 matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
+               # matsbyname::Matrix(c(11, 0, 0,
+               #                      0, 22, 23),
+               #                    nrow = 2, ncol = 3, byrow = TRUE,
+               #                    dimnames = list(c("p1", "p2"), c("i1", "i2", "i3"))) %>%
+               #   matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries"))
+               Matrix::sparseMatrix(i = c(1, 2, 2),
+                                    j = c(1, 2 ,3),
+                                    x = c(11, 22, 23),
+                                    dims = c(2, 3),
+                                    dimnames = list(c("p1", "p2"), c("i1", "i2", "i3"))) |>
+                 matsbyname::setrowtype("Products")|> matsbyname::setcoltype("Industries"))
   # Check that US Y turned out OK
   expect_equal((mats %>% dplyr::filter(Country == "US", matrix == "Y"))$vals[[1]], A)
   # Check that groups are discarded.
@@ -391,10 +417,15 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
                                matvals = "vals", rownames = "row", colnames = "col",
                                matrix_class = "Matrix")
   expect_equal(mats$vals[[1]],
-               matsbyname::Matrix(c(1, 2,
-                                    0, 3), byrow = TRUE, nrow = 2, ncol = 2,
-                                  dimnames = list(c("i1", "i2"), c("p1", "p2"))))
-
+               # matsbyname::Matrix(c(1, 2,
+               #                      0, 3), byrow = TRUE, nrow = 2, ncol = 2,
+               #                    dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+               Matrix::sparseMatrix(i = c(1, 2),
+                                    j = c(1, 2),
+                                    x = c(11, 22),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))) |>
+                 matsbyname::setrowtype("Products") |> matsbyname::setcoltype("Industries"))
   # Try with unspecified
   mats2 <- collapse_to_matrices(tidy, matvals = "vals", rownames = "row", colnames = "col",
                                 matrix_class = "Matrix")

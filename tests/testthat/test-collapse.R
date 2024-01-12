@@ -447,7 +447,7 @@ test_that("collapse_to_matrices() deprecation is correct", {
 
 test_that("collapse_to_matrices() works quickly with large data frames", {
   # Build a big data frame to collapse into small matrices
-  n_mats <- 100
+  n_mats <- 1000
   n_rows_mat <- 3
   n_cols_mat <- 2
   df <- data.frame(
@@ -473,7 +473,8 @@ test_that("collapse_to_matrices() works quickly with large data frames", {
     magrittr::extract2("user.self")
   # As of 10 Jan 2024, it takes about 0.6 secs per 100 matrices.
   # I want to get this much smaller, say to one tenth of the time
-  time_improvement <- 0.3
-  current_time_per_matrix = 0.6 / 100 # seconds/matrix
-  expect_true(exec_time_secs < time_improvement * current_time_per_matrix * n_mats)
+  prev_time_per_matrix <- 0.6 / 100 # seconds/matrix
+  current_time_per_matrix <- exec_time_secs / n_mats
+  speedup <- prev_time_per_matrix / current_time_per_matrix
+  expect_true(speedup > 3)
 })

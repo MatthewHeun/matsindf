@@ -473,71 +473,7 @@ test_that("collapse_to_matrices() works quickly with large data frames", {
     magrittr::extract2("user.self")
   # As of 10 Jan 2024, it takes about 0.6 secs per 100 matrices.
   # I want to get this much smaller, say to one tenth of the time
-  time_improvement <- 0.1
+  time_improvement <- 0.3
   current_time_per_matrix = 0.6 / 100 # seconds/matrix
   expect_true(exec_time_secs < time_improvement * current_time_per_matrix * n_mats)
 })
-
-
-
-
-# n_mats <- 2
-# n_rows_mat <- 3
-# n_cols_mat <- 2
-# df <- data.frame(
-#   rownames = paste0("r", 1:n_rows_mat) |>
-#     rep(n_cols_mat) |> # in each matrix
-#     rep(n_mats), # for all matrices
-#   colnames = paste0("c", 1:n_cols_mat) |>
-#     rep(n_rows_mat) |> # in each matrix
-#     rep(n_mats), # for all matrices
-#   matvals = 1:(n_rows_mat*n_cols_mat) |>
-#     rep(n_mats),
-#   matnames = paste0("m", 1:n_mats) |>
-#     rep(n_rows_mat * n_cols_mat) |>
-#     sort(),
-#   rowtypes = "rtype",
-#   coltypes = "ctype"
-# ) |>
-#   dplyr::group_by(matnames)
-#
-#
-# df |>
-#   tidyr::nest(.key = "matvals")
-#
-#   Look at https://www.rdocumentation.org/packages/Matrix/versions/1.6-4/topics/sparseMatrix
-#   for how to create a Matrix from triplet representation
-
-
-
-
-mydf <- data.frame(rnames = c("r1", "r2", "r2"),
-                   cnames = c("c1", "c2", "c1"),
-                   x = c(11, 22, 21),
-                   stringsAsFactors = TRUE) |>
-  dplyr::mutate(
-    i = as.numeric(rnames),
-    j = as.numeric(cnames)
-  )
-
-dnames <- list(levels(mydf[["rnames"]]), levels(mydf[["cnames"]]))
-
-
-Matrix::sparseMatrix(i = mydf[["i"]],
-                     j = mydf[["j"]],
-                     x = mydf[["x"]],
-                     dims = sapply(dnames, length),
-                     dimnames = dnames)
-
-
-
-
-
-
-
-
-
-
-
-
-

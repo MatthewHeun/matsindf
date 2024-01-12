@@ -426,9 +426,11 @@ test_that("collapse_to_matrices() works with various matnames arguments and Matr
   mats2 <- collapse_to_matrices(tidy, matvals = "vals", rownames = "row", colnames = "col",
                                 matrix_class = "Matrix")
   expect_equal(mats2$vals[[1]],
-               matsbyname::Matrix(c(1, 2,
-                                    0, 3), byrow = TRUE, nrow = 2, ncol = 2,
-                                  dimnames = list(c("i1", "i2"), c("p1", "p2"))))
+               Matrix::sparseMatrix(i = c(1, 1, 2),
+                                    j = c(1, 2, 2),
+                                    x = c(1, 2, 3),
+                                    dims = c(2, 2),
+                                    dimnames = list(c("i1", "i2"), c("p1", "p2"))))
 })
 
 

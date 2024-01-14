@@ -41,7 +41,7 @@ rowcolval_to_mat(
 This could be a sparse matrix.
 Default is "matrix".}
 
-\item{i_colname, j_colname}{Names of index columns. Defaults are "i" and "j".}
+\item{i_colname, j_colname}{Names of index columns used internally. Defaults are "i" and "j".}
 }
 \value{
 A matrix with named rows and columns and, optionally, row and column types.

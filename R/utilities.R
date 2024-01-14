@@ -107,6 +107,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #'                     "Matrix" creates a `Matrix::Matrix` object using the `matsbyname::Matrix()` function.
 #'                     This could be a sparse matrix.
 #'                     Default is "matrix".
+#' @param i_colname,j_colname Names of index columns. Defaults are "i" and "j".
 #'
 #' @return A matrix with named rows and columns and, optionally, row and column types.
 #'

@@ -20,6 +20,7 @@ Imports:
     assertthat,
     dplyr,
     lifecycle,
+    Matrix,
     magrittr,
     matsbyname,
     purrr,

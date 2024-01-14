@@ -197,20 +197,18 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
   singles <- .DF %>%
-    dplyr::filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
+    dplyr::filter(all(is.na(.data[[rownames]])) & all(is.na(.data[[colnames]])))
 
   if (nrow(singles) == 1) {
     return(.DF[[matvals]][[1]])
   }
 
-  # The remainder of the rows have matrix information stored in the columns
-  # rownames, colnames, rowtype, coltype
-  # Put that data in a matrix and return it.
-
-
   # This code is old.
   # A new way to do this is below.
 
+  # The remainder of the rows have matrix information stored in the columns
+  # rownames, colnames, rowtype, coltype
+  # Put that data in a matrix and return it.
   # out <- .DF %>%
   #   dplyr::select(!!rownames, !!colnames, !!matvals) %>%
   #   # It is possible to have rows with the same Industry in .DF,

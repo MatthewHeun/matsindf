@@ -78,48 +78,6 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
     out <- out[out[[matvals]] != drop, ]
   }
   return(out)
-
-  # New code going for speedup.
-  # rname_i_df <- dimnames(.matrix)[[1]] |>
-  #   as.data.frame(stringsAsFactors = TRUE) |>
-  #   setNames(rownames) |>
-  #   dplyr::mutate(
-  #     i = as.numeric(.data[[rownames]])
-  #   )
-  # cname_j_df <- dimnames(.matrix)[[2]] |>
-  #   as.data.frame(stringsAsFactors = TRUE) |>
-  #   setNames(colnames) |>
-  #   dplyr::mutate(
-  #     j = as.numeric(.data[[colnames]])
-  #   )
-  #
-  # if (!matsbyname::is.Matrix(.matrix)) {
-  #   .matrix <- Matrix::Matrix(.matrix)
-  # }
-  # rcv <- .matrix |>
-  #   Matrix::mat2triplet() |>
-  #   as.data.frame() |>
-  #   dplyr::rename(
-  #     # Rename x to matvals
-  #     "{matvals}" := x
-  #   ) |>
-  #   # left join by i to get rownames
-  #   dplyr::left_join(rname_i_df, by = "i") |>
-  #   dplyr::select(-i) |>
-  #   # left join by j to get colname
-  #   dplyr::left_join(cname_j_df, by = "j") |>
-  #   dplyr::select(-j) |>
-  #   # Move values column to the end
-  #   dplyr::relocate(.data[[matvals]], .after = last_col()) |>
-  #   # Add rowtype
-  #   dplyr::mutate(
-  #     "{rowtypes}" := matsbyname::rowtype(.matrix),
-  #     "{coltypes}" := matsbyname::coltype(.matrix)
-  #   )
-  # if (!is.na(drop)) {
-  #   rcv <- rcv[rcv[[matvals]] != drop, ]
-  # }
-  # return(rcv)
 }
 
 
@@ -248,37 +206,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     return(.DF[[matvals]][[1]])
   }
 
-  # This code is old.
-  # A new way to do this is below.
-
-  # The remainder of the rows have matrix information stored in the columns
-  # rownames, colnames, rowtype, coltype
-  # Put that data in a matrix and return it.
-  # out <- .DF %>%
-  #   dplyr::select(!!rownames, !!colnames, !!matvals) %>%
-  #   # It is possible to have rows with the same Industry in .DF,
-  #   # because multiple fuel sources can make the same type of output
-  #   # from identical industries.
-  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
-  #   # both Fuel oil and Refinery gas to make MTH.200.C.
-  #   # To avoid problems below, we can to summarise all of the rows
-  #   # with same rownames and colnames into one.
-  #   dplyr::group_by_at(c(rownames, colnames)) %>%
-  #   dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
-  #   tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-  #   tibble::remove_rownames() %>%
-  #   data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
-  #   tibble::column_to_rownames(var = rownames) %>%
-  #   as.matrix() %>%
-  #   matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
-  # if (matrix_class == "Matrix") {
-  #   out <- matsbyname::Matrix(out)
-  # }
-
-
-  # This is the new code
-
-  # Take advantage of factors and indices
+  # This is new code that takes advantage of factors and indices
   .DF_with_ij <- .DF |>
     dplyr::mutate(
       # Make sure the rownames and colnames columns are factors
@@ -301,9 +229,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   if (matrix_class == "matrix") {
     out <- as.matrix(out)
   }
-
-
-
   out |>
     matsbyname::setrowtype(rowtype = rowtypes) |>
     matsbyname::setcoltype(coltype = coltypes)

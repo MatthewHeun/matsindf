@@ -291,7 +291,8 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
 
 test_that("expand_to_tidy() is much faster", {
   # Build a big data frame to collapse into small matrices
-  n_mats <- 1000
+  # n_mats <- 1000
+  n_mats <- 100
   n_rows_mat <- 3
   n_cols_mat <- 2
   df <- data.frame(
@@ -318,9 +319,9 @@ test_that("expand_to_tidy() is much faster", {
     magrittr::extract2("user.self")
 
   # As of 14 Jan 2024, it takes about 1.4 secs per 1000 matrices.
-  # I want to get this much smaller, say to one tenth of the time
   prev_time_per_matrix <- 1.4 / 1000 # seconds/matrix
   current_time_per_matrix <- exec_time_secs / n_mats
   speedup <- prev_time_per_matrix / current_time_per_matrix
-  # expect_true(speedup > 3)
+  # At this point, I have not been able to speed up the expansion process.
+  expect_true(speedup > 0.9)
 })

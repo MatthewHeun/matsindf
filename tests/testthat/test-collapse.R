@@ -447,6 +447,7 @@ test_that("collapse_to_matrices() deprecation is correct", {
 
 test_that("collapse_to_matrices() works quickly with large data frames", {
   # Build a big data frame to collapse into small matrices
+  # n_mats <- 1000
   n_mats <- 100
   n_rows_mat <- 3
   n_cols_mat <- 2

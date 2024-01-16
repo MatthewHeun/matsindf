@@ -287,3 +287,41 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
                                 col = c("c1", "c1", "c2", "c2"),
                                 m = c(1, 3, 2 ,4)))
 })
+
+
+# test_that("expand_to_tidy() is much faster", {
+#   # Build a big data frame to collapse into small matrices
+#   # n_mats <- 1000
+#   n_mats <- 100
+#   n_rows_mat <- 3
+#   n_cols_mat <- 2
+#   df <- data.frame(
+#     rownames = paste0("r", 1:n_rows_mat) |>
+#       rep(n_cols_mat) |> # in each matrix
+#       rep(n_mats), # for all matrices
+#     colnames = paste0("c", 1:n_cols_mat) |>
+#       rep(n_rows_mat) |> # in each matrix
+#       rep(n_mats), # for all matrices
+#     matvals = 1:(n_rows_mat*n_cols_mat) |>
+#       rep(n_mats),
+#     matnames = paste0("m", 1:n_mats) |>
+#       rep(n_rows_mat * n_cols_mat) |>
+#       sort(),
+#     rowtypes = "rtype",
+#     coltypes = "ctype"
+#   ) |>
+#     dplyr::group_by(matnames) |>
+#     collapse_to_matrices(matrix_class = "Matrix")
+#
+#   exec_time_secs <- df |>
+#     expand_to_tidy() |>
+#     system.time() |>
+#     magrittr::extract2("user.self")
+#
+#   # As of 14 Jan 2024, it takes about 1.4 secs per 1000 matrices.
+#   prev_time_per_matrix <- 1.4 / 1000 # seconds/matrix
+#   current_time_per_matrix <- exec_time_secs / n_mats
+#   speedup <- prev_time_per_matrix / current_time_per_matrix
+#   # At this point, I have not been able to speed up the expansion process.
+#   expect_true(speedup > 0.9)
+# })

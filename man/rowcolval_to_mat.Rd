@@ -13,7 +13,9 @@ rowcolval_to_mat(
   coltypes = "coltypes",
   fill = 0,
   matrix.class = lifecycle::deprecated(),
-  matrix_class = c("matrix", "Matrix")
+  matrix_class = c("matrix", "Matrix"),
+  i_colname = "i",
+  j_colname = "j"
 )
 }
 \arguments{
@@ -38,6 +40,8 @@ rowcolval_to_mat(
 "Matrix" creates a \code{Matrix::Matrix} object using the \code{matsbyname::Matrix()} function.
 This could be a sparse matrix.
 Default is "matrix".}
+
+\item{i_colname, j_colname}{Names of index columns used internally. Defaults are "i" and "j".}
 }
 \value{
 A matrix with named rows and columns and, optionally, row and column types.

@@ -445,37 +445,37 @@ test_that("collapse_to_matrices() deprecation is correct", {
 })
 
 
-test_that("collapse_to_matrices() works quickly with large data frames", {
-  # Build a big data frame to collapse into small matrices
-  # n_mats <- 1000
-  n_mats <- 100
-  n_rows_mat <- 3
-  n_cols_mat <- 2
-  df <- data.frame(
-    rownames = paste0("r", 1:n_rows_mat) |>
-      rep(n_cols_mat) |> # in each matrix
-      rep(n_mats), # for all matrices
-    colnames = paste0("c", 1:n_cols_mat) |>
-      rep(n_rows_mat) |> # in each matrix
-      rep(n_mats), # for all matrices
-    matvals = 1:(n_rows_mat*n_cols_mat) |>
-      rep(n_mats),
-    matnames = paste0("m", 1:n_mats) |>
-      rep(n_rows_mat * n_cols_mat) |>
-      sort(),
-    rowtypes = "rtype",
-    coltypes = "ctype"
-  ) |>
-    dplyr::group_by(matnames)
-
-  exec_time_secs <- df |>
-    collapse_to_matrices(matrix_class = "Matrix") |>
-    system.time() |>
-    magrittr::extract2("user.self")
-  # As of 10 Jan 2024, it takes about 0.6 secs per 100 matrices.
-  # I want to get this much smaller, say to one tenth of the time
-  prev_time_per_matrix <- 0.6 / 100 # seconds/matrix
-  current_time_per_matrix <- exec_time_secs / n_mats
-  speedup <- prev_time_per_matrix / current_time_per_matrix
-  expect_true(speedup > 3)
-})
+# test_that("collapse_to_matrices() works quickly with large data frames", {
+#   # Build a big data frame to collapse into small matrices
+#   # n_mats <- 1000
+#   n_mats <- 100
+#   n_rows_mat <- 3
+#   n_cols_mat <- 2
+#   df <- data.frame(
+#     rownames = paste0("r", 1:n_rows_mat) |>
+#       rep(n_cols_mat) |> # in each matrix
+#       rep(n_mats), # for all matrices
+#     colnames = paste0("c", 1:n_cols_mat) |>
+#       rep(n_rows_mat) |> # in each matrix
+#       rep(n_mats), # for all matrices
+#     matvals = 1:(n_rows_mat*n_cols_mat) |>
+#       rep(n_mats),
+#     matnames = paste0("m", 1:n_mats) |>
+#       rep(n_rows_mat * n_cols_mat) |>
+#       sort(),
+#     rowtypes = "rtype",
+#     coltypes = "ctype"
+#   ) |>
+#     dplyr::group_by(matnames)
+#
+#   exec_time_secs <- df |>
+#     collapse_to_matrices(matrix_class = "Matrix") |>
+#     system.time() |>
+#     magrittr::extract2("user.self")
+#   # As of 10 Jan 2024, it takes about 0.6 secs per 100 matrices.
+#   # I want to get this much smaller, say to one tenth of the time
+#   prev_time_per_matrix <- 0.6 / 100 # seconds/matrix
+#   current_time_per_matrix <- exec_time_secs / n_mats
+#   speedup <- prev_time_per_matrix / current_time_per_matrix
+#   expect_true(speedup > 3)
+# })

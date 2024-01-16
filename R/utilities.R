@@ -47,7 +47,6 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
                              drop = NA) {
-  # This is old code.
 
   if (matsbyname::is_matrix_or_Matrix(.matrix)) {
     if (matsbyname::is.Matrix(.matrix)) {

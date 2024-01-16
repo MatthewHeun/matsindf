@@ -254,11 +254,6 @@ test_that("rowcolval_to_mat() deprecation works as expected", {
 
 test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   # This is the matrix we expect to obtain.
-  # expected_mat <- matsbyname::Matrix(c(11, 12,
-  #                                      0,  22),
-  #                                    nrow = 2, ncol = 2, byrow = TRUE,
-  #                                    dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-  #   matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
   expected_mat <- Matrix::sparseMatrix(i = c(1, 1, 2),
                                        j = c(1, 2, 2),
                                        x = c(11, 12, 22),
@@ -294,7 +289,7 @@ test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
                                 rownames = "rows", colnames = "cols",
                                 rowtypes = "rt", coltypes = "ct",
                                 matvals = "vals",
-                                drop = 0) %>% magrittr::set_rownames(NULL),
+                                drop = 0),
                "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
   # Verify that we can convert the matrix to a data frame.

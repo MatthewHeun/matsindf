@@ -46,7 +46,9 @@
 mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
-                             drop = NA){
+                             drop = NA) {
+  # This is old code.
+
   if (matsbyname::is_matrix_or_Matrix(.matrix)) {
     if (matsbyname::is.Matrix(.matrix)) {
       temp <- as.matrix(.matrix) %>%
@@ -76,7 +78,50 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
     out <- out[out[[matvals]] != drop, ]
   }
   return(out)
+
+  # New code going for speedup.
+  # rname_i_df <- dimnames(.matrix)[[1]] |>
+  #   as.data.frame(stringsAsFactors = TRUE) |>
+  #   setNames(rownames) |>
+  #   dplyr::mutate(
+  #     i = as.numeric(.data[[rownames]])
+  #   )
+  # cname_j_df <- dimnames(.matrix)[[2]] |>
+  #   as.data.frame(stringsAsFactors = TRUE) |>
+  #   setNames(colnames) |>
+  #   dplyr::mutate(
+  #     j = as.numeric(.data[[colnames]])
+  #   )
+  #
+  # if (!matsbyname::is.Matrix(.matrix)) {
+  #   .matrix <- Matrix::Matrix(.matrix)
+  # }
+  # rcv <- .matrix |>
+  #   Matrix::mat2triplet() |>
+  #   as.data.frame() |>
+  #   dplyr::rename(
+  #     # Rename x to matvals
+  #     "{matvals}" := x
+  #   ) |>
+  #   # left join by i to get rownames
+  #   dplyr::left_join(rname_i_df, by = "i") |>
+  #   dplyr::select(-i) |>
+  #   # left join by j to get colname
+  #   dplyr::left_join(cname_j_df, by = "j") |>
+  #   dplyr::select(-j) |>
+  #   # Move values column to the end
+  #   dplyr::relocate(.data[[matvals]], .after = last_col()) |>
+  #   # Add rowtype
+  #   dplyr::mutate(
+  #     "{rowtypes}" := matsbyname::rowtype(.matrix),
+  #     "{coltypes}" := matsbyname::coltype(.matrix)
+  #   )
+  # if (!is.na(drop)) {
+  #   rcv <- rcv[rcv[[matvals]] != drop, ]
+  # }
+  # return(rcv)
 }
+
 
 #' Collapse a tidy data frame into a matrix with named rows and columns
 #'
@@ -256,6 +301,9 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   if (matrix_class == "matrix") {
     out <- as.matrix(out)
   }
+
+
+
   out |>
     matsbyname::setrowtype(rowtype = rowtypes) |>
     matsbyname::setcoltype(coltype = coltypes)

@@ -207,58 +207,58 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 
   # This is old code that uses a data frame.
 
-  # The remainder of the rows have matrix information stored in the columns
-  # rownames, colnames, rowtype, coltype
-  # Put that data in a matrix and return it.
-  out <- .DF %>%
-    dplyr::select(!!rownames, !!colnames, !!matvals) %>%
-    # It is possible to have rows with the same Industry in .DF,
-    # because multiple fuel sources can make the same type of output
-    # from identical industries.
-    # For example, in Ghana, 2011, Industrial heat/furnace consumes
-    # both Fuel oil and Refinery gas to make MTH.200.C.
-    # To avoid problems below, we can to summarise all of the rows
-    # with same rownames and colnames into one.
-    dplyr::group_by_at(c(rownames, colnames)) %>%
-    dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
-    tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-    tibble::remove_rownames() %>%
-    data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
-    tibble::column_to_rownames(var = rownames) %>%
-    as.matrix() %>%
-    matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
-  if (matrix_class == "Matrix") {
-    out <- matsbyname::Matrix(out)
-  }
-  return(out)
+  # # The remainder of the rows have matrix information stored in the columns
+  # # rownames, colnames, rowtype, coltype
+  # # Put that data in a matrix and return it.
+  # out <- .DF %>%
+  #   dplyr::select(!!rownames, !!colnames, !!matvals) %>%
+  #   # It is possible to have rows with the same Industry in .DF,
+  #   # because multiple fuel sources can make the same type of output
+  #   # from identical industries.
+  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
+  #   # both Fuel oil and Refinery gas to make MTH.200.C.
+  #   # To avoid problems below, we can to summarise all of the rows
+  #   # with same rownames and colnames into one.
+  #   dplyr::group_by_at(c(rownames, colnames)) %>%
+  #   dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
+  #   tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
+  #   tibble::remove_rownames() %>%
+  #   data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
+  #   tibble::column_to_rownames(var = rownames) %>%
+  #   as.matrix() %>%
+  #   matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
+  # if (matrix_class == "Matrix") {
+  #   out <- matsbyname::Matrix(out)
+  # }
+  # return(out)
 
   # This is new code that takes advantage of factors and indices
 
-  # .DF_with_ij <- .DF |>
-  #   dplyr::mutate(
-  #     # Make sure the rownames and colnames columns are factors
-  #     "{rownames}" := factor(.data[[rownames]]),
-  #     "{colnames}" := factor(.data[[colnames]]),
-  #     # Get the indices for each row and column from the factors
-  #     "{i_colname}" := as.numeric(.data[[rownames]]),
-  #     "{j_colname}" := as.numeric(.data[[colnames]])
-  #   )
-  # # Get the dimnames
-  # dnames <- list(levels(.DF_with_ij[[rownames]]),
-  #                levels(.DF_with_ij[[colnames]]))
-  # # Make a sparse matrix
-  # out <- Matrix::sparseMatrix(i = .DF_with_ij[[i_colname]],
-  #                             j = .DF_with_ij[[j_colname]],
-  #                             x = .DF_with_ij[[matvals]],
-  #                             dims = sapply(dnames, length),
-  #                             dimnames = dnames)
-  # # If a non-sparse matrix is desired, convert to matrix
-  # if (matrix_class == "matrix") {
-  #   out <- as.matrix(out)
-  # }
-  # out |>
-  #   matsbyname::setrowtype(rowtype = rowtypes) |>
-  #   matsbyname::setcoltype(coltype = coltypes)
+  .DF_with_ij <- .DF |>
+    dplyr::mutate(
+      # Make sure the rownames and colnames columns are factors
+      "{rownames}" := factor(.data[[rownames]]),
+      "{colnames}" := factor(.data[[colnames]]),
+      # Get the indices for each row and column from the factors
+      "{i_colname}" := as.numeric(.data[[rownames]]),
+      "{j_colname}" := as.numeric(.data[[colnames]])
+    )
+  # Get the dimnames
+  dnames <- list(levels(.DF_with_ij[[rownames]]),
+                 levels(.DF_with_ij[[colnames]]))
+  # Make a sparse matrix
+  out <- Matrix::sparseMatrix(i = .DF_with_ij[[i_colname]],
+                              j = .DF_with_ij[[j_colname]],
+                              x = .DF_with_ij[[matvals]],
+                              dims = sapply(dnames, length),
+                              dimnames = dnames)
+  # If a non-sparse matrix is desired, convert to matrix
+  if (matrix_class == "matrix") {
+    out <- as.matrix(out)
+  }
+  out |>
+    matsbyname::setrowtype(rowtype = rowtypes) |>
+    matsbyname::setcoltype(coltype = coltypes)
 }
 
 

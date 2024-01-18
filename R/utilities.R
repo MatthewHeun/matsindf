@@ -235,6 +235,18 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
   # This is new code that takes advantage of factors and indices
 
   .DF_with_ij <- .DF |>
+    # It is possible to have rows with the same Industry in .DF,
+    # because multiple fuel sources can make the same type of output
+    # from identical industries.
+    # For example, in Ghana, 2011, Industrial heat/furnace consumes
+    # both Fuel oil and Refinery gas to make MTH.200.C.
+    # To avoid problems below, we can to summarise all of the rows
+    # with same rownames and colnames into one.
+    dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
+    dplyr::group_by_at(c(rownames, colnames)) |>
+    dplyr::summarise(
+      "{matvals}" := sum(.data[[matvals]])
+    ) |>
     dplyr::mutate(
       # Make sure the rownames and colnames columns are factors
       "{rownames}" := factor(.data[[rownames]]),

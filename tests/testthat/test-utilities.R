@@ -178,7 +178,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
                         rowtypes = NULL, coltypes = NULL, matrix_class = "Matrix")
   expect_true(inherits(A, "Matrix"))
-  expect_equal(A, expected_mat)
+  expect_true(matsbyname::equal_byname(A, expected_mat))
   expect_null(matsbyname::rowtype(A)) # rowtype has not been set
   expect_null(matsbyname::coltype(A)) # coltype has not been set
 
@@ -187,7 +187,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                         rowtypes  = "Products", coltypes  = "Industries",
                         matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(B))
-  expect_equal(B, expected_mat_with_types)
+  expect_true(matsbyname::equal_byname(B, expected_mat_with_types))
 
   # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
   C <- rowcolval %>%
@@ -197,7 +197,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rt", coltypes = "ct",
                      matrix_class = "Matrix")
-  expect_equal(C, expected_mat_with_types)
+  expect_true(matsbyname::equal_byname(C, expected_mat_with_types))
 
   # Also works for single values if both the rownames and colnames columns contain NA
   rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
@@ -282,7 +282,7 @@ test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
                      rowtypes = "rt",   coltypes = "ct", matvals = "vals",
                      matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(A))
-  expect_equal(A, expected_mat)
+  expect_true(matsbyname::equal_byname(A, expected_mat))
 
   # Verify that if we feed garbage into the function, we obtain an error
   expect_error(mat_to_rowcolval("A",

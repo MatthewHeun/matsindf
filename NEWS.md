@@ -8,7 +8,9 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-* Better matrix equality tests that are now agnostic to matrix class.
+* Throughout the test suite, 
+  now have better matrix equality tests
+  that are agnostic to matrix class.
 * Improved speed of `collapse_to_matrices()` by a factor of 3.
 
 

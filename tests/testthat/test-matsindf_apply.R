@@ -279,6 +279,15 @@ test_that("matsindf_apply() works when FUN returns NULL", {
 })
 
 
+test_that("matsindf_apply() works when all named arguments are NULL", {
+  example_fun <- function(a, b) {
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  expect_equal(matsindf_apply(FUN = example_fun, a = NULL, b = NULL),
+               list(a = list(), b = list()))
+})
+
+
 test_that("matsindf_apply() works when .dat is a list", {
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b),

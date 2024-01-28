@@ -16,6 +16,9 @@ LazyData: true
 RoxygenNote: 7.3.0
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 2.10)
+Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: collapse, matsindf_apply
 Imports:
     assertthat,
     dplyr,
@@ -35,8 +38,7 @@ Suggests:
     RCLabels,
     rmarkdown,
     spelling,
-    testthat
-Config/testthat/edition: 3
+    testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
 URL: https://github.com/MatthewHeun/matsindf, https://matthewheun.github.io/matsindf/

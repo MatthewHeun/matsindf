@@ -10,7 +10,7 @@ which always resolves to the latest release.
 
 * Fixed a bug wherein passing NULL in all named arguments to `matsindf_apply()`
   caused an error.  
-  It now leads to a list of empty lists.
+  Doing so now leads to a list of empty lists.
 * Throughout the test suite, 
   now have better matrix equality tests
   that are agnostic to matrix class.

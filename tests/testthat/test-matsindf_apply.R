@@ -262,6 +262,32 @@ test_that("matsindf_apply() works with a NULL argument and Matrix objects", {
 })
 
 
+test_that("matsindf_apply() works when FUN returns NULL", {
+  example_fun <- function(a, b) {
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  df <- tibble::tibble(a = list(NULL, 20), b = list(NULL, 10))
+  res <- matsindf_apply(df, FUN = example_fun, a = "a", b = "b")
+  expect_equal(res, df |> dplyr::mutate(c = c(0, 30), d = c(0, 10)))
+
+  example_fun2 <- function(a, b) {
+    return(list(c = NULL, d = NULL))
+  }
+  df2 <- tibble::tibble(a = list(NULL, 20), b = list(NULL, 10))
+  res2 <- matsindf_apply(df2, FUN = example_fun2, a = "a", b = "b")
+  expect_equal(res2, df2 |> dplyr::mutate(c = list(NULL, NULL), d = list(NULL, NULL)))
+})
+
+
+test_that("matsindf_apply() works when all named arguments are NULL", {
+  example_fun <- function(a, b) {
+    return(list(c = matsbyname::sum_byname(a, b), d = matsbyname::difference_byname(a, b)))
+  }
+  expect_equal(matsindf_apply(FUN = example_fun, a = NULL, b = NULL),
+               list(a = list(), b = list()))
+})
+
+
 test_that("matsindf_apply() works when .dat is a list", {
   example_fun <- function(a, b) {
     return(list(c = matsbyname::sum_byname(a, b),

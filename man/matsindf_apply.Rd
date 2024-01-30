@@ -95,6 +95,12 @@ argument list in the hopes that \code{FUN} has reasonable default values.
 If that fails,
 \code{.dat} is returned unmodified (if not \code{NULL})
 or the data in \code{...} is returned.
+
+If \code{.dat} is \code{NULL} and all named arguments in \code{...}
+are similarly \code{NULL},
+the result will be a list with each named argument
+being an empty list.
+See examples.
 }
 \examples{
 library(matsbyname)
@@ -133,4 +139,7 @@ matsindf_apply(list(a = 1, b = 2, c = 10), FUN = example_fun, a = "c", b = "b")
 DF3 <- DF2[0, ]
 DF3
 matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
+# A list of named but empty lists is returned if
+# NULL is passed to all named arguments.
+matsindf_apply(FUN = example_fun, a = NULL, b = NULL)
 }

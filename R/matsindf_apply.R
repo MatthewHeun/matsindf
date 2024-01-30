@@ -74,6 +74,12 @@
 #' `.dat` is returned unmodified (if not `NULL`)
 #' or the data in `...` is returned.
 #'
+#' If `.dat` is `NULL` and all named arguments in `...`
+#' are similarly `NULL`,
+#' the result will be a list with each named argument
+#' being an empty list.
+#' See examples.
+#'
 #' @param .dat A list of named items or a data frame.
 #' @param FUN The function to be applied to `.dat`.
 #' @param ... Named arguments to be passed by name to `FUN`.
@@ -122,6 +128,9 @@
 #' DF3 <- DF2[0, ]
 #' DF3
 #' matsindf_apply(DF3, FUN = example_fun, a = "a", b = "b")
+#' # A list of named but empty lists is returned if
+#' # NULL is passed to all named arguments.
+#' matsindf_apply(FUN = example_fun, a = NULL, b = NULL)
 matsindf_apply <- function(.dat = NULL, FUN, ..., .warn_missing_FUN_args = TRUE){
   types <- matsindf_apply_types(.dat, FUN, ...)
 
@@ -704,6 +713,7 @@ handle_null_args <- function(.arg) {
   compact_lengths <- purrr::compact(lengths)
   if (length(compact_lengths) == 0) {
     all_same_length <- TRUE
+    null_replacement <- list()
   } else {
     all_same_length <- all(compact_lengths == compact_lengths[[1]])
     if (! all_same_length) {

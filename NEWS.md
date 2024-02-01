@@ -8,7 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-## matsindf 0.4.8 (2024-01-30)
+## matsindf 0.4.8 (2024-01-31)
 
 * Fixed a bug wherein passing `NULL` in all named arguments to `matsindf_apply()`
   caused an error.  

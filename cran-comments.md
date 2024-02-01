@@ -1,10 +1,8 @@
 ## Context
 
 `matsindf` v0.4.8
-adds a statement of need to the `README.Rmd` file 
-in preparation for submitting a paper to the 
-Journal of Open Source Software. 
-No other changes have been made.
+fixes a bug in `matsindf_apply()` and
+improves performance of some operations.
 See `NEWS.md` for details.
 
 

@@ -46,7 +46,8 @@
 mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rownames = "rownames", colnames = "colnames",
                              rowtypes = "rowtypes", coltypes = "coltypes",
-                             drop = NA){
+                             drop = NA) {
+
   if (matsbyname::is_matrix_or_Matrix(.matrix)) {
     if (matsbyname::is.Matrix(.matrix)) {
       temp <- as.matrix(.matrix) %>%
@@ -78,6 +79,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
   return(out)
 }
 
+
 #' Collapse a tidy data frame into a matrix with named rows and columns
 #'
 #' Columns not specified in one of `rownames`, `colnames`, `rowtype`, `coltype`, or `values`
@@ -107,6 +109,7 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
 #'                     "Matrix" creates a `Matrix::Matrix` object using the `matsbyname::Matrix()` function.
 #'                     This could be a sparse matrix.
 #'                     Default is "matrix".
+#' @param i_colname,j_colname Names of index columns used internally. Defaults are "i" and "j".
 #'
 #' @return A matrix with named rows and columns and, optionally, row and column types.
 #'
@@ -148,7 +151,9 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
                              rowtypes = "rowtypes", coltypes = "coltypes",
                              fill = 0,
                              matrix.class = lifecycle::deprecated(),
-                             matrix_class = c("matrix", "Matrix")) {
+                             matrix_class = c("matrix", "Matrix"),
+                             i_colname = "i",
+                             j_colname = "j") {
   if (lifecycle::is_present(matrix.class)) {
     lifecycle::deprecate_warn(when = "0.4.3",
                               what = "create_matrix_byname(matrix.class)",
@@ -194,17 +199,42 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 
   # If the data have NA for row, and col, we have a single value.  Extract and return.
   singles <- .DF %>%
-    dplyr::filter(is.na(!!as.name(rownames)) & is.na(!!as.name(colnames)))
+    dplyr::filter(all(is.na(.data[[rownames]])) & all(is.na(.data[[colnames]])))
 
   if (nrow(singles) == 1) {
     return(.DF[[matvals]][[1]])
   }
 
-  # The remainder of the rows have matrix information stored in the columns
-  # rownames, colnames, rowtype, coltype
-  # Put that data in a matrix and return it.
-  out <- .DF %>%
-    dplyr::select(!!rownames, !!colnames, !!matvals) %>%
+  # This is old code that uses a data frame.
+
+  # # The remainder of the rows have matrix information stored in the columns
+  # # rownames, colnames, rowtype, coltype
+  # # Put that data in a matrix and return it.
+  # out <- .DF %>%
+  #   dplyr::select(!!rownames, !!colnames, !!matvals) %>%
+  #   # It is possible to have rows with the same Industry in .DF,
+  #   # because multiple fuel sources can make the same type of output
+  #   # from identical industries.
+  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
+  #   # both Fuel oil and Refinery gas to make MTH.200.C.
+  #   # To avoid problems below, we can to summarise all of the rows
+  #   # with same rownames and colnames into one.
+  #   dplyr::group_by_at(c(rownames, colnames)) %>%
+  #   dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
+  #   tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
+  #   tibble::remove_rownames() %>%
+  #   data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
+  #   tibble::column_to_rownames(var = rownames) %>%
+  #   as.matrix() %>%
+  #   matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
+  # if (matrix_class == "Matrix") {
+  #   out <- matsbyname::Matrix(out)
+  # }
+  # return(out)
+
+  # This is new code that takes advantage of factors and indices
+
+  .DF_with_ij <- .DF |>
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
     # from identical industries.
@@ -212,18 +242,35 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # both Fuel oil and Refinery gas to make MTH.200.C.
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
-    dplyr::group_by_at(c(rownames, colnames)) %>%
-    dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
-    tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-    tibble::remove_rownames() %>%
-    data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
-    tibble::column_to_rownames(var = rownames) %>%
-    as.matrix() %>%
-    matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
-  if (matrix_class == "Matrix") {
-    out <- matsbyname::Matrix(out)
+    dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
+    dplyr::group_by_at(c(rownames, colnames)) |>
+    dplyr::summarise(
+      "{matvals}" := sum(.data[[matvals]])
+    ) |>
+    dplyr::mutate(
+      # Make sure the rownames and colnames columns are factors
+      "{rownames}" := factor(.data[[rownames]]),
+      "{colnames}" := factor(.data[[colnames]]),
+      # Get the indices for each row and column from the factors
+      "{i_colname}" := as.numeric(.data[[rownames]]),
+      "{j_colname}" := as.numeric(.data[[colnames]])
+    )
+  # Get the dimnames
+  dnames <- list(levels(.DF_with_ij[[rownames]]),
+                 levels(.DF_with_ij[[colnames]]))
+  # Make a sparse matrix
+  out <- Matrix::sparseMatrix(i = .DF_with_ij[[i_colname]],
+                              j = .DF_with_ij[[j_colname]],
+                              x = .DF_with_ij[[matvals]],
+                              dims = sapply(dnames, length),
+                              dimnames = dnames)
+  # If a non-sparse matrix is desired, convert to matrix
+  if (matrix_class == "matrix") {
+    out <- as.matrix(out)
   }
-  return(out)
+  out |>
+    matsbyname::setrowtype(rowtype = rowtypes) |>
+    matsbyname::setcoltype(coltype = coltypes)
 }
 
 

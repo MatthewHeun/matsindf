@@ -98,6 +98,15 @@ test_that("rowcolval_to_mat() (collapse) works as expected", {
                           vals = c(  11  ,  12,   22 ),
                           stringsAsFactors = FALSE)
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals", rowtypes = NULL, coltypes = NULL)
+
+
+
+  # rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
+  #                  rowtypes = NULL, coltypes = NULL, matrix_class = "Matrix") |>
+  #   microbenchmark::microbenchmark(unit = "ms", times = 1000)
+
+
+
   expect_true(inherits(A, "matrix"))
   expect_equal(A, expected_mat)
   expect_null(matsbyname::rowtype(A)) # rowtype has not been set
@@ -152,10 +161,11 @@ test_that("rowcolval_to_mat() (collapse) works as expected", {
 
 test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   # Establish some matrices that we expect to see.
-  expected_mat <- matsbyname::Matrix(c(11, 12,
-                                       0,  22),
-                                     nrow = 2, ncol = 2, byrow = TRUE,
-                                     dimnames = list(c("p1", "p2"), c("i1", "i2")))
+  expected_mat <- Matrix::sparseMatrix(i = c(1, 1, 2),
+                                       j = c(1, 2, 2),
+                                       x = c(11, 12, 22),
+                                       dimnames = list(c("p1", "p2"), c("i1", "i2")),
+                                       dims = c(2, 2))
   expected_mat_with_types <- expected_mat %>%
     matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
@@ -168,7 +178,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
   A <- rowcolval_to_mat(rowcolval, rownames = "rows", colnames = "cols", matvals = "vals",
                         rowtypes = NULL, coltypes = NULL, matrix_class = "Matrix")
   expect_true(inherits(A, "Matrix"))
-  expect_equal(A, expected_mat)
+  expect_true(matsbyname::equal_byname(A, expected_mat))
   expect_null(matsbyname::rowtype(A)) # rowtype has not been set
   expect_null(matsbyname::coltype(A)) # coltype has not been set
 
@@ -177,7 +187,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
                         rowtypes  = "Products", coltypes  = "Industries",
                         matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(B))
-  expect_equal(B, expected_mat_with_types)
+  expect_true(matsbyname::equal_byname(B, expected_mat_with_types))
 
   # Provide row and column types in the data frame and specify columns in the call to rowcolval_to_mat.
   C <- rowcolval %>%
@@ -187,7 +197,7 @@ test_that("rowcolval_to_mat() (collapse) works with Matrix objects", {
     rowcolval_to_mat(rownames = "rows", colnames = "cols", matvals = "vals",
                      rowtypes = "rt", coltypes = "ct",
                      matrix_class = "Matrix")
-  expect_equal(C, expected_mat_with_types)
+  expect_true(matsbyname::equal_byname(C, expected_mat_with_types))
 
   # Also works for single values if both the rownames and colnames columns contain NA
   rowcolval2 <- data.frame(Country = c("GH"), rows = c(NA), cols = c(NA),
@@ -244,11 +254,12 @@ test_that("rowcolval_to_mat() deprecation works as expected", {
 
 test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
   # This is the matrix we expect to obtain.
-  expected_mat <- matsbyname::Matrix(c(11, 12,
-                                       0,  22),
-                                     nrow = 2, ncol = 2, byrow = TRUE,
-                                     dimnames = list(c("p1", "p2"), c("i1", "i2"))) %>%
-    matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
+  expected_mat <- Matrix::sparseMatrix(i = c(1, 1, 2),
+                                       j = c(1, 2, 2),
+                                       x = c(11, 12, 22),
+                                       dimnames = list(c("p1", "p2"), c("i1", "i2")),
+                                       dims = c(2, 2)) |>
+      matsbyname::setrowtype("Products") %>% matsbyname::setcoltype("Industries")
 
   # This is the data frame that we'll use the construct the matrix
   data <- data.frame(rows = c( "p1",  "p1", "p2"),
@@ -271,14 +282,14 @@ test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
                      rowtypes = "rt",   coltypes = "ct", matvals = "vals",
                      matrix_class = "Matrix")
   expect_true(matsbyname::is.Matrix(A))
-  expect_equal(A, expected_mat)
+  expect_true(matsbyname::equal_byname(A, expected_mat))
 
   # Verify that if we feed garbage into the function, we obtain an error
   expect_error(mat_to_rowcolval("A",
                                 rownames = "rows", colnames = "cols",
                                 rowtypes = "rt", coltypes = "ct",
                                 matvals = "vals",
-                                drop = 0) %>% magrittr::set_rownames(NULL),
+                                drop = 0),
                "Unknown type of .matrix in mat_to_rowcolval A of class character and length 1")
 
   # Verify that we can convert the matrix to a data frame.

@@ -70,7 +70,7 @@ See the example.'><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -126,7 +126,7 @@ In addition, <code>matsindf</code>-style matrices have "types" for row and colum
 such as "Commodities", "Industries", "Products", or "Machines".
 The row and column types for the <code>matsindf</code>-style matrices are stored as attributes on the matrix
 (<code>rowtype</code> and <code>coltype</code>),
-which can be accessed with the functions <code><a href="https://rdrr.io/pkg/matsbyname/man/rowtype.html" class="external-link">matsbyname::rowtype()</a></code> and <code><a href="https://rdrr.io/pkg/matsbyname/man/coltype.html" class="external-link">matsbyname::coltype()</a></code>.
+which can be accessed with the functions <code><a href="https://matthewheun.github.io/matsbyname/reference/rowtype.html" class="external-link">matsbyname::rowtype()</a></code> and <code><a href="https://matthewheun.github.io/matsbyname/reference/coltype.html" class="external-link">matsbyname::coltype()</a></code>.
 Row and column types are both respected and propagated by the various <code>*_byname</code> functions
 of the <code>matsbyname</code> package.
 Use the <code>*_byname</code> functions when you do operations on the <code>matsindf</code>-style matrices.
@@ -211,7 +211,7 @@ so that failure to set the coltypes argument will give <code>NULL</code>, as app
 <dt>matrix_class</dt>
 <dd><p>One of "matrix" or "Matrix".
 "matrix" creates a <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">base::matrix</a></code> object with the <code><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix()</a></code> function.
-"Matrix" creates a <code><a href="https://rdrr.io/pkg/Matrix/man/Matrix.html" class="external-link">Matrix::Matrix</a></code> object using the <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code> function.
+"Matrix" creates a <code><a href="https://rdrr.io/pkg/Matrix/man/Matrix.html" class="external-link">Matrix::Matrix</a></code> object using the <code><a href="https://matthewheun.github.io/matsbyname/reference/Matrix.html" class="external-link">matsbyname::Matrix()</a></code> function.
 This could be a sparse matrix.
 Default is "matrix".</p></dd>
 
@@ -228,7 +228,7 @@ Default is "matrix".</p></dd>
 <p>Note that two types of matrices can be created, a <code>matrix</code> or a <code>Matrix</code>.
 <code>Matrix</code> has the advantage of representing sparse matrices with less memory
 (and disk space).
-<code>Matrix</code> objects are created by <code><a href="https://rdrr.io/pkg/matsbyname/man/Matrix.html" class="external-link">matsbyname::Matrix()</a></code>.</p>
+<code>Matrix</code> objects are created by <code><a href="https://matthewheun.github.io/matsbyname/reference/Matrix.html" class="external-link">matsbyname::Matrix()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

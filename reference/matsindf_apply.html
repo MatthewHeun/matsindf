@@ -28,7 +28,7 @@ names of the list items in the returned list."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -173,14 +173,19 @@ argument list in the hopes that <code>FUN</code> has reasonable default values.
 If that fails,
 <code>.dat</code> is returned unmodified (if not <code>NULL</code>)
 or the data in <code>...</code> is returned.</p>
+<p>If <code>.dat</code> is <code>NULL</code> and all named arguments in <code>...</code>
+are similarly <code>NULL</code>,
+the result will be a list with each named argument
+being an empty list.
+See examples.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/MatthewHeun/matsbyname" class="external-link">matsbyname</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">example_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>              d <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/matsbyname/man/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>c <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/sum_byname.html" class="external-link">sum_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>              d <span class="op">=</span> <span class="fu"><a href="https://matthewheun.github.io/matsbyname/reference/difference_byname.html" class="external-link">difference_byname</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="co"># Single values for arguments</span></span></span>
 <span class="r-in"><span><span class="fu">matsindf_apply</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="fl">2</span>, b <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
@@ -333,6 +338,15 @@ or the data in <code>...</code> is returned.</p>
 <span class="r-in"><span><span class="fu">matsindf_apply</span><span class="op">(</span><span class="va">DF3</span>, FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] a b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-in"><span><span class="co"># A list of named but empty lists is returned if</span></span></span>
+<span class="r-in"><span><span class="co"># NULL is passed to all named arguments.</span></span></span>
+<span class="r-in"><span><span class="fu">matsindf_apply</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

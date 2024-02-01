@@ -28,7 +28,7 @@ names of the list items in the returned list."><!-- mathjax --><script src="http
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -173,6 +173,11 @@ argument list in the hopes that <code>FUN</code> has reasonable default values.
 If that fails,
 <code>.dat</code> is returned unmodified (if not <code>NULL</code>)
 or the data in <code>...</code> is returned.</p>
+<p>If <code>.dat</code> is <code>NULL</code> and all named arguments in <code>...</code>
+are similarly <code>NULL</code>,
+the result will be a list with each named argument
+being an empty list.
+See examples.</p>
     </div>
 
     <div class="section level2">
@@ -333,6 +338,15 @@ or the data in <code>...</code> is returned.</p>
 <span class="r-in"><span><span class="fu">matsindf_apply</span><span class="op">(</span><span class="va">DF3</span>, FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="st">"a"</span>, b <span class="op">=</span> <span class="st">"b"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] a b</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> &lt;0 rows&gt; (or 0-length row.names)</span>
+<span class="r-in"><span><span class="co"># A list of named but empty lists is returned if</span></span></span>
+<span class="r-in"><span><span class="co"># NULL is passed to all named arguments.</span></span></span>
+<span class="r-in"><span><span class="fu">matsindf_apply</span><span class="op">(</span>FUN <span class="op">=</span> <span class="va">example_fun</span>, a <span class="op">=</span> <span class="cn">NULL</span>, b <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> list()</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,7 +79,7 @@
                         <h4 data-toc-skip class="author">Matthew Kuperus
 Heun</h4>
             
-            <h4 data-toc-skip class="date">2023-12-21</h4>
+            <h4 data-toc-skip class="date">2024-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/MatthewHeun/matsindf/blob/HEAD/vignettes/matsindf.Rmd" class="external-link"><code>vignettes/matsindf.Rmd</code></a></small>
       <div class="d-none name"><code>matsindf.Rmd</code></div>
@@ -315,83 +315,83 @@ in the output, in this case <code>Country</code> and
 <span><span class="co"># To access one of the matrices, try one of these approaches:</span></span>
 <span><span class="op">(</span><span class="va">EnergyMats_2000</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">matrix.name</span> <span class="op">==</span> <span class="st">"U"</span><span class="op">)</span><span class="op">)</span><span class="op">[[</span><span class="st">"matrix"</span><span class="op">]</span><span class="op">]</span> <span class="co"># The U matrix</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt;                Crude dist. Diesel dist. Elect. grid Gas wells &amp; proc. NG dist.</span></span>
-<span><span class="co">#&gt; Crude                    0            0           0                 0        0</span></span>
-<span><span class="co">#&gt; Crude - Dist.            0            0           0                 0        0</span></span>
-<span><span class="co">#&gt; Crude - Fields       47500            0           0                 0        0</span></span>
-<span><span class="co">#&gt; Diesel                   0        15500           0                 0        0</span></span>
-<span><span class="co">#&gt; Diesel - Dist.          25            0           0                50       25</span></span>
-<span><span class="co">#&gt; Elect                    0            0        6400                 0        0</span></span>
-<span><span class="co">#&gt; Elect - Grid            25            0           0                25       25</span></span>
-<span><span class="co">#&gt; NG                       0            0           0             43000        0</span></span>
-<span><span class="co">#&gt; NG - Dist.               0            0           0                 0        0</span></span>
-<span><span class="co">#&gt; NG - Wells               0            0           0                 0    41000</span></span>
-<span><span class="co">#&gt; Petrol                   0            0           0                 0        0</span></span>
-<span><span class="co">#&gt;                Oil fields Oil refineries Petrol dist. Power plants</span></span>
-<span><span class="co">#&gt; Crude               50000              0            0            0</span></span>
-<span><span class="co">#&gt; Crude - Dist.           0          47000            0            0</span></span>
-<span><span class="co">#&gt; Crude - Fields          0              0            0            0</span></span>
-<span><span class="co">#&gt; Diesel                  0              0            0            0</span></span>
-<span><span class="co">#&gt; Diesel - Dist.         50              0          250            0</span></span>
-<span><span class="co">#&gt; Elect                   0              0            0            0</span></span>
-<span><span class="co">#&gt; Elect - Grid           25             75            0          100</span></span>
-<span><span class="co">#&gt; NG                      0              0            0            0</span></span>
-<span><span class="co">#&gt; NG - Dist.              0              0            0        16000</span></span>
-<span><span class="co">#&gt; NG - Wells              0              0            0            0</span></span>
-<span><span class="co">#&gt; Petrol                  0              0        26500            0</span></span>
+<span><span class="co">#&gt;                Oil fields Oil refineries Crude dist. Diesel dist.</span></span>
+<span><span class="co">#&gt; Crude               50000              0           0            0</span></span>
+<span><span class="co">#&gt; Crude - Dist.           0          47000           0            0</span></span>
+<span><span class="co">#&gt; Crude - Fields          0              0       47500            0</span></span>
+<span><span class="co">#&gt; Diesel                  0              0           0        15500</span></span>
+<span><span class="co">#&gt; Diesel - Dist.         50              0          25            0</span></span>
+<span><span class="co">#&gt; Elect                   0              0           0            0</span></span>
+<span><span class="co">#&gt; Elect - Grid           25             75          25            0</span></span>
+<span><span class="co">#&gt; NG                      0              0           0            0</span></span>
+<span><span class="co">#&gt; NG - Dist.              0              0           0            0</span></span>
+<span><span class="co">#&gt; NG - Wells              0              0           0            0</span></span>
+<span><span class="co">#&gt; Petrol                  0              0           0            0</span></span>
+<span><span class="co">#&gt;                Gas wells &amp; proc. NG dist. Petrol dist. Elect. grid Power plants</span></span>
+<span><span class="co">#&gt; Crude                          0        0            0           0            0</span></span>
+<span><span class="co">#&gt; Crude - Dist.                  0        0            0           0            0</span></span>
+<span><span class="co">#&gt; Crude - Fields                 0        0            0           0            0</span></span>
+<span><span class="co">#&gt; Diesel                         0        0            0           0            0</span></span>
+<span><span class="co">#&gt; Diesel - Dist.                50       25          250           0            0</span></span>
+<span><span class="co">#&gt; Elect                          0        0            0        6400            0</span></span>
+<span><span class="co">#&gt; Elect - Grid                  25       25            0           0          100</span></span>
+<span><span class="co">#&gt; NG                         43000        0            0           0            0</span></span>
+<span><span class="co">#&gt; NG - Dist.                     0        0            0           0        16000</span></span>
+<span><span class="co">#&gt; NG - Wells                     0    41000            0           0            0</span></span>
+<span><span class="co">#&gt; Petrol                         0        0        26500           0            0</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
 <span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
 <span><span class="co">#&gt; [1] "Industry"</span></span>
 <span></span>
 <span><span class="va">EnergyMats_2000</span><span class="op">$</span><span class="va">matrix</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="co"># The V matrix</span></span>
-<span><span class="co">#&gt;                   Crude Crude - Dist. Crude - Fields Diesel Diesel - Dist.</span></span>
-<span><span class="co">#&gt; Crude dist.           0         47000              0      0              0</span></span>
-<span><span class="co">#&gt; Diesel dist.          0             0              0      0          15150</span></span>
-<span><span class="co">#&gt; Elect. grid           0             0              0      0              0</span></span>
-<span><span class="co">#&gt; Gas wells &amp; proc.     0             0              0      0              0</span></span>
-<span><span class="co">#&gt; NG dist.              0             0              0      0              0</span></span>
-<span><span class="co">#&gt; Oil fields            0             0          47500      0              0</span></span>
-<span><span class="co">#&gt; Oil refineries        0             0              0  15500              0</span></span>
-<span><span class="co">#&gt; Petrol dist.          0             0              0      0              0</span></span>
-<span><span class="co">#&gt; Power plants          0             0              0      0              0</span></span>
-<span><span class="co">#&gt; Resources - Crude 50000             0              0      0              0</span></span>
-<span><span class="co">#&gt; Resources - NG        0             0              0      0              0</span></span>
-<span><span class="co">#&gt;                   Elect Elect - Grid    NG NG - Dist. NG - Wells Petrol</span></span>
-<span><span class="co">#&gt; Crude dist.           0            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Diesel dist.          0            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Elect. grid           0         6275     0          0          0      0</span></span>
-<span><span class="co">#&gt; Gas wells &amp; proc.     0            0     0          0      41000      0</span></span>
-<span><span class="co">#&gt; NG dist.              0            0     0      41000          0      0</span></span>
-<span><span class="co">#&gt; Oil fields            0            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Oil refineries        0            0     0          0          0  26500</span></span>
-<span><span class="co">#&gt; Petrol dist.          0            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Power plants       6400            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Resources - Crude     0            0     0          0          0      0</span></span>
-<span><span class="co">#&gt; Resources - NG        0            0 43000          0          0      0</span></span>
-<span><span class="co">#&gt;                   Petrol - Dist.</span></span>
-<span><span class="co">#&gt; Crude dist.                    0</span></span>
-<span><span class="co">#&gt; Diesel dist.                   0</span></span>
-<span><span class="co">#&gt; Elect. grid                    0</span></span>
-<span><span class="co">#&gt; Gas wells &amp; proc.              0</span></span>
-<span><span class="co">#&gt; NG dist.                       0</span></span>
-<span><span class="co">#&gt; Oil fields                     0</span></span>
-<span><span class="co">#&gt; Oil refineries                 0</span></span>
-<span><span class="co">#&gt; Petrol dist.               26000</span></span>
-<span><span class="co">#&gt; Power plants                   0</span></span>
-<span><span class="co">#&gt; Resources - Crude              0</span></span>
-<span><span class="co">#&gt; Resources - NG                 0</span></span>
+<span><span class="co">#&gt;                   Crude - Dist. Diesel - Dist. Elect - Grid NG - Wells</span></span>
+<span><span class="co">#&gt; Crude dist.               47000              0            0          0</span></span>
+<span><span class="co">#&gt; Diesel dist.                  0          15150            0          0</span></span>
+<span><span class="co">#&gt; Elect. grid                   0              0         6275          0</span></span>
+<span><span class="co">#&gt; Gas wells &amp; proc.             0              0            0      41000</span></span>
+<span><span class="co">#&gt; NG dist.                      0              0            0          0</span></span>
+<span><span class="co">#&gt; Oil fields                    0              0            0          0</span></span>
+<span><span class="co">#&gt; Oil refineries                0              0            0          0</span></span>
+<span><span class="co">#&gt; Petrol dist.                  0              0            0          0</span></span>
+<span><span class="co">#&gt; Power plants                  0              0            0          0</span></span>
+<span><span class="co">#&gt; Resources - Crude             0              0            0          0</span></span>
+<span><span class="co">#&gt; Resources - NG                0              0            0          0</span></span>
+<span><span class="co">#&gt;                   NG - Dist. Crude - Fields Diesel Petrol Petrol - Dist. Elect</span></span>
+<span><span class="co">#&gt; Crude dist.                0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; Diesel dist.               0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; Elect. grid                0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; Gas wells &amp; proc.          0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; NG dist.               41000              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; Oil fields                 0          47500      0      0              0     0</span></span>
+<span><span class="co">#&gt; Oil refineries             0              0  15500  26500              0     0</span></span>
+<span><span class="co">#&gt; Petrol dist.               0              0      0      0          26000     0</span></span>
+<span><span class="co">#&gt; Power plants               0              0      0      0              0  6400</span></span>
+<span><span class="co">#&gt; Resources - Crude          0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt; Resources - NG             0              0      0      0              0     0</span></span>
+<span><span class="co">#&gt;                   Crude    NG</span></span>
+<span><span class="co">#&gt; Crude dist.           0     0</span></span>
+<span><span class="co">#&gt; Diesel dist.          0     0</span></span>
+<span><span class="co">#&gt; Elect. grid           0     0</span></span>
+<span><span class="co">#&gt; Gas wells &amp; proc.     0     0</span></span>
+<span><span class="co">#&gt; NG dist.              0     0</span></span>
+<span><span class="co">#&gt; Oil fields            0     0</span></span>
+<span><span class="co">#&gt; Oil refineries        0     0</span></span>
+<span><span class="co">#&gt; Petrol dist.          0     0</span></span>
+<span><span class="co">#&gt; Power plants          0     0</span></span>
+<span><span class="co">#&gt; Resources - Crude 50000     0</span></span>
+<span><span class="co">#&gt; Resources - NG        0 43000</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
 <span><span class="co">#&gt; [1] "Industry"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>
 <span><span class="co">#&gt; [1] "Product"</span></span>
 <span></span>
 <span><span class="va">EnergyMats_2000</span><span class="op">$</span><span class="va">matrix</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span> <span class="co"># The Y matrix</span></span>
-<span><span class="co">#&gt;                Residential Transport</span></span>
-<span><span class="co">#&gt; Diesel - Dist.           0     14750</span></span>
-<span><span class="co">#&gt; Elect - Grid          6000         0</span></span>
-<span><span class="co">#&gt; NG - Dist.           25000         0</span></span>
-<span><span class="co">#&gt; Petrol - Dist.           0     26000</span></span>
+<span><span class="co">#&gt;                Transport Residential</span></span>
+<span><span class="co">#&gt; Diesel - Dist.     14750           0</span></span>
+<span><span class="co">#&gt; Elect - Grid           0        6000</span></span>
+<span><span class="co">#&gt; NG - Dist.             0       25000</span></span>
+<span><span class="co">#&gt; Petrol - Dist.     26000           0</span></span>
 <span><span class="co">#&gt; attr(,"rowtype")</span></span>
 <span><span class="co">#&gt; [1] "Product"</span></span>
 <span><span class="co">#&gt; attr(,"coltype")</span></span>

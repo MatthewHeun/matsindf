@@ -24,7 +24,7 @@ in which case the value in the values column is returned."><!-- mathjax --><scri
     
     <a class="navbar-brand me-2" href="../index.html">matsindf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.7</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.8</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,9 @@ in which case the value in the <code>values</code> column is returned.</p>
 <span>  coltypes <span class="op">=</span> <span class="st">"coltypes"</span>,</span>
 <span>  fill <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  matrix.class <span class="op">=</span> <span class="fu">lifecycle</span><span class="fu">::</span><span class="fu"><a href="https://lifecycle.r-lib.org/reference/deprecated.html" class="external-link">deprecated</a></span><span class="op">(</span><span class="op">)</span>,</span>
-<span>  matrix_class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span></span>
+<span>  matrix_class <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"matrix"</span>, <span class="st">"Matrix"</span><span class="op">)</span>,</span>
+<span>  i_colname <span class="op">=</span> <span class="st">"i"</span>,</span>
+<span>  j_colname <span class="op">=</span> <span class="st">"j"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -135,6 +137,10 @@ in which case the value in the <code>values</code> column is returned.</p>
 "Matrix" creates a <code><a href="https://rdrr.io/pkg/Matrix/man/Matrix.html" class="external-link">Matrix::Matrix</a></code> object using the <code><a href="https://matthewheun.github.io/matsbyname/reference/Matrix.html" class="external-link">matsbyname::Matrix()</a></code> function.
 This could be a sparse matrix.
 Default is "matrix".</p></dd>
+
+
+<dt>i_colname, j_colname</dt>
+<dd><p>Names of index columns used internally. Defaults are "i" and "j".</p></dd>
 
 </dl></div>
     <div class="section level2">

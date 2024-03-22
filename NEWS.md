@@ -8,9 +8,12 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-* Fixed a bug wherein passing NULL in all named arguments to `matsindf_apply()`
+## matsindf 0.4.8 (2024-01-31) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10605481.svg)](https://doi.org/10.5281/zenodo.10605481)
+
+* Fixed a bug wherein passing `NULL` in all named arguments to `matsindf_apply()`
   caused an error.  
   Doing so now leads to a list of empty lists.
+* Tests now run in parallel.
 * Throughout the test suite, 
   now have better matrix equality tests
   that are agnostic to matrix class.

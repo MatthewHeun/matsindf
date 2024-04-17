@@ -48,6 +48,10 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rowtypes = "rowtypes", coltypes = "coltypes",
                              drop = NA) {
 
+  if (is.null(.matrix)) {
+    return(NULL)
+  }
+
   if (matsbyname::is_matrix_or_Matrix(.matrix)) {
     if (matsbyname::is.Matrix(.matrix)) {
       temp <- as.matrix(.matrix) %>%

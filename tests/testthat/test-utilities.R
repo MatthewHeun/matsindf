@@ -325,6 +325,11 @@ test_that("mat_to_rowcolval() (expand) works with Matrix objects", {
 })
 
 
+test_that("mat_to_rowcolval() works with NULL matrices", {
+  expect_null(mat_to_rowcolval(NULL))
+})
+
+
 test_that("add_UKEnergy2000_matnames() works as expected", {
   UKEnergy2000_withUVY <- UKEnergy2000 %>%
     matsindf:::add_UKEnergy2000_matnames()

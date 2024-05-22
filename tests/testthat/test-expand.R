@@ -289,6 +289,18 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
 })
 
 
+test_that("expand_to_tidy() works will NULL in a list", {
+  mat <- Matrix::Matrix(data = c(1:4),
+                        nrow = 2,
+                        dimnames = list(c("r1", "r2"),
+                                        c("c1", "c2")))
+  matlist <- list(m1 = mat, m2 = NULL, NULL, m3 = mat)
+  res <- expand_to_tidy(matlist)
+  expect_equal(nrow(res), 8)
+})
+
+
+
 # test_that("expand_to_tidy() is much faster", {
 #   # Build a big data frame to collapse into small matrices
 #   # n_mats <- 1000

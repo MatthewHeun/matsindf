@@ -80,17 +80,6 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
     tempDF[[matvals]] <- I(.DF)
     .DF <- tempDF
   }
-  # .DF %>%
-  #   # group by everything except matvals column so that "do" will act as desired
-  #   dplyr::group_by_at(setdiff(colnames(.DF), matvals)) %>%
-  #   dplyr::do(
-  #     # Convert .data to row, col, val format
-  #     mat_to_rowcolval(.data[[matvals]][[1L]], rownames = rownames, colnames = colnames,
-  #                      rowtypes = rowtypes, coltypes = coltypes,
-  #                      matvals = matvals, drop = drop)
-  #   ) %>%
-  #   # Remove the grouping
-  #   dplyr::ungroup()
 
   temp <- .DF |>
     # Remove any rows with NULL entries in the matvals column.

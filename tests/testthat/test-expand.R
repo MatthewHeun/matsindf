@@ -300,6 +300,12 @@ test_that("expand_to_tidy() works will NULL in a list", {
 })
 
 
+test_that("expand_to_tidy() returns NULL when all arguments are NULL", {
+  matlist <- list(m1 = NULL, m2 = NULL, NULL, m3 = NULL)
+  expect_null(expand_to_tidy(matlist))
+})
+
+
 
 # test_that("expand_to_tidy() is much faster", {
 #   # Build a big data frame to collapse into small matrices

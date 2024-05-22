@@ -92,9 +92,13 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
   #   # Remove the grouping
   #   dplyr::ungroup()
 
-  .DF |>
+  temp <- .DF |>
     # Remove any rows with NULL entries in the matvals column.
-    dplyr::filter(! sapply(.data[[matvals]], is.null)) |>
+    dplyr::filter(! sapply(.data[[matvals]], is.null))
+  if (nrow(temp) == 0) {
+    return(NULL)
+  }
+  temp |>
     # group by everything except matvals column so that "do" will act as desired
     dplyr::group_by_at(setdiff(colnames(.DF), matvals)) |>
     dplyr::do(

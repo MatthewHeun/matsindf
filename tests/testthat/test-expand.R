@@ -306,7 +306,6 @@ test_that("expand_to_tidy() returns NULL when all arguments are NULL", {
 })
 
 
-
 # test_that("expand_to_tidy() is much faster", {
 #   # Build a big data frame to collapse into small matrices
 #   # n_mats <- 1000

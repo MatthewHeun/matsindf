@@ -8,6 +8,8 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* `expand_to_tidy()` now handles `NULL` in lists of matrices
+   and `NULL` in a column of matrices in a data frame.
 * `mat_to_rowcolval()` now returns `NULL` when `NULL` is supplied.
 
 

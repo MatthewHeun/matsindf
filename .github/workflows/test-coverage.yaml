@@ -11,12 +11,12 @@
 
 on:
   push:
-  branches: [main, master]
-pull_request:
-  branches: [main, master]
-schedule:
-  # Build main daily at 8 AM UTC, 3 AM EST, 4 AM EDT, one hour after nightly builds.
-  - cron: "0 8 * * *"
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    # Build main daily at 8 AM UTC, 3 AM EST, 4 AM EDT, one hour after nightly builds.
+    - cron: "0 8 * * *"
 
 name: test-coverage.yaml
 

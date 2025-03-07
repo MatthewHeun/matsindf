@@ -8,9 +8,19 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+
 * `expand_to_tidy()` now handles `NULL` in lists of matrices
    and `NULL` in a column of matrices in a data frame.
 * `mat_to_rowcolval()` now returns `NULL` when `NULL` is supplied.
+
+
+## matsindf 0.4.9 (2025-03-07)
+
+* Update test-coverage.yaml to v4 of the upload-artifact workflow.
+* This version not released to CRAN.
+* No new tests.
+    - Now at 380 tests, all passing.
+    - Test coverage remains at 100%.
 
 
 ## matsindf 0.4.8 (2024-01-31) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10605481.svg)](https://doi.org/10.5281/zenodo.10605481)

@@ -8,6 +8,15 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+## matsindf 0.4.9 (2025-03-07)
+
+* Update test-coverage.yaml to v4 of the upload-artifact workflow.
+* This version not released to CRAN.
+* No new tests.
+    - Now at 380 tests, all passing.
+    - Test coverage remains at 100%.
+
+
 ## matsindf 0.4.8 (2024-01-31)
 
 * Fixed a bug wherein passing `NULL` in all named arguments to `matsindf_apply()`

@@ -26,7 +26,7 @@
 #'                 Default is "colnames".
 #' @param rowtypes An optional name for the output column of row types (a string).
 #'                 Default is "rowtypes".
-#' @param coltypes The optional name for the output column of column types (a string)
+#' @param coltypes The optional name for the output column of column types (a string).
 #'                 Default is "coltypes".
 #' @param drop If specified, the value to be dropped from output,
 #'             For example, `drop = 0` will cause `0` entries in the matrices
@@ -34,7 +34,7 @@
 #'             If `NA`, no values are dropped from output.
 #'             Default is `NA`.
 #'
-#' @return A tidy data frame containing expanded \pkg{matsindf}-style matrices
+#' @return A tidy data frame containing expanded \pkg{matsindf}-style matrices.
 #'
 #' @export
 #'

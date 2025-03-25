@@ -70,9 +70,13 @@
 #' expand_to_tidy(mats, matnames = "matrix", matvals = "vals",
 #'                      rownames = "rows", colnames = "cols",
 #'                      rowtypes = "rt",   coltypes = "ct", drop = 0)
-expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
-                           rownames = "rownames", colnames = "colnames",
-                           rowtypes = "rowtypes", coltypes = "coltypes",
+expand_to_tidy <- function(.DF,
+                           matnames = "matnames",
+                           matvals = "matvals",
+                           rownames = "rownames",
+                           colnames = "colnames",
+                           rowtypes = "rowtypes",
+                           coltypes = "coltypes",
                            drop = NA){
   if (!is.data.frame(.DF) & is.list(.DF)) {
     # Create an empty 1-row data frame with row names taken from .DF and promote to a column
@@ -95,9 +99,13 @@ expand_to_tidy <- function(.DF, matnames = "matnames", matvals = "matvals",
     dplyr::group_by_at(setdiff(colnames(.DF), matvals)) |>
     dplyr::do(
       # Convert .data to row, col, val format
-      mat_to_rowcolval(.data[[matvals]][[1L]], rownames = rownames, colnames = colnames,
-                       rowtypes = rowtypes, coltypes = coltypes,
-                       matvals = matvals, drop = drop)
+      mat_to_rowcolval(.data[[matvals]][[1L]],
+                       rownames = rownames,
+                       colnames = colnames,
+                       rowtypes = rowtypes,
+                       coltypes = coltypes,
+                       matvals = matvals,
+                       drop = drop)
     ) |>
     # Remove the grouping
     dplyr::ungroup()

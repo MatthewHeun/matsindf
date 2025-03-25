@@ -9,15 +9,17 @@
 #' `rowtypes`, and `coltypes`, arguments.
 #' The entries of the \pkg{matsindf}-style matrices are stored in an output column named `values.`
 #'
-#' @param      .DF The data frame containing \pkg{matsindf}-style matrices.
-#'                 (`.DF` may also be a named list of matrices, in which case
-#'                 names of the matrices are taken from the names of items in the list and
-#'                 list items are expected to be matrices.)
+#' @param .DF The data frame containing \pkg{matsindf}-style matrices.
+#'            (`.DF` may also be a named list of matrices, in which case
+#'            names of the matrices are taken from the names of items in the list and
+#'            list items are expected to be matrices.)
 #' @param matnames The name of the column in `.DF` containing matrix names (a string).
 #'                 Default is "matnames".
-#' @param  matvals The name of the column in `.DF` containing IO-style matrices or constants (a string),
-#'                 This will also be the name of the column containing matrix entries in the output data frame.
-#'                 Default is "matvals".
+#' @param matvals The name of the column in `.DF` containing IO-style matrices
+#'                or constants (a string).
+#'                This will also be the name of the column containing matrix entries
+#'                in the output data frame.
+#'                Default is "matvals".
 #' @param rownames The name for the output column of row names (a string).
 #'                 Default is "rownames".
 #' @param colnames The name for the output column of column names (a string).
@@ -26,10 +28,11 @@
 #'                 Default is "rowtypes".
 #' @param coltypes The optional name for the output column of column types (a string)
 #'                 Default is "coltypes".
-#' @param     drop If specified, the value to be dropped from output,
-#'                 For example, `drop = 0` will cause `0` entries in the matrices to be deleted from output.
-#'                 If `NA`, no values are dropped from output.
-#'                 Default is `NA`.
+#' @param drop If specified, the value to be dropped from output,
+#'             For example, `drop = 0` will cause `0` entries in the matrices
+#'             to be deleted from output.
+#'             If `NA`, no values are dropped from output.
+#'             Default is `NA`.
 #'
 #' @return A tidy data frame containing expanded \pkg{matsindf}-style matrices
 #'

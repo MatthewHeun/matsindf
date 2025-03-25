@@ -24,8 +24,10 @@ list items are expected to be matrices.)}
 \item{matnames}{The name of the column in \code{.DF} containing matrix names (a string).
 Default is "matnames".}
 
-\item{matvals}{The name of the column in \code{.DF} containing IO-style matrices or constants (a string),
-This will also be the name of the column containing matrix entries in the output data frame.
+\item{matvals}{The name of the column in \code{.DF} containing IO-style matrices
+or constants (a string).
+This will also be the name of the column containing matrix entries
+in the output data frame.
 Default is "matvals".}
 
 \item{rownames}{The name for the output column of row names (a string).
@@ -37,22 +39,23 @@ Default is "colnames".}
 \item{rowtypes}{An optional name for the output column of row types (a string).
 Default is "rowtypes".}
 
-\item{coltypes}{The optional name for the output column of column types (a string)
+\item{coltypes}{The optional name for the output column of column types (a string).
 Default is "coltypes".}
 
 \item{drop}{If specified, the value to be dropped from output,
-For example, \code{drop = 0} will cause \code{0} entries in the matrices to be deleted from output.
+For example, \code{drop = 0} will cause \code{0} entries in the matrices
+to be deleted from output.
 If \code{NA}, no values are dropped from output.
 Default is \code{NA}.}
 }
 \value{
-A tidy data frame containing expanded \pkg{matsindf}-style matrices
+A tidy data frame containing expanded \pkg{matsindf}-style matrices.
 }
 \description{
 Any tidy data frame of matrices (in which each row represents one matrix observation)
 can also be represented as a tidy data frame
 with each non-zero matrix entry as an observation on its own row.
-This function (and \code{collapse_to_matrices()}) convert between the two representations.
+This function and \code{collapse_to_matrices()} convert between the two representations.
 }
 \details{
 Names for output columns are specified in the \code{rownames}, \code{colnames},

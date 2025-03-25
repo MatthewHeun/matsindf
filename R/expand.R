@@ -3,7 +3,7 @@
 #' Any tidy data frame of matrices (in which each row represents one matrix observation)
 #' can also be represented as a tidy data frame
 #' with each non-zero matrix entry as an observation on its own row.
-#' This function (and `collapse_to_matrices()`) convert between the two representations.
+#' This function and `collapse_to_matrices()` convert between the two representations.
 #'
 #' Names for output columns are specified in the `rownames`, `colnames`,
 #' `rowtypes`, and `coltypes`, arguments.

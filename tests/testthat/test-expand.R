@@ -289,7 +289,7 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
 })
 
 
-test_that("expand_to_tidy() works will NULL in a list", {
+test_that("expand_to_tidy() works with NULL in a list", {
   mat <- Matrix::Matrix(data = c(1:4),
                         nrow = 2,
                         dimnames = list(c("r1", "r2"),

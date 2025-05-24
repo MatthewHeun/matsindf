@@ -49,7 +49,7 @@ See `NEWS.md` for details.
         * warnings: 0
         * notes: 0
 * rhub:
-    * `devtools::check_rhub()`
+    * `rhub::rhub_check(branch = "release-x.x.x")`
         * Windows Server 2022, R-devel, 64 bit
             * errors: 0
             * warnings: 0

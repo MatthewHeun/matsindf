@@ -48,6 +48,10 @@ mat_to_rowcolval <- function(.matrix, matvals = "matvals",
                              rowtypes = "rowtypes", coltypes = "coltypes",
                              drop = NA) {
 
+  if (is.null(.matrix)) {
+    return(NULL)
+  }
+
   if (matsbyname::is_matrix_or_Matrix(.matrix)) {
     if (matsbyname::is.Matrix(.matrix)) {
       temp <- as.matrix(.matrix) %>%
@@ -649,7 +653,7 @@ df_to_msg <- function(df) {
 #'
 #' By default, a column is considered a matrix column if `all()` of the
 #' rows contain matrices.
-#' Use the `.test_any` argument to modify this behavior.
+#' Use the `.any` argument to modify this behavior.
 #'
 #' By default, the vector of integers returned from this function
 #' is named by the columns.
@@ -674,13 +678,13 @@ df_to_msg <- function(df) {
 #' tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
 #'                          row = c("i1", "i1", "i2", "i1", "i2"),
 #'                          col = c("p1", "p2", "p2", "p1", "p2"),
-#'                          vals = c(1, 2, 3, 4, 5)) %>%
+#'                          vals = c(1, 2, 3, 4, 5)) |>
 #'   dplyr::mutate(
 #'     rowtypes = "Industries",
 #'     coltypes  = "Products"
-#'   ) %>%
+#'   ) |>
 #'   dplyr::group_by(matrix)
-#' matsdf <- tidy %>%
+#' matsdf <- tidy |>
 #'   collapse_to_matrices(matnames = "matrix", matvals = "vals",
 #'                        rownames = "row", colnames = "col",
 #'                        rowtypes = "rowtypes", coltypes = "coltypes")

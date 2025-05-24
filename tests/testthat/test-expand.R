@@ -289,6 +289,46 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
 })
 
 
+test_that("expand_to_tidy() works will NULL in a list", {
+  mat <- Matrix::Matrix(data = c(1:4),
+                        nrow = 2,
+                        dimnames = list(c("r1", "r2"),
+                                        c("c1", "c2")))
+  matlist <- list(m1 = mat, m2 = NULL, NULL, m3 = mat)
+  res <- expand_to_tidy(matlist)
+  expect_equal(nrow(res), 8)
+})
+
+
+test_that("expand_to_tidy() works with NULL in a data frame", {
+  m1 <- matsbyname::Matrix(c(1,2,3,4), nrow = 2, ncol = 2, byrow = TRUE,
+                           dimnames = list(c("r1", "r2"), c("c1", "c2")))
+  df <- data.frame(a = c(1, 2, 3), m = I(list(m1, NULL, m1)))
+
+  tidy <- df |>
+    expand_to_tidy(matvals = "m", rownames = "row", colnames = "col")
+  expected <- tibble::tibble(a = c(1, 1, 1, 1, 3, 3, 3, 3),
+                             row = c("r1", "r2", "r1", "r2",
+                                     "r1", "r2", "r1", "r2"),
+                             col = c("c1", "c1", "c2", "c2",
+                                     "c1", "c1", "c2", "c2"),
+                             m = c(1, 3, 2, 4,
+                                   1, 3, 2, 4))
+  expect_equal(tidy, expected)
+
+  df2 <- tibble::tibble(a = c(1, 2, 3), m = list(m1, NULL, m1))
+  tidy2 <- df2 |>
+    expand_to_tidy(matvals = "m", rownames = "row", colnames = "col")
+  expect_equal(tidy2, expected)
+})
+
+
+test_that("expand_to_tidy() returns NULL when all arguments are NULL", {
+  matlist <- list(m1 = NULL, m2 = NULL, NULL, m3 = NULL)
+  expect_null(expand_to_tidy(matlist))
+})
+
+
 # test_that("expand_to_tidy() is much faster", {
 #   # Build a big data frame to collapse into small matrices
 #   # n_mats <- 1000

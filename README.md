@@ -84,7 +84,8 @@ at <https://MatthewHeun.github.io/matsindf/>.
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 
 <div id="ref-Heun:2018" class="csl-entry">
 

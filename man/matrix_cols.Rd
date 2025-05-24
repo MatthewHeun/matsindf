@@ -31,7 +31,7 @@ This function helps with that task.
 \details{
 By default, a column is considered a matrix column if \code{all()} of the
 rows contain matrices.
-Use the \code{.test_any} argument to modify this behavior.
+Use the \code{.any} argument to modify this behavior.
 
 By default, the vector of integers returned from this function
 is named by the columns.
@@ -41,13 +41,13 @@ Use the \code{.drop_names} function to modify this behavior.
 tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
                          row = c("i1", "i1", "i2", "i1", "i2"),
                          col = c("p1", "p2", "p2", "p1", "p2"),
-                         vals = c(1, 2, 3, 4, 5)) \%>\%
+                         vals = c(1, 2, 3, 4, 5)) |>
   dplyr::mutate(
     rowtypes = "Industries",
     coltypes  = "Products"
-  ) \%>\%
+  ) |>
   dplyr::group_by(matrix)
-matsdf <- tidy \%>\%
+matsdf <- tidy |>
   collapse_to_matrices(matnames = "matrix", matvals = "vals",
                        rownames = "row", colnames = "col",
                        rowtypes = "rowtypes", coltypes = "coltypes")

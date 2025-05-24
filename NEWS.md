@@ -8,6 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Updated R dependency to >= 4.1.0 due to using the new pipe.
 * Update test-coverage.yaml to latest version.
 * `expand_to_tidy()` now handles `NULL` in lists of matrices
    and `NULL` in a column of matrices in a data frame.

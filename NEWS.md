@@ -17,7 +17,7 @@ which always resolves to the latest release.
     - Test coverage remains at 100%.
 
 
-## matsindf 0.4.9 (2025-03-07)
+## matsindf 0.4.9 (2025-03-07) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14990977.svg)](https://doi.org/10.5281/zenodo.14990977)
 
 * Update test-coverage.yaml to v4 of the upload-artifact workflow.
 * This version not released to CRAN.

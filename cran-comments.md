@@ -8,7 +8,7 @@ and improves handling of `NULL` matrices in
 See `NEWS.md` for details.
 
 
-## Test environments (12 in total) and R CMD check results
+## Test environments (14 in total) and R CMD check results
 
 * local: macOS X 15.5 (Sequoia), R4.5.0 (2023-04-11)
     * errors: 0
@@ -50,32 +50,26 @@ See `NEWS.md` for details.
         * notes: 0
 * rhub:
     * `rhub::rhub_check(branch = "release-x.x.x")`
-        * Windows Server 2022, R-devel, 64 bit
+        * Linux (R-devel)
             * errors: 0
             * warnings: 0
-            * notes: 2 
-                - checking for non-standard things in the check directory ... NOTE
-                - Found the following files/directories:
-                - ''NULL''
-                - checking for detritus in the temp directory ... NOTE
-                - Found the following files/directories:
-                - 'lastMiKTeXException'
-                - These notes appear to be problems with the cleanup process.
-        * Ubuntu Linux 20.04.1 LTS, R-release, GCC
+            * notes: 0 
+        * m1-san (R-devel)
             * errors: 0
             * warnings: 0
-            * notes: 1
-              - checking HTML version of manual ... NOTE
-              - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on Linux.
-        * Fedora Linux, R-devel, clang, gfortran
+            * notes: 0
+        * macos (R-devel)
             * errors: 0
             * warnings: 0
-            * notes: 1
-              - checking HTML version of manual ... NOTE
-              - Skipping checking HTML validation: no command 'tidy' found
-              - The note appears only on Linux.
-
+            * notes: 0
+        * macos-arm64 (R-devel)
+            * errors: 0
+            * warnings: 0
+            * notes: 0
+        * windows (R-devel)
+            * errors: 0
+            * warnings: 0
+            * notes: 0
 
 
 ## revdepcheck results

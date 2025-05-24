@@ -15,7 +15,11 @@ See `NEWS.md` for details.
     * warnings: 0
     * notes: 0
 * GitHub Actions: 
-    * macOS-latest (release)
+    * macos-latest (release)
+        * errors: 0
+        * warnings: 0
+        * notes: 0
+    * windows-latest (release)
         * errors: 0
         * warnings: 0
         * notes: 0
@@ -28,10 +32,6 @@ See `NEWS.md` for details.
         * warnings: 0
         * notes: 0
     * ubuntu-latest (oldrel-1)
-        * errors: 0
-        * warnings: 0
-        * notes: 0
-    * windows-latest (release)
         * errors: 0
         * warnings: 0
         * notes: 0

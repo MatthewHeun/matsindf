@@ -8,10 +8,13 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-
+* Update test-coverage.yaml to latest version.
 * `expand_to_tidy()` now handles `NULL` in lists of matrices
    and `NULL` in a column of matrices in a data frame.
 * `mat_to_rowcolval()` now returns `NULL` when `NULL` is supplied.
+* New tests for new feature.
+    - Now at 385 tests, all passing.
+    - Test coverage remains at 100%.
 
 
 ## matsindf 0.4.9 (2025-03-07)
@@ -19,7 +22,7 @@ which always resolves to the latest release.
 * Update test-coverage.yaml to v4 of the upload-artifact workflow.
 * This version not released to CRAN.
 * No new tests.
-    - Now at 380 tests, all passing.
+    - Still at 380 tests, all passing.
     - Test coverage remains at 100%.
 
 

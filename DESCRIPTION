@@ -6,7 +6,6 @@ Date: 2025-05-24
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
-Maintainer: Matthew Heun <matthew.heun@me.com>
 Description: Provides functions to collapse a tidy data frame into matrices in a data frame
     and expand a data frame of matrices into a tidy data frame.
 License: MIT + file LICENSE

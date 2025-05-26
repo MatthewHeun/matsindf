@@ -1,11 +1,11 @@
-pandoc: '3.2'
-pkgdown: 2.1.1
+pandoc: '3.4'
+pkgdown: 2.1.2
 pkgdown_sha: ~
 articles:
   iris_pca: iris_pca.html
   matsindf: matsindf.html
   midf_apply_primer: midf_apply_primer.html
-last_built: 2025-03-07T19:33Z
+last_built: 2025-05-25T00:36Z
 urls:
   reference: https://matthewheun.github.io/matsindf/reference
   article: https://matthewheun.github.io/matsindf/articles

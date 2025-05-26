@@ -8,7 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
-## matsindf 0.4.10 (2025-05-24)
+## matsindf 0.4.10 (2025-05-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15520543.svg)](https://doi.org/10.5281/zenodo.15520543)
 
 * Updated R dependency to >= 4.1.0 due to using the new pipe.
 * Update test-coverage.yaml to latest version.

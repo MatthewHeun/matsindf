@@ -1,4 +1,4 @@
-#' Collapse a "tidy" data frame to matrices in a data frame `matsindf`)
+#' Collapse a "tidy" data frame to matrices in a data frame (`matsindf`)
 #'
 #' A "tidy" data frame contains information that can be collapsed into matrices,
 #' including columns for

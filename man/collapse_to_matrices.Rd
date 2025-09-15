@@ -2,7 +2,7 @@
 % Please edit documentation in R/collapse.R
 \name{collapse_to_matrices}
 \alias{collapse_to_matrices}
-\title{Collapse a "tidy" data frame to matrices in a data frame \code{matsindf})}
+\title{Collapse a "tidy" data frame to matrices in a data frame (\code{matsindf})}
 \usage{
 collapse_to_matrices(
   .DF,

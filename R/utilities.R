@@ -238,6 +238,33 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
 
   # This is new code that takes advantage of factors and indices
 
+  # This is the original code:
+
+  # .DF_with_ij <- .DF |>
+  #   # It is possible to have rows with the same Industry in .DF,
+  #   # because multiple fuel sources can make the same type of output
+  #   # from identical industries.
+  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
+  #   # both Fuel oil and Refinery gas to make MTH.200.C.
+  #   # To avoid problems below, we can to summarise all of the rows
+  #   # with same rownames and colnames into one.
+  #   dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
+  #   dplyr::group_by_at(c(rownames, colnames)) |>
+  #   dplyr::summarise(
+  #     "{matvals}" := sum(.data[[matvals]])
+  #   ) |>
+  #   dplyr::mutate(
+  #     # Make sure the rownames and colnames columns are factors
+  #     "{rownames}" := factor(.data[[rownames]]),
+  #     "{colnames}" := factor(.data[[colnames]]),
+  #     # Get the indices for each row and column from the factors
+  #     "{i_colname}" := as.numeric(.data[[rownames]]),
+  #     "{j_colname}" := as.numeric(.data[[colnames]])
+  #   )
+
+
+  # This is a new way that we're testing for speed.
+
   .DF_with_ij <- .DF |>
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
@@ -247,18 +274,17 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
     dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
-    dplyr::group_by_at(c(rownames, colnames)) |>
+    dplyr::group_by(dplyr::across(dplyr::all_of(c(rownames, colnames)))) |>
     dplyr::summarise(
       "{matvals}" := sum(.data[[matvals]])
-    ) |>
-    dplyr::mutate(
-      # Make sure the rownames and colnames columns are factors
-      "{rownames}" := factor(.data[[rownames]]),
-      "{colnames}" := factor(.data[[colnames]]),
-      # Get the indices for each row and column from the factors
-      "{i_colname}" := as.numeric(.data[[rownames]]),
-      "{j_colname}" := as.numeric(.data[[colnames]])
     )
+  .DF_with_ij[[rownames]] <- factor(.DF_with_ij[[rownames]])
+  .DF_with_ij[[colnames]] <- factor(.DF_with_ij[[colnames]])
+  .DF_with_ij[[i_colname]] <- as.numeric(.DF_with_ij[[rownames]])
+  .DF_with_ij[[j_colname]] <- as.numeric(.DF_with_ij[[colnames]])
+
+
+
   # Get the dimnames
   dnames <- list(levels(.DF_with_ij[[rownames]]),
                  levels(.DF_with_ij[[colnames]]))

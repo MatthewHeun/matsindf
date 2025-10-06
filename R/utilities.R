@@ -274,6 +274,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # To avoid problems below, we can to summarise all of the rows
     # with same rownames and colnames into one.
     dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
+    #   dplyr::group_by_at(c(rownames, colnames)) |>
     dplyr::group_by(dplyr::across(dplyr::all_of(c(rownames, colnames)))) |>
     dplyr::summarise(
       "{matvals}" := sum(.data[[matvals]])

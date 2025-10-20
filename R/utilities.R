@@ -209,37 +209,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     return(.DF[[matvals]][[1]])
   }
 
-  # This is old code that uses a data frame.
-
-  # # The remainder of the rows have matrix information stored in the columns
-  # # rownames, colnames, rowtype, coltype
-  # # Put that data in a matrix and return it.
-  # out <- .DF %>%
-  #   dplyr::select(!!rownames, !!colnames, !!matvals) %>%
-  #   # It is possible to have rows with the same Industry in .DF,
-  #   # because multiple fuel sources can make the same type of output
-  #   # from identical industries.
-  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
-  #   # both Fuel oil and Refinery gas to make MTH.200.C.
-  #   # To avoid problems below, we can to summarise all of the rows
-  #   # with same rownames and colnames into one.
-  #   dplyr::group_by_at(c(rownames, colnames)) %>%
-  #   dplyr::summarise(!!matvals := sum(!!as.name(matvals))) %>%
-  #   tidyr::spread(key = !!colnames, value = !!matvals, fill = fill) %>%
-  #   tibble::remove_rownames() %>%
-  #   data.frame(check.names = FALSE, stringsAsFactors = FALSE) %>% # Avoids munging names of columns
-  #   tibble::column_to_rownames(var = rownames) %>%
-  #   as.matrix() %>%
-  #   matsbyname::setrowtype(rowtype = rowtypes) %>% matsbyname::setcoltype(coltype = coltypes)
-  # if (matrix_class == "Matrix") {
-  #   out <- matsbyname::Matrix(out)
-  # }
-  # return(out)
-
-  # This is new code that takes advantage of factors and indices
-
-  # This is the original code:
-
   .DF_with_ij <- .DF |>
     # It is possible to have rows with the same Industry in .DF,
     # because multiple fuel sources can make the same type of output
@@ -250,7 +219,9 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # with same rownames and colnames into one.
     dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
     # dplyr::group_by_at(c(rownames, colnames)) |>
-    # In testing, we found that using group_by(across()) is much faster that group_by_at()
+    # In testing, we found that using group_by(across())
+    # is much faster that group_by_at().
+    # ---MKH, RSS 20 October 2025
     dplyr::group_by(dplyr::across(dplyr::all_of(c(rownames, colnames)))) |>
     dplyr::summarise(
       "{matvals}" := sum(.data[[matvals]])
@@ -263,30 +234,6 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
       "{i_colname}" := as.numeric(.data[[rownames]]),
       "{j_colname}" := as.numeric(.data[[colnames]])
     )
-
-
-  # This is a new way that we're testing for speed.
-
-  # .DF_with_ij <- .DF |>
-  #   # It is possible to have rows with the same Industry in .DF,
-  #   # because multiple fuel sources can make the same type of output
-  #   # from identical industries.
-  #   # For example, in Ghana, 2011, Industrial heat/furnace consumes
-  #   # both Fuel oil and Refinery gas to make MTH.200.C.
-  #   # To avoid problems below, we can to summarise all of the rows
-  #   # with same rownames and colnames into one.
-  #   dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
-  #   #   dplyr::group_by_at(c(rownames, colnames)) |>
-  #   dplyr::group_by(dplyr::across(dplyr::all_of(c(rownames, colnames)))) |>
-  #   dplyr::summarise(
-  #     "{matvals}" := sum(.data[[matvals]])
-  #   )
-  # .DF_with_ij[[rownames]] <- factor(.DF_with_ij[[rownames]])
-  # .DF_with_ij[[colnames]] <- factor(.DF_with_ij[[colnames]])
-  # .DF_with_ij[[i_colname]] <- as.numeric(.DF_with_ij[[rownames]])
-  # .DF_with_ij[[j_colname]] <- as.numeric(.DF_with_ij[[colnames]])
-
-
 
   # Get the dimnames
   dnames <- list(levels(.DF_with_ij[[rownames]]),

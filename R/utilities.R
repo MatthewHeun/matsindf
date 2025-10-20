@@ -250,6 +250,7 @@ rowcolval_to_mat <- function(.DF, matvals = "matvals",
     # with same rownames and colnames into one.
     dplyr::select(dplyr::all_of(c(rownames, colnames, matvals))) |>
     # dplyr::group_by_at(c(rownames, colnames)) |>
+    # In testing, we found that using group_by(across()) is much faster that group_by_at()
     dplyr::group_by(dplyr::across(dplyr::all_of(c(rownames, colnames)))) |>
     dplyr::summarise(
       "{matvals}" := sum(.data[[matvals]])

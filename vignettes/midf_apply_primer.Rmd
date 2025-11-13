@@ -268,7 +268,7 @@ midf$V[[1]]
 ```
 
 With `midf` in hand, we can demonstrate use of 
-[`tidyverse`](https://www.tidyverse.org)-style
+[`tidyverse`](https://tidyverse.org)-style
 functional programming to perform
 matrix algebra within a data frame.
 The functions of the `matsbyname` package

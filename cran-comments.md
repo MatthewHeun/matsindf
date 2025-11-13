@@ -90,6 +90,17 @@ Author field differs from that derived from Authors@R
             Furthermore, this NOTE is not present in many other test environments.
             It could be that this problem is only present in win-builder
             environments.
+
+
+
+
+
+
+
+
+
+
+
 * rhub:
     * `rhub::rhub_check(branch = "release-x.x.x")`
         * Linux (R-devel)

@@ -50,12 +50,12 @@ Furthermore, `matsbyname` is a sister package that
 - allows matrix algebra to be conducted within data frames using
   [dplyr](https://dplyr.tidyverse.org),
   [tidyr](https://tidyr.tidyverse.org), and other
-  [tidyverse](https://www.tidyverse.org) functions.
+  [tidyverse](https://tidyverse.org) functions.
 
 When used together, `matsindf` and `matsbyname` allow analysts to wield
 simultaneously the power of both [matrix
 mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and
-[tidyverse](https://www.tidyverse.org) functional programming.
+[tidyverse](https://tidyverse.org) functional programming.
 
 ## Installation
 

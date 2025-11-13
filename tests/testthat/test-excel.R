@@ -16,12 +16,39 @@ testthat::test_that("write_mat_to_excel() works as expected", {
                         overwrite_file = TRUE)
 
   # Check that tabs are correct
-  mat_wb <- openxlsx2::wb_load(mat_temp_path)
-  worksheet_names <- openxlsx2::wb_get_sheet_names(mat_wb)
-  expect_equal(worksheet_names, c(A = "A", B = "B", C = "C"))
+  openxlsx2::wb_load(mat_temp_path) |>
+    openxlsx2::wb_get_sheet_names() |>
+    expect_equal(c(A = "A", B = "B", C = "C"))
 
-  # Check the appearance
+  # Check the appearance of the matrices
   # openxlsx2::wb_open(mat_wb)
+
+  # Test for failure when lacking permission to overwrite the file.
+  df |>
+    write_mats_to_excel(mat_colname = "mat",
+                        worksheet_names = "worksheet_name",
+                        path = mat_temp_path) |>
+    expect_error()
+
+  # Test that we can overwrite with correct permissions
+  df |>
+    write_mats_to_excel(mat_colname = "mat",
+                        worksheet_names = "worksheet_name",
+                        path = mat_temp_path,
+                        overwrite_file = TRUE,
+                        overwrite_worksheets = TRUE)
+  openxlsx2::wb_load(mat_temp_path) |>
+    openxlsx2::wb_get_sheet_names() |>
+    expect_equal(c(A = "A", B = "B", C = "C"))
+  # Test without specifying names of worksheets
+  df |>
+    write_mats_to_excel(mat_colname = "mat",
+                        path = mat_temp_path,
+                        overwrite_file = TRUE,
+                        overwrite_worksheets = TRUE)
+  openxlsx2::wb_load(mat_temp_path) |>
+    openxlsx2::wb_get_sheet_names() |>
+    expect_equal(c(A = "A", B = "B", C = "C"))
 
   if (file.exists(mat_temp_path)) {
     res <- file.remove(mat_temp_path)
@@ -45,6 +72,11 @@ test_that("check_worksheet_name_violations() works as expected", {
   # Duplicates
   check_worksheet_name_violations(c("abc123", "abc123")) |>
     expect_warning()
+})
+
+
+test_that("writing worksheets triggers excepcted errors", {
+
 })
 
 

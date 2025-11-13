@@ -4,7 +4,7 @@ testthat::test_that("write_mat_to_excel() works as expected", {
                 dimnames = list(c("r1", "r2", "r3"),
                                 c("c1", "c2")))
   # Create a matsindf data frame
-  df <- tibble::tibble(mat = list(mat, mat, mat),
+  df <- tibble::tibble(mat = list(mat, mat+1, mat+2),
                        worksheet_name = c("A", "B", "C"))
   # Create a temporary file
   mat_temp_path <- tempfile(pattern = "write_mat_to_excel_test_file", fileext = ".xlsx")

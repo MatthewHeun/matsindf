@@ -41,7 +41,7 @@ long_pca_withspecies <- long_iris %>%
   dplyr::left_join(long_pca_embeddings, by = "flower")
 head(long_pca_withspecies, n = 5)
 
-## ---- fig.width=7, fig.align='center', fig.retina=2---------------------------
+## ----fig.width=7, fig.align='center', fig.retina=2----------------------------
 long_pca_withspecies %>%
   tidyr::pivot_wider(
     id_cols = c(flower, species), names_from = component,

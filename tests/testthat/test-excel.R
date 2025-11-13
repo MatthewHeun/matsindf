@@ -1,10 +1,12 @@
 testthat::test_that("write_mat_to_excel() works as expected", {
   # Create a simple matrix
-  mat <- matrix(1, dimnames = list("row", "col"))
+  mat <- matrix(1:6, nrow = 3, ncol = 2,
+                dimnames = list(c("r1", "r2", "r3"),
+                                c("c1", "c2")))
   # Create a matsindf data frame
   df <- tibble::tibble(mat = list(mat, mat, mat),
                        worksheet_name = c("A", "B", "C"))
-  # Define a temporary file
+  # Create a temporary file
   mat_temp_path <- tempfile(pattern = "write_mat_to_excel_test_file", fileext = ".xlsx")
   # Write the file.
   df |>
@@ -22,7 +24,7 @@ testthat::test_that("write_mat_to_excel() works as expected", {
   # openxlsx2::wb_open(mat_wb)
 
   if (file.exists(mat_temp_path)) {
-    file.remove(mat_temp_path)
+    res <- file.remove(mat_temp_path)
   }
 })
 

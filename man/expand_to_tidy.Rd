@@ -79,8 +79,8 @@ tidy <- data.frame(Country  = c( "GH",  "GH",  "GH",  "GH",  "GH",  "GH",  "GH",
                                   "i1",  "i2",  "i1",  "i2", NA, NA),
                   rowtypes  = c( ptype, ptype, ptype, ptype, ptype, itype, itype,
                                  ptype, ptype, ptype, ptype, NA, NA),
-                  coltypes  = c(itype, itype, itype, itype, itype, ptype, ptype,
-                                itype, itype, itype, itype, NA, NA),
+                  coltypes  = c( itype, itype, itype, itype, itype, ptype, ptype,
+                                 itype, itype, itype, itype, NA, NA),
                   vals      = c(11  ,  22,    11 ,   22 ,   23 ,   11 ,   22 ,
                                 11 ,   12 ,   11 ,   22,   0.2, 0.3)) \%>\%
   group_by(Country, Year, matrix)

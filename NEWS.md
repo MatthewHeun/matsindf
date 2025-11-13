@@ -12,7 +12,9 @@ which always resolves to the latest release.
 * New function `write_mats_to_excel()` writes
   matrices in a column of a `matsindf` data frame
   to an Excel file, one matrix per tab.
-  
+* Changed from using `dplyr::group_by_at()` to using
+  `dplyr::group_by(across())` for speed gain in 
+  `rowcolval_to_mat()`.
 
 
 ## matsindf 0.4.10 (2025-05-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15520543.svg)](https://doi.org/10.5281/zenodo.15520543)

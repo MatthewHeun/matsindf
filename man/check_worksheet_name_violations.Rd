@@ -13,10 +13,10 @@ check_worksheet_name_violations(candidate_worksheet_names)
 \code{NULL} invisibly and a warning if any problems are detected.
 }
 \description{
-\code{write_ecc_to_excel()} can include worksheet names, but
+\code{write_mat_to_excel()} can include worksheet names, but
 it is important that they are legal names.
 This function emits a warning when \code{candidate_worksheet_names}
-is mal-formed.
+is malformed.
 }
 \examples{
 # No warning

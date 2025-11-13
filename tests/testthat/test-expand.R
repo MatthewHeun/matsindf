@@ -289,7 +289,7 @@ test_that("expand_to_tidy() works if some arguments are unspecified with Matrix 
 })
 
 
-test_that("expand_to_tidy() works will NULL in a list", {
+test_that("expand_to_tidy() works with NULL in a list", {
   mat <- Matrix::Matrix(data = c(1:4),
                         nrow = 2,
                         dimnames = list(c("r1", "r2"),
@@ -316,6 +316,7 @@ test_that("expand_to_tidy() works with NULL in a data frame", {
                                    1, 3, 2, 4))
   expect_equal(tidy, expected)
 
+  # Now try in a tibble
   df2 <- tibble::tibble(a = c(1, 2, 3), m = list(m1, NULL, m1))
   tidy2 <- df2 |>
     expand_to_tidy(matvals = "m", rownames = "row", colnames = "col")

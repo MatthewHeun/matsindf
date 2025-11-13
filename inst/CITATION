@@ -2,7 +2,7 @@ bibentry(
   header      = "To cite package ‘matsindf’ in publications use:",
   bibtype     = "Manual",
   title       = "{matsindf}: Matrices in Data Frames",
-  author      = person(given = "Matthew Kuperus",
+  author      = person(given = "Matthew",
                        family = "Heun",
                        email = "matthew.heun@me.com",
                        role = c("aut", "cre"),

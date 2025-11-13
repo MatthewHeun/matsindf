@@ -1,16 +1,14 @@
 ## Context
 
-`matsindf` v0.4.10
-updates R dependency to >= 4.1.0 to accommodate the new pipe, 
-updates test-coverage.yaml to latest version, 
-and improves handling of `NULL` matrices in
-`expand_to_tidy()` and `mat_to_rowcolval()`.
+`matsindf` v0.4.11
+adds a new function `write_mats_to_excel()` and
+increases the speed of `rowcolval_to_mat()`.
 See `NEWS.md` for details.
 
 
 ## Test environments (14 in total) and R CMD check results
 
-* local: macOS X 15.5 (Sequoia), R4.5.0 (2023-04-11)
+* local: macOS X 15.6 (Sequoia), R4.5.1 (2025-06-13)
     * errors: 0
     * warnings: 0
     * notes: 0

@@ -8,7 +8,7 @@ See `NEWS.md` for details.
 
 ## Test environments (14 in total) and R CMD check results
 
-* local: macOS X 15.6 (Sequoia), R4.5.1 (2025-06-13)
+* local: macOS X 15.6 (Sequoia), R4.5.2 (2025-10-31)
     * errors: 0
     * warnings: 0
     * notes: 0

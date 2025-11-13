@@ -34,7 +34,7 @@ See `NEWS.md` for details.
         * warnings: 0
         * notes: 0
 * Windows (on win-builder):
-    * `devtools::check_win_release()`, R version 4.5.0 (2025-04-11 ucrt)
+    * `devtools::check_win_release()`, R version 4.5.2 (2025-10-31 ucrt)
         * errors: 0
         * warnings: 0
         * notes: 1
@@ -102,7 +102,7 @@ Author field differs from that derived from Authors@R
 
 
 * rhub:
-    * `rhub::rhub_check(branch = "release-x.x.x")`
+    * `rhub::rhub_check(branch = "release-0.4.11")`
         * Linux (R-devel)
             * errors: 0
             * warnings: 0

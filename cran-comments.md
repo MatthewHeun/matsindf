@@ -47,10 +47,10 @@ See `NEWS.md` for details.
     From: inst/doc/matsindf.html
     Status: 403
     Message: Forbidden
-             These URLs are reachable for me, so I am unsure how I can solve this problem. 
-             Furthermore, this NOTE is not present in many other test environments.
-             It could be that this problem is only present in win-builder
-             environments.
+            * These URLs are reachable for me, so I am unsure how I can solve this problem. 
+              Furthermore, this NOTE is not present in many other test environments.
+              It could be that this problem is only present in win-builder
+              environments.
     * `devtools::check_win_oldrelease()`, R version 4.4.3 (2025-02-28 ucrt)
         * errors: 0
         * warnings: 0
@@ -64,15 +64,15 @@ See `NEWS.md` for details.
     From: inst/doc/matsindf.html
     Status: 403
     Message: Forbidden
-             These URLs are reachable for me, so I am unsure how I can solve this problem. 
-             Furthermore, this NOTE is not present in many other test environments.
-             It could be that this problem is only present in win-builder
-             environments.
+            * These URLs are reachable for me, so I am unsure how I can solve this problem. 
+              Furthermore, this NOTE is not present in many other test environments.
+              It could be that this problem is only present in win-builder
+              environments.
             * checking DESCRIPTION meta-information ... NOTE
 Author field differs from that derived from Authors@R
   Author:    'Matthew Heun [aut, cre] (ORCID: <https://orcid.org/0000-0002-7438-214X>)'
   Authors@R: 'Matthew Heun [aut, cre] (<https://orcid.org/0000-0002-7438-214X>)'
-             This is the only test environment where this NOTE occurs.
+            * This is the only test environment where this NOTE occurs.
     * `devtools::check_win_devel()`  R Under development (unstable) (2025-11-12 r89009 ucrt)
         * errors: 0
         * warnings: 0

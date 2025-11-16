@@ -47,7 +47,7 @@ See `NEWS.md` for details.
     From: inst/doc/matsindf.html
     Status: 403
     Message: Forbidden
-             This URL is reachable for me, so I am unsure how I can solve this problem. 
+             These URLs are reachable for me, so I am unsure how I can solve this problem. 
              Furthermore, this NOTE is not present in many other test environments.
              It could be that this problem is only present in win-builder
              environments.
@@ -64,7 +64,7 @@ See `NEWS.md` for details.
     From: inst/doc/matsindf.html
     Status: 403
     Message: Forbidden
-             This URL is reachable for me, so I am unsure how I can solve this problem. 
+             These URLs are reachable for me, so I am unsure how I can solve this problem. 
              Furthermore, this NOTE is not present in many other test environments.
              It could be that this problem is only present in win-builder
              environments.

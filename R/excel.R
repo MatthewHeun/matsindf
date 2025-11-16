@@ -76,7 +76,7 @@ write_mats_to_excel <- function(.psut_data = NULL,
     # from a the object in memory we are building (mat_wb).
     # mat_wb is both.
     existing_worksheet_names <- openxlsx2::wb_get_sheet_names(mat_wb)
-    if (!is.null(existing_worksheet_names)) {
+    if (!is.null(worksheet_name) & !is.null(existing_worksheet_names)) {
       # Check for the error condition that we are attempting to
       # write a sheet that already exists and
       # we do not have permission to overwrite.
@@ -95,18 +95,24 @@ write_mats_to_excel <- function(.psut_data = NULL,
     # We turn worksheet_name into the_real_worksheet_name
     # sheet_name will be used after this section.
     # There are four options:
+
     # (1) No existing worksheets and no worksheet name.
     if (!have_existing_sheets & !have_worksheet_name) {
       # Call it "1".
-      the_real_worksheet_name <- 1
+      the_real_worksheet_name <- "1"
     }
 
     # (2) There are existing worksheets but no worksheet name is give.
     # Figure out highest integer among existing names and increment +1.
     if (have_existing_sheets & !have_worksheet_name) {
-      max_integer_sheet_names <- existing_worksheet_names[grepl("^-?\\d+$", x)] |>
-        max()
-      the_real_worksheet_name <- max_integer_sheet_names + 1
+      integer_sheet_names <- existing_worksheet_names[grepl("^-?\\d+$", existing_worksheet_names)]
+      if (length(integer_sheet_names) == 0) {
+        # No existing integer sheet names.
+        # Give it the name 1.
+        the_real_worksheet_name <- "1"
+      } else {
+        the_real_worksheet_name <- as.character(max(as.numeric(integer_sheet_names)) + 1)
+      }
     }
 
     # (3) Sheets already exist and we have a worksheet name.

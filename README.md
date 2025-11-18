@@ -1,8 +1,12 @@
 
 <!-- *********** -->
+
 <!-- Note: README.md is generated from README.Rmd.   -->
+
 <!-- Be sure to edit README.Rmd and generate the README.md file by Cmd/Ctl-shift-K -->
+
 <!-- *********** -->
+
 <!-- badges: start -->
 
 [![CRAN
@@ -13,7 +17,7 @@ state and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![R-CMD-check](https://github.com/MatthewHeun/matsindf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MatthewHeun/matsindf/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/MatthewHeun/matsindf/branch/master/graph/badge.svg)](https://app.codecov.io/gh/MatthewHeun/matsindf?branch=master)
+coverage](https://codecov.io/gh/MatthewHeun/matsindf/graph/badge.svg)](https://app.codecov.io/gh/MatthewHeun/matsindf)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5475443.svg)](https://doi.org/10.5281/zenodo.5475443)
 <!-- badges: end -->
 
@@ -46,12 +50,12 @@ Furthermore, `matsbyname` is a sister package that
 - allows matrix algebra to be conducted within data frames using
   [dplyr](https://dplyr.tidyverse.org),
   [tidyr](https://tidyr.tidyverse.org), and other
-  [tidyverse](https://www.tidyverse.org) functions.
+  [tidyverse](https://tidyverse.org) functions.
 
 When used together, `matsindf` and `matsbyname` allow analysts to wield
 simultaneously the power of both [matrix
 mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and
-[tidyverse](https://www.tidyverse.org) functional programming.
+[tidyverse](https://tidyverse.org) functional programming.
 
 ## Installation
 

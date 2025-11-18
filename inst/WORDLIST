@@ -1,7 +1,6 @@
 Brockway
 CMD
 Codecov
-DOI
 ECC
 ECCs
 Kuperus
@@ -10,6 +9,7 @@ Rmd
 Rnw
 Roxygen
 TravisCI
+WroteMats
 al
 arg
 args
@@ -41,6 +41,7 @@ tibble
 tidyr
 tidyverse
 transposeinverse
+wbWorkbook
 widehat
 yaml
 zenodo

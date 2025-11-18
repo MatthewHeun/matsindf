@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.4.10
-Date: 2025-05-24
+Version: 0.4.11
+Date: 2025-11-16
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -12,18 +12,19 @@ License: MIT + file LICENSE
 Language: en-US
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Config/testthat/start-first: collapse, matsindf_apply
+Config/testthat/start-first: excel, matsindf_apply, utilities, collapse
 Imports:
     assertthat,
     dplyr,
     lifecycle,
     magrittr,
     matsbyname,
+    openxlsx2,
     purrr,
     rlang,
     tibble,

@@ -30,7 +30,7 @@ You can find the `.R` file that generates the `.Rd` by reading the comment in th
 If you want to make a change bigger than fixing typos,
 first file an issue on GitHub and make sure someone from the team agrees that your proposed change is needed.
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal
-[reprex](https://www.tidyverse.org/help/#reprex).
+[reprex](https://tidyverse.org/help/#reprex).
 
 ### Pull request process
 

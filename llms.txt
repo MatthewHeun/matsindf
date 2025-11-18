@@ -1,0 +1,169 @@
+# matsindf
+
+## Statement of need
+
+Matrices are important mathematical objects, and they often describe
+networks of flows among nodes. The power of matrices lies in their
+ability to organize network-wide calculations, thereby simplifying the
+work of analysts who study entire systems.
+
+But [wouldn’t it be
+nice](https://en.wikipedia.org/wiki/Wouldn%27t_It_Be_Nice) if there were
+an easy way to create `R` data frames whose entries were not numbers but
+entire matrices? If that were possible, matrix algebra could be
+performed on columns of similar matrices.
+
+That’s the reason for `matsindf`. It provides functions to convert a
+suitably-formatted
+[tidy](https://tidyr.tidyverse.org/articles/tidy-data.html) data frame
+into a data frame containing a column of matrices.
+
+Furthermore, `matsbyname` is a sister package that
+
+- provides matrix algebra functions that respect names of matrix rows
+  and columns (`dimnames` in `R`) to free the analyst from the task of
+  aligning rows and columns of operands (matrices) passed to matrix
+  algebra functions and
+- allows matrix algebra to be conducted within data frames using
+  [dplyr](https://dplyr.tidyverse.org),
+  [tidyr](https://tidyr.tidyverse.org), and other
+  [tidyverse](https://tidyverse.org) functions.
+
+When used together, `matsindf` and `matsbyname` allow analysts to wield
+simultaneously the power of both [matrix
+mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics)) and
+[tidyverse](https://tidyverse.org) functional programming.
+
+## Installation
+
+You can install `matsindf` from CRAN with:
+
+``` r
+install.packages("matsindf")
+```
+
+You can install a recent development version of `matsindf` from github
+with:
+
+``` r
+# install devtools if not already installed
+# install.packages("devtools")
+devtools::install_github("MatthewHeun/matsindf")
+# To build vignettes locally, use
+devtools::install_github("MatthewHeun/matsindf", build_vignettes = TRUE)
+```
+
+## History
+
+The functions in this package were used in [Heun et al.
+(2018)](https://doi.org/10.1016/j.apenergy.2018.05.109).
+
+## More Information
+
+Find more information, including vignettes and function documentation,
+at <https://MatthewHeun.github.io/matsindf/>.
+
+## References
+
+Heun, Matthew Kuperus, Anne Owen, and Paul E. Brockway. 2018. “A
+Physical Supply-Use Table Framework for Energy Analysis on the Energy
+Conversion Chain.” *Applied Energy* 226 (September): 1134–62.
+<https://doi.org/10.1016/j.apenergy.2018.05.109>.
+
+# Package index
+
+## All functions
+
+- [`UKEnergy2000`](https://matthewheun.github.io/matsindf/reference/UKEnergy2000.md)
+  : Energy consumption in the UK in 2000
+
+- [`add_UKEnergy2000_matnames()`](https://matthewheun.github.io/matsindf/reference/add_UKEnergy2000_matnames.md)
+  : Add a column of matrix names to tidy data frame
+
+- [`add_UKEnergy2000_row_col_meta()`](https://matthewheun.github.io/matsindf/reference/add_UKEnergy2000_row_col_meta.md)
+  : Add row, column, row type, and column type metadata
+
+- [`build_keep_args()`](https://matthewheun.github.io/matsindf/reference/build_keep_args.md)
+  : Build a list of arguments to keep
+
+- [`build_matsindf_apply_data_frame()`](https://matthewheun.github.io/matsindf/reference/build_matsindf_apply_data_frame.md)
+  : Create a data frame consisting of the input data for
+  matsindf_apply()
+
+- [`check_worksheet_name_violations()`](https://matthewheun.github.io/matsindf/reference/check_worksheet_name_violations.md)
+  : Develop a warning message for malformed Excel worksheet names
+
+- [`collapse_to_matrices()`](https://matthewheun.github.io/matsindf/reference/collapse_to_matrices.md)
+  :
+
+  Collapse a "tidy" data frame to matrices in a data frame (`matsindf`)
+
+- [`df_to_msg()`](https://matthewheun.github.io/matsindf/reference/df_to_msg.md)
+  : Create a message from a data frame
+
+- [`everything_except()`](https://matthewheun.github.io/matsindf/reference/everything_except.md)
+  : Get symbols for all columns except ...
+
+- [`expand_to_tidy()`](https://matthewheun.github.io/matsindf/reference/expand_to_tidy.md)
+  :
+
+  Expand a `matsindf` data frame
+
+- [`get_useable_default_args()`](https://matthewheun.github.io/matsindf/reference/get_useable_default_args.md)
+  : Create a usable list of default arguments to a function
+
+- [`group_by_everything_except()`](https://matthewheun.github.io/matsindf/reference/group_by_everything_except.md)
+  : Group by all variables except some
+
+- [`handle_empty_data()`](https://matthewheun.github.io/matsindf/reference/handle_empty_data.md)
+  : Gracefully handle empty data
+
+- [`handle_null_args()`](https://matthewheun.github.io/matsindf/reference/handle_null_args.md)
+  :
+
+  Gracefully handle `NULL` arguments
+
+- [`index_column()`](https://matthewheun.github.io/matsindf/reference/index_column.md)
+  : Index a column in a data frame by groups relative to an initial year
+
+- [`mat_to_rowcolval()`](https://matthewheun.github.io/matsindf/reference/mat_to_rowcolval.md)
+  : Convert a matrix to a data frame with rows, columns, and values.
+
+- [`matrix_cols()`](https://matthewheun.github.io/matsindf/reference/matrix_cols.md)
+  : Find columns that contain matrices
+
+- [`matsindf_apply()`](https://matthewheun.github.io/matsindf/reference/matsindf_apply.md)
+  :
+
+  Apply a function to a `matsindf` data frame (and more)
+
+- [`matsindf_apply_types()`](https://matthewheun.github.io/matsindf/reference/matsindf_apply_types.md)
+  :
+
+  Determine types of `.dat` and `...` arguments for matsindf_apply()
+
+- [`rowcolval_to_mat()`](https://matthewheun.github.io/matsindf/reference/rowcolval_to_mat.md)
+  : Collapse a tidy data frame into a matrix with named rows and columns
+
+- [`should_unlist()`](https://matthewheun.github.io/matsindf/reference/should_unlist.md)
+  : Tell whether a column can be unlisted
+
+- [`verify_cols_missing()`](https://matthewheun.github.io/matsindf/reference/verify_cols_missing.md)
+  : Verify that column names in a data frame are not already present
+
+- [`where_to_get_args()`](https://matthewheun.github.io/matsindf/reference/where_to_get_args.md)
+  : Decide where to get each argument to FUN
+
+- [`write_mats_to_excel()`](https://matthewheun.github.io/matsindf/reference/write_mats_to_excel.md)
+  : Write matrices to an Excel file
+
+# Articles
+
+### All vignettes
+
+- [Using matsindf for principal components
+  analysis](https://matthewheun.github.io/matsindf/articles/iris_pca.md):
+- [Use Cases and Examples for
+  matsindf](https://matthewheun.github.io/matsindf/articles/matsindf.md):
+- [A matsindf_apply
+  primer](https://matthewheun.github.io/matsindf/articles/midf_apply_primer.md):

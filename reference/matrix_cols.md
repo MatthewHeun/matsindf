@@ -1,0 +1,70 @@
+# Find columns that contain matrices
+
+It is often helpful to find the columns of a `matsindf` data frame that
+contain exclusively or some matrices. This function helps with that
+task.
+
+## Usage
+
+``` r
+matrix_cols(.df, .drop_names = FALSE, .any = FALSE)
+```
+
+## Arguments
+
+- .df:
+
+  The data frame to be queried for matrix columns.
+
+- .drop_names:
+
+  A boolean that tells whether to remove the names from the returned
+  integer vector. Default is `FALSE`.
+
+- .any:
+
+  A boolean that tells whether a column is reported when
+  [`any()`](https://rdrr.io/r/base/any.html) of the rows contain
+  matrices (instead of [`all()`](https://rdrr.io/r/base/all.html) rows
+  contain matrices). Default is `FALSE`, in which case all entries in a
+  column must be a matrix for the column to be reported.
+
+## Value
+
+A vector of integers saying which columns contain matrices.
+
+## Details
+
+By default, a column is considered a matrix column if
+[`all()`](https://rdrr.io/r/base/all.html) of the rows contain matrices.
+Use the `.any` argument to modify this behavior.
+
+By default, the vector of integers returned from this function is named
+by the columns. Use the `.drop_names` function to modify this behavior.
+
+## Examples
+
+``` r
+tidy <- tibble::tibble(matrix = c("V1", "V1", "V1", "V2", "V2"),
+                         row = c("i1", "i1", "i2", "i1", "i2"),
+                         col = c("p1", "p2", "p2", "p1", "p2"),
+                         vals = c(1, 2, 3, 4, 5)) |>
+  dplyr::mutate(
+    rowtypes = "Industries",
+    coltypes  = "Products"
+  ) |>
+  dplyr::group_by(matrix)
+matsdf <- tidy |>
+  collapse_to_matrices(matnames = "matrix", matvals = "vals",
+                       rownames = "row", colnames = "col",
+                       rowtypes = "rowtypes", coltypes = "coltypes")
+matsdf
+#>   matrix       vals
+#> 1     V1 1, 0, 2, 3
+#> 2     V2 4, 0, 0, 5
+matrix_cols(matsdf)
+#> vals 
+#>    2 
+matrix_cols(matsdf, .drop_names = TRUE)
+#> [1] 2
+```

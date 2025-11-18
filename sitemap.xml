@@ -16,6 +16,7 @@
 <url><loc>https://matthewheun.github.io/matsindf/reference/add_UKEnergy2000_row_col_meta.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/build_keep_args.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/build_matsindf_apply_data_frame.html</loc></url>
+<url><loc>https://matthewheun.github.io/matsindf/reference/check_worksheet_name_violations.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/collapse_to_matrices.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/data.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/df_to_msg.html</loc></url>
@@ -37,5 +38,6 @@
 <url><loc>https://matthewheun.github.io/matsindf/reference/should_unlist.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/verify_cols_missing.html</loc></url>
 <url><loc>https://matthewheun.github.io/matsindf/reference/where_to_get_args.html</loc></url>
+<url><loc>https://matthewheun.github.io/matsindf/reference/write_mats_to_excel.html</loc></url>
 </urlset>
 

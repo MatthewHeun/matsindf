@@ -8,7 +8,7 @@
 ## Citation
 
 Source:
-[`inst/CITATION`](https://github.com/MatthewHeun/matsindf/blob/master/inst/CITATION)
+[`inst/CITATION`](https://github.com/MatthewHeun/matsindf/blob/v0.4.11/inst/CITATION)
 
 Matthew Kuperus Heun (2024). matsindf: Matrices in Data Frames R package
 version 0.4.11 https://doi.org/10.5281/zenodo.5475443

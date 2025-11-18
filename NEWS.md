@@ -8,6 +8,7 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+## matsindf 0.4.11 (2025-11-16) 
 
 * New function `write_mats_to_excel()` writes
   matrices in a column of a `matsindf` data frame
@@ -15,6 +16,9 @@ which always resolves to the latest release.
 * Changed from using `dplyr::group_by_at()` to using
   `dplyr::group_by(across())` for speed gain in 
   `rowcolval_to_mat()`.
+* New tests for new features.
+    - Now at 396 tests, all passing.
+    - Test coverage remains at 100%.
 
 
 ## matsindf 0.4.10 (2025-05-24) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15520543.svg)](https://doi.org/10.5281/zenodo.15520543)

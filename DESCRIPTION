@@ -1,8 +1,8 @@
 Package: matsindf
 Type: Package
 Title: Matrices in Data Frames
-Version: 0.4.10
-Date: 2025-05-24
+Version: 0.4.11
+Date: 2025-11-16
 Authors@R: c(person("Matthew", "Heun", role = c("aut", "cre"),
                      comment = c(ORCID = "0000-0002-7438-214X"),
                      email = "matthew.heun@me.com"))
@@ -17,7 +17,7 @@ Roxygen: list(markdown = TRUE)
 Depends: R (>= 4.1.0)
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Config/testthat/start-first: matsindf_apply, utilities, collapse
+Config/testthat/start-first: excel, matsindf_apply, utilities, collapse
 Imports:
     assertthat,
     dplyr,

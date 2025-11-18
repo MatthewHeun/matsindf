@@ -52,14 +52,14 @@ operands (matrices) passed to matrix algebra functions and
 [dplyr](https://dplyr.tidyverse.org),
 [tidyr](https://tidyr.tidyverse.org), 
 and other
-[tidyverse](https://www.tidyverse.org)
+[tidyverse](https://tidyverse.org)
 functions.
 
 When used together, `matsindf` and `matsbyname`
 allow analysts to wield simultaneously the power of both 
 [matrix mathematics](https://en.wikipedia.org/wiki/Matrix_(mathematics))
 and 
-[tidyverse](https://www.tidyverse.org) 
+[tidyverse](https://tidyverse.org) 
 functional programming.
 
 

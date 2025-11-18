@@ -28,7 +28,7 @@
 #'                 dimnames = list(c("r1", "r2", "r3"),
 #'                                 c("c1", "c2")))
 #'   # Create a matsindf data frame
-#'   df <- tibble::tibble(mat = list(mat, mat, mat),
+#'   df <- tibble::tibble(mat = list(mat, mat+1, mat+2),
 #'                        worksheet_name = c("A", "B", "C"))
 #'   # Create a temporary file
 #'   mat_temp_path <- tempfile(pattern = "write_mat_to_excel_test_file",
@@ -70,41 +70,56 @@ write_mats_to_excel <- function(.psut_data = NULL,
   }
 
   create_one_tab <- function(mat, worksheet_name) {
-    # Figure out the worksheet name
-    if (!is.null(worksheet_name)) {
-      sheet_name <- worksheet_name
-    } else {
-      # Get existing sheet names
-      existing_sheets <- openxlsx2::wb_get_sheet_names(mat_wb)
-
-      # Create a new name by incrementing the integer
-      if (length(existing_sheets) == 0) {
-        sheet_name <- "1"
-      } else {
-        # Set the sheet name to 1 plus the larger of
-        # number of sheets or
-        # the largest number in the existing sheet names.
-        sheet_name <- max(length(existing_sheets),
-                          max(as.integer(existing_sheets)), na.rm = TRUE) + 1
-      }
-    }
-    # Check for malformed sheet names. Emit a warning if problem found.
-    check_worksheet_name_violations(sheet_name)
-
     # Get the worksheet names in the file we are building.
     # The existing_sheet_names can come
     # from a disk file to which we are adding or
     # from a the object in memory we are building (mat_wb).
     # mat_wb is both.
-    existing_sheet_names <- openxlsx2::wb_get_sheet_names(mat_wb)
-
-    if (!is.null(existing_sheet_names)) {
-      if ((sheet_name %in% existing_sheet_names) & !overwrite_worksheets) {
+    existing_worksheet_names <- openxlsx2::wb_get_sheet_names(mat_wb)
+    if (!is.null(worksheet_name) & !is.null(existing_worksheet_names)) {
+      # Check for the error condition that we are attempting to
+      # write a sheet that already exists and
+      # we do not have permission to overwrite.
+      if ((worksheet_name %in% existing_worksheet_names) & !overwrite_worksheets) {
         # If overwrite_worksheets is FALSE and the sheet exists,
         # give an error.
         stop(paste0("A worksheet by the name '", worksheet_name, "' already exists!"))
       }
-      if ((sheet_name %in% existing_sheet_names) & overwrite_worksheets) {
+    }
+
+    # Set some booleans so the code below is easier to read
+    have_existing_sheets <- length(existing_worksheet_names) > 0
+    have_worksheet_name <- !is.null(worksheet_name)
+
+    # The goal of this next section of code is to decide the worksheet name.
+    # We turn worksheet_name into the_real_worksheet_name
+    # sheet_name will be used after this section.
+    # There are four options:
+
+    # (1) No existing worksheets and no worksheet name.
+    if (!have_existing_sheets & !have_worksheet_name) {
+      # Call it "1".
+      the_real_worksheet_name <- "1"
+    }
+
+    # (2) There are existing worksheets but no worksheet name is give.
+    # Figure out highest integer among existing names and increment +1.
+    if (have_existing_sheets & !have_worksheet_name) {
+      integer_sheet_names <- existing_worksheet_names[grepl("^-?\\d+$", existing_worksheet_names)]
+      if (length(integer_sheet_names) == 0) {
+        # No existing integer sheet names.
+        # Give it the name 1.
+        the_real_worksheet_name <- "1"
+      } else {
+        the_real_worksheet_name <- as.character(max(as.numeric(integer_sheet_names)) + 1)
+      }
+    }
+
+    # (3) Sheets already exist and we have a worksheet name.
+    # Check if the name of the new worksheet already exists.
+    # If so, delete it.
+    if (have_existing_sheets & have_worksheet_name) {
+      if ((worksheet_name %in% existing_worksheet_names) & overwrite_worksheets) {
         # If overwrite_worksheets is TRUE and the sheet exists,
         # remove it before writing a new sheet.
 
@@ -117,15 +132,26 @@ write_mats_to_excel <- function(.psut_data = NULL,
         # creates a copy of the worksheet at a new memory location.
         # We don't want piping, because we want to access the modified
         # object after this function exits.
-        mat_wb$remove_worksheet(sheet = sheet_name)
+        mat_wb$remove_worksheet(sheet = worksheet_name)
       }
+      the_real_worksheet_name <- worksheet_name
     }
 
+    # (4) Do not have existing sheets but have a new worksheet name
+    # Simply use the new worksheet name
+    if (!have_existing_sheets & have_worksheet_name) {
+      the_real_worksheet_name <- worksheet_name
+    }
+
+    # Check for malformed sheet names. Emit a warning if problem found.
+    check_worksheet_name_violations(the_real_worksheet_name)
+
+
     # Add the new worksheet to the workbook
-    mat_wb$add_worksheet(sheet_name)
+    mat_wb$add_worksheet(the_real_worksheet_name)
 
     # Write the matrix to the worksheet.
-    mat_wb$add_data(sheet = sheet_name,
+    mat_wb$add_data(sheet = the_real_worksheet_name,
                     # Account for the fact that this_mat could be a
                     # non-native matrix class (such as Matrix)
                     x = as.matrix(mat),
@@ -146,28 +172,28 @@ write_mats_to_excel <- function(.psut_data = NULL,
     # Style cells
 
     # Set auto width for rownames
-    mat_wb$set_col_widths(sheet = sheet_name,
+    mat_wb$set_col_widths(sheet = the_real_worksheet_name,
                           cols = 1,
                           widths = "auto")
     # Right justify rownames
-    mat_wb$add_cell_style(sheet = sheet_name,
+    mat_wb$add_cell_style(sheet = the_real_worksheet_name,
                           dims = openxlsx2::wb_dims(cols = 1,
                                                     rows = first_color_row:last_color_row),
                           horizontal = "right")
     # Rotate and center colnames
-    mat_wb$add_cell_style(sheet = sheet_name,
+    mat_wb$add_cell_style(sheet = the_real_worksheet_name,
                           dims = openxlsx2::wb_dims(rows = 1,
                                                     cols = first_color_col:last_color_col),
                           text_rotation = 90,
                           horizontal = "center",
                           vertical = "bottom")
     # Center all numbers in the cells
-    mat_wb$add_cell_style(sheet = sheet_name,
+    mat_wb$add_cell_style(sheet = the_real_worksheet_name,
                           dims = mat_region_nums,
                           horizontal = "center")
 
     # Add fill color
-    mat_wb$add_fill(sheet = sheet_name,
+    mat_wb$add_fill(sheet = the_real_worksheet_name,
                     dims = mat_region_nums,
                     color = mat_bg_color)
 

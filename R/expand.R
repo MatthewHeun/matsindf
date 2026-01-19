@@ -96,7 +96,7 @@ expand_to_tidy <- function(.DF,
   }
   temp |>
     # group by everything except matvals column so that "do" will act as desired
-    dplyr::group_by_at(setdiff(colnames(.DF), matvals)) |>
+    dplyr::group_by(dplyr::pick(-{{ matvals }})) |>
     dplyr::do(
       # Convert .data to row, col, val format
       mat_to_rowcolval(.data[[matvals]][[1L]],

@@ -8,6 +8,8 @@ Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zeno
 which always resolves to the latest release.
 
 
+* Better description of data shape required by
+  `expand_to_tidy()`.
 * Remove dependence upon `dplyr::group_by_at()`,
   as it has been superseded.
 

@@ -9,6 +9,11 @@
 #' `rowtypes`, and `coltypes`, arguments.
 #' The entries of the \pkg{matsindf}-style matrices are stored in an output column named `values.`
 #'
+#' Note that it will mostly likely be an error if there is a column
+#' of matrices in addition to `matvals`.
+#' So [tidyr::pivot_longer()], if needed,
+#' before calling this function.
+#'
 #' @param .DF The data frame containing \pkg{matsindf}-style matrices.
 #'            (`.DF` may also be a named list of matrices, in which case
 #'            names of the matrices are taken from the names of items in the list and

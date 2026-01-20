@@ -61,6 +61,11 @@ This function and \code{collapse_to_matrices()} convert between the two represen
 Names for output columns are specified in the \code{rownames}, \code{colnames},
 \code{rowtypes}, and \code{coltypes}, arguments.
 The entries of the \pkg{matsindf}-style matrices are stored in an output column named \code{values.}
+
+Note that it will mostly likely be an error if there is a column
+of matrices in addition to \code{matvals}.
+So \code{\link[tidyr:pivot_longer]{tidyr::pivot_longer()}}, if needed,
+before calling this function.
 }
 \examples{
 library(dplyr)

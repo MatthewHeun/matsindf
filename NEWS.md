@@ -3,6 +3,7 @@ title: "Release notes for `matsindf`"
 output: html_document
 ---
 
+## All releases
 
 Cite all releases with doi [10.5281/zenodo.5475443](https://doi.org/10.5281/zenodo.5475443), 
 which always resolves to the latest release.

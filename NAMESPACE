@@ -19,5 +19,7 @@ export(rowcolval_to_mat)
 export(verify_cols_missing)
 export(write_mats_to_excel)
 importFrom(magrittr,"%>%")
-importFrom(rlang,":=")
-importFrom(rlang,.data)
+importFrom(rlang,
+  ":=",
+  .data
+)
